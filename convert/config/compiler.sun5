@@ -1,0 +1,9 @@
+FC	= f77
+FFLAGS	= -O
+COMPILE = ${FC} -c ${FFLAGS}
+CPP	= /lib/cpp
+
+MSCL	= ${SOLPSTOP}/src/lib/${OBJECTCODE}
+LDLIBS	= -L${MSCL} -L/usr/local/lib -L/usr/lpp/xlC/lib
+LDFLAGS =-lmscl
+LDEXTRA =

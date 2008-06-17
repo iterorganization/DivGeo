@@ -1,0 +1,2103 @@
+
+src/actions.c,1343
+int ActUndoMark(9,111
+int ActAddNode(19,277
+int ActDelNode(48,750
+int ActChangeNode(79,1481
+int ActAddElem(122,2492
+int ActDelElem(163,3286
+int ActChangeElem(201,4169
+int ActAddEquil(252,5599
+int ActDelEquil(298,6474
+int ActAddSurface(332,7211
+int ActDelSurface(395,8656
+int ActChangeSurface(423,9223
+int ActAddTemplate(488,10815
+int ActDelTemplate(541,11793
+int ActChangeTemplate(565,12240
+int ActAddVarSetDef(597,12879
+int ActDelVarSetDef(626,13406
+int ActChangeVarSetDef(658,14115
+int ActAddVarDef(689,14780
+int ActDelVarDef(719,15295
+int ActChangeVarDef(749,15892
+int ActAddVarSet(791,16839
+int ActDelVarSet(819,17313
+int ActAddVar(849,17904
+int ActDelVar(898,18950
+int ActChangeObjString(951,20119
+int ActChangeObjGroup(989,20855
+int ActChangeObjInt(1035,21929
+int ActChangeObjPointer(1084,22938
+int ActChangeObjDouble(1125,23755
+int ActAddXPoint(1166,24585
+int ActDelXPoint(1218,25842
+int ActAddGridPoint(1260,26794
+int ActChangeGridPoint(1295,27537
+int ActDelGridPoint(1339,28584
+int ActChangeAppView(1370,29217
+int ActAddSonnetData(1436,30994
+int ActDelSonnetData(1480,31811
+int ActLockAppUpdate(1509,32311
+int ActAddSeparator(1536,32963
+int ActDelSeparator(1574,33750
+int ActChangeSeparator(1609,34500
+int ActAddSource(1657,35654
+int ActDelSource(1686,36123
+int ActChangeSource(1716,36659
+
+src/actions.h,3666
+#define _actions_h2,19
+#define CVM_NEWWINDOW 39,1010
+#define CVM_ZOOM 40,1034
+#define CVM_OLDWINDOW 41,1058
+struct _ActRec _ActRec51,1544
+typedef struct _DelRec _DelRec60,1703
+}* DelRec;DelRec68,1833
+typedef ActRec UndoMarkRec;UndoMarkRec73,1976
+typedef struct _ChangeObjStringRec _ChangeObjStringRec83,2425
+}* ChangeObjStringRec;ChangeObjStringRec88,2540
+typedef struct _ChangeObjGroupRec _ChangeObjGroupRec90,2564
+}* ChangeObjGroupRec;ChangeObjGroupRec97,2708
+typedef struct _ChangeObjIntRec _ChangeObjIntRec99,2731
+}* ChangeObjIntRec;ChangeObjIntRec105,2864
+typedef struct _ChangeObjDoubleRec _ChangeObjDoubleRec107,2885
+}* ChangeObjDoubleRec;ChangeObjDoubleRec113,3023
+typedef struct _ChangeObjPointerRec _ChangeObjPointerRec115,3047
+}* ChangeObjPointerRec;ChangeObjPointerRec121,3185
+typedef struct _ChangeAppViewRec _ChangeAppViewRec127,3422
+}* ChangeAppViewRec;ChangeAppViewRec133,3558
+typedef ActRec AddNodeRec;AddNodeRec138,3644
+typedef struct _DelNodeRec _DelNodeRec140,3672
+}* DelNodeRec;DelNodeRec144,3743
+typedef struct _ChangeNodeRec _ChangeNodeRec146,3759
+}* ChangeNodeRec;ChangeNodeRec151,3849
+typedef ActRec AddElemRec;AddElemRec153,3868
+typedef struct _DelElemRec _DelElemRec155,3896
+}* DelElemRec;DelElemRec159,3967
+typedef struct _ChangeElemRec _ChangeElemRec161,3983
+}* ChangeElemRec;ChangeElemRec167,4081
+typedef ActRec AddEquilRec;AddEquilRec169,4100
+typedef struct _DelEquilRec _DelEquilRec171,4129
+}* DelEquilRec;DelEquilRec175,4203
+typedef ActRec AddSurfaceRec;AddSurfaceRec177,4220
+typedef struct _DelSurfaceRec _DelSurfaceRec179,4251
+}* DelSurfaceRec;DelSurfaceRec183,4328
+typedef struct _ChangeSurfaceRec _ChangeSurfaceRec185,4347
+}* ChangeSurfaceRec;ChangeSurfaceRec190,4441
+typedef ActRec AddTemplateRec;AddTemplateRec192,4463
+typedef struct _DelTemplateRec _DelTemplateRec194,4495
+}* DelTemplateRec;DelTemplateRec198,4574
+typedef struct _ChangeTemplateRec _ChangeTemplateRec200,4594
+}* ChangeTemplateRec;ChangeTemplateRec205,4710
+typedef ActRec AddVarSetDefRec;AddVarSetDefRec207,4733
+typedef DelRec DelVarSetDefRec;DelVarSetDefRec208,4765
+typedef struct _ChangeVarSetDefRec _ChangeVarSetDefRec210,4798
+}* ChangeVarSetDefRec;ChangeVarSetDefRec215,4913
+typedef ActRec AddVarDefRec;AddVarDefRec217,4937
+typedef DelRec DelVarDefRec;DelVarDefRec218,4966
+typedef struct _ChangeVarDefRec _ChangeVarDefRec220,4996
+}* ChangeVarDefRec;ChangeVarDefRec226,5121
+typedef ActRec AddVarSetRec;AddVarSetRec228,5142
+typedef DelRec DelVarSetRec;DelVarSetRec229,5171
+typedef ActRec AddVarRec;AddVarRec231,5201
+typedef DelRec DelVarRec;DelVarRec232,5227
+typedef ActRec AddXPointRec;AddXPointRec234,5254
+typedef DelRec DelXPointRec;DelXPointRec235,5283
+typedef ActRec AddGridPointRec;AddGridPointRec237,5313
+typedef DelRec DelGridPointRec;DelGridPointRec238,5345
+typedef struct _ChangeGridPointRec _ChangeGridPointRec239,5377
+}* ChangeGridPointRec;ChangeGridPointRec245,5490
+typedef ActRec AddSonnetDataRec;AddSonnetDataRec247,5514
+typedef DelRec DelSonnetDataRec;DelSonnetDataRec248,5547
+typedef struct _LockAppUpdateRec _LockAppUpdateRec250,5581
+}* LockAppUpdateRec;LockAppUpdateRec255,5688
+typedef ActRec AddSeparatorRec;AddSeparatorRec257,5710
+typedef DelRec DelSeparatorRec;DelSeparatorRec258,5742
+typedef struct _ChangeSeparatorRec _ChangeSeparatorRec260,5775
+}* ChangeSeparatorRec;ChangeSeparatorRec267,5895
+typedef ActRec AddSourceRec;AddSourceRec269,5919
+typedef DelRec DelSourceRec;DelSourceRec270,5948
+typedef struct _ChangeSourceRec _ChangeSourceRec271,5977
+}* ChangeSourceRec;ChangeSourceRec276,6071
+
+src/app.c,1018
+App CreateApp(4,37
+void* FreeApp(70,1474
+App AddApp(147,3514
+void* CreateActRec(169,3989
+void* FreeActRec(181,4164
+static void FreeUndoList(191,4314
+void FreeUndoInfo(203,4520
+void AddUndoRec(211,4660
+static void ProcessUndo(348,9008
+void Undo(387,10053
+void Redo(399,10223
+void Cancel(411,10393
+void CancelNonDestructive(423,10569
+void UndoMark(438,10792
+void EnableUndo(445,10891
+void DrawAppObject(450,10994
+void SetHighlightMode(461,11215
+void DrawAppHighlight(471,11387
+void AddAppUpdate(520,12645
+void LockAppUpdate(530,12852
+void DisableAppUpdate(543,13121
+void SetAppFName(553,13359
+void SetAppCreationTime(569,13713
+void* DelObject(583,14048
+void NotifyAppViews(634,15328
+int IsAppUnsaved(641,15485
+int RaiseChangeAppViewUndoRec(656,15773
+int GetPrevViewInfo(685,16371
+void MarkPrevViewDone(727,17281
+void SetAppOutputMode(740,17535
+void SetOutputFlags(751,17780
+void SetMeshSlidingMode(755,17899
+void SetMeshSlidingThreshold(760,18037
+void SetDoubleMeshBorderFlag(764,18156
+
+src/app.h,1171
+#define _app_h2,15
+#define UM_NORM 7,64
+#define UM_UNDO 8,82
+#define UM_REDO 9,100
+#define UM_CANCEL 10,118
+#define OUTPUTMODE_SONNET 12,139
+#define OUTPUTMODE_CARRE 13,167
+#define OF_NC_VARS 15,196
+#define OF_NC_STRUCTURE 16,229
+#define OF_NC_TARGETS 17,262
+#define OF_NC_SURFACES 18,295
+#define OF_NC_GPOINTS 19,328
+#define OF_NC_CELLS 20,361
+struct _App _App22,395
+#define AppLocked(AppLocked60,1219
+#define AppNode1st(AppNode1st62,1264
+#define AppElem1st(AppElem1st63,1319
+#define AppView1st(AppView1st64,1374
+#define AppHighlight1st(AppHighlight1st65,1429
+#define AppMark1st(AppMark1st66,1493
+#define AppSurface1st(AppSurface1st67,1547
+#define AppVarDef1st(AppVarDef1st68,1608
+#define AppVarSet1st(AppVarSet1st69,1667
+#define AppVarSetDef1st(AppVarSetDef1st70,1726
+#define AppGridPoint1st(AppGridPoint1st71,1791
+#define AppSeparator1st(AppSeparator1st72,1856
+#define AppSource1st(AppSource1st73,1921
+#define AppChord1st(AppChord1st74,1980
+#define AppXPointTest1st(AppXPointTest1st75,2037
+#define AppXPointSeg1st(AppXPointSeg1st76,2104
+#define IsUndoMark(IsUndoMark78,2170
+#define IsHighlighted(IsHighlighted79,2245
+
+src/calc.c,1978
+#define PointInRectangle(PointInRectangle7,158
+void AddXY(11,313
+double Point2PointDist(20,432
+double Point2VectorDist(24,539
+int VIntersect(43,1099
+static int VectorInRectangle(60,1498
+double SurroundingCircleRadius(92,2375
+double CalcLineLength(101,2597
+static double StretchCompress(115,2827
+static double StretchExpand(122,2961
+double StretchValue2(126,3051
+double StretchValue(140,3454
+Node HitNode(165,3932
+static Source HitSource(182,4266
+static XPointTest HitXPointTest(199,4639
+Elem HitElem(216,5040
+Separator HitSeparator(237,5505
+Chord HitChord(255,5931
+Surface HitSurface(276,6394
+XPointSeg HitXPointSeg(297,6871
+GridPoint HitGridPoint(319,7410
+int HitGridPointPos(338,7829
+static MeshPoint HitMeshPoint(369,8670
+static MeshElement HitMeshElement(389,9069
+static MeshCell HitMeshCell(415,9666
+void* HitViewObject(436,10091
+Group CoveredViewObjects(521,12207
+void CalcObjExtents(572,13550
+void CalcGroupExtents(722,17793
+int DetectFileType(732,18054
+int LockObject(767,19119
+char* GetShortFName(830,20546
+char* GetFileExt(838,20721
+char* GetFilePath(849,20902
+void* TranslateId(855,20982
+int CountSurfaces(863,21173
+int CountGridPoints(875,21412
+void* GetLockingObject(886,21593
+int IsLocked(966,23987
+int CompStrings(1016,25621
+char* Flags2Str(1023,25844
+void Str2Flags(1036,26062
+char* Int2Name(1046,26357
+int Name2Int(1055,26550
+int CompPolyLines(1064,26752
+int PolyLinesIntersect(1091,27311
+void CutPolyLine(1123,28134
+double ProjectPointToPolyLine(1159,28813
+int GetPolyLinePoint(1186,29323
+void FollowRectCW(1209,29765
+void FollowRectCCW(1223,30273
+void RestrictGroupToType(1235,30706
+char* StripPrefix(1243,30874
+static int CalcDeltaCoeffs(1251,30994
+double DistributeLaw(1289,31738
+#define SCNT 1329,32672
+#define SLEN 1330,32688
+static char* GetLocalStaticStr(1332,32706
+char* GetVersionStr(1340,32845
+int GetGroupType(1364,33202
+int ObjectInRectangle(1376,33439
+char* ExpandFilename(1424,34859
+
+src/calc.h,1272
+#define _calc_h2,16
+struct _XY _XY12,473
+struct _PtrTable _PtrTable16,504
+typedef struct _FlagsRec _FlagsRec20,545
+typedef struct _FlagsRec {unsigned long mask;char c;}* FlagsRec;FlagsRec20,545
+typedef struct _NameRec _NameRec21,610
+typedef struct _NameRec {int val;char* s;}* NameRec;NameRec21,610
+#define swap(swap26,751
+#define minmax(minmax29,823
+#define min(min32,894
+#define max(max35,952
+#define sqr(sqr38,1010
+#define sign(sign41,1055
+#define setmin(setmin44,1124
+#define setmax(setmax47,1194
+#define inrange(inrange50,1265
+#define inrange_s(inrange_s53,1360
+#define GetObjType(GetObjType58,1512
+#define GetOffset(GetOffset60,1558
+#define DGLAW_NORMAL 149,4944
+#define DGLAW_FLIPPED 150,5020
+#define DGLAW_2ALPHA 151,5096
+#define DGLAW_SYMMETRIC 152,5172
+#define DGLAW_DELTA 153,5248
+#define FT_NOTFOUND 158,5447
+#define FT_UNKNOWN 159,5469
+#define FT_DG 160,5490
+#define FT_DG_OLD 161,5506
+#define FT_DG_EQUIL 162,5526
+#define FT_OGR_TEMPLATE 163,5548
+#define FT_1_EQUIL 164,5574
+#define FT_SNN_GRID 165,5595
+#define FT_DG_TEMPLATE 166,5617
+#define FT_DG_APP 167,5642
+#define FT_DG_CONFIG 168,5663
+#define FT_DG_TMP 169,5687
+#define FT_SONNET 170,5708
+#define FT_2COLUMNS 171,5729
+#define FT_HPGL 172,5752
+
+src/chords.c,418
+typedef struct _ChangeChordRec _ChangeChordRec3,17
+}* ChangeChordRec;ChangeChordRec8,116
+void TlAddChord(14,271
+Chord AddChord(82,1668
+int ChangeChord(104,2007
+void* DelChord(118,2213
+void DrawChord(139,2587
+static int ActAddChord(189,3885
+static int ActDelChord(218,4377
+static int ActChangeChord(249,4992
+int ConvertElemsToChords(284,5620
+Chord FindChord(315,6211
+int ConvertTemplateToChords(328,6514
+
+src/chords.h,50
+#define _chords_h2,18
+struct _Chord _Chord6,51
+
+src/dg.h,1695
+#define _dg_h5,45
+#define DG_FNAME_LEN 18,255
+#define DG_VERSION 19,280
+#define TL_KEYPRESS 27,400
+#define double 29,426
+#define SCANFLT 30,447
+#define SCANFLT 34,476
+#define XPoint 35,498
+typedef struct _XY* XY;XY41,551
+typedef struct _PtrTable* PtrTable;PtrTable42,575
+typedef struct _ActRec* ActRec;ActRec43,611
+typedef struct _App* App;App44,643
+typedef struct _View* View;View45,669
+typedef struct _Node* Node;Node46,697
+typedef struct _Elem* Elem;Elem47,725
+typedef struct _Equil* Equil;Equil48,753
+typedef struct _Surface* Surface;Surface49,783
+typedef struct _Template* Template;Template50,817
+typedef struct _VarSetDef* VarSetDef;VarSetDef51,853
+typedef struct _VarDef* VarDef;VarDef52,891
+typedef struct _VarSet* VarSet;VarSet53,923
+typedef struct _Var* Var;Var54,955
+typedef struct _XPoint* XPoint;XPoint55,981
+typedef struct _XApp* XApp;XApp56,1013
+typedef struct _GridPoint* GridPoint;GridPoint57,1041
+typedef struct _SonnetData* SonnetData;SonnetData58,1079
+typedef struct _Separator* Separator;Separator59,1119
+typedef struct _Source* Source;Source60,1157
+typedef struct _Chord* Chord;Chord61,1189
+typedef struct _ViewExt* ViewExt;ViewExt62,1219
+typedef struct _XAppExt* XAppExt;XAppExt63,1253
+typedef struct _XPointTest* XPointTest;XPointTest64,1287
+typedef struct _XPointSeg* XPointSeg;XPointSeg65,1327
+typedef struct _Mesh* Mesh;Mesh66,1365
+typedef struct _MeshCell* MeshCell;MeshCell67,1393
+typedef struct _MeshElement* MeshElement;MeshElement68,1429
+typedef struct _MeshPoint* MeshPoint;MeshPoint69,1471
+typedef struct _StringSource* StringSource;StringSource70,1509
+typedef void (*ActProc)ActProc75,1589
+
+src/dgfile.c,459
+#define FILE_VERSION 3,17
+#define DG_VERSION_NEEDED 4,42
+App LoadNormalApp(80,1666
+char* GetLoadErrFlagsDescription(109,2221
+static char* ReadText(146,3416
+void WriteText(164,3784
+static char* RemoveLF(177,4044
+static void WriteVar(186,4167
+static void WriteVars(226,5403
+static void WriteApp_File(263,6491
+static int ReadVar(434,12375
+static int ReadVars(494,13984
+static int ReadApp_File(533,15063
+int SaveApp(872,25715
+App LoadApp(940,27768
+
+src/dgfile.h,392
+#define _dgfile_h5,46
+#define DGFE_NOEQUIL 10,96
+#define DGFE_NOTEMPL 11,125
+#define DGFE_BADTYPE 12,154
+#define DGFE_SYNTAX 13,183
+#define DGFE_NOSONNET 14,212
+#define DGFE_BADTARG1 15,241
+#define DGFE_BADTARG2 16,270
+#define DGFE_BADSTRUC 17,299
+#define DGFE_BADXPT 18,328
+#define DGFE_MESH_FP 19,357
+#define DGFM_APP 21,387
+#define DGFM_CONFIG 22,411
+#define DGFM_TMP 23,435
+
+src/dgoutput.c,1120
+#define FSTR_ORIGINS 3,17
+#define FSTR_DEFORIGIN 4,53
+#define FSTR_ENDS 5,93
+#define FSTR_DEFEND 6,129
+#define FSTR_UNUSEDNUMBERS 7,169
+#define FSTR_USERBEGIN 8,211
+#define FSTR_USEREND 9,253
+#define FSTR_SEPARATORS 10,293
+#define FSTR_CELLS 11,333
+#define FSTR_SOURCES 12,375
+#define FSTR_PTCOORDS 13,416
+#define FSTR_EQUILFILE 14,491
+#define FSTR_CHORDS 15,535
+#define FSTR_CHORDCOORDS 16,575
+#define FSTR_XPOINTCENTER 17,652
+#define FSTR_XLOOPCENTER 18,731
+#define FSTR_SURFDELTA1 19,810
+#define FSTR_SURFDELTA2 20,849
+#define FSTR_SURFCOUNT 21,888
+#define FSTR_SURF_PENETRATE 22,925
+#define FSTR_GPOINTDELTA1 23,1000
+#define FSTR_GPOINTDELTA2 24,1039
+#define FSTR_GPOINTCOUNT 25,1078
+#define FSTR_CLOSEDSTRUCTPARTS 26,1118
+static int VarDefSortProc(28,1166
+static void* FindObjectId(40,1442
+static int GetObjectId(54,1713
+static void OutputVar(83,2425
+int WriteOutputFile(155,4634
+#define ERROR(ERROR344,9974
+int WriteStructureFile(346,10012
+#define ERROR(ERROR440,12645
+int WriteTargetsFile(442,12683
+int GetAppFlags(712,19946
+int CheckVar(774,21551
+int CheckAllVars(832,22993
+
+src/dgoutput.h,218
+#define _dgoutput_h5,58
+#define AF_VALIDVARS 10,150
+#define AF_VALIDTARGETS 11,184
+#define AF_VALIDSTRUCTURE 12,218
+#define AF_VALIDSURFACES 13,252
+#define AF_VALIDGRIDPOINTS 14,286
+#define AF_VALIDCELLS 15,320
+
+src/dgupdate.c,83
+int UpdateVarDef(12,332
+int UpdateVarSetDef(58,1706
+int UpdateLoadedApp(88,2633
+
+src/dgupdate.h,25
+#define _dgupdate_h5,43
+
+src/draw.c,401
+void DrawNode(3,17
+void DrawElem(19,485
+void DrawEquil(83,2370
+void DrawSurface(140,4139
+void DrawTemplate(163,4739
+void DrawXPoint(186,5343
+void DrawXPointTest(210,5991
+void DrawXPointSeg(260,7505
+void DrawGridPoint(283,8103
+void DrawAxes(302,8715
+void DrawGrid(320,9248
+void DrawViewLabel(363,10362
+void DrawSonnetData(380,10829
+void DrawSeparator(407,11631
+void DrawSource(451,12822
+
+src/draw.h,21
+#define _draw_h5,70
+
+src/elmnodes.c,1840
+Node AddNode(3,17
+void* DelNode(20,248
+void ChangeNode(33,488
+Elem AddElem(47,699
+void* DelElem(72,1188
+void ChangeElem(101,1791
+void RevertElem(124,2336
+void ChangeElemId(137,2547
+int AddTemplate(152,2812
+void ChangeTemplate(203,4130
+void DelTemplate(219,4462
+void SetTemplateDragStatus(229,4650
+void MarkObject(236,4971
+void MarkGroup(257,5475
+void HighlightDragNode(271,5799
+int IsEmptyNode(286,6136
+int IsEndNode(294,6347
+int IsIrregularNode(319,7057
+Node SplitElem(351,7783
+Elem JoinElems(387,8515
+int NodesConnected(423,9491
+int ElemsConnected(436,9770
+Elem GetNextElem(447,10042
+#define CHAIN_LIMIT 468,10514
+Group GetElemChain(470,10588
+int OrderTargetElems(507,11417
+int OrderStructureElems(554,12541
+void FreeStructureInfo(697,16030
+int CheckStructurePart(712,16497
+void RenumberElems(729,16844
+double TemplateXY2X(773,17639
+double TemplateXY2Y(790,18078
+static Node AddNodeAt(807,18507
+int AppendTemplate(820,18733
+int WriteElemsAsDgTemplate(849,19437
+#define NODEDATA 867,19805
+#define ELEMDATA 868,19824
+#define ENDFILE 869,19843
+int LoadOgrTemplateFile(870,19862
+int LoadDgTemplateFile(939,21591
+int Load2ColumnsTemplateFile(966,22068
+#define HPGL_COMMAND_MAX 1010,22790
+static char* ReadHpglCommand(1012,22820
+#define CHECK_MAXCOMMANDS 1029,23135
+int CheckForHpglFile(1031,23166
+int LoadHpglTemplateFile(1045,23402
+void LockTarget(1083,24016
+typedef struct _NearestNode _NearestNode1106,24712
+}* NearestNode;NearestNode1109,24771
+static NearestNode FindNearestNode(1111,24788
+static int GlueNodes_Compare(1139,25312
+int GlueNodes(1143,25419
+int GlueElems(1221,27368
+int GlueNormals(1306,29330
+int ConvertChordsToElems(1369,30804
+int GetNearestTemplatePoint(1396,31388
+int PlaceTemplateByHandles(1421,31942
+void SetMaxElemId(1461,32863
+int GetNextElemId(1465,32969
+
+src/elmnodes.h,376
+#define _elmnodes_h5,59
+struct _Node _Node7,80
+struct _Elem _Elem14,166
+struct _Template _Template23,275
+#define NodeElem1st(NodeElem1st32,434
+#define TemplatePoint1st(TemplatePoint1st33,486
+#define ElemVar1st(ElemVar1st34,544
+#define IsMarked(IsMarked35,594
+#define IsRegularNode(IsRegularNode36,639
+#define GetUnusedNumberCount(GetUnusedNumberCount37,708
+
+src/equil.c,1077
+#define CSF_YP 3,17
+#define CSF_YM 4,39
+#define CSF_XM 5,61
+#define CSF_XP 6,83
+#define CS_YP 8,106
+#define CS_XP 9,125
+#define CS_YM 10,144
+#define CS_XM 11,163
+int AddEquil(13,183
+int DelEquil(62,1426
+Surface AddSurface(84,1927
+void* DelSurface(108,2290
+int ChangeSurface(119,2445
+int ChangeSurfaceCreatorId(136,2745
+int CalcEquilSplines(144,2936
+int FreeEquilSplines(174,3678
+int GetEquilCell(190,4008
+int GetEquilLevel(203,4321
+double EqCorrCell(229,5063
+int GetSurfaceArea(242,5401
+char* GetSurfaceCreatorId(249,5561
+char* ConstructSurfaceCreatorId(253,5652
+int ParseSurfaceCreatorId(262,5912
+int DistributeSurfaces(275,6281
+int RebuildCarreSurfaces(350,7939
+Surface AddSurfaceByLevel(384,8804
+int WriteDgEquil(397,9041
+#define MIN_STEPS_IN_EQ_CELL 418,9537
+static int FindEquilMinMaxSegment(420,9570
+int FindCarreMinMaxSurfaceLevel(448,10268
+int LoadDgEquilFile(550,12901
+int Load1EquilFile(579,13624
+void CalcEquilValues(640,14904
+void CalcSurfData(651,15130
+int CalcSurfaceLine(702,16433
+int CheckSurfaceTargetIntersection(751,17485
+
+src/equil.h,405
+#define _equil_h5,64
+struct _Equil _Equil7,82
+struct _Surface _Surface17,269
+struct _SurfCell _SurfCell26,389
+#define CID_UNCHANGEDFLAG 32,455
+#define EqCell(EqCell34,486
+#define SurfaceLine1st(SurfaceLine1st35,539
+#define EqAverageCellWidth(EqAverageCellWidth37,594
+#define EqAverageCellHeight(EqAverageCellHeight40,678
+#define SurfaceCreatorIdUnchanged(SurfaceCreatorIdUnchanged43,763
+
+src/mesh.c,1994
+#define SONNET_FACTOR 7,115
+#define FINGERPRINT_MOD 9,142
+#define MESH_BORDER_THRESHOLD 11,171
+typedef struct _MeshCellData _MeshCellData13,205
+}* MeshCellData;MeshCellData19,360
+typedef struct _MoveMeshPointData _MoveMeshPointData21,378
+}* MoveMeshPointData;MoveMeshPointData33,696
+static void SetupSlideMeshPoint(53,1475
+static void HighlightDragMeshPoint_2(231,6230
+static void HighlightDragMeshPoint_1(246,6667
+static void MoveMeshPoint_2(261,7104
+static void MoveMeshPoint_1(289,7823
+#define IHDM(IHDM315,8485
+static void DoSlideMeshPoint(318,8601
+void TlMoveMeshPoint(421,11185
+void* DelMesh(513,13433
+void SetMeshFileName(546,14057
+void SetMeshHeaderString(550,14162
+static char* xstrtok(560,14399
+int CheckMeshHeaderString(580,14732
+void SetMeshAlt(602,15131
+void SetMeshFingerprint(606,15232
+int SetMeshCellCenter(611,15381
+int SetMeshCellFieldRatio(620,15638
+static int CalcGradient(627,15802
+int RecalculateMeshCellCenter(671,16864
+int RecalculateMeshCenters(717,18109
+int ChangeMeshPoint(733,18369
+int SetMeshPointBackupCoords(755,18778
+static int SetMeshCellBackups(766,19070
+static void HighlightDragMeshPoint(783,19602
+int MeshPointsConnected(794,19896
+static double MeshPointDist(806,20154
+int MeshPointChanged(810,20267
+int MeshCellChanged(814,20363
+static Group GetMeshPointChain(823,20508
+int PointInsideMeshCell(847,20993
+int IsIrregularMeshCell(894,22549
+MeshCell FindMeshCellByNumber(937,23871
+MeshElement FindMeshElementById(946,24087
+void GetMeshElementId(955,24256
+int LoadMesh(968,24569
+static int LoadSonnetMeshFile(1033,25729
+int SaveMesh(1126,27953
+static MeshCell AddMeshCell(1198,29902
+static MeshElement AddMeshElement(1234,30719
+static MeshPoint AddMeshPoint(1255,31136
+static int CreateMeshTopology(1283,31628
+static int ActAddMesh(1600,40419
+static int ActDelMesh(1635,41043
+int ActChangeMeshPoint(1673,41845
+void DrawMeshElement(1732,43237
+void DrawMeshCell(1788,44615
+void DrawWholeMesh(1832,45863
+
+src/mesh.h,658
+#define _mesh_h2,16
+struct _Mesh _Mesh6,56
+struct _MeshCell _MeshCell20,318
+struct _MeshElement _MeshElement33,599
+struct _MeshPoint _MeshPoint42,749
+#define MCN_TOP 98,2247
+#define MCN_BOTTOM 99,2268
+#define MCN_LEFT 100,2289
+#define MCN_RIGHT 101,2310
+#define MCN_START 103,2332
+#define MCN_END 104,2353
+#define MCNX_OPPOSITE 105,2374
+#define MCN_NONE 106,2398
+#define MSMF_USE_SPLINE 110,2467
+#define MSMF_USE_SURFACE 111,2499
+#define MSMF_USE_POINTS 112,2531
+#define MSM_SPLINE 114,2564
+#define MSM_SURFACE 115,2618
+typedef struct _ChangeMeshPointRec _ChangeMeshPointRec121,2752
+}* ChangeMeshPointRec;ChangeMeshPointRec126,2852
+
+src/msg.h,7710
+#define _msg_h5,51
+#define ERR_FILENOTFOUND 7,67
+#define ERR_BADFILE 8,98
+#define ERR_BADFILETYPE 9,129
+#define ERR_OUTOFEQUIL 10,160
+#define ERR_BADTARGETS 11,191
+#define ERR_NOTARGETS 12,222
+#define ERR_BADXPOINT 13,253
+#define ERR_BADFILEVERSION 14,284
+#define ERR_USEDBY 15,315
+#define ERR_NOVIEW 16,346
+#define ERR_NOXPOINT 17,378
+#define ERR_IRREGULAR 18,410
+#define ERR_NOEQUIL 19,442
+#define ERR_NONODES 20,474
+#define ERR_NOELEMS 21,506
+#define ERR_INVNUMBERS 22,538
+#define ERR_MINMAXVARSETS 23,570
+#define ERR_BADNAME 24,602
+#define ERR_DUPNAME 25,634
+#define ERR_CLOSED 26,666
+#define ERR_BROKEN 27,698
+#define ERR_FWRITE 28,730
+#define ERR_NOSTRUCTURE 29,762
+#define ERR_NOCLOSEDSURFS 30,794
+#define ERR_TEMPLATEINCLUDED 31,826
+#define ERR_NOTEMPLATE 32,858
+#define ERR_SINGLE 33,890
+#define ERR_MANYSELELEMS 34,922
+#define ERR_MULTGROUP 35,954
+#define ERR_NOSONNET 36,986
+#define ERR_NOCONFIG 37,1018
+#define ERR_NOTHINGTODO 38,1050
+#define ERR_ALREADYEXISTS 39,1082
+#define ERR_INVAREA 40,1114
+#define ERR_LOCKED 41,1146
+#define ERR_NOSAVECONFIG 42,1178
+#define ERR_EMPTYVARS 43,1210
+#define ERR_EMPTYTARGETS 44,1242
+#define ERR_EMPTYSTRUCTURE 45,1274
+#define ERR_BADSURFACES 46,1306
+#define ERR_BADGRIDPOINTS 47,1338
+#define ERR_NOFNAME 48,1370
+#define ERR_NOSELECTION 49,1402
+#define ERR_MINTARGETELEMS 50,1434
+#define ERR_WRONGTYPE 51,1466
+#define ERR_JOINCONNECTED 52,1498
+#define ERR_BADSURFORIGIN 53,1530
+#define ERR_TWISTEDSONNET 54,1562
+#define ERR_NOSEPARATORS 55,1594
+#define ERR_SONNETSTRUCTINS 56,1626
+#define ERR_SEPARATORORDER 57,1658
+#define ERR_INTERNALCELLS 58,1690
+#define ERR_BADCELLS 59,1722
+#define ERR_SURFTARGETINS 60,1754
+#define ERR_BADSTRETCHTYPE 61,1786
+#define ERR_NONEMPTYNODE 62,1818
+#define ERR_NOTSTRUCTPART 63,1850
+#define ERR_INTERNALGP 64,1882
+#define ERR_NOHELP 65,1914
+#define ERR_NOTOPIC 66,1946
+#define ERR_BADMASK 67,1978
+#define ERR_BADSTRUCTURE 68,2010
+#define ERR_MULTIPLEERRORS 69,2042
+#define ERR_PIPECREATE 70,2074
+#define ERR_FORK 71,2106
+#define ERR_PSVIEWSIZE 72,2138
+#define ERR_BADXPOINTSEG 73,2170
+#define ERR_LOOPNOTFOUND 74,2202
+#define ERR_LEVELNOTINAREA 75,2234
+#define ERR_LEVELNOTFOUND 76,2266
+#define ERR_NOPREFS 77,2298
+#define ERR_CARRE_SURFACES 78,2330
+#define ERR_CARRE_XSURFACES 79,2362
+#define ERR_CARRE_TANGENT 80,2394
+#define ERR_CARRE_GPOINTS 81,2426
+#define ERR_CARRE_ISURFACES 82,2458
+#define ERR_CARRE_IGPOINTS 83,2490
+#define ERR_CARRE_PEAK 84,2522
+#define ERR_CARRE_INHIBITS 85,2554
+#define ERR_CARRE_EQUALLEVELS 86,2586
+#define ERR_CARRE_AREA1SURFACES 87,2621
+#define ERR_CARRE_OUTOFEQUIL 88,2656
+#define ERR_CARRE_MODE_NEEDED 89,2688
+#define ERR_CARRE_BROKENTARGET 90,2721
+#define ERR_CARRE_TARGETXSTRUCTURE 91,2755
+#define ERR_NO_MARKED_ELEMS 92,2793
+#define ERR_NO_MARKED_CHORDS 93,2824
+#define ERR_EMPTY_TEMPLATE 94,2856
+#define ERR_REPOS_TEMPLATE_1 95,2886
+#define ERR_REPOS_TEMPLATE_2 96,2958
+#define ERR_FLAT_EQUIL 97,3030
+#define ERR_DUP_MESH_ELNO 98,3056
+#define ERR_MOVE_CUT_MESH_PT 99,3136
+#define ERR_MESH_NO_EQUIL 100,3206
+#define ERR_MESH_OUT_OF_EQUIL 101,3283
+#define ERR_DEL_MARKED_OBJECT_TYPE 102,3316
+#define ERR_MESH_ELEMENT_DIR 103,3397
+#define ERR_MESH_CELL_FIND 104,3474
+#define ERR_BAD_OBJECT_TYPE 105,3550
+#define ERR_MESH_HDR_NO_LF 107,3625
+#define ERR_MESH_HDR_NO_ID 108,3689
+#define MSG_EXAMNODE 110,3754
+#define MSG_EXAMELEM 111,3788
+#define MSG_EXAMSURFACE 112,3822
+#define MSG_EXAMGRIDPOINT 113,3856
+#define MSG_TEMPLATELOADED 114,3890
+#define MSG_TEMPLATEREMOVED 115,3924
+#define MSG_EQUILLOADED 116,3958
+#define MSG_EQUILREMOVED 117,3992
+#define MSG_NEWFILE 118,4026
+#define MSG_FILEOPENED 119,4060
+#define MSG_FILESAVED 120,4094
+#define MSG_SONNETLOADED 121,4128
+#define MSG_SONNETREMOVED 122,4162
+#define MSG_XPOINTREMOVED 123,4196
+#define MSG_TEMPLAPPENDED 124,4230
+#define MSG_EXAMSEPARATOR 125,4264
+#define MSG_SEPARATORSADDED 126,4298
+#define MSG_SEPARATORSREMOVED 127,4332
+#define MSG_RENUMBERED 128,4367
+#define MSG_OUTPUT 129,4401
+#define MSG_EXAMSOURCE 130,4435
+#define MSG_CANCELED 131,4469
+#define MSG_VERSION 132,4503
+#define MSG_EMPTYNODESREMOVED 133,4537
+#define MSG_ELEMSREMOVED 134,4572
+#define MSG_SOURCESREMOVED 135,4606
+#define MSG_SURFACESREMOVED 136,4640
+#define MSG_GPOINTSREMOVED 137,4674
+#define MSG_ABOUT 138,4708
+#define MSG_EXAMCHORD 139,4742
+#define MSG_CHORDSREMOVED 140,4776
+#define MSG_ALLVARSVALID 141,4810
+#define MSG_SOMEVARSINVALID 142,4844
+#define MSG_FILEPRINTED 143,4878
+#define MSG_WORKING 144,4912
+#define MSG_XPOINTSFOUND 145,4946
+#define MSG_XPSEGSFOUND 146,4980
+#define MSG_REPOS_HANDLE_1 147,5014
+#define MSG_REPOS_HANDLE_2 148,5078
+#define MSG_MARKED_REMOVED 149,5142
+#define MSG_EXAM_MESH_CELL 150,5206
+#define MSG_EXAM_MESH_ELEMENT 151,5240
+#define MSG_EXAM_MESH_POINT 152,5275
+#define STR_LOCKED 154,5310
+#define STR_UNLOCKED 155,5344
+#define STR_ERRLABEL 156,5378
+#define STR_VSDEFAULTS 157,5412
+#define STR_NOELEMS 158,5446
+#define STR_MANYELEMS 159,5480
+#define STR_NOSEL 160,5514
+#define STR_DIFF 161,5548
+#define STR_NODE 162,5582
+#define STR_ELEM 163,5616
+#define STR_SURFACE 164,5650
+#define STR_GRIDPOINT 165,5684
+#define STR_SEPARATOR 166,5718
+#define STR_EQUIL 167,5752
+#define STR_TEMPLATE 168,5786
+#define STR_SONNET 169,5820
+#define STR_XPOINT 170,5854
+#define STR_NEWLABEL 171,5888
+#define STR_REMOVED 172,5922
+#define STR_ADDED 173,5956
+#define STR_CHANGED 174,5990
+#define STR_VARSLOST 175,6024
+#define STR_DESCRCHANGED 176,6058
+#define STR_SURFAREA0 177,6092
+#define STR_SURFAREA1 178,6126
+#define STR_SURFAREA2 179,6160
+#define STR_GRPOINTAREA0 180,6194
+#define STR_GRPOINTAREA1 181,6228
+#define STR_GRPOINTAREA2 182,6262
+#define STR_OUTPUTFNAME 183,6296
+#define STR_STRUCTUREFNAME 184,6330
+#define STR_TARGETSFNAME 185,6364
+#define STR_HELPCHANGED 186,6398
+#define STR_ENUMCHANGED 187,6432
+#define STR_SOURCE 188,6466
+#define STR_IRRNORMALS 189,6500
+#define STR_IRRSEPARATORS 190,6534
+#define STR_IRRTOOMANY 191,6568
+#define STR_IRRTOOFEW 192,6602
+#define STR_REGULAR 193,6636
+#define STR_DSURFAREABASE 195,6671
+#define STR_DSURFAREANOSIGN 196,6705
+#define STR_DSURFAREA1 197,6739
+#define STR_DSURFAREA2 198,6773
+#define STR_DSURFAREA3 199,6807
+#define STR_DGRPOINTAREABASE 201,6842
+#define STR_DGRPOINTAREA0 202,6876
+#define STR_DGRPOINTAREA1 203,6910
+#define STR_DGRPOINTAREA2 204,6944
+#define STR_CHORD 206,6979
+#define STR_XPOINTTEST 207,7013
+#define STR_XPOINTSEG 208,7047
+#define STR_MESH_CELL_TWISTED 210,7082
+#define STR_MESH_CELL_BAD_CENTER 211,7117
+#define STR_MESH_ELEMENT_CUT 212,7155
+#define STR_MESH_CELL 213,7189
+#define STR_MESH_ELEMENT 214,7223
+#define STR_MESH_POINT 215,7257
+#define FSTR_CFGEXT 217,7292
+#define FSTR_OUTPUTEXT 218,7326
+#define FSTR_STRUCTUREEXT 219,7360
+#define FSTR_TARGETSEXT 220,7394
+#define FSTR_HELPEXT 221,7428
+#define QUE_WITHGEOMETRY 223,7463
+#define QUE_UPDATEAPPS 224,7497
+#define WRN_NOEQUIL 226,7532
+#define WRN_NOTEMPL 227,7566
+#define WRN_BADTYPE 228,7600
+#define WRN_SYNTAX 229,7634
+#define WRN_NOSONNET 230,7668
+#define WRN_BADTARG1 231,7702
+#define WRN_BADTARG2 232,7736
+#define WRN_BADSTRUC 233,7770
+#define WRN_BADXPT 234,7804
+#define WRN_MESH_FP 235,7838
+#define ENV_CFGFILE 237,7873
+#define ENV_LOADMASK 238,7907
+#define ENV_SAVEMASK 239,7941
+#define ENV_EQUILMASK 240,7975
+#define ENV_TEMPLATEMASK 241,8009
+#define ENV_SONNETMASK 242,8043
+#define ENV_CFGFILE2 244,8078
+#define ENV_LOADMASK2 245,8112
+#define ENV_SAVEMASK2 246,8146
+#define ENV_EQUILMASK2 247,8180
+#define ENV_TEMPLATEMASK2 248,8214
+#define ENV_SONNETMASK2 249,8248
+
+src/ngroups.c,1577
+#define NGROUP_ALLOCINCR 21,505
+#define _ngroups_c31,710
+#define swap(swap37,838
+#define INCR_STATS(INCR_STATS59,1235
+#define INIT_STATS 60,1265
+#define MALLOC_TRACE62,1305
+#define INCR_STATS(INCR_STATS65,1333
+#define INIT_STATS(INIT_STATS66,1355
+static void PrintGroupStatistics(72,1411
+static void InitGroupStatistics(92,2011
+void FatalError(103,2223
+void ValidatePtr(115,2412
+int zfprintf(121,2544
+#define MALLOC_PATTERN_OVERHEAD 136,2799
+#define MALLOC_PATTERN 137,2861
+#define MALLOC_PATTERN_OVERHEAD 141,2903
+void* Malloc(145,2946
+void* Realloc(163,3258
+void* Free(184,3657
+char* MallocString(200,3889
+char* ReallocString(206,3996
+unsigned GetSafeAlignment(220,4207
+unsigned SafeAlignedSize(232,4409
+void* SafeAlignedPointer(238,4517
+NGroup NGroup_Create(245,4708
+void* NGroup_Free(267,5183
+static void NGroup_UpdateIx(277,5305
+static void NGroup_AddAt(286,5526
+static void NGroup_DelAt(305,6063
+static int NGroup_QSortProc(330,6737
+static void NGroup_Sort(338,6992
+static size_t NGroup_Find(352,7285
+void* NGroup1st(393,8202
+void* NGroupNext(414,8589
+void* NGroupPrev(437,9126
+int InGroup(460,9663
+void GroupAdd(467,9798
+void GroupAddAt(475,9982
+void GroupDel(489,10275
+void RevertGroup(501,10493
+void* FreeMallocedGroup(514,10779
+Group CopyGroup(526,10963
+size_t GroupIndex(551,11650
+void* GroupAt(565,11959
+int GroupInGroup(577,12194
+int InGroupCount(586,12347
+static int GroupQSort_Compare(600,12608
+void GroupQSort(604,12745
+void MergeGroup(631,13347
+void MergeGroupOfGroups(639,13484
+void ClearGroup(649,13696
+
+src/ngroups.h,729
+#define _ngroups_h5,48
+#define NGROUP_FSORTED 7,68
+#define NGROUP_STACK 8,102
+typedef struct _NGroup* NGroup;NGroup10,137
+typedef struct _NGroupIndex NGroupIndex;NGroupIndex11,169
+typedef NGroup Group;Group13,211
+typedef NGroup Stack;Stack14,233
+typedef NGroupIndex Index;Index15,255
+typedef int (*GroupSortProc)GroupSortProc17,283
+struct _NGroup _NGroup19,333
+struct _NGroupIndex _NGroupIndex27,466
+struct NGroupListEntry NGroupListEntry33,556
+#define CreateGroup(CreateGroup38,629
+#define CreateStack(CreateStack39,673
+#define FreeGroup(FreeGroup40,728
+#define Group1st 41,770
+#define Next 42,807
+#define Prev 43,845
+#define IsEmptyGroup(IsEmptyGroup45,884
+#define GroupCount(GroupCount46,933
+
+src/oldfile.c,135
+static void ATP(3,17
+static void* TP(12,146
+#define xstrwordBUFFERS 22,310
+static char* xStrWord(23,337
+int ReadOldDgFile(54,1037
+
+src/oldfile.h,24
+#define _oldfile_h5,64
+
+src/owl-dg.h,66
+struct _ViewExt _ViewExt14,753
+struct _XAppExt _XAppExt18,797
+
+src/owldummy.c,22
+char* XAppStr(12,248
+
+src/ps_view.c,591
+#define NO_DUMMIES1,0
+struct _ViewExt _ViewExt4,36
+View CreatePsView(30,1061
+int PsViewOutput(103,2626
+static void UnconfigurePsView(191,4995
+static void ClearPsView(197,5083
+static void DrawPsViewLine(203,5162
+static void DrawPsViewRect(237,6355
+static void DrawPsViewCircle(247,6589
+static void DrawPsViewText(264,6976
+static void FlushPsView(279,7322
+static void AdjustPsViewAspectRatio(282,7359
+static void SetPsViewMsg(286,7452
+static void NotifyPsView(290,7513
+static char* GetPsViewStr(293,7570
+static void SetPsViewMode(297,7629
+static void ApplyViewMode(459,12092
+
+src/ps_view.h,23
+#define _psview_h4,41
+
+src/res2fbr.c,13
+main(19,421
+
+src/sonnet.c,403
+#define SONNET_FACTOR 3,17
+int AddSonnetData(5,44
+int DelSonnetData(49,1235
+Separator AddSeparator(67,1604
+void* DelSeparator(88,1962
+void ChangeSeparator(113,2472
+void ChangeSeparatorId(133,2838
+static int InstallSeparator(153,3255
+int InstallSeparators(172,3714
+void RemoveAllSeparators(215,4872
+CellsInfo CreateCellsInfo(223,5023
+void* FreeCellsInfo(329,7820
+int LoadSonnetFile(340,7969
+
+src/sonnet.h,190
+#define _sonnet_h6,108
+struct _SonnetData _SonnetData8,127
+struct _Separator _Separator16,235
+typedef Group* CellsInfo;CellsInfo24,325
+#define SeparatorVar1st(SeparatorVar1st26,352
+
+src/sources.c,72
+Source AddSource(6,45
+int ChangeSource(24,302
+void* DelSource(37,529
+
+src/sources.h,53
+#define _sources_h5,61
+struct _Source _Source7,81
+
+src/spline.c,367
+#define ID_PARAMSPLINEINFO 5,40
+#define ID_SIMPLESPLINEINFO 6,79
+SimpleSplineInfo CreateSimpleSplineInfo(12,271
+int CalcSimpleSplineValue(56,1058
+int CalcSimpleSplineDY(81,1482
+void* FreeSimpleSplineInfo(108,1896
+ParamSplineInfo CreateParamSplineInfo(122,2188
+int CalcParamSplineValue(177,3255
+void* FreeParamSplineInfo(204,3766
+static void spline(225,4195
+
+src/spline.h,202
+typedef struct _SimpleSplineInfo _SimpleSplineInfo3,23
+}* SimpleSplineInfo;SimpleSplineInfo10,137
+typedef struct _ParamSplineInfo _ParamSplineInfo12,159
+}* ParamSplineInfo;ParamSplineInfo19,293
+
+src/tools.c,429
+void TlExamine(58,1034
+void TlMark(215,4533
+void TlZoom(371,8261
+void TlMoveObject(455,10240
+void TlRemoveObject(654,15948
+void TlAddElem(789,19466
+void TlSplitElem(857,21012
+void TlJoinElems(925,22666
+void TlConnectPoints(983,24139
+void TlRepositionElem(1054,25905
+void TlAddSurface(1252,30754
+void TlSetXPoint(1313,32136
+void TlAddGridPoint(1372,33615
+void TlMirrorNormals(1430,35032
+void TlAddSource(1539,37511
+
+src/tools.h,22
+#define _tools_h5,39
+
+src/vacreate.c,1826
+#define _vacreate_c30,1319
+#define DLG_ERROR_BOX 66,2072
+#define MAKESTREX_BUF 68,2106
+#define MAKESTREX_CHR 69,2133
+#define STATICSTR_LEN 70,2161
+#define STATICSTR_CNT 71,2188
+#define CWS_MAX 73,2214
+#define min(min76,2247
+#define max(max79,2305
+typedef Widget (*CreateWidgetFn)CreateWidgetFn82,2352
+typedef void(*vmsFunc0)vmsFunc086,2478
+typedef void(*vmsFunc1)vmsFunc187,2511
+typedef void(*vmsFunc2)vmsFunc288,2554
+typedef void(*vmsFunc3)vmsFunc389,2607
+typedef void(*vmsFunc4)vmsFunc490,2670
+typedef void(*vmsFunc5)vmsFunc591,2743
+static void FatalError(96,2906
+static ArgList MakeVaArgList(103,3020
+Widget Cw(125,3422
+Widget Cmw(141,3699
+void SetValues(157,3997
+void GetValues(173,4269
+#define XTPA_MAX 185,4443
+static int CreateVaWidgetSystem(187,4463
+void CreateMenuSystem(470,11261
+Widget CreateMessageDialog(478,11400
+Widget CreateDialogEx(503,11989
+int AddCallbackToTree(541,13135
+String GetResourceString(568,13873
+int GetResourceInt(586,14274
+Pixel GetResourcePixel(602,14634
+void CbFree(618,15016
+void CbCancel(622,15082
+void CbDestroy(628,15248
+void CbUnmap(634,15415
+void CbFreeGC(641,15624
+void CbRemovePTimeOut(645,15721
+void CbExitApp(654,15913
+void CbDebugPrint(658,16007
+void ProcessPending(662,16144
+static char* MakeStrVaEx(673,16346
+char* GetStaticString(697,17049
+char* GetResourceStringEx(705,17206
+void ErrorBox(718,17507
+XtPointer GetUserData(747,18421
+void SetXmStringValue(754,18546
+int SetOptionMenuValue(766,18880
+XtPointer GetOptionMenuValue(793,19418
+void CbSensitiveIfListSel(804,19633
+void CbSensitiveIfListSel1(812,19858
+int IsMapped(820,20090
+static char* TruncStr(830,20279
+double GetXmTextDouble(842,20438
+int GetXmTextInt(857,20638
+void SetXmListItems(872,20831
+void CreateFormTable(895,21328
+void Form2Table(1007,24421
+
+src/vacreate.h,480
+#define _vacreate_h4,94
+#define CreateWidgetSystem 16,502
+#define CDLG_MESSAGE 19,623
+#define CDLG_NOLABEL 20,655
+#define CDLG_NOOK 21,687
+#define CDLG_NOCANCEL 22,719
+#define CDLG_NOHELP 23,751
+#define CreateOkCancelDialog(CreateOkCancelDialog28,881
+#define SetUserData(SetUserData59,2264
+#define SetSensitiveEx(SetSensitiveEx61,2345
+#define SetMessageString(SetMessageString67,2598
+#define SetLabelString(SetLabelString69,2682
+struct _PosInfo _PosInfo77,2977
+
+src/vars.c,1057
+void SetObjDouble(5,84
+void SetObjInt(17,347
+void SetObjPointer(30,607
+void SetObjString(43,880
+void ChangeObjGroup(54,1143
+void SetObjGroup(88,2083
+static Var AddVar(102,2531
+static void ChangeVar(120,2833
+void ChangeVarEx(130,3065
+void DelVar(138,3236
+static Var GetVarPtr(146,3409
+void* GetVar(189,4869
+static int GetVarLocks(211,5344
+int SetVar(218,5479
+VarSetDef AddVarSetDef(245,6134
+void ChangeVarSetDef(269,6692
+void* DelVarSetDef(297,7435
+VarDef AddVarDef(317,7914
+int ChangeVarDef(343,8479
+void* DelVarDef(380,9545
+void ChangeHelpString(401,9966
+void ChangeEnumString(422,10470
+VarSet AddVarSet(437,10825
+void* DelVarSet(455,11184
+VarSetDef FindVarSetDef(472,11552
+VarDef FindVarDef(482,11749
+Group GetVarOriginGroup(492,11943
+void* GetVarEx(538,13232
+int GetVarExLocks(566,13726
+char* WhyLockedEx(586,14331
+int SetVarEx(606,14956
+Var GetVarPtrByType(624,15267
+int CheckValue(639,15681
+int IsEmptyValue(743,18804
+int CompValues(754,19020
+char* GetIndexVarValue(769,19458
+static int CheckGroupForType(785,19750
+
+src/vars.h,1046
+#define _vars_h5,68
+#define VF_NOEXPORT 9,104
+#define VF_FORELEMS 10,140
+#define VF_FORSEPARATORS 11,176
+#define VF_FORSOURCES 12,212
+#define VF_FORCHORDS 13,248
+#define VF_LAYERINDEX 14,284
+#define VFM_MULTIPLE 16,321
+#define VTF_HASELEMS 22,446
+#define VTF_LOCKGROUP 23,482
+#define VTF_SINGLE 24,518
+#define VTF_STRUCTPART 25,554
+#define VTF_HASCHORDS 26,590
+#define VTF_HAS_MESH_OBJECTS 27,626
+#define VTM_HASGROUP 29,663
+#define VT_INT 33,764
+#define VT_FLOAT 34,798
+#define VT_TEXT 35,832
+#define VT_ELEM 36,866
+#define VT_ELEMS 37,929
+#define VT_TARGET1 38,992
+#define VT_TARGET2 39,1066
+#define VT_STRUCTURE 40,1140
+#define VT_STRUCTPART 41,1214
+#define VT_CHORDS 42,1292
+#define VT_MESH_CELLS 43,1342
+#define VT_MESH_ELEMENTS 44,1399
+#define VT_MESH_H_ELEMENTS 45,1456
+#define VT_MESH_V_ELEMENTS 46,1513
+#define VV_UNDEF 50,1593
+#define VV_DIFF 51,1627
+#define VV_NOSEL 52,1669
+struct _VarSetDef _VarSetDef54,1712
+struct _VarDef _VarDef63,1856
+struct _VarSet _VarSet74,2024
+struct _Var _Var80,2094
+
+src/view.c,1399
+#define MAKESTREX_BUF 3,17
+#define MAKESTREX_CHR 4,44
+#define STATICSTR_LEN 5,72
+#define STATICSTR_CNT 6,98
+#define MIN_RECTW 8,124
+#define MIN_RECTH 9,151
+static void VoidProc(11,179
+static char* VoidGetStringProc(14,207
+View CreateAbstractView(20,310
+void* FreeView(70,1581
+int ScreenX(91,1980
+int ScreenY(95,2073
+double FScreenX(99,2167
+double FScreenY(103,2264
+double RealX(107,2362
+double RealY(111,2453
+void SetViewRect(119,2646
+void SetViewFactor(169,3765
+void SetViewFlags(177,3989
+static void ChangeActiveAppView(200,4463
+void SetViewApp(222,4840
+void SetActiveView(261,5697
+void SetActiveTool(275,5932
+void CallToolProc(285,6163
+void DrawObject(308,6854
+void RepaintView(385,8463
+void Highlight(461,10621
+void UnhighlightAll(474,10902
+void SetExamineMsg(489,11218
+void ShowPicture(603,14674
+void AddViewLabel(653,16493
+void RemoveAllViewLabels(673,16906
+void LabelObject(688,17190
+void ViewMsgEx(748,18653
+char* GetObjDescription(758,18855
+char* WhyLocked(812,20489
+static char* MakeStrVaEx(821,20685
+static char* GetStaticStr(845,21392
+char* GetStrVaEx(853,21557
+char* GetStrEx(862,21759
+void DrawHighlightRect(873,21910
+void SetHighlightRect(898,22515
+ViewShape AddViewShapeLine(910,22777
+void* DelViewShape(928,23087
+void ClearViewShapes(939,23267
+void DrawViewShape(944,23382
+void DrawAllViewShapes(975,24055
+void AddViewArrow(983,24216
+
+src/view.h,5879
+#define _view_h5,71
+typedef void (*ToolProc)ToolProc7,88
+struct _View _View9,139
+struct _ViewExt _ViewExt53,1438
+typedef struct _ViewLabel _ViewLabel58,1480
+}* ViewLabel;ViewLabel62,1549
+typedef struct _ViewShape _ViewShape64,1564
+}* ViewShape;ViewShape67,1643
+struct _StringSource _StringSource69,1658
+#define UPDATE_MAX 75,1767
+#define UPDATE_INCR 76,1794
+#define T_ELEM 78,1821
+#define T_NODE 79,1847
+#define T_EQUIL 80,1873
+#define T_SURFACE 81,1899
+#define T_TEMPLATE 82,1925
+#define T_VARSETDEF 83,1951
+#define T_VARDEF 84,1977
+#define T_VARSET 85,2003
+#define T_VAR 86,2029
+#define T_XPOINT 87,2055
+#define T_GRIDPOINT 88,2081
+#define T_APP 89,2107
+#define T_XAPP 90,2133
+#define T_VIEW 91,2159
+#define T_VIEWLABEL 92,2185
+#define T_SONNET 93,2211
+#define T_SEPARATOR 94,2237
+#define T_VARSDLG 95,2263
+#define T_SOURCE 96,2289
+#define T_CHORD 97,2315
+#define T_XPOINTTEST 98,2341
+#define T_XPOINTSEG 99,2367
+#define T_VIEWSHAPE 100,2393
+#define T_MESH 101,2419
+#define T_MESHCELL 102,2445
+#define T_MESHPOINT 103,2471
+#define T_MESHELEMENT 104,2497
+#define T_STRINGSOURCE 105,2523
+#define T_USER 107,2550
+#define T_EMPTYNODE 108,2578
+#define T_MULTIPLE 109,2630
+#define T_NONE 110,2682
+#define T_MARKING 111,2734
+#define DRAW_ON 115,2850
+#define DRAW_OFF 116,2874
+#define DRAW_ERASE 117,2898
+#define DRAWHI_LOCK 118,2922
+#define DRAWHI_UNLOCK 119,2946
+#define DRAWHI_CNDOFF 120,2970
+#define TL_ENABLE 124,3013
+#define TL_DISABLE 125,3037
+#define TL_PRESS 126,3061
+#define TL_MOTION 127,3085
+#define TL_ENTER 128,3109
+#define TL_LEAVE 129,3133
+#define TL_RELEASE 130,3157
+#define TL_CANCEL 131,3181
+#define TL_DBLCLK 132,3205
+#define SHW_AXES 136,3246
+#define SHW_GRID 137,3282
+#define SHW_ELEMS 138,3318
+#define SHW_NORMALS 139,3354
+#define SHW_NUMBERS 140,3390
+#define SHW_NODES 141,3426
+#define SHW_IRRNODES 142,3462
+#define SHW_TEMPLATE 143,3498
+#define SHW_EQUIL 144,3534
+#define SHW_SURFACES 145,3570
+#define SHW_GRIDPOINTS 146,3606
+#define SHW_LABELS 147,3642
+#define SHW_MESH 148,3678
+#define SHW_SEPARATORS 149,3714
+#define SHW_SOURCES 150,3750
+#define SHW_CHORDS 151,3786
+#define SHW_MENU 152,3822
+#define SHW_TOOLBAR 153,3858
+#define SHW_XPOINTTESTS 154,3894
+#define SHW_MESHDETAILS 155,3930
+#define SHWX_MESHPOINTS 157,3967
+#define SHWX_MESHELEMENTS 158,4003
+#define SHWX_MESHCELLS 159,4041
+#define SHWM_XPOINT 161,4078
+#define N_ADD 166,4157
+#define N_ADDED 167,4188
+#define N_CHANGE 168,4219
+#define N_CHANGED 169,4250
+#define N_DEL 170,4281
+#define N_DELETED 171,4312
+#define N_ALT 172,4343
+#define N_NEWAPP 173,4374
+#define N_MARK 174,4405
+#define N_DESTROYVIEW 175,4436
+#define N_RECENTFILES 177,4468
+#define N_NEWTOOL 178,4499
+#define N_NOW 180,4531
+#define N_USER 181,4562
+#define NMASK_HASOBJECT 183,4594
+#define SHAPE_LINE 185,4670
+#define ClearHighlightRect(ClearHighlightRect234,6391
+#define AdjustViewAspectRatio(AdjustViewAspectRatio238,6476
+#define SetViewMode(SetViewMode239,6541
+#define DrawViewLine(DrawViewLine240,6590
+#define DrawViewRect(DrawViewRect241,6661
+#define DrawViewCircle(DrawViewCircle242,6732
+#define DrawViewText(DrawViewText243,6795
+#define SetViewMsg(SetViewMsg244,6860
+#define ClearView(ClearView245,6911
+#define FlushView(FlushView246,6952
+#define NotifyView(NotifyView247,6993
+#define GetStr(GetStr248,7058
+#define NotifyAdd(NotifyAdd252,7131
+#define NotifyAdded(NotifyAdded253,7192
+#define NotifyChange(NotifyChange254,7255
+#define NotifyChanged(NotifyChanged255,7319
+#define NotifyDel(NotifyDel256,7384
+#define NotifyDeleted(NotifyDeleted257,7445
+#define NotifyAlt(NotifyAlt258,7510
+#define NotifyMarked(NotifyMarked259,7570
+#define NotifyNewApp(NotifyNewApp260,7632
+#define NotifyNewTool(NotifyNewTool261,7695
+#define VM1_NODE 266,7789
+#define VM0_NODE 267,7820
+#define VMX_NODE 268,7851
+#define VM1_ELEM 269,7882
+#define VM0_ELEM 270,7913
+#define VMX_ELEM 271,7944
+#define VM1_EQUIL 272,7975
+#define VM0_EQUIL 273,8006
+#define VMX_EQUIL 274,8037
+#define VM1_SURFACE 275,8068
+#define VM0_SURFACE 276,8099
+#define VMX_SURFACE 277,8131
+#define VM1_HIGHLIGHTRECT 278,8163
+#define VM0_HIGHLIGHTRECT 279,8195
+#define VMX_HIGHLIGHTRECT 280,8227
+#define VM2_EQUIL 281,8259
+#define VM1_TEMPLATE 282,8291
+#define VM0_TEMPLATE 283,8323
+#define VMX_TEMPLATE 284,8355
+#define VM1_ELEMNORMAL 285,8387
+#define VM0_ELEMNORMAL 286,8419
+#define VMX_ELEMNORMAL 287,8451
+#define VM1_ELEMMARK 288,8483
+#define VM0_ELEMMARK 289,8515
+#define VM1_XPOINT 290,8547
+#define VM0_XPOINT 291,8579
+#define VMX_XPOINT 292,8611
+#define VM1_GPOINT 293,8643
+#define VM0_GPOINT 294,8675
+#define VMX_GPOINT 295,8707
+#define VM1_AXES 296,8739
+#define VM1_GRID 297,8771
+#define VM1_GRIDTEXT 298,8803
+#define VM1_ELEMNUMBER 299,8835
+#define VM0_ELEMNUMBER 300,8867
+#define VM1_VIEWLABEL 301,8899
+#define VM0_VIEWLABEL 302,8931
+#define VM1_SONNETDATA 303,8963
+#define VM0_SONNETDATA 304,8995
+#define VM1_SEPARATOR 305,9027
+#define VM0_SEPARATOR 306,9059
+#define VMX_SEPARATOR 307,9091
+#define VM3_EQUIL 308,9123
+#define VM1_SOURCE 309,9155
+#define VM0_SOURCE 310,9187
+#define VMX_SOURCE 311,9219
+#define VM1_CHORD 312,9251
+#define VM0_CHORD 313,9283
+#define VMX_CHORD 314,9315
+#define VM1_XPOINTTEST 315,9347
+#define VM2_XPOINTTEST 316,9379
+#define VM0_XPOINTTEST 317,9411
+#define VMX_XPOINTTEST 318,9443
+#define VM1_XPOINTSEG 319,9475
+#define VM0_XPOINTSEG 320,9507
+#define VMX_XPOINTSEG 321,9539
+#define VM1_MESHELEMENT 322,9571
+#define VM0_MESHELEMENT 323,9603
+#define VMX_MESHELEMENT 324,9635
+#define VM2_MESHELEMENT 325,9667
+#define VM1_MESHCELLCENTER 326,9699
+#define VM2_MESHCELLCENTER 327,9731
+#define VM0_MESHCELLCENTER 328,9763
+#define VMX_MESHCELLCENTER 329,9795
+#define VMX2_MESHELEMENT 330,9827
+#define VMX12_MESHELEMENT 331,9859
+
+src/x_creobj.c,3002
+#define DLG_CREATE_NODE 11,459
+#define DLG_CREATE_SOURCE 12,507
+#define DLG_CREATE_SURFACE 13,557
+#define DLG_CREATE_GPOINT 14,608
+#define DLG_CREATE_CHORD 15,661
+#define DLG_CREATE_SURFACE_ADV 16,710
+#define DLG_CREATE_GPOINT_ADV 17,764
+#define WG_DISTRGRAPH 18,820
+void CbCmCreateAt(36,1612
+typedef struct _CreateNodeDlg _CreateNodeDlg72,2550
+}* CreateNodeDlg;CreateNodeDlg75,2608
+static Widget OpenCreateNodeDlg(79,2694
+static void CbCreateNode(113,3554
+typedef CreateNodeDlg CreateSourceDlg;CreateSourceDlg153,4802
+static Widget OpenCreateSourceDlg(157,4913
+static void CbCreateSource(190,5781
+typedef struct _CreateChordDlg _CreateChordDlg230,7044
+}* CreateChordDlg;CreateChordDlg233,7113
+static Widget OpenCreateChordDlg(237,7202
+static void CbCreateChord(274,8190
+typedef struct _DistrGraph _DistrGraph329,9924
+}* DistrGraph;DistrGraph341,10280
+#define DGD_GRAPH 343,10296
+#define DGD_FRAME 344,10321
+#define DGD_LINES 345,10346
+#define DGD_DISTR 346,10371
+#define GI2X(GI2X348,10397
+#define GI2Y(GI2Y349,10433
+#define GX2I(GX2I350,10471
+#define GY2I(GY2I351,10506
+static void DG_Init(363,10959
+#define SetForeground(SetForeground445,13502
+#define DrawLine(DrawLine446,13573
+#define DrawRect(DrawRect448,13680
+static void DG_DrawRect(451,13793
+static double DG_Law(461,14109
+static void DG_DrawCurve(465,14230
+static void DG_DrawGraph(504,15093
+static int DG_GetData(545,16238
+static void ToDG_UpdateGraph(593,17450
+#define DG_NC_CURVE_FIT_ITERATIONS 602,17677
+#define DG_NC_RESET_DELTA 603,17715
+static void CbDG_NumbersChanged(605,17747
+static void CbDG_Expose(691,20394
+static void CbDG_Resize(699,20565
+static void CbDG_Reset(715,20924
+#define DGI_PRESS 737,21452
+#define DGI_DRAG 738,21474
+#define DGI_RELEASE 739,21496
+#define DGI_CANCEL 740,21518
+#define DG_CC_LOWER 742,21541
+#define DG_CC_UPPER 743,21567
+#define DG_CC_UPPERDELTA 744,21592
+#define DG_MAX_ITERATIONS 745,21621
+static double DG_CalcCoeff(748,21719
+static void DG_VisualInput(782,22450
+void XtActDistrGraph(854,24087
+#define CSD_BYPOINT 917,25923
+#define CSD_BYLEVEL 918,25945
+typedef struct _CreateSurfaceDlg _CreateSurfaceDlg920,25968
+}* CreateSurfaceDlg;CreateSurfaceDlg933,26380
+static Widget OpenCreateSurfaceDlg(942,26839
+static void CSD_CreateSingle(1090,31211
+static void CSD_CreateMultiple(1150,32740
+static void CbCreateSurfaceOk(1264,35749
+static void CbCSD_CopyLevel(1271,35974
+static void CbCSD_PickSettings(1308,36877
+static void CbCSD_SelectArea(1353,38382
+static void DwCSD_OutputMode(1362,38663
+static void CbToggleManaged(1389,39531
+typedef struct _CreateGridPointDlg _CreateGridPointDlg1403,40110
+}* CreateGridPointDlg;CreateGridPointDlg1412,40345
+static Widget OpenCreateGridPointDlg(1418,40593
+static void CGPD_CreateSingle(1533,43731
+static void CGPD_CreateMultiple(1581,44950
+static void CbCreateGridPointOk(1617,45832
+static void CbCGPD_PickSettings(1624,46065
+static void DwCGPD_OutputMode(1660,47214
+
+src/x_creobj.h,25
+#define _x_creobj_h4,64
+
+src/x_dg.h,107
+#define _x_dg_h4,48
+#define XM_VERSION6,65
+#define NO_DUMMIES7,84
+#define NeedFunctionPrototypes 9,104
+
+src/x_dlg.c,243
+#define MDLG_SCROLLMIN 3,19
+void ProcessModalDialog(5,46
+Widget CreateMessageDlg(21,401
+void ErrorBox(48,1091
+void MessageBox(56,1227
+static void CbStoreTrue(64,1369
+int QuestionBox(76,1620
+int WarningBox(88,1911
+void CbFree(100,2200
+
+src/x_dlg.h,69
+#define _x_dlg_h5,53
+#define ErrorBox 9,131
+#define CbFree 10,163
+
+src/x_fileio.c,1647
+#define DLG_APPUNSAVED 3,19
+#define DLG_APP_UNSAVED 4,58
+#define DLG_MESH_UNSAVED 5,98
+#define DLG_FILEOPEN 6,140
+#define DLG_FILESAVE 7,175
+#define DLG_EQUIL 8,210
+#define DLG_TEMPLATE 9,239
+#define DLG_PRINT 10,274
+#define DLG_SONNET 11,303
+#define DLG_EXPORT_MESH 12,334
+#define DLG_EXPORT_ELEMS_TEMPLATE 13,374
+#define ENV_EXPORT_TEMPLATE_MASK 15,436
+#define ENV_EXPORT_MESH_MASK 16,495
+Widget OpenEquilDlg(26,926
+Widget OpenTemplateDlg(67,2093
+Widget OpenSonnetDlg(110,3289
+Widget OpenExportMeshDlg(153,4464
+Widget OpenFileOpenDlg(211,6048
+Widget OpenFileSaveDlg(247,7036
+static void CbEquilLoad(295,8429
+static void CbTemplateLoad(315,8851
+static void CbSonnetLoad(333,9272
+static void CbExportMesh(351,9674
+static void CbFile_Open(378,10251
+static void CbFile_Save(432,11594
+static void CbAppUnsavedSave(466,12288
+static void CbAppUnsavedDiscard(473,12445
+static void OpenAppUnsavedDlg(482,12646
+static void CbMeshUnsavedSave(513,13642
+static void CbMeshUnsavedDiscard(520,13802
+static void OpenMeshUnsavedDlg(529,14005
+void CloseXmView(560,15006
+#define CMT_CMD 588,15853
+#define CMT_FILE 589,15872
+typedef struct _FilePrintDlg _FilePrintDlg591,15892
+}* FilePrintDlg;FilePrintDlg594,15996
+Widget OpenFilePrintDlg(596,16014
+static void CbFilePrintOk(646,17313
+void DwNotifyRecentFiles(740,19409
+typedef struct _EEAT_Dlg _EEAT_Dlg791,20976
+}* EEAT_Dlg;EEAT_Dlg794,21037
+#define EEAT_ALL 796,21051
+#define EEAT_MARKED 797,21073
+Widget OpenExportElemsAsTemplateDlg(803,21243
+static void CbExportElemsAsTemplate(857,22788
+static int EEAT_OkCheck(879,23337
+static Group EEAT_GetGroup(901,23831
+
+src/x_fileio.h,25
+#define _x_fileio_h4,44
+
+src/x_help.c,282
+#define DLG_HELPSYSTEM 3,19
+#define SHELL_HELPSYSTEM 4,58
+typedef struct _HelpSystemDlg _HelpSystemDlg6,102
+}* HelpSystemDlg;HelpSystemDlg9,183
+void DisplayHelpText(13,264
+static void CbHelpSystemPopdown(73,1975
+void DisplayHelpTitle(79,2123
+void DisplayHelpTopic(90,2350
+
+src/x_help.h,60
+#define _x_help_h4,38
+typedef Widget HelpDlg;HelpDlg6,57
+
+src/x_info.c,279
+#define DLG_ABOUT 3,19
+#define DLG_INFO 4,48
+typedef struct _InfoDlg _InfoDlg6,76
+}* InfoDlg;InfoDlg14,275
+Widget OpenAboutDlg(16,288
+static void UpdateInfoDlg(38,925
+static void DwNotifyInfoDlg(79,2273
+static InfoDlg CreateInfoDlg(84,2383
+Widget OpenInfoDlg(132,3699
+
+src/x_info.h,23
+#define _x_info_h4,55
+
+src/x_main.c,39
+#define ENV_NOCHECK 6,40
+main(12,122
+
+src/x_menu.c,1681
+void CbFileNew(8,62
+void CbFileOpen(33,539
+void CbFileSave(40,659
+void CbFileOutput(48,786
+void CbEquil(95,2260
+void CbTemplate(110,2533
+void CbSonnet(125,2821
+void CbFilePrint(140,3111
+void CmExportMesh(149,3253
+void CmExportElemsAsTemplate(157,3394
+void CbQuit(165,3551
+void CbUndo(175,3719
+void CbRedo(182,3830
+void CbRedoAll(189,3941
+void CbMarkAll(196,4096
+void CbUnmarkAll(205,4295
+void CbMarkSeparators(214,4495
+void CbCmDelObjects(223,4711
+void CbViewRefresh(396,9241
+void CbZoomIn(404,9384
+void CbZoomOut(411,9563
+void CbShowPicture(418,9743
+void CbShowSelection(425,9881
+void CmPrevZoom(448,10470
+void CmRemoveLabels(467,10916
+void CmViewMeshHeader(479,11109
+void CbCmRotMove(506,11592
+void CbCmAppendTemplate(513,11713
+void CmConvertTemplateToChords(531,12135
+void CmConvertElemsToChords(546,12427
+void CmConvertChordsToElems(575,13073
+void CbCmRemoveXPoint(605,13722
+void CbCmRenumber(620,14019
+void CbCmRemoveEmptyNodes(630,14220
+void CbCmInstallSeparators(643,14469
+void CbCmRemoveSeparators(658,14770
+void CbCmShowInvalidVars(667,14931
+void CbCmFindXPoints(677,15177
+void CbCmFindXPointSegs(689,15388
+void CmRebuildCarreInfo(701,15605
+void CbAddVarSet(725,15998
+void CbDelVarSet(742,16313
+void CbEditVarSet(754,16560
+void CmSetOutputModeX(769,16837
+void CmSetMeshOptions(777,16978
+void CbOptionsMenuToggle(785,17120
+void CbSwMenu(792,17305
+void CbSwToolbar(831,18235
+void CbSwManualRefresh(859,18905
+void CbWindowToolBar(878,19316
+void CbWindowOpen(891,19648
+void CbWindowClose(903,19874
+void CbAbout(909,19971
+void CbWindowInfo(919,20135
+void CbHelpMenu(926,20254
+#define PTS 939,20546
+void CmTest(941,20563
+
+src/x_menu.h,23
+#define _x_menu_h4,40
+
+src/x_mesh.c,322
+#define DLG_EDIT_MESH_HEADER 5,44
+typedef struct _MeshHeaderDlg _MeshHeaderDlg13,460
+}* MeshHeaderDlg;MeshHeaderDlg17,537
+Widget OpenEditMeshHeaderDlg(24,821
+static void ResetMeshHeaderDlg(63,1967
+static void DwMeshEdit(77,2289
+static void CbMeshHeaderDlgAccept(89,2548
+static void CbMeshHeaderDlgInput(106,2944
+
+src/x_mesh.h,0
+
+src/x_notify.c,142
+void DwNotifyUndoButton(3,19
+void DwNotifyIfExists(21,442
+void DwNotifyIfNotExists(83,2100
+void DwUnmap(145,3751
+void DwDestroy(151,3956
+
+src/x_notify.h,25
+#define _x_notify_h4,49
+
+src/x_rotmov.c,774
+#define DLG_ROTMOVE 3,19
+#define DLG_GLUEPOINTS 4,52
+#define DLG_GLUEELEMS 5,91
+#define XTBGS 13,495
+#define XTBSS 14,532
+typedef struct _RotMoveDlg _RotMoveDlg16,570
+}* RotMoveDlg;RotMoveDlg19,666
+static void CbRotMoveDlgRotate(21,682
+static void CbRotMoveDlgMove(58,1659
+static RotMoveDlg CreateRotMoveDlg(105,2962
+Widget OpenRotMoveDlg(169,4659
+typedef struct _GluePointsDlg _GluePointsDlg185,5248
+}* GluePointsDlg;GluePointsDlg188,5328
+void CbGluePoints(195,5513
+Widget OpenGluePointsDlg(203,5698
+void CbGluePointsDlgOk(228,6446
+typedef struct _GlueElemsDlg _GlueElemsDlg263,7566
+}* GlueElemsDlg;GlueElemsDlg266,7668
+void CbReduceElements(273,7850
+Widget OpenGlueElemsDlg(281,8038
+void CbGlueElemsDlgOk(310,8912
+void CbGroupNormals(349,10016
+
+src/x_rotmov.h,25
+#define _x_rotmov_h4,55
+
+src/x_setup.c,2954
+#define DLG_SETUP 3,19
+#define DLG_VARSETDEFLIST 4,48
+#define DLG_VARSETDEFCREATE 5,93
+#define DLG_VARSETDEFEDIT 6,142
+#define DLG_VARDEFCREATE 7,187
+#define DLG_VARDEFEDIT 8,230
+#define DLG_SAVECONFIG 9,269
+#define DLG_SETUPWARNING 10,308
+#define DLG_HELPEDIT 11,351
+#define DLG_OUTPUTMODE 12,386
+#define DLG_MESHOPTIONS 13,425
+typedef struct _VarSetDefListDlg _VarSetDefListDlg15,467
+}* VarSetDefListDlg;VarSetDefListDlg19,556
+typedef struct _VarSetDefCreateDlg _VarSetDefCreateDlg21,578
+}* VarSetDefCreateDlg;VarSetDefCreateDlg24,646
+typedef struct _VarSetDefEditDlg _VarSetDefEditDlg26,670
+}* VarSetDefEditDlg;VarSetDefEditDlg30,783
+typedef struct _VarSetDefEditField _VarSetDefEditField32,805
+}* VarSetDefEditField;VarSetDefEditField37,927
+typedef struct _VarDefCreateDlg _VarDefCreateDlg39,951
+}* VarDefCreateDlg;VarDefCreateDlg44,1048
+typedef struct _VarDefEditDlg _VarDefEditDlg46,1069
+}* VarDefEditDlg;VarDefEditDlg51,1261
+typedef struct _HelpEditDlg _HelpEditDlg53,1280
+}* HelpEditDlg;HelpEditDlg57,1354
+void CbEditVarSetDefs(111,4005
+void CbSaveConfig(120,4202
+static Widget OpenVarSetDefListDlg(134,4738
+static void CbVarSetDefListAdd(192,6465
+static void CbVarSetDefListModify(198,6624
+static void CbVarSetDefListRemove(219,7204
+static void DwVarSetDefList(238,7729
+static Widget OpenVarSetDefCreateDlg(262,8562
+static void CbVarSetDefCreateOk(289,9309
+static Widget OpenVarSetDefEditDlg(321,10333
+static void ResetVarSetDefEditDlg(400,12454
+static void DwVarSetDefEdit(420,13003
+static void CbVarSetDefEditOk(485,14823
+static void CbEditVarDef(546,16247
+static Widget OpenVarDefEditDlg(560,16874
+static void ResetVarDefEditDlg(638,19629
+static void DwVarDefEdit(675,20728
+static void CbVarDefEditOk(697,21197
+static void CbVarDefEditRemove(786,23566
+static void CbVarDefEditHelpStr(793,23748
+static void CbVarDefEditSensitive(801,23958
+static Widget OpenSetupWarningDlg(816,24620
+static void CbSetupWarningOk(843,25477
+static Widget OpenSaveConfigDlg(862,26140
+static void CbSaveConfigDlgOk(905,27452
+static Widget OpenHelpEditDlg(978,29453
+static void ResetHelpEditDlg(1015,30462
+static void DwHelpEdit(1025,30686
+static void CbHelpEditDlgAccept(1051,31324
+static Widget OpenVarDefCreateDlg(1068,31951
+static void DwVarDefCreate(1110,33114
+static void CbVarDefCreateOk(1136,33769
+typedef struct _OutputModeDlg _OutputModeDlg1170,34846
+}* OutputModeDlg;OutputModeDlg1175,35007
+Widget OpenOutputModeDlg(1181,35202
+#define XTBSS 1231,36582
+#define XTBGS 1232,36619
+static void ResetOutputModeDlg(1234,36657
+static void AcceptOutputModeDlg(1246,37316
+static void CbSetOutputMode(1266,37892
+typedef struct _MeshOptionsDlg _MeshOptionsDlg1276,38380
+}* MeshOptionsDlg;MeshOptionsDlg1279,38478
+Widget OpenMeshOptionsDlg(1285,38665
+static void ResetMeshOptionsDlg(1330,39792
+static void AcceptMeshOptionsDlg(1345,40206
+static void CbSetMeshOptions(1369,40841
+
+src/x_setup.h,24
+#define _x_setup_h4,40
+
+src/x_toolb.c,207
+#define DLG_TOOLBAR 3,19
+static void EhToolSelInput(5,53
+static void CbToolBarDlgSetTool(14,329
+static void DwUpdateToolBox(27,642
+static Widget CreateToolBarDlg(45,1113
+Widget OpenToolBarDlg(127,4020
+
+src/x_toolb.h,24
+#define _x_toolb_h4,42
+
+src/x_vars.c,1915
+#define DLG_VARSEDIT 9,385
+#define RF_NEWVAL 11,421
+#define RF_OLDVAL 12,470
+#define RF_SEL 13,519
+#define RF_SENS 14,544
+#define RF_VALUE 15,569
+#define RF_CLEARVAL 16,616
+#define RF_HOLD 17,643
+#define XT_VEF 19,669
+#define XT_NEWVAL 20,698
+#define XT_COMP 21,727
+#define CV_MARK_EQUAL 23,757
+#define CV_MARK_NOT_EQUAL 24,781
+#define CV_MARK_GT 25,809
+#define CV_MARK_GE 26,830
+#define CV_MARK_LT 27,851
+#define CV_MARK_LE 28,872
+typedef struct _VarsEditDlg _VarsEditDlg30,894
+}* VarsEditDlg;VarsEditDlg47,1353
+typedef struct _VarsEditField _VarsEditField49,1370
+}* VarsEditField;VarsEditField55,1501
+#define VarsDlgCollapsed(VarsDlgCollapsed74,2592
+static void CbVarsDlgClose(80,2742
+static void DwNotifyVarsDlg(86,2893
+#define COL_W 129,3999
+#define ADDW(ADDW130,4015
+static VarsEditDlg CreateVarsEditDlg(133,4117
+static void ActVarsDlgPopupMenu(399,11994
+static void CbVarsDlgInput(414,12470
+static char* GetVarValueDescr(426,12835
+static void ResetVarsDlgField(460,13829
+static int AcceptVarsDlgField(544,16207
+static int IsEmptyField(580,17191
+static void CbVarsDlgAcceptVar(592,17454
+static void CbVarsDlgResetVar(605,17792
+static void CbVarsDlgResetVar_n(610,17950
+static void CbVarsDlgAccept(619,18210
+static void CbVarsDlgReset(645,18999
+Widget OpenVarsEditDlg(660,19391
+static void CbDestroyVarsEditDlg(686,19994
+static void CbVarsEditDlgVDHelp(695,20277
+static void CbVarsEditFocus(702,20466
+static void CbVarsEditCompare_p(723,20998
+static void CbVarsEditDisplay_p(831,23611
+static void CollapseVarsDlg(860,24303
+static void CbVarsDlgCollapse(870,24676
+#define DLG_INVALIDVARS 882,25209
+typedef struct _InvalidVarsDlg _InvalidVarsDlg884,25251
+}* InvalidVarsDlg;InvalidVarsDlg887,25315
+Widget OpenInvalidVarsDlg(895,25602
+static void CbInvalidVarsWhere(932,26651
+static void DwInvalidVars(973,27673
+static void ResetInvalidVarsDlg(988,28055
+
+src/x_vars.h,23
+#define _x_vars_h5,56
+
+src/x_verdlg.c,261
+#define DLG_NEWPREFSFILE 3,19
+#define DLG_NEWVERSION 4,62
+#define PSTR_PREFSPRESENT 6,102
+#define PSTR_DGVERSION 7,143
+#define PVAL_PREFSPRESENT 8,187
+Widget OpenNewPrefsFileDlg(11,225
+Widget OpenNewVersionDlg(47,1366
+static void CbNewVersionOk(86,2473
+
+src/x_verdlg.h,25
+#define _x_verdlg_h2,20
+
+src/x_view.c,1670
+#define XTBGS 15,751
+#define XTBSS 16,788
+View CreateXmView(235,12576
+static void UnconfigureXmView(661,26122
+static void ClearXmView(691,26889
+static void DrawXmViewLine(698,27083
+static void DrawXmViewRect(729,28218
+static void DrawXmViewCircle(747,28665
+static void DrawXmViewText(768,29206
+static void FlushXmView(776,29489
+static void AdjustXmViewAspectRatio(783,29655
+static void SetXmViewMsg(787,29748
+static void NotifyXmView(798,29979
+static void SetXmViewMode(969,33872
+static void GetXViewSize(1268,42035
+static void DwUpdateToolBar(1276,42194
+static void DwRebuildCarreInfo(1298,42690
+View GetWidgetXView(1305,42931
+static void UpdateXViewShowFlags(1317,43173
+static void ProcessXViewShowFlags(1338,44398
+static void UpdateXViewTitle(1364,45761
+static void AddXViewVarsMenuItem(1380,46195
+static void UpdateXViewVarsMenu(1423,47471
+static void CbDestroyDependentWidget(1478,49027
+void AddDependentWidget(1484,49164
+void DelDependentWidgetEx(1502,49648
+void AddDWProc(1519,50059
+static char* GetXmViewStr(1525,50277
+static void CbUpdateViewTimer(1529,50353
+static void CbDestroyViewShell(1542,50734
+void CbDisplayHelpLine(1549,50922
+void CbDisplayDataLine(1560,51203
+void CbClearHelpLine(1571,51453
+static void AddDw2UndoInfo(1583,51756
+static void AddDw2Exists(1588,51921
+static void AddDw2NotExists(1593,52082
+static void CbExposeView(1598,52249
+static void CbViewExposeTimer(1613,52726
+static void CbResizeView(1620,52903
+static void CbChangeTool(1627,53115
+static void CbChangeFlags(1638,53402
+void XtActUseTool(1647,53574
+void XtActCancelTool(1707,55334
+void XtActCirculTool(1714,55493
+void CbHelp(1727,55771
+
+src/x_view.h,615
+#define _x_view_h5,59
+struct _ViewExt _ViewExt7,78
+typedef void (*DwNotifyProc)DwNotifyProc52,1749
+typedef struct _DependentWidget _DependentWidget54,1826
+}* DependentWidget;DependentWidget59,1948
+#define MakeXmString(MakeXmString61,1969
+#define DelDependentWidget(DelDependentWidget62,2040
+#define CHF_APPVIEW 93,3124
+#define CHF_GEOMETRY 94,3155
+#define CHF_FILES 95,3186
+#define CHF_VARS 96,3217
+#define CHF_VARDEFS 97,3248
+#define CHF_MARK 98,3279
+#define CHF_APP 99,3310
+#define CHF_VARSMENU 100,3341
+#define CHF_MESH 101,3372
+#define DISCARD_MESH 103,3404
+#define DISCARD_DOC 104,3435
+
+src/x_xapp.c,848
+#define ENV_DG_NO_PREFS 3,19
+#define ENV_DG_PREFS 4,62
+#define ENV_HOME 5,99
+#define DEFALUT_PREFS_FILE 7,124
+#define PREFS_FILE_LOCK_SUFFIX 8,169
+#define PREFS_FILE_OLD_SUFFIX 10,251
+#define PSTR_RECENTFILES_COUNT 12,289
+#define PSTR_RECENTFILES_PREFIX 13,342
+void ConfigureXApp(59,2000
+void UnconfigureXApp(136,4660
+static char* XmXAppGetStringProc(149,4997
+static int LoadHelp(168,5482
+static char* XAppResName(430,13980
+XAppPause(434,14062
+char* GetUserPrefsFileName(440,14211
+char* GetUserPrefsString(460,14625
+int SetUserPrefsString(489,15159
+int LockUserPrefsFile(563,16538
+void UnlockUserPrefsFile(577,16749
+int GetUserPrefsInt(583,16861
+int SetUserPrefsInt(587,16950
+Stack GetRecentFilesStack(595,17093
+static void WriteRecentFilesStack(616,17485
+void AddXAppRecentFile(635,17936
+View FindViewByFilename(663,18488
+
+src/x_xapp.h,54
+#define _x_xapp_h5,54
+struct _XAppExt _XAppExt7,73
+
+src/x_~fbr.c,0
+
+src/xapp.c,67
+XApp CreateXApp(3,17
+void* FreeXApp(33,635
+char* XAppStr(49,941
+
+src/xapp.h,79
+#define _xapp_h4,44
+struct _XApp _XApp6,61
+struct _XAppExt _XAppExt21,256
+
+src/xpoint.c,1482
+#define XPLEVEL 5,82
+#define EqIn(EqIn7,101
+#define EqInS(EqInS10,216
+int AddXPoint(13,328
+void DelXPoint(42,863
+GridPoint AddGridPoint(52,1034
+void ChangeGridPoint(75,1509
+void* DelGridPoint(92,2012
+int ChangeGridPointCreatorId(103,2176
+char* GetGridPointCreatorId(111,2378
+char* ConstructGridPointCreatorId(115,2476
+int ParseGridPointCreatorId(124,2705
+int DistributeGridPoints(137,3024
+int RebuildCarreGridPoints(171,3833
+static int CutLineByTargets(208,4812
+int CalcXPointLine(266,6296
+void CalcGridPointCoords(404,10793
+#define EQX 425,11424
+#define EQY 426,11448
+#define EQL(EQL427,11472
+int FindSurfaceOriginPoint(431,11556
+int FindLoopPoint(556,14525
+static int CheckXPointLevels(622,16739
+static int CheckXPointRect(670,17720
+static Group FindXPointRects(778,19800
+static int CalcXPointLevels(813,20392
+static int FindXPointCenter(823,20578
+static Group CalcSeparatrixLine(865,21603
+XPointTest AddXPointTest(1048,26259
+void* DelXPointTest(1084,26822
+static int ActAddXPointTest(1101,27091
+static int ActDelXPointTest(1138,27760
+static int ActAddXPointSeg(1172,28424
+static int ActDelXPointSeg(1211,29143
+XPointSeg AddXPointSeg(1249,29931
+void* DelXPointSeg(1281,30423
+static int CalcXPointSegLine(1293,30575
+static void* FreeXPointSegLine(1316,31163
+static void DelDuplicateXPointSegs(1325,31333
+static Group CalcGradientLine(1346,31819
+int DetectXPoints(1419,33518
+#define MAX_INS_N 1456,34139
+int DetectXPointSegs(1458,34162
+
+src/xpoint.h,444
+#define _xpoint_h5,71
+#define SPA_LOOP 9,113
+#define SPA_TARGET1 10,135
+#define SPA_TARGET2 11,157
+#define SPA_OUTER 12,179
+struct _XPointMinMax _XPointMinMax14,202
+struct _XPoint _XPoint19,256
+struct _XPointTest _XPointTest27,370
+struct _XPointSeg _XPointSeg37,563
+struct _GridPoint _GridPoint47,733
+#define FindEquilPeakPoint(FindEquilPeakPoint60,1003
+#define GridPointCreatorIdUnchanged(GridPointCreatorIdUnchanged63,1096

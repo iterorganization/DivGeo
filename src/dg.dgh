@@ -1,0 +1,2671 @@
+0123456789012345678901234567890123456789
+
+DivGeo help file v1.42
+----------------------
+
+Main window
+
+The main window consists of four parts.
+Some of them can be disabled via menu
+commands.
+
+The menu contains most of DG commands.
+
+The toolbar lets you assign tools to
+mouse buttons. There is an option menu
+for each mouse button.
+
+The work area displays the visible
+contents of the file in this window. You
+can use tools in the work area to edit
+objects visually.
+
+The message line is used to display
+messages.
+
+---
+
+Using the help system
+
+The help system lets you view online
+help on dialog boxes, menu commands and
+tools while working with DG. You can
+also view the ASCII version of the
+manual (not available in the current
+version of DG).
+
+You can scroll the text in the help
+window by moving the scroll bars. You
+can also resize the help window using
+the window manager.
+
+To close the help window, choose it's
+Window|Close menu command or simply
+press Escape with the help window
+active. Also, you can use the window
+manager. With Motif Window Manager,
+simply double-click the system menu.
+
+Using the Window|No popup toggle button,
+you can control whether the help window
+is raised each time a new help topic is
+displayed.
+
+To prevent the help window from being
+raised, enable Window|No popup.
+
+To allow the help window to be raised,
+disable Window|No popup. This is the
+default setting.
+
+To display the ASCII version of the
+manual, issue the Help|Manual menu
+command from the main window.
+
+To display help on a dialog box, press
+it's Help button. If there is no Help
+button, press F1 with the mouse inside
+the dialog.
+
+In the current version of DG, help it is
+not available for message boxes. You
+cannot scroll the text in the help
+window when a modal dialog is displayed.
+
+To display help on a menu command, open
+the menu containing it, move the mouse
+pointer to the desired command and press
+F1.
+
+To display help on a tool, open one of
+option menus in the toolbar, move mouse
+pointer to the desired tool and press
+F1.
+
+You can also use the ToolBox to display
+help on tools. Move the mouse pointer to
+the desired button and press F1. With
+some window managers, you will have to
+make the ToolBox window active first.
+
+---
+
+New preferences file dialog box
+
+When you start DG for the first time,
+it creates a so-called preferences
+file. DG uses the preferences file to
+store non-crucial information, such as
+window settings or the list of recent
+files opened with DG. The preferences
+file is updated automatically without
+any user intervention.
+
+The default location for the
+preferences file is
+'$HOME/.dg-preferences'.
+
+---
+
+New version dialog box
+
+DG writes it's version into the
+preferences file. On startup, the
+current version of DG is compared to the
+version last written to the preferences.
+If there is a difference, this dialog
+box is displayed.
+
+Press Ok in order to display information
+on what's new in this version of DG.
+
+Press Cancel if you do not want to see
+that information. You can obtain it
+later by issuing the 'Help|What's New'
+menu command.
+
+---
+
+Open... dialog box
+
+Use this dialog box to open an existing
+file.
+
+To open an existing disk file, select a
+filename and press Open.
+
+To go to another directory, select it
+from the Directories list and press
+Filter.
+
+To cancel the operation, press Cancel.
+
+The default filter string is taken from
+the DG_OPEN_MASK environment variable if
+it is set.
+
+---
+
+Save... dialog box
+
+Use this dialog box to save the file in
+the current window.
+
+To save the file, specify it's name in
+the Selection text field and press Save.
+
+To overwrite an existing file, select it
+from the Files list and press Save.
+
+To cancel the operation, press Cancel.
+
+The default filter string is taken from
+the DG_SAVE_MASK environment variable
+if it is set.
+
+---
+
+Equilibrium... dialog box
+
+Use this dialog box to import an
+equilibrium.
+
+To import an existing disk file, select
+a filename and press Open.
+
+To go to another directory, select it
+from the Directories list and press
+Filter.
+
+To cancel the operation, press Cancel.
+
+The default filter string is taken from
+the DG_EQUIL_MASK environment variable
+if it is set.
+
+---
+
+Template... dialog box
+
+Use this dialog box to import a
+template.
+
+To import an existing disk file, select
+a filename and press Open.
+
+To go to another directory, select it
+from the Directories list and press
+Filter.
+
+To cancel the operation, press Cancel.
+
+The default filter string is taken from
+the DG_TEMPLATE_MASK environment
+variable if it is set.
+
+---
+
+Mesh... dialog box
+
+Use this dialog box to import a mesh.
+
+To import an existing disk file, select
+a filename and press Open.
+
+To go to another directory, select it
+from the Directories list and press
+Filter.
+
+To cancel the operation, press Cancel.
+
+The default filter string is taken from
+the DG_MESH_MASK environment variable if
+it is set.
+
+---
+
+Export mesh... dialog box
+
+This dialog box allows you to export the
+mesh as a mesh file, normally after
+modifying it in DG.
+
+In order to export the mesh as a new
+file, specify it's name in the Selection
+text field and press Export.
+
+In order to overwrite an existing file,
+select it from the Files list and press
+Export.
+
+In order to cancel the operation, press
+Cancel.
+
+The default filter string is taken from
+the DG_EXPORT_MESH_MASK environment
+variable if it is set.
+
+---
+
+Export Elements As Template... dialog box
+
+This dialog box allows you to export
+elements into a template file that can
+be read by DG.
+
+The template is written in a special
+format that is only understood by DG.
+
+Use the option menu to specify whether
+all or only marked elements should be
+exported.
+
+In order to create a new template file,
+specify it's name in the Selection text
+field and press Export.
+
+In order to overwrite an existing file,
+select it from the Files list and press
+Export.
+
+In order to cancel the operation, press
+Cancel.
+
+The default filter string is taken from
+the DG_EXPORT_TEMPLATE_MASK environment
+variable if it is set.
+
+---
+
+Print... dialog box
+
+Use this dialog box to print the
+contents of the current window.
+
+Files are printed in the Encapsulated
+PostScript format. You can choose
+between saving PostScript output in a
+file or running a UNIX command and
+passing the PostScript output to it as
+standard input.
+
+To create a PostScript file, make sure
+the 'To file:' option is selected in the
+option menu and enter the filename in
+the text box.
+
+To execute a UNIX command, select
+'Command:' in the option menu and enter
+the command in the text box. The output
+eventually produced by the command is
+_not_ captured and goes normally to the
+terminal DG was started from.
+
+To specify the paper size, enter values
+(in inches) for the paper width and
+height in text boxes. The default size
+is DIN A4.
+
+To specify the margin, enther the value
+(in inches) in the 'Margin:' text box.
+The margin is subtracted from the paper
+size, thus reducing the actual size of
+the printed drawing. The margin is not
+included in the bounding rectangle for
+EPS files, so it has effect only if the
+PostScript file is sent directly to the
+printer.
+
+To ensure that the whole drawing is
+printed, check the 'Fit to...' check
+box. If it remains unchecked, only the
+area visible in the window will be
+printed. The actual area printed may be
+larger because of aspect ratio
+adjustments.
+
+To generate PostScript output, press
+Print.
+
+To cancel the operation, press Cancel.
+
+---
+
+Unsaved... dialog box
+
+This dialog box appears when you try to
+close a window that contains unsaved
+work.
+
+To save the file, press Save. The
+Save... dialog box will appear
+
+To close the window without saving,
+press Discard.
+
+To cancel the operation, press Cancel.
+
+---
+
+Unsaved mesh... dialog box
+
+This dialog box appears when you try to
+close a window that contains a modified
+mesh thas has not been exported.
+
+In order to export the mesh, press
+Export. The Export mesh... dialog box
+will appear.
+
+In order to proceed without exporting
+the mesh, press Discard. Note that the
+changes made to the original mesh will
+still be saved into the DG file.
+
+In order to cancel the operation, press
+Cancel.
+
+---
+
+Create point at... dialog box
+
+Use this dialog box to create a point at
+a specific location.
+
+To create a point, specify it's X
+coordinate in the X: field, it's Y
+coordinate in the Y: field. Then press
+Create.
+
+To cancel the operation, press Cancel.
+
+---
+
+Create source at... dialog box
+
+Use this dialog box to create a source
+at a specific location.
+
+To create a source, specify it's X
+coordinate in the X: field, it's Y
+coordinate in the Y: field. Then press
+Create.
+
+To cancel the operation, press Cancel.
+
+---
+
+Create chord at... dialog box
+
+Use this dialog box to create a chord at
+a specific location.
+
+To create a chord, specify coordinates
+for it's both ends. Then press Create.
+
+To cancel the operation, press Cancel.
+
+---
+
+Create surface(s)... dialog box
+
+Use this dialog box to create a surface
+by specifying it's area and level, to
+create a surface that passes through a
+specific point, and to create multiple
+surfaces at once by specifying a range
+for their levels and a few details.
+
+The 'Multiple' tab of this dialog box is
+the ONLY way to create surfaces in Carre
+mode.
+
+In order to create a surface by
+specifying it's area and level, click on
+the 'Single' toggle button at the top of
+the dialog box, then on the 'By level'
+toggle button. Select the desired area
+and type in the desired level. Then
+press Create.
+
+In order to create a surface that passes
+through a specific point, click on the
+'Single' toggle button at the top of the
+dialog box, then  on the 'Through point'
+toggle button. Type in the desired
+coordinates in text boxes. Then press
+Create.
+
+In order to create multiple surfaces in
+Sonnet mode, click on the 'Multiple'
+toggle button at the top of the dialog
+box. Select the desired area and type in
+two level values in 'Level' text boxes,
+and the number of surfaces to create in
+the 'Count' text box. Then press Create.
+The surfaces will be created in the
+given area _between_ the given levels.
+Surfaces with levels equal to level 1 or
+2 will not be created.
+
+In order to create multiple surfaces in
+Carre mode, click on the 'Multiple'
+toggle button at the top of the dialog
+box. Select the desired area and type in
+the number of INTERMEDIATE surfaces to
+create. For the main plasma, also create
+the desired innermost surface. If there
+are already surfaces in the main plasma,
+move one of them to the desired
+innermost location instead.
+
+The surfaces in Carre mode will be
+created between the separatrix and
+either the innermost surface in the main
+plasma, or parts of the structure not
+containing targets. Also, it is ensured
+that each surface outside the main
+plasma intersects parts of the structure
+containing targets. The total number of
+surfaces created is ('Count'+1). The
+additional surface is either the
+innermost surface in the main plasma, or
+the outermost surface, limited by the
+structure. All previous surfaces in the
+area will be removed.
+
+Instead of typing in level values in
+Sonnet mode, you can pick up an area and
+a level from an existing surface.
+Highlight the desired surface with the
+'Examine' tool and press one of the two
+'<' buttons in the dialog box. The
+corresponding text field will now
+contain the level of the selected
+surface, and the 'Area:' option menu
+will contain it's area. Instead of
+highlighting an existing surface, you
+can create a surface using the 'Add
+surface' tool, and immediately press the
+'<' button.
+
+The graph in the top half of the dialog
+box displays the distribution of levels
+of the created magnetic surfaces. You
+can modify this distribution by changing
+the distribution law and the values for
+'Alpha'/'Delta'.
+
+In order to select a different law, use
+the 'Law:' option menu. In Carre mode,
+the only allowed law is 'Delta'.
+Distribution laws are discussed below.
+
+In order to reset the distribution graph
+to a straight line, press the 'Reset'
+button. This is often necessary after
+changing the law to/from 'Delta',
+because of incompatible parameters.
+
+In order to modify the distribution
+graph parameters, click on the graph
+with the left mouse button and drag the
+graph to the new location. If the law
+uses two parameters, clicking on the
+left half of the graph will modify
+'Alpha/Delta1', and clicking on the
+right half will modify 'Alpha'/Delta2'
+
+Clicking+Dragging will only work if the
+dialog box already contains somehow
+valid parameters. In particular, the
+'Count' field should be set to a
+reasonable value if the 'Delta' law is
+used. Under some laws, the graph cannot
+go through through some areas. In such
+cases, the graph will stop moving when
+the mouse cursor enters a forbidden
+area.
+
+In order to keep the new value for the
+parameter, release the mouse button with
+the mouse cursor inside the graph. In
+order to retain the old value, move the
+mouse out of the graph window before
+releasing the mouse button.
+
+It is also possible to edit
+distribution law parameters manually by
+entering new values in 'Alpha/Delta1'
+and 'Alpha'/Delta2' text fields.
+
+The 'Normal' distribution law produces
+the following distribution:
+
+Level(i):=
+Level1+(Level2-Level1)*
+  (i/(Count+1))**Alpha
+
+(i varies between 1 and Count)
+
+The 'Flipped' distribution law mirrors
+the distribution graph around the Y
+axis.
+
+The 'Symmetric' distribution law scales
+down the graph by a factor of 2. The
+second half of the graph is produced by
+rotating the first half by 180 degrees.
+
+The 'Two-alpha' law is similar to
+'Symmetric', but uses a different Alpha
+for calculating the second half of the
+graph.
+
+The 'Delta' law is identical to the law
+used by Carre to create surfaces. It's
+arguments are two 'Delta' values, which
+specify the relative normalized
+difference between the levels of the
+first two, and the last two surfaces.
+
+Unlike other laws, the shape of the
+curve produced by the Delta law also
+depends from the 'Count' value. Each
+time a different number in the 'Count'
+field is entered, the values for 'Delta'
+parameters are automatically
+re-calculated in order to make the new
+curve match the original as close as
+possible.
+
+You can query the parameters used
+earlier to create a particular surface
+with this dialog box. Highlight the
+surface with the Examine tool and press
+the '<<' button. The dialog box will be
+filled with values used to create that
+surface, and the 'Remove old surfaces'
+toggle button will be enabled. You can
+now modify the values and press Create
+in order to replace all surfaces created
+with the old set of parameters with
+surfaces created using the new values.
+
+The 'Remove old surfaces' toggle button
+determines whether surfaces created with
+the old set of parameters will be
+deleted. By default, it is enabled when
+you press Create or the '<<' button, and
+disabled as soon as you change the value
+for 'Area'.
+
+All old surfaces in the selected
+area are ALWAYS removed in Carre mode.
+
+To cancel the operation, press Cancel.
+
+---
+
+Create grid point(s)... dialog box
+
+Use this dialog box to create grid
+points.
+
+In order to create a single grid point,
+click on the 'Single' button at the top
+of the dialog box. Specify the zone in
+the Zone menu, and the value of the grid
+point to create in the Value: field.
+Then press Create.
+
+In order to create multiple grid points
+at once, click on the 'Multiple' button
+at the top of the dialog box. Select
+the zone in the 'Zone:' option menu and
+the number of grid points to create in
+the 'Count:' text field. Then press
+Create.
+
+Note: All previous grid points in the
+selected zone will be deleted.
+
+You can modify the distribution law used
+to create grid points. See the help for
+the 'Create surface(s)' dialog box for
+details on changing the distribution
+law. Choose the 'Edit|Create|Surface(s)'
+menu command and press the 'Help' button
+in the dialog box that will appear.
+
+You can query the parameters used
+earlier to create a particular grid
+point with this dialog box. Highlight
+the grid point with the Examine tool and
+press the '<<' button. The dialog box
+will be filled with values used to
+create that grid point. You can edit
+the values and press Create in order to
+replace all grid points in the selected
+zone with grid points created using the
+new values.
+
+To cancel the operation, press Cancel.
+
+---
+
+Move/Rotate... dialog box
+
+Use this dialog box to move, rotate or
+scale all elements or the template at
+once.
+
+Use Elements and Template check boxes to
+specify whether the command should
+affect only elements, only template or
+both.
+
+To move and/or scale specified objects,
+specify relative X- and Y-offsets and
+the relative scale factor in
+corresponding text fields and press
+Move.
+
+To rotate specified objects 90 degrees,
+press Rotate.
+
+To close the dialog box, press Close
+
+---
+
+Mesh header... dialog box
+
+Use this dialog box to view and modify
+the header of the current mesh file.
+
+In order to modify the mesh file
+header, make necessary changes in the
+text field and press "Change".
+
+In order to close the dialog box
+without making changes, press "Cancel".
+
+The mesh file header consists of all
+lines preceding the first data record.
+One of the first 10 lines must be
+
+   Element output:
+
+This line is used by DG in order to
+recognize the file format.
+
+---
+
+Fill gaps dialog box
+
+This dialog box allows you to fill gaps
+between elements by automatically
+creating intermediate elements. This
+feature can be especially useful for
+processing a converted template.
+
+Gaps are only filled between points
+that have exactly one element attached.
+At first, the gap between the nearest
+pair of such points is filled. Then,
+the nearest remaining pair is processed,
+and so on.
+
+The 'Threshold' value determines the
+maximum distance between points that
+should be connected.
+
+The 'Marked only' toggle button
+determines whether gaps will be filled
+between all elements or marked elements
+only.
+
+In order to fill gaps, press Ok. It is
+highly recommended to use the
+'Merge/Split elements' menu command
+afterwards in order to remove
+unnecessarily short intermediate
+elements. Many short elements can slow
+down computations and create problems in
+programs processing DG output.
+
+In order to cancel the operation, press
+Cancel.
+
+---
+
+Merge/Split elements dialog box
+
+This dialog box allows you to merge
+adjacent elements that form nearly a
+straight line, and, optionally, to split
+long elements into shorter parts. This
+feature can be extremely useful for
+processing a converted template.
+
+The merge operation considers chains of
+elements connected by regular points. It
+attempts to merge several elements of
+such a chain into one, as long as both
+the maximum deviation between the
+original chain and the resulting element
+and the length of the resulting element
+do not exceed the limits set in the
+dialog box. Then, the merge operation
+tries to process the remainder of the
+chain in the same way, and then switches
+over to the next chain. Normally, the
+merge operation allows replacing a big
+set of elements with a much smaller one
+that very closely matches the original
+set.
+
+It is suggested to line up external
+normals, if planned, PRIOR to this
+operation. This will increase the
+overall length of a chain, which will
+produce better results.
+
+Note that subsequent merge operations
+accumulate the deviation, and the
+accumulated deviation may be much
+larger than the value in the dialog
+box.
+
+The 'Max deviation' and 'Length limit'
+text fields specify the limits for the
+merge operation. For no length limit,
+simply specify a very big value in the
+text field.
+
+The 'Split longer elements' toggle
+button controls whether already existing
+elements exceeding the length limit will
+be split into shorter parts within the
+limit.
+
+The 'Marked only' toggle button
+determines whether the operation affects
+all elements or is restricted to marked
+ones.
+
+In order to start the operation, press
+Ok.
+
+In order to cancel the operation, press
+Cancel.
+
+---
+
+Invalid values dialog box
+
+This dialog box displays all variables
+that have invalid or no values. It also
+lets you correct these values in a very
+convenient way.
+
+To correct a variable, select it's name
+in the list box and press Show!. The
+Variables... dialog box containing this
+variable will appear and the message
+line in the main window will show the
+description of the problem.
+
+If the variable applies to elements or
+sources, objects having offending
+values will be marked and all others
+unmarked.
+
+If the variable has a set of elements,
+elements included in it will be marked
+and all others unmarked.
+
+To close the dialog box, press Close.
+
+---
+
+Variables... dialog box
+
+Use this dialog box to set variables.
+
+The window title displays the name of
+the layer. On top of the dialog box,
+there is a row of buttons that affect
+the entire dialog box. Below, there are
+fields for individual variables.
+Finally, there is a status line.
+
+The "^" button on top of the dialog box
+allows to "roll it up". In order to
+restore the dialog box to it's full
+size, press this button again.
+
+The dialog box can be resized using the
+window manager. If it is reduced in
+size, scrollbars appear, allowing to
+scroll the content. The functionality
+of the dialog box is NOT affected by
+resizing it or rolling it up. In
+particular, the "Set all" button also
+affects variables that are invisible.
+
+For each variable, the dialog box
+contains it's name, a "?" button, a
+text field for entering the new value
+(for text variables) or a "Mark" button
+(for "set of objects" variables), and a
+"Set" button.
+
+The "?" button, when pressed, displays
+help about the variable.
+
+The text field is used to enter new
+values for text variables. When the
+text field has keyboard focus, the
+status line displays the current value
+of the variable. For text variables
+that apply to elements, chords or
+sources, only variables that apply to
+marked objects are accessed.
+
+The "Mark" button, available only for
+"Set of objects" variables, marks the
+objects contained in the variable.
+
+The "Set" button sets the variable to
+the new value. For text variables, the
+new value must be entered in the New
+Value text field. For variables storing
+sets of objects, the objects must be
+marked.
+
+For text variables that apply to
+elements, sources or chords, only
+variables corresponding to marked
+objects will be affected.
+
+The "Set all" button in the top row,
+when pressed, has exactly the same
+effect as pressing the "Set" button of
+each variable except that empty new
+values for variables that apply to
+elements, sources or chords are
+ignored. This button is only available
+if the layer consists of text variables
+only.
+
+The "Reset all" button, when pressed,
+resets all text fields to present
+values of corresponding variables. It
+is only available in layers consisting
+of text variables only. The text field
+is cleared for variables that apply to
+elements, sources or chords when marked
+objects have different values.
+
+The "Hold" toggle button controls how 
+text fields for variables that apply to
+elements, sources or chords are
+updated. When "Hold" is disabled, these
+fields are updated whenever an object
+is marked or unmarked. When "Hold" is
+enabled, these fields are not updated.
+
+The "Close" button closes the dialog box.
+
+Pressing the right mouse button over a
+text field or a button associated with
+a variable brings up a pop-up menu. If
+the mouse has less than 3 buttons, the
+menu can be displayed by pressing
+Ctrl+left button.
+
+The "Reset" command sets the text field
+to the current value of the variable,
+similar to the "Reset all" button but
+affecting only one variable. For
+variables storing sets of objects, this
+command acts exactly like the "Mark"
+button.
+
+The "Display values" command displays
+values of variables that apply to
+elements, chords or sources next to
+corresponding objects. In order to
+remove these "labels", highlight any
+object or use the "View|Remove labels"
+command from the main menu.
+
+Commands in the "Compare" submenu
+compare values of the variable to the
+value entered in the edit field and
+mark matching objects.
+
+Both the "Display values" command and
+the "Compare" submenu are only
+available for variables that apply to
+elements, sources or chords.
+
+---
+
+Setup Warning dialog box
+
+This dialog box appears if you choose
+one of menu items in the Options|Setup
+submenu for the first time.
+
+This submenu should be used only by
+experts. Wrong settings here can cause
+loss of information, malfunction of DG
+and programs processing DG output files
+etc.
+
+To proceed, press Proceed.
+
+To cancel the operation, press Cancel.
+
+---
+
+Layer types dialog box
+
+This dialog box lets you define layer
+types, variables and default values of
+variables.
+
+To add a new layer type, press Add.
+
+To modify an existing layer type, select
+it in the list box and press Modify. You
+can also double-click the name in the
+list box.
+
+To remove a layer type, select it in the
+list box and press Remove.
+
+To close the dialog box, press Close.
+
+---
+
+New layer type... dialog box
+
+This dialog box allows you to create a
+new layer type.
+
+To create a new layer type, type it's
+name in the text field and press Create.
+
+To cancel the operation, press Cancel.
+
+---
+
+Layer type options dialog box
+
+This dialog box allows you to set
+attributes for a layer type and to
+manage variables in this layer type.
+
+To change the layer type attributes,
+type values in text boxes and press Ok.
+
+To add a variable, press an 'Empty'
+button. The 'New variable..." dialog box
+will appear. The row/column position of
+the newly-created variable in the
+corresponding "Variables..." dialog box
+is determined by the position of the
+'Empty' button pressed.
+
+Note that in future versions of DG, only
+one-column "Variables..." dialog boxes
+will be supported, so it is advised to
+use only the first column.
+
+To modify or remove a variable, press a
+button that displays it's name. A
+"Variable options..." dialog box will
+appear.
+
+To close the dialog box without changing
+layer type attributes, press the Close
+button. The Close button will NOT undo
+any modifications on individual
+variables.
+
+---
+
+New variable... dialog box
+
+This dialog box allows you to create a
+new variable in a specific layer type.
+
+To create a new variable, type it's
+name in the text field and press Create.
+
+To cancel the operation, press Cancel.
+
+---
+
+Variable options dialog box
+
+This dialog box allows you to set
+attributes for a variable and to remove
+the variable.
+
+To change attributes, make necessary
+changes in the dialog box and press Ok.
+See DG manual for details on attributes.
+
+To change the help text associated with
+the variable, press Edit Help.
+
+To remove the variable, press Remove.
+
+To close the dialog box without making
+changes, press Cancel. The Cancel button
+will NOT undo any changes made in the
+Help editor dialog box.
+
+---
+
+Help editor dialog box
+
+This dialog box allows you to change
+the help text associated with a
+variable.
+
+To change the help text, make necessary
+changes in the text field and press Ok.
+
+To cancel the operation, press Cancel.
+
+---
+
+Save configuration dialog box
+
+This dialog box requires a confirmation
+for saving the current document as the
+configuration file.
+
+To confirm saving as configuration,
+press Save. If there are other windows
+displaying different documents, DG will
+ask you whether other loaded documents
+should be updated to reflect changes
+made in the configuration.
+
+To cancel the operation, press Cancel.
+
+---
+
+Output mode dialog box
+
+Use this dialog box to select the output
+mode and to specify which objects are
+required in the output file. These
+settings are saved and loaded with DG
+files.
+
+In order to specify the output mode, use
+'Sonnet' and 'Carre' radio buttons.
+
+In order to specify which objects are
+required in the output file, use 'Check'
+toggle buttons. Objects not required are
+still exported if they exist and are
+valid.
+
+In order to accept the changes, press
+'Ok'. Press 'Cancel' to close the dialog
+box without making any changes.
+
+The output mode determines the way of
+editing magnetic surfaces and grid
+points and the output file format.
+
+The Sonnet output mode results in an
+output file compatible with Sonnet. In
+this mode, all editing operations on
+surfaces and grid points are possible,
+and the output file contains information
+on individual surfaces and grid points.
+
+The Carre output mode results in an
+output file compatible with Carre. In
+this mode, surfaces are created using a
+special distribution law, and the output
+file contains it's coefficients. This
+imposes much tougher restrictions on
+editing operations.
+
+In Carre mode, surfaces may NOT be
+edited manually, except for setting the
+innermost surface. The only way of
+creating surfaces is by using the
+'Edit|Create|Surface(s)...' menu
+command. Press the 'Help' button in the
+'Create Surface(s)' dialog box for more
+information.
+
+Similarly, in Carre mode grid points may
+NOT be edited manually, but must be
+created using the 'Edit|Create|Grid
+points(s)...' menu command.
+
+In Carre mode, the output files can only
+be produced if all surfaces and grid
+points have been created in Carre mode
+and did not undergo any further editing.
+
+---
+
+Mesh editing dialog box
+
+Use this dialog box to specify options
+for mesh editing. They only affect
+one-dimensional movements of mesh
+points.
+
+"Slide along" specifies how movements of
+mesh points are confined.
+
+When "Magnetic surfaces" is in effect,
+the movement is confined to a magnetic
+surface passing through the original
+location of the mesh point. This method
+should work fine except for the vicinity
+of the X point, where magnetic surfaces
+drawn by DG become distorted.
+
+When "Splines" is in effect, the
+movement is confined to a spline passing
+through a row of existing mesh points.
+This method may be useful in the
+vicinity of the X point.
+
+"Margin" specifies the minimum distance
+between adjacent mesh points. If this
+limit is about to get exceeded,
+adjacent points start moving in order
+to "make room".
+
+The "Double border" setting, when
+enabled, instructs DG to treat outermost
+mesh cells as a double border. They
+would be resized together with adjacent
+"regular" cells.
+
+---
+
+About... dialog box
+
+Displays program version
+
+---
+
+Statistics dialog box
+
+Displays statistics about the current
+file.
+
+---
+
+ToolBox
+
+Use the ToolBox to select tools faster
+than with the toolbar.
+
+The Close button closes the ToolBox
+
+The Menu buttons hides or displays the
+menu in the main window
+
+The Undo and Redo buttons work exactly
+like Edit|Undo and Edit|Redo menu
+commands.
+
+All other buttons are used to assign
+tools to mouse buttons. To assign a
+tool, press it's button using the mouse
+button the tool should be assigned to.
+The tools assigned to mouse buttons are
+highlighted.
+
+---
+
+Examine tool
+
+The Examine tool lets you display
+information about objects in the work
+area.
+
+To display information about an object,
+move the mouse pointer to this object
+and press the mouse button the tool is
+assigned to. The information is
+displayed in the message line.
+
+To display information about other
+objects, move the mouse pointer to them
+without releasing the mouse button.
+
+To stop using the Examine tool, release
+the mouse button. The information
+displayed last will remain on the
+message line.
+
+---
+
+Zoom/Pan tool
+
+The Zoom/Pan tool lets you change the
+zoom factor and the location$ displayed
+in the work area.
+
+To move around the drawing, move the
+mouse pointer to some location in the
+work area, press the mouse button the
+tool is assigned to and release the
+button without moving the mouse. This
+location will now be displayed in the
+center of the work area.
+
+You can also "scroll" the area$
+displayed in the work area. To scroll,
+move the mouse pointer to some location,
+press Shift+mouse button and move the
+mouse to a new location. A moving
+rectangle will be displayed as you move
+the mouse. Finally, release the mouse
+button.
+
+To increase the zoom factor, move the
+mouse pointer to some location, press
+the mouse button the tool is assigned
+to. Then move the mouse in order to
+define a rectangle around the desired
+area and release the mouse button. The
+area surrounded by the rectangle will be
+enlargened to fit the entire work area.
+
+To decrease the zoom factor, press
+Shift+mouse button with the mouse
+pointer in the work area and release the
+button without moving the mouse.
+
+---
+
+Mark tool
+
+The Mark tool allows you to "mark"
+elements, sources, chords, separators,
+mesh elements and cells.
+
+In order to mark or unmark a single
+object, point to it, press and release
+the mouse button the tool is assigned
+to. Marked objects are highlighted.
+
+In order to mark or unmark a group of
+adjacent elements, move the mouse
+pointer to the first of them and press
+the mouse button. In order to mark or
+unmark adjacent elements, move the
+mouse pointer to them without releasing
+the mouse button. When finished,
+release the mouse button.
+
+In order to mark or unmark a group of
+elements connected by regular points,
+point to an element belonging to the
+group, press and release Shift+mouse
+button without moving the mouse.
+
+In order to mark a group of objects
+contained within a certain rectangle,
+move the mouse pointer to one corner of
+the rectangle and press and hold Shift+
+mouse button. Move the mouse pointer to
+the opposite corner of the rectangle and
+release the mouse button. If any objects
+were marked before the beginning of the
+operation, it will affect only objects
+of the same kinds as those already
+marked. Otherwise, the operation will
+affect all supported kinds of objects.
+
+---
+
+Move/Stretch tool
+
+The Move/Stretch tool allows you to
+visually move objects in the work area.
+
+To move an object, point to it and press
+the mouse button the tool is assigned
+to. Drag the object to the new location
+and release the mouse button.
+
+To "stretch" a group of objects, point
+to one object in the group and press
+Shift+mouse button. Drag the object to
+the new location and release the mouse
+button.
+
+In the current version of DG, stretching
+is only supported for grid points.
+
+In Carre mode, you may not move surfaces
+and grid points except for redefining
+the innermost surface in the main
+plasma. In the latter case, all other
+surfaces in the area will be deleted.
+
+---
+
+Delete tool
+
+The Delete tool lets you delete objects.
+
+To delete an object, point to it and
+press the mouse button the tool is
+assigned to. Then release the mouse
+button.
+
+In Carre mode, you may not delete
+surfaces and grid points. You can still
+use the 'Edit|Delete|...' submenu to
+delete these objects.
+
+---
+
+Add Element tool
+
+The Add Element tool allows you to
+create elements.
+
+To create an element attached to an
+existing point, move the mouse pointer to
+this point and press the mouse button the
+tool is assigned to. Without releasing
+the mouse button, move the mouse pointer
+to the desired location of the other end
+of the element and release the mouse
+button.
+
+To create an element without attaching
+it to an existing point, move the mouse
+pointer to the desired location of the
+beginning of the element and press
+Shift+mouse button. Without releasing
+the mouse button, move the pointer to
+the desired location of the other end
+and release the mouse button.
+
+If there are no points defined, this
+tool will behave as with Shift+mouse
+button.
+
+---
+
+Add Source tool
+
+The Add Source tool lets you create
+sources.
+
+To create a source, point to it's desired
+location and press the mouse button the
+tool is assigned to. By moving the mouse,
+you can adjust the position of the
+source. When finished, release the mouse
+button.
+
+---
+
+Add Chord tool
+
+The Add Chord tool allows you to create
+chords.
+
+To create a chord, move the mouse pointer
+to the desired location of it's beginning
+and press the mouse button the tool is
+assigned to. Without releasing the mouse
+button, move the mouse pointer to the
+desired location of the other end of the
+chord and release the mouse button.
+
+---
+
+Add Surface tool
+
+The Add Surface tool lets you create
+surfaces.
+
+An equilibrium must be imported before
+defining surfaces.
+
+To create a surface, point to some
+location inside the equilibrium and
+press the mouse button the tool is
+assigned to. By moving the mouse, you
+can adjust the position of the surface.
+When finished, release the mouse button.
+
+In Carre mode, you may not add any
+surfaces except for creating a surface
+in an empty main plasma area.
+
+---
+
+Add Grid Point tool
+
+The Add Grid Point tool lets you create
+surfaces.
+
+An equilibrium must be imported and the X
+point defined before creating grid
+points.
+
+To create a grid point, point to it's
+desired location on the separatrix and
+press the mouse button the tool is
+assigned to. By moving the mouse, you can
+adjust the position of the grid point.
+When finished, release the mouse button.
+
+In Carre mode, you may not add any grid
+points using this tool.
+
+---
+
+Set X Point tool
+
+The Set X Point tool lets you define the
+X point.
+
+An equilibrium must be imported and
+targets intersecting the separatrix must
+be defined before using this tool.
+
+To define the X point, you must define a
+rectangle around it. Point to the first
+corner of the desired rectangle and
+press the mouse button the tool is
+assigned to. Move the mouse pointer to
+the opposite corner and release the
+mouse button.
+
+In case of success, the separatrix will
+be displayed. Otherwise, an error
+message will appear on the message line.
+
+---
+
+Split Element tool
+
+The Split Element tool allows you to
+split an element in two.
+
+To split an element, point to it and
+press the mouse button the tool is
+assigned to. By moving the mouse, you
+can adjust the position of the
+newly-created point. When finished,
+release the mouse button.
+
+In the current version of DG, variables
+belonging to the original element are
+not copied.
+
+---
+
+Join Elements tool
+
+The Join Elements tool allows you to
+join two elements connected by a regular
+point into one.
+
+To join two elements, move the mouse
+pointer to the point between them, press
+and release the mouse button the tool is
+assigned to.
+
+In the current version of DG, variables
+belonging to the original two elements
+are not preserved.
+
+---
+
+Connect Points tool
+
+The Connect Points tool allows you to
+create an element between two
+pre-defined points.
+
+To connect two points, point to the
+first of them and press the mouse button
+the tool is assigned to. Move the mouse
+pointer to the second point and release
+the mouse button.
+
+---
+
+Reposition tool
+
+The Reposition tool allows you to
+re-attach an existing element or
+separator to a different point, or to
+reposition the template by attaching it
+to existing points.
+
+In order to re-attach an element, point
+to one of it's ends and press the mouse
+button the tool is assigned to. Move the
+mouse pointer to the desired point and
+release the mouse button.
+
+In order to re-attach a separator, use
+the similar procedure except that only
+one end of a separator can be
+re-attached.
+
+In order to reposition the template,
+point somewhere on the template and
+press and hold Shift+mouse button. Move
+the mouse pointer to some existing point
+and release the mouse button. The
+template will be moved, rescaled and
+rotated so that the specified point on
+the template ("handle") will be moved to
+the selected point.
+
+In order to precisely position the
+template, new positions should be
+specified for two handles on it. The
+first time you use the Reposition tool
+on the template ("first handle"), the
+template is only moved. The next time
+("second handle"), the template is
+rotated and rescaled as well, so that
+the first handle remains at the
+previously specified position. The next
+time, the template is again only moved,
+and so on...
+
+---
+
+Reverse Normals tool
+
+The Reverse Normals tool allows you to
+reverse elements and their external
+normals.
+
+In order to reverse an element, point to
+it and press the mouse button the tool
+is assigned to. By moving the mouse
+pointer to adjacent elements, you can
+force their normals to point to the same
+direction. When finished, release the
+mouse button.
+
+In order to reverse a group of elements
+connected by regular points, point to
+one of the elements and press
+Shift+mouse button. Then release the
+mouse button.
+
+---
+
+Move mesh point tool
+
+This tool allows you to adjust mesh
+points.
+
+In order to move a mesh point along the
+magnetic surface, point to it and press
+the mouse button. Drag the mesh point
+with the mouse to the new location.
+Then, release the mouse button.
+
+In order to move a mesh point without
+staying on the same magnetic surface,
+point to it and press Shift+mouse
+button. Drag the mesh point with the
+mouse to the new location. Then, release
+the mouse button.
+
+Use the "Options|Mesh editing..." menu
+command to set options for this tool.
+
+---
+
+File|New menu command
+
+This command opens a new window
+containig a new file. If the current
+window is empty, nothing happens.
+
+---
+
+File|Open... menu command
+
+This command brings up the Open...
+dialog box which lets you load existing
+DG files.
+
+---
+
+File|Recent|... menu commands
+
+These menu commands allow opening files
+most recently accessed by DG without
+going through the Open... dialog box.
+
+---
+
+File|Save... menu command
+
+This command brings up the Save...
+dialog box which lets you save the file
+in the current window.
+
+---
+
+File|Output... menu command
+
+This command generates output files. A
+confirmation dialog box will appear.
+Press Ok to create the files.
+
+The way output files are created depends
+from the output mode selected from the
+'Options|Output mode' submenu.
+
+---
+
+File|Template... menu command
+
+This command brings up the Template...
+dialog box allowing you to import a
+template.
+
+---
+
+File|Equilibrium... menu command
+
+This command brings up the Equilibrium...
+dialog box allowing you to import an
+equilibrium.
+
+---
+
+File|Mesh... menu command
+
+This command brings up the Mesh...
+dialog box allowing you to import a
+mesh.
+
+---
+
+File|Print... menu command
+
+This command brings up the Print...
+dialog box allowing you to print the
+contents of the current window.
+
+---
+
+File|Exit program menu command
+
+This command closes all windows and
+exits DG.
+
+If some windows contain unsaved work,
+you will be prompted either to save it
+or to discard it.
+
+The effect of this command can NOT be
+reversed by Undo.
+
+---
+
+File|Export|Mesh... menu command
+
+This command brings up the "Export
+Mesh..." dialog box allowing you to
+export the mesh, normally after having
+modified it in DG.
+
+---
+
+File|Export|Elements as Template... menu command
+
+This command brings up the "Export
+Elements as Template" dialog box
+allowing you to export elements into a
+template file.
+
+---
+
+Edit|Undo menu command
+
+This command reverses the effect of the
+last operation in the current file.
+Multiple Undo commands will reverse
+effects of multiple consequent
+operations.
+
+---
+
+Edit|Redo menu command
+
+This command reverses the effect of the
+last Undo command, if no other
+operations have been done. Multiple Redo
+commands will reverse effects of
+multiple consequent Undo commands.
+
+---
+
+Edit|Redo all command
+
+This command is similar to the Redo
+command except that it reverses the
+effect of multiple Undo commands at
+once.
+
+---
+
+Edit|Mark all elements command
+
+This command marks all elements. Marked
+sources are not affected.
+
+---
+
+Edit|Unmark all menu command
+
+This commands unmarks all objects.
+
+---
+
+Edit|Create|Point... menu command
+
+This commands brings up the Create
+Point... dialog box.
+
+---
+
+Edit|Create|Source... menu command
+
+This commands brings up the Create
+Source... dialog box.
+
+---
+
+Edit|Create|Chord... menu command
+
+This commands brings up the Create
+Chord... dialog box.
+
+---
+
+Edit|Create|Surface... menu command
+
+This commands brings up the Create
+Surface... dialog box.
+
+---
+
+Edit|Create|Grid point(s)... menu command
+
+This commands brings up the Create Grid
+Point(s)... dialog box.
+
+---
+
+Edit|Create|Separators menu command
+
+This commands creates separators between
+the mesh and the structure.
+
+The structure must be properly
+positioned in order to make it possible
+to create separators without
+intersecting the structure or the mesh.
+
+---
+
+Edit|Delete|Unused points menu command
+
+This command deletes all points that
+have no elements attached.
+
+---
+
+Edit|Delete|Marked objects menu command
+
+This command deletes all marked objects.
+
+---
+
+Edit|Delete|Elements menu command
+
+This command deletes all elements.
+
+---
+
+Edit|Delete|Sources menu command
+
+This command deletes all sources.
+
+---
+
+Edit|Delete|Chords menu command
+
+This command deletes all chords.
+
+---
+
+Edit|Delete|Surface menu command
+
+This command deletes all surfaces.
+
+---
+
+Edit|Delete|Grid points menu command
+
+This command deletes all grid points.
+
+---
+
+Edit|Delete|Separators menu command
+
+This command deletes all separators.
+
+---
+
+Edit|Delete|X point menu command
+
+This command deletes the X point.
+
+---
+
+Edit|Delete|Equilibrium menu command
+
+This command unloads the equilibrium.
+
+---
+
+Edit|Delete|Template menu command
+
+This command unloads the template.
+
+---
+
+Edit|Delete|Mesh menu command
+
+This command unloads the mesh.
+
+---
+
+Edit|Move/Rotate... menu command
+
+This command brings up the
+Move/Rotate... dialog box.
+
+---
+
+View|Refresh menu command
+
+This command redraws the contents of the
+work area.
+
+It appears in the menu only when manual
+refresh is enabled.
+
+---
+
+View|Zoom In menu command
+
+This command increases the zoom factor.
+
+---
+
+View|Zoom Out menu command
+
+This command decreases the zoom factor.
+
+---
+
+View|Picture view menu command
+
+This command adjusts the zoom factor so
+that all visible objects fit into the
+work area.
+
+---
+
+View|Selection view menu command
+
+This command adjusts the zoom factor so
+that all selected objects fit into the
+work area.
+
+---
+
+View|Previous menu command
+
+This menu command restores the previous
+zoom factor and visible area. It can be
+used to reverse the effect of zoom
+operations while leaving any changes
+made to the model intact.
+
+When issued multiple times in a
+sequence, this command follows the
+command history, thus allowing reversing
+the effect of multiple zoom operations.
+
+---
+
+View|Remove labels menu command
+
+This menu command removes all labels
+from objects.
+
+---
+
+View|Display|... toggle buttons
+
+These toggle buttons allow you to hide
+or display different types of objects.
+
+---
+
+View|Mesh header... menu command
+
+This menu command brings up the "Mesh
+header" dialog box, allowing you to
+view and modify the header of the
+current mesh file.
+
+---
+
+Commands|Convert|Template to elements menu command
+
+This command creates a set of elements
+from the template.
+
+Duplicate elements are not produced.
+After the completion, the template
+remains in memory.
+
+---
+
+Commands|Convert|Elements to chords menu command
+
+This command converts marked elements
+into chords.
+
+Duplicate chords are not produced.
+Original elements are deleted.
+
+---
+
+Commands|Convert|Chords to elements menu command
+
+This command converts marked chords into
+elements.
+
+Duplicate elements are not produced.
+Original chords are deleted.
+
+---
+
+Commands|Simplify|Fill gaps... menu command
+
+This command brings up the Fill Gaps
+dialog box, which allows you to fill
+gaps between elements. It can be used to
+automatically correct problems with
+converted templates.
+
+---
+
+Commands|Simplify|Line up normals|... menu commands
+
+These commands force external normals of
+adjacent elements to point to the same
+direction. 'All' affects all elements,
+while 'Marked' only affects marked ones.
+These menu commands can be used to
+automatically correct problems with
+converted templates.
+
+---
+
+Commands|Simplify|Merge/Split elements... menu command
+
+This command brings up the 'Merge/Split
+elements' dialog box, which allows you
+to control the number of elements while
+producing only minimal disturbances to
+the geometry.
+
+---
+
+Commands|Renumber elements menu command
+
+This command renumbers elements and
+separators so that the output file does
+not contain dummy values.
+
+---
+
+Commands|Check variables menu command
+
+This menu command allows you to locate
+all variables that have invalid  or no
+values. It will bring up the Invalid
+Values dialog box that lets you correct
+these errors in a very convenient way.
+
+This command should be used after the
+File|Output... menu command reports
+'Some variables have invalid values'.
+
+---
+
+Commands|Rebuild Carre objects menu command
+
+This menu command attemts to rebuild
+surfaces and grid points using the
+previously used coefficients. It is only
+available in Carre mode.
+
+The main purpose of this command is to
+automatically adjust surfaces after
+changes in the innermost surface or the
+structure.
+
+---
+
+Variables|Add ... menu command
+
+This command creates a layer of
+variables.
+
+---
+
+Variables|Remove ... menu command
+
+This command destroys a layer of
+variables.
+
+
+---
+
+Variables| ... menu command
+
+This command displays a layer of
+variables.
+
+---
+
+Options|Display menu toggle button
+
+This toggle button allows you to hide or
+display the menu in the main window.
+
+When the menu is not displayed, a button
+"Menu" appears in the work area. By
+pressing this button, the menu can be
+re-displayed.
+
+Note: when the menu is not displayed,
+keyboard accelerators for menu commands
+do not work.
+
+---
+
+Options|Output mode... menu command
+
+This menu command brings up the Output
+Mode dialog box, which allows to set the
+output mode and to specify which
+information is required for the output
+file.
+
+---
+
+Options|Mesh editing... menu command
+
+This menu command brings up the "Mesh
+Editing" dialog box, which allows to
+specify options for the mesh editing
+process.
+
+---
+
+Options|Display toolbar toggle button
+
+This toggle button allows you to hide or
+display the toolbar.
+
+---
+
+Options|Manual refresh toggle button
+
+This toggle button allows you to enable
+or disable the manual refresh.
+
+With the manual refesh enabled, DG does
+not redraw the contents of the work area
+automatically when a previously-hidden
+part of the window becomes exposed or
+after small editing operations.
+
+With this option enabled, the Refresh
+command appears in the View menu. This
+command lets you redraw the window
+contents.
+
+---
+
+Options|Program setup... menu command
+
+This command should NOT be used by
+non-experienced users. Wrong settings
+here may prevent DG or other programs
+from working correctly.
+
+This command brings up the Setup...
+dialog box.
+
+This dialog box allows you to customize
+DG variables.
+
+---
+
+Options|Setup|Variables... menu command
+
+This command will bring up the Layer
+Types dialog box.
+
+This dialog box allows you to customize
+layers and manage individual variables.
+
+---
+
+Options|Setup|Save... menu command
+
+This command will save the file in the
+current window as the configuration
+file. It will also update all other
+files loaded in DG to this
+configuration.
+
+Use with care - wrong settings can cause
+loss of information and conflicts with
+other programs.
+
+---
+
+Window|New view menu command
+
+This command opens a new window
+containing the same file as the current
+window.
+
+---
+
+Window|Close menu command
+
+This command closes the current window.
+If the window contains unsaved work that
+is not displayed in other windows, you
+will be prompted either to save or to
+discard the file.
+
+The effect of this command can NOT be
+reversed by Undo.
+
+---
+
+Window|Statistics menu command
+
+This command brings up the
+Statistics dialog box.
+
+This dialog box displays statistics on
+objects in the current file.
+
+---
+
+Window|Toolbox menu command
+
+This command brings up the ToolBox.
+
+The ToolBox is more convenient, but less
+standard tool for assigning tools to
+mouse buttons, than the toolbar.
+
+---
+
+Help menu
+
+This menu lets you access the help
+system.
+
+The 'What's New' menu command displays
+the revision history of DG.
+
+The 'Manual' menu command displays the
+online version of the manual.
+
+The 'Using help' menu command displays
+instructions on using the help system.
+
+The 'On main window' menu command
+displays help on the main window.
+
+---
+
+Help|About... menu command
+
+This command displays program version.
+
+---
+
+DG Manual
+
+The online manual is not available in this
+version of DG.
+
+---
+
+What's New
+
+Here is a brief list of changes in DG:
+
+Version 1.42, March 5, 1998
+---------------------------
+
+- New
+  - Variables in the output file are now sorted according to their
+    positions in the "Variables" dialog box.
+
+
+Version 1.41, March 3, 1998
+---------------------------
+
+- New
+  - Mesh file headers now preserved when exporting a mesh file.
+  - "View|Mesh header..." menu command for viewing and editing them.
+  - "File|Export|Elements as Template..." menu command and dialog box.
+    
+- Interface
+  - "View|Previous" renamed to "View|Previous view".
+  - New environment variables.
+    - DG_EXPORT_TEMPLATE_MASK for exporting templates.
+    - DG_EXPORT_MESH_MASK     for exporting meshes.
+
+
+Version 1.4b, January 21, 1998
+------------------------------
+
+- Bugs fixed
+  - DG sometimes crashed when producing a Carre mode output file.
+  - The "Examine" tool didn't work with "Display Mesh" enabled.
+  - "Split elements" produced zero-length elements.
+  - Wrong filename was sometimes highlighted in the "Save..." dialog box.
+
+
+Version 1.4a, December 9, 1997
+------------------------------
+
+- Bugs fixed
+  - DG crashed on SGI, some other systems.
+  - Some DG files took too long to load.
+  - Memory leak in the menu system.
+  - Missing error messages in the Mesh Options dialog box.
+
+
+Version 1.4, November 2, 1997
+-----------------------------
+
+- Mesh editing added.
+  - "Move Mesh Point" tool.
+  - "Export Mesh" menu command.
+  - Modifications to the mesh saved into DG files.
+  - Separators temporarily disabled.
+  - "Options|Mesh editing..." menu command.
+  - "View|Display|Mesh details" toggle button.
+  - Mesh objects can now be examined.
+  - Mesh cells and elements can now be marked.
+  - New types of variables for storing sets of mesh cells and elements.
+  
+- Interface
+  - New "Variables" dialog box
+    - More compact layout.
+    - "Compare" function.
+    - "Display values" function.
+    - The dialog can be resized and the content scrolled.
+    - The dialog can be rolled up/down with a single mouse click.
+    - Improved error checking.
+  - Warnings during loading files are now displayed again.
+  - "Display" submenu restructured
+  - The contrast of equilibrium display enhanced.
+
+- Bugs fixed
+  - Torn-off menus caused a coredump on exit/close window.
+  - Attempt to create a surface on a horizontal plane caused a coredump.
+  - Memory leaks in the "variables" dialog box.
+  - "Mark group" worked even with element display turned off.
+  - "File|Output..." locked up if there were no elements/separators.
+
+- Problems
+  - Mesh operations do not work on SGI workstations
+  - The "Move mesh point" tool is not completely foolproof.
+  - The field ratio for modified mesh cells is sometimes recalculated
+    with a big error.
+
+
+Version 1.34a, September 9, 1997
+--------------------------------
+
+- Interface
+  - Windows are now properly de-iconified when necessary.
+  - 'Show picture' now considers magnetic surfaces and grid points instead
+    of using the equilibrium boundary.
+  - The margin for 'Show picture' reduced.
+  - A darker color is now used for grid labels.
+
+- Bugfixes
+  - Layer label variables caused crashes on SGI.
+  - Wrong window title in the help dialog.
+  - 'Show picture' did not interpret the mesh correctly.
+
+
+Version 1.34, August 29, 1997
+-----------------------------
+
+- New
+  - The "Output mode" dialog box allows to determine which items are
+    required in the output file.
+  - The DG_NO_OUTPUT_CHECK environment variable is no longer supported.
+  - "Layer label" option for variables.
+
+- Interface
+  - "Variables" menu restructured.
+  - Pressing the Ok button now closes the "New version dialog box.
+  - "Output mode" submenu replaced with a dialog box.
+
+- Bugfixes
+  - Wrong number of chains was output into the structure file in Carre mode.
+
+
+Version 1.33, August 25, 1997
+-----------------------------
+
+- New
+  - 'Edit|Delete|Marked objects' menu command
+  - The DG_NO_OUTPUT_CHECK environment variable, when set, disables all
+    checks when producing the output file. Note that DG works much less
+    reliably in this mode.
+
+
+Version 1.32, August 22, 1997
+-----------------------------
+
+- New
+  - Import HPGL files as templates (only subset of HPGL records supported).
+  - The template can now be scaled and rotated by any angle.
+  - Elements can be converted into chords and vice versa.
+  - The Reposition tool can be used to visually position the template.
+  - Chords
+    - Can now be marked.
+    - Can now have variables (Scope:Chords)
+    - Can now be included in variables (Type:Set of chords)
+
+- Changes
+  - Element numbers of deleted elements are now re-cycled.
+
+- Interface
+  - Chords now listed in the statistics.
+  - 'Mark' tool now allows marking inside a rectangle.
+  - 'Commands' menu reorganized.
+  - The current file is now selected in the Save... dialog box.
+  - Scaling permitted in the Move/Rotate dialog box.
+
+- Bugfixes
+  - Shift+Click in the zoom tool did not work as documented.
+  - Adding a marked source to "set of elements" variables crashed DG.
+  - Some problems with reading very old files corrected.
+  - Attempt to load a non-existing file sometimes caused a coredump.
+  - Fixed minor problems in the "New version" dialog box.
+  - The "Show Picture" command worked incorrectly with templates.
+  - Trying to put a marked source into a variable crashed DG.
+
+
+Version 1.31c, July 25, 1997
+----------------------------
+
+- Bugs fixed
+  - Phantom sources appeared when loading a file with surfaces.
+
+
+Version 1.31b, July 2, 1997
+---------------------------
+
+- Changes
+  - Output file items renamed:
+    - 'xpointcenter' to 'xptcntr'
+    - 'xloopcenter'  to 'xlpcntr'
+
+
+Version 1.31a, May 13, 1997
+---------------------------
+
+- Changes
+  - 'closedstr' entry in targets file renamed to 'clstruct'.
+  - 'Rebuild Carre Objects' now erases all non-Carre grid points.
+
+
+Version 1.31, May 9, 1997
+-------------------------
+
+- Changes
+  - Surfaces in Carre mode now forced to intersect parts of structure
+    containing targets.
+  - Non-closed parts of structure now allowed in Carre mode.
+  - It is now allowed to output 0 grid points in Carre mode.
+
+- Interface
+  - Window|ToolBox menu command automatically hides the toolbar.
+
+- Bugs fixed
+  - Loading files with automatically created surfaces sometimes crashed DG.
+  - Equilibrium/Template/Mesh files sometimes not loaded with the DG file.
+  - DG_MESH_MASK environment varialbe did not have any effect.
+  - 'OK' button improperly greyed out in Create Surface(s) dialog box.
+
+
+Version 1.3 - April 30, 1997
+----------------------------
+
+- Carre output mode added
+  - Options|Output mode submenu for selecting the output mode
+  - New file format, due to the output mode
+  - No bounding rectangle around the structure is produced in Carre mode
+  - Creation parameters of surfaces/grid points are output in Carre mode
+  - Manual editing of surfaces/grid points is not permitted in Carre mode
+  - 'Commands|Rebuild Carre objects' menu command added
+
+- Added
+  - Preferences file
+  - Recent files list
+  - Improved creation of multiple surfaces and grid points
+    - The curve can be now dragged with the mouse
+    - New "Delta" law added
+
+- Changes
+  - Environment variables renamed
+    - DGOPENMASK     to DG_OPEN_MASK
+    - DGSAVEMASK     to DG_SAVE_MASK
+    - DGEQUILMASK    to DG_EQUIL_MASK
+    - DGTEMPLATEMASK to DG_TEMPLATE_MASK
+    - DGSONNETMASK   to DG_MESH_MASK
+  - It is now allowed to output 0 grid points in Sonnet mode
+
+- Interface
+  - Stopped echoing filenames when started with filename parameters
+  - DG version change notification added
+  - Color of enabled toggle buttons changed to yellow
+  - 'Get info/Information' dialog box renamed to Statistics
+  - 'Sonnet output' object renamed to 'Mesh'
+  - 'Help|Manual' menu item removed
+
+- Bugs fixed
+  - Help on main window not displayed properly
+  - Undo history was not cleared after a start with an empty command line
+  - The help dialog box sometimes contained all help topics together
+  - Some memory leaks removed
+
+
+Version 1.26 - April 3, 1997
+----------------------------
+
+- Added
+  - 'Commands|Simplify|...' submenu for post-processing converted templates
+  - Shift+'Reverse Normals' tool now reverses a whole group of elements
+  - 'View|Previous' menu command restores recent zoom factors
+  - Default values for variables now taken from the configuration
+  - 'Help|What's New' menu command displays the revision history
+
+- Interface
+  - Convert template now enables the display of irregular points and normals
+  - Removed mnemonics from the tools menu
+  - Opening template/equil/sonnet output dialogs shows existing objects
+  - Removed double top margin from most dialog boxes
+  - Hotkey for manual refresh changed from ^R to F5
+
+- Bugs fixed
+  - DG sometimes crashed after PostScript output
+  - DG crashed on Sun's
+  - DG sometimes crashed when the Vars menu contained no sensitive items
+  - Help text for variables was not taken from the configuration sometimes
+  - Minor problems in dialog boxes
+
+
+Version 1.25 - March 17, 1997
+-----------------------------
+
+- New
+  - Create surface by area/level
+  - Create multiple surfaces
+  - Create multiple grid points (very enhanced)
+
+- Interface
+  - Faster creation of dialog boxes
+
+- Bugs fixed
+  - DG crashed on Delete X Point when not all surfaces intersected targets
+  - Mark Group caused a lock-up in some configurations
+
+
+Version 1.24
+------------
+
+- New
+  - X point and peak coordinates in the output file
+
+- Internal
+  - Some optimizations - many operations are now times faster
+  - Multiple X points skeleton (in progress)
+
+
+Version 1.23
+------------
+
+- New
+  - PostScript output ('File|Print...' menu command)
+  - 'Commands|Check variables' menu command
+  - "Non-strict" rules
+    - Deleted elements automatically removed from variables
+    - Surfaces/X-Point automatically removed on Delete Equilibrium
+    - Separators automatically removed on Delete Sonnet Grid
+
+- Bugs fixed
+  - Delete Equil/SonnetGrid did not display error message when needed
+  - Some crashes caused by wrong pointers
+
+- Internal
+  - New file format
+
+
+Version 1.22
+------------
+
+- New
+  - Chords
+
+- Interface
+  - Display toggle buttons moved to the View|Display submenu
+  - "Program setup" dialog replaced with a submenu
+  - Non-modal setup dialog boxes
+  - "Add Element" tool: Shift+Button does not attach to an existing point
+  - Help topics for all setup dialog boxes
+  - Help buttons in most setup dialog boxes.
+  - "No popup" toggle button in the Help window menu
+  - Error box displayed in case of invalid paths in DG...MASK variables
+  - Save Configuration dialog is now modeless and simpler
+  - Version information now displayed on the status line after startup.
+  - Changed the layout of the About... dialog.
+
+- Bugs fixed
+  - Sources were not relevant for View|Picture View
+  - Edit|Remove|Unused points was not greyed properly
+  - Help buttons did not work in some dialog boxes
+  - Minor internal bugs
+
+- Internal
+  - New file format
+
+
+Version 1.21
+------------
+
+- New
+  - Broken 2-column template file format
+
+- Interface
+  - Accelerators for Undo/Redo buttons
+  - Changed drawing order of objects
+  - Only zoom/flags change is no more considered 'unsaved document'
+  - Blue component in the background color added
+
+- Bugs fixed
+  - Missing strings and wrong help topics in Motif resources
+  - Added a scrollbar to the list of layer types
+
+
+Version 1.20
+------------
+
+- New
+  - Online help
+  - Manual refresh mode ('Options|Manual refresh' menu command)
+  - Menu and/or toolbar can be disabled separately  ('Options|...')
+  - 'Options/mark groups removed'; groups now marked with Shift+Mark
+
+- Bugs fixed
+  - Online help system sometimes caused an exception
+  - Online help system displayed an extra line in the help window
+

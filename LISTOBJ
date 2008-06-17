@@ -1,0 +1,1 @@
+OBJS = actions.o app.o calc.o chords.o dgfile.o dgoutput.o dgupdate.o draw.o elmnodes.o equil.o mesh.o ngroups.o oldfile.o ps_view.o sonnet.o sources.o spline.o tools.o vacreate.o vars.o view.o x_creobj.o x_dlg.o x_fileio.o x_help.o x_info.o x_main.o x_menu.o x_mesh.o x_notify.o x_rotmov.o x_setup.o x_toolb.o x_topo.o x_vars.o x_verdlg.o x_view.o x_xapp.o x_~fbr.o xapp.o xpoint.o
