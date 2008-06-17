@@ -218,7 +218,7 @@ static int NextGridPointSegNumber(App a);
 static int CheckXPointLevels(Equil eq,int cx1,int cy1,int cx2,int cy2,
     int x0,int y0,int bMinMax) {
 
-  int x,y,nx,ny,d,nd;
+  int x,y,nx=0,ny=0,d,nd;
 
   if ((x0==cx1 || x0==cx2) && (y0==cy1 || y0==cy2)) {
 /*    AddSource(a,eq->x[x0],eq->y[y0]); */
@@ -460,7 +460,7 @@ static int FindXPointCenter(Equil eq,XPointTest xpt) {
 
 static Group CalcSeparatrixLine(Equil eq,XPointTest xpt,Group xpg,int idx) {
   int i,n,x,y,ox,oy;
-  XPointTest xpi;
+  XPointTest xpi = NULL;
   struct _SurfCell sc;
   Group g,g_t;
   XY xy,xy1,xy0;
@@ -1090,7 +1090,7 @@ k++;
 
 static Group CalcGradientLine(Equil eq,int x0,int y0,int steps,int bMinMax) {
   Group g;
-  int x,y,ox,oy,nx,ny;
+  int x,y,ox,oy,nx=0,ny=0;
   int cx1,cy1,cx2,cy2,cx,cy,ocx,ocy,d;
   double fx,fy,xyLvl,lvl,angle,angleMax,dist;
 
@@ -1798,9 +1798,12 @@ static int ActDelSurfaceZone(App a,DelRec ar) {
   return 0;
 }
 
-SurfaceZone AddSurfaceZone(App a,int szNo,int gpsNo1,int gpsNo2,int orient) {
+SurfaceZone AddSurfaceZone(App a,int szNo,int gpsNo1,int gpsNo2,int orient,
+    int innerId) {
   SurfaceZone sz;
   struct _ActRec ar;
+  Elem e;
+  Index ix;
 
   assert(orient==1 || orient==-1);
 
@@ -1817,6 +1820,11 @@ SurfaceZone AddSurfaceZone(App a,int szNo,int gpsNo1,int gpsNo2,int orient) {
   sz->level1=sz->level2=0;
   sz->flags=0;
   sz->bounds=NULL;
+
+  if (innerId >= 0) {
+    for (e=AppElem1st(a,&ix);e!=NULL;e=Next(&ix))
+      if (e->id==innerId) sz->innermost=e;
+  } else sz->innermost=NULL;
 
   sz->shortName=NULL;
   sz->longName=NULL;

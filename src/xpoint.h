@@ -61,6 +61,7 @@ struct _SurfaceZone {
   long flags;
   double level1,level2;
   Group bounds;
+  Elem innermost;
 };
 
 /* Orientation: +1 to the left  -1 to the right */
@@ -149,7 +150,8 @@ char* GetGridPointSegDescription(GridPointSeg gps);
 
 #define SurfaceZoneIsUsed(sz) ((sz)->zone>=0)
 
-SurfaceZone AddSurfaceZone(App a,int szNo,int gpsNo1,int gpsNo2,int sign);
+SurfaceZone AddSurfaceZone(App a,int szNo,int gpsNo1,int gpsNo2,int orient,
+    int innerId);
 void* DelSurfaceZone(SurfaceZone sz);
 void SetSurfaceZoneFlags(SurfaceZone sz,long flags);
 

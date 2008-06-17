@@ -3,6 +3,8 @@
 #define DLG_ROTMOVE "dlgRotMove"
 #define DLG_GLUEPOINTS "dlgGluePoints"
 #define DLG_GLUEELEMS "dlgGlueElems"
+#define DLG_STRETCH "dlgStretch"
+#define DLG_SETANGLE "dlgSetAngle"
 
 /* ////////////////////////////////////////////////////////////////// */
 /* //                                                              // */
@@ -21,7 +23,7 @@ typedef struct _RotMoveDlg {
 static void CbRotMoveDlgRotate(Widget wg,RotMoveDlg dlg,void* pcbs) {
   Node n;
   Index ix;
-  double x,y,angle;
+  double x,y,angle,th;
   int bN,bT;
 
   SetActiveView(dlg->w);
@@ -47,7 +49,7 @@ static void CbRotMoveDlgRotate(Widget wg,RotMoveDlg dlg,void* pcbs) {
         ErrorBox(dlg->wDlg,WhyLocked(dlg->w,n));
         return;
       }
-      ChangeNode(dlg->w->app,n,-n->y,n->x);
+      ChangeNode(dlg->w->app,n,-n->y,n->x); /* need to change this line */
     }
     SetViewFlags(dlg->w,dlg->w->showFlags | SHW_ELEMS);
   }
@@ -362,3 +364,169 @@ void CbGroupNormals(Widget wg,XtPointer xtpV,XtPointer pbcs) {
         "$(COUNT)%d",r));
   }
 }
+
+/* ////////////////////////////////////////////////////////////////// */
+/* //                                                              // */
+/* //  Stretch Dialog                                              // */
+/* //                                                              // */
+/* ////////////////////////////////////////////////////////////////// */
+
+
+typedef struct _StretchDlg {
+  View w;
+  Widget wDlg,wFactorX,wFactorY;
+}* StretchDlg;
+
+static void StretchDlgResetFields(StretchDlg dlg) {
+  char s[256];
+
+  sprintf(s,"%f",1.);
+  XmTextSetString(dlg->wFactorX,s);
+  XmTextSetString(dlg->wFactorY,s);
+}
+
+static void CbStretchDlgSetFactors(Widget wg,StretchDlg dlg,void* pcbs) {
+  double xScale,yScale;
+
+  ValidatePtr(dlg->w,"CbStretchDlgSetFactors");
+  SetActiveView(dlg->w);
+
+  xScale=GetXmTextDouble(dlg->wFactorX);
+  yScale=GetXmTextDouble(dlg->wFactorY);
+  if (xScale==0 || xScale==MAXDOUBLE || yScale==0 || yScale==MAXDOUBLE) {
+    ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_INVNUMBERS));
+    return;
+  }
+
+  SetViewRect(dlg->w,
+    1/xScale*dlg->w->minX+(1-1/xScale)*dlg->w->centerX,
+    1/yScale*dlg->w->minY+(1-1/yScale)*dlg->w->centerY,
+    1/xScale*dlg->w->maxX+(1-1/xScale)*dlg->w->centerX,
+    1/yScale*dlg->w->maxY+(1-1/yScale)*dlg->w->centerY);
+  UndoMark(dlg->w->app);
+}
+
+static void CbStretchDlgReset(Widget wg,StretchDlg dlg,void* pcbs) { 
+  StretchDlgResetFields(dlg);
+}
+
+static StretchDlg CreateStretchDlg(View w,Widget wParent) {
+  StretchDlg dlg;
+  Widget wg,wg1;
+
+  dlg=Malloc(sizeof(*dlg));
+  dlg->w=w;
+  dlg->wDlg=CreateOkCancelDialog(wParent,DLG_STRETCH);
+  XtAddCallback(dlg->wDlg,XmNdestroyCallback,CbFree,(XtPointer)dlg);
+  XtAddCallback(dlg->wDlg,XmNokCallback,
+    (XtCallbackProc)CbStretchDlgSetFactors,dlg);
+  XtAddCallback(dlg->wDlg,XmNhelpCallback,CbHelp,(XtPointer)w);
+
+  wg=Cmw(XmCreatePushButton,dlg->wDlg,"reset",
+    NULL);
+  XtAddCallback(wg,XmNactivateCallback,
+    (XtCallbackProc)CbStretchDlgReset,dlg);
+
+  wg1=Cmw(XmCreateForm,dlg->wDlg,"form",
+    NULL);
+
+  CreateWidgetSystem(wg1,
+    "#8?:form1",&wg,
+     "l#:xLabel",1,1,
+     "x#?:x",2,1,&dlg->wFactorX,
+     "l#:yLabel",1,2,
+     "x#?:y",2,2,&dlg->wFactorY,
+    "-#:",
+    NULL);
+
+  StretchDlgResetFields(dlg);
+
+  Cmw(XmCreateSeparator,wg1,"separ",
+    XmNorientation,XmHORIZONTAL,
+
+    XmNleftAttachment,XmATTACH_FORM,
+    XmNrightAttachment,XmATTACH_FORM,
+    XmNtopAttachment,XmATTACH_FORM,
+    NULL);
+
+  XtManageChild(dlg->wDlg);
+
+  return dlg;
+}
+
+Widget OpenStretchDlg(View w) {
+  Widget wDlg;
+
+  wDlg=XtNameToWidget(w->x->wMain,"*"DLG_STRETCH);
+  if (wDlg==NULL) wDlg=CreateStretchDlg(w,w->x->wMain)->wDlg;
+  else XtPopup(XtParent(wDlg),XtGrabNone);
+
+  return wDlg;
+}
+
+/* ////////////////////////////////////////////////////////////////// */
+/* //                                                              // */
+/* //  Set Angle Dialog                                            // */
+/* //                                                              // */
+/* ////////////////////////////////////////////////////////////////// */
+
+typedef struct _SetAngleDlg {
+  View w;
+  Widget wDlg,wAngle;
+}* SetAngleDlg;
+
+static void CbSetAngle(Widget wg,SetAngleDlg dlg,void* pcbs) {
+  double deg;
+
+  ValidatePtr(dlg->w,"CbSetAngle");
+  SetActiveView(dlg->w);
+
+  deg=GetXmTextDouble(dlg->wAngle);
+  if (deg==MAXDOUBLE) {
+    ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_INVNUMBERS));
+    return;
+  }
+  SetViewAngle(dlg->w,M_PI/180*deg);
+
+  XtPopdown(XtParent(dlg->wDlg));
+  UndoMark(dlg->w->app);
+}
+
+Widget OpenSetAngleDlg(View w) {
+  XtPointer xtp;
+  SetAngleDlg dlg;
+  Widget wDlg,wg;
+  char s[256];
+
+  wDlg=XtNameToWidget(w->x->wMain,"*"DLG_SETANGLE);
+  if (wDlg==NULL) {
+    dlg=Malloc(sizeof(*dlg));
+    dlg->w=w;
+    dlg->wDlg=wDlg=CreateOkCancelDialog(w->x->wMain,DLG_SETANGLE);
+    XtAddCallback(wDlg,XmNdestroyCallback,CbFree,(XtPointer)dlg);
+
+    XtAddCallback(wDlg,XmNokCallback,(XtCallbackProc)CbSetAngle,dlg);
+    XtUnmanageChild(XtNameToWidget(wDlg,"Help"));
+
+    wg=Cmw(XmCreateForm,wDlg,"form",
+      NULL);
+    CreateMenuSystem(wg,
+    "l@:angleLabel",0x0101,
+    "x?@:angle",&dlg->wAngle,0x0102,
+       NULL);
+    Form2Table(wg);
+    sprintf(s,"%f",180/M_PI*w->xyAngle);
+    XmTextSetString(dlg->wAngle,s);
+    XtManageChild(wDlg);
+  }
+  else {
+    sprintf(s,"%f",180/M_PI*w->xyAngle);
+    wg=XtNameToWidget(w->x->wMain,"*angle");
+    if (wg==NULL)  fprintf(stderr,"couldn't set string\n");
+    XmTextSetString(wg,s);
+    XtPopup(XtParent(wDlg),XtGrabNone);
+  }
+
+  return wDlg;
+}
+

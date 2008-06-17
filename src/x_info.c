@@ -27,8 +27,8 @@ Widget OpenAboutDlg(View w) {
     SetValues(wDlg,XmNmessageString,xms,NULL);
     XmStringFree(xms);
 
-    XtUnmanageChild(XmMessageBoxGetChild(wDlg,XmDIALOG_CANCEL_BUTTON));
-    XtUnmanageChild(XmMessageBoxGetChild(wDlg,XmDIALOG_HELP_BUTTON));
+    XtUnmanageChild(XtNameToWidget(wDlg,"Cancel"));
+    XtUnmanageChild(XtNameToWidget(wDlg,"Help"));
     XtManageChild(wDlg);
   } else XtPopup(XtParent(wDlg),XtGrabNone);
 

@@ -14,9 +14,10 @@
 #include <time.h>
 #include <ctype.h>
 #include <values.h>
+#include <pthread.h>
 
 #define DG_FNAME_LEN 256
-#define DG_VERSION 20100
+#define DG_VERSION 21000
 
 #ifdef PC_VERSION
 

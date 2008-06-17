@@ -163,10 +163,10 @@ void* Malloc(size_t size) {
   if (p==NULL)
     FatalError("Malloc()-no memory: fatal error 1");
 
-  #ifdef MALLOC_TRACE
+#ifdef MALLOC_TRACE
     *(long*)p=MALLOC_PATTERN;
     p=(char*)p+MALLOC_PATTERN_OVERHEAD;
-  #endif
+#endif
 
   return p;
 }

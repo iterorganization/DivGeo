@@ -1,10 +1,16 @@
+/* changes 7/6/06:
+ * "class" of dlg-wText changed from ScrolledText to Text
+ * all references to wSwNoPopup eliminated - popup disabling option disabled
+ * font initialized to XmFONT_IS_FONT
+ */
+
 #include "x_dg.h"
 
 #define DLG_HELPSYSTEM "dlgHelpSystem"
 #define SHELL_HELPSYSTEM "helpSystemShell"
 
 typedef struct _HelpSystemDlg {
-  Widget wDlg,wText,wSwNoPopup;
+  Widget wDlg,wText/*,wSwNoPopup*/;
   int bPoppedUp;
 }* HelpSystemDlg;
 
@@ -16,7 +22,9 @@ void DisplayHelpText(View w,String text,size_t offset) {
   XtPointer xtp;
 
   wDlg=XtNameToWidget(w->xapp->x->wShell,"*"DLG_HELPSYSTEM);
+
   if (wDlg==NULL) {
+
     dlg=Malloc(sizeof(*dlg));
 
     wShell=XtCreatePopupShell(SHELL_HELPSYSTEM,
@@ -29,7 +37,7 @@ void DisplayHelpText(View w,String text,size_t offset) {
 
     dlg->wDlg=wDlg=Cmw(XmCreateMainWindow,wShell,DLG_HELPSYSTEM,
       XmNuserData,(XtPointer)dlg,
-      NULL,0);
+      NULL,NULL);
 
     wg=Cmw(XmCreateMenuBar,wDlg,"helpMainMenu",
       NULL,0);
@@ -40,20 +48,22 @@ void DisplayHelpText(View w,String text,size_t offset) {
       "+:helpWindowMenu",
       "bA:close",CbUnmap,wShell,
       "s:separator",
-      "t?:noPopup",&dlg->wSwNoPopup,
+      /*"t?:noPopup",&dlg->wSwNoPopup,*/
       "-:",
     NULL);
 
-    dlg->wText=Cmw(XmCreateScrolledText,wDlg,"text",
+    dlg->wText=Cmw(XmCreateText,wDlg,"helptext",
       XmNeditMode,XmMULTI_LINE_EDIT,
       XmNeditable,False,
       XmNtraversalOn,False,
       XmNnavigationType,XmNONE,
+      XmNfont,XmFONT_IS_FONT,
     NULL);
   } else {
     GetValues(wDlg,XmNuserData,&xtp,NULL);
     dlg=(HelpSystemDlg)xtp;
   }
+
 
   if (text!=NULL) {
     XmTextSetString(dlg->wText,text);
@@ -62,10 +72,10 @@ void DisplayHelpText(View w,String text,size_t offset) {
   }
 
   XtRealizeWidget(XtParent(wDlg));
-
-  if (dlg->bPoppedUp && XmToggleButtonGetState(dlg->wSwNoPopup)) return;
-
   dlg->bPoppedUp=True;
+
+  /*if (dlg->bPoppedUp && XmToggleButtonGetState(dlg->wSwNoPopup)) return;*/
+
   XtPopup(XtParent(wDlg),XtGrabNone);
   XMapWindow(XtDisplay(XtParent(wDlg)),XtWindow(XtParent(wDlg)));
 }

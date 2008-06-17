@@ -597,6 +597,7 @@ static Widget OpenVarDefEditDlg(View w,VarDef vd) {
       "b@A:int",       (XtPointer)VT_INT,  CbVarDefEditSensitive,dlg,
       "b@A:float",     (XtPointer)VT_FLOAT,CbVarDefEditSensitive,dlg,
       "b@A:text",      (XtPointer)VT_TEXT, CbVarDefEditSensitive,dlg,
+      "b@A:filename",  (XtPointer)VT_FILENAME,CbVarDefEditSensitive,dlg,
       "s:separator",
       "b@A:elem",      (XtPointer)VT_ELEM, CbVarDefEditSensitive,dlg,
       "b@A:elems",     (XtPointer)VT_ELEMS,CbVarDefEditSensitive,dlg,
@@ -605,6 +606,7 @@ static Widget OpenVarDefEditDlg(View w,VarDef vd) {
       "b@A:structure", (XtPointer)VT_STRUCTURE, CbVarDefEditSensitive,dlg,
       "b@A:structPart",(XtPointer)VT_STRUCTPART,CbVarDefEditSensitive,dlg,
       "b@A:chords",    (XtPointer)VT_CHORDS,CbVarDefEditSensitive,dlg,
+      "b@A:topView",   (XtPointer)VT_TOPVIEW,CbVarDefEditSensitive,dlg,
       "s:separator",
       "b@A:meshCells", (XtPointer)VT_MESH_CELLS,CbVarDefEditSensitive,dlg,
       "b@A:meshElems", (XtPointer)VT_MESH_ELEMENTS,CbVarDefEditSensitive,dlg,
@@ -953,7 +955,7 @@ static void CbSaveConfigDlgOk(Widget wDlg,XtPointer xtpV,XtPointer pcbs) {
   for (w=Group1st(xap->views,&ix);w!=NULL;w=Next(&ix))
     if (w->app!=NULL && w->app!=a && !InGroup(g,w->app))
       GroupAdd(g,w->app);
-  w=(View)xtpV; /* Restore w to it's value after being used in the loop */
+  w=(View)xtpV; /* Restore w to its value after being used in the loop */
 
   /* If yes, then ask the user whether to update them */
 

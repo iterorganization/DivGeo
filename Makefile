@@ -12,6 +12,9 @@ include LISTOBJ
 #CC=cc
 
 include config/compiler.$(OBJECTCODE)
+ifeq ($(shell [ -e config.local/compiler.${OBJECTCODE} ] && echo yes || echo no ),yes)
+include config.local/compiler.${OBJECTCODE}
+endif
 
 DEST = $(OBJS:%.o=$(OBJECTCODE)/%.o)
 
@@ -47,7 +50,9 @@ files:
 	@rm src/*; cp $(MASTER)/*.c $(MASTER)/*.h $(MASTER)/dg.dgh $(MASTER)/divgeo.res src; cd src; rm pc_* bgi_* 1.c; true
 
 ${OBJECTCODE}/dependencies:
+	-mkdir ${OBJECTCODE}
 	touch ${OBJECTCODE}/dependencies
+	${MAKE} depend
 
 LISTOBJ:
 	touch LISTOBJ

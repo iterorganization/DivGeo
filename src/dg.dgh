@@ -1,6 +1,6 @@
 0123456789012345678901234567890123456789
 
-DivGeo help file v201 BETA
+DivGeo help file v200 BETA
 ----------------------------
 
 Main window
@@ -2471,11 +2471,33 @@ What's New
 
 Here is a brief list of changes in DG:
 
-Version 2.01, March 04, 2004 BETA
-------------------------------------
+Version 2.1, December 14, 2007 (work by Alan Chin)
+-------------------------------------------------
 
-- New: the mesh filename is added to the *.trg output file
+- Establish compatibility with Motif 2.x (Open Motif) and LessTif.
 
+- Autosave feature automatically saves the .dg file (with a "~")
+  appended every 5 minutes.
+
+- Concave mesh cells are highlighted in pink.
+
+- A button in the "Create Surface(s)..." dialog identifies the
+  element that is determining the outermost flux surface.
+
+- Tool and menu items permit arbitrary rotation of the view
+  in the poloidal plane.
+
+- Tool and menu items permitting arbitrary stretching or
+  shrinking of the view in the poloidal plane.
+
+- Chords with toroidal extent (3-D) now supported,
+  - Added a feature to automatically extend a chord to end on 
+    the nearest element in its path.
+
+- Add a new mode for viewing the model from the top down,
+  - For visualizing chords with toroidal extent.
+
+- Added a "filename" variable field.
 
 Version 2.0, October 12, 1998 BETA
 ------------------------------------

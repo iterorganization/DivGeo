@@ -17,7 +17,10 @@ XApp CreateXApp(int* pargc,char** argv) {
   xap->pargc=pargc;
   xap->argv=argv;
   xap->bLoadConfig=1;
+
   ConfigureXApp(xap);
+
+  /* value of bLoadConfig is unaffected by ConfigureXApp */
   if (xap->bLoadConfig) {
     xap->config=LoadApp(xap,xap->configFileName,&msg,&err);
     if (msg!=NULL) msg=Free(msg);

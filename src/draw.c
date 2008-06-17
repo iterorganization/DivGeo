@@ -1,6 +1,7 @@
 #include "dg.h"
 
 void DrawNode(View w,Node n,int mode) {
+
   if (!(w->showFlags&SHW_NODES ||
       (w->showFlags&SHW_IRRNODES && !IsRegularNode(n,NULL)))) return;
   switch(mode) {
@@ -20,26 +21,7 @@ void DrawElem(View w,Elem e,int mode) {
   double x,y,l;
   char s[10];
 
-  if (w->showFlags & SHW_NORMALS) {
-    l=Point2PointDist(e->n[1]->x,e->n[1]->y,e->n[2]->x,e->n[2]->y);
-    if (l>(double)w->normalLen/1e6) {
-      switch(mode) {
-        case DRAW_ON:
-          SetViewMode(w,
-            IsHighlighted(w->app,e) ? VMX_ELEMNORMAL : VM1_ELEMNORMAL);
-          break;
-        case DRAW_OFF:
-          if (IsHighlighted(w->app,e)) {SetViewMode(w,VMX_ELEMNORMAL);break;}
-        case DRAW_ERASE:
-          SetViewMode(w,VM0_ELEMNORMAL);
-          break;
-      }
-      x=(e->n[1]->x+e->n[2]->x)/2;
-      y=(e->n[1]->y+e->n[2]->y)/2;
-      DrawViewLine(w,x,y,x+(e->n[2]->y-e->n[1]->y)*w->normalLen/l/w->zoomX,
-        y-(e->n[2]->x-e->n[1]->x)*w->normalLen/l/w->zoomY);
-    }
-  }
+  if (w->showFlags & SHW_NORMALS) DrawNormal(w,e,mode);
   if (w->showFlags & SHW_ELEMS) {
     if (IsMarked(w->app,e) && !IsHighlighted(w->app,e)) {
       switch(mode) {
@@ -471,4 +453,135 @@ void DrawSource(View w,Source src,int mode) {
   DrawViewLine(w,src->x,src->y,src->x-rx,src->y+ry);
   DrawViewLine(w,src->x,src->y,src->x+rx,src->y-ry);
   DrawViewLine(w,src->x,src->y,src->x+rx,src->y+ry);
+}
+
+void DrawNormal(View w,void* obj,int mode) {
+  double x1,y1,x2,y2,x,y,l;
+  Elem e;
+  Chord ch;
+
+  switch (GetObjType(obj)) {
+    case T_ELEM:
+      e=obj;
+      x1=e->n[1]->x; y1=e->n[1]->y;
+      x2=e->n[2]->x; y2=e->n[2]->y;
+      break;
+    case T_CHORD:
+      ch=obj;
+      if (~w->showFlags & SHW_CHORDS) return;
+      if (w->showFlags & SHW_TOPVIEW) {
+	x1=ch->x1; y1=ch->z1;
+	x2=ch->x2; y2=ch->z2;
+      }
+      else {
+	x1=ch->x1; y1=ch->y1;
+	x2=ch->x2; y2=ch->y2;
+      }
+      break;
+    default:
+      FatalError("DrawNormal()-type%d:fatal error1",GetObjType(obj));
+  }
+
+  l=Point2PointDist(x1,y1,x2,y2);
+  if (l>(double)w->normalLen/1e6) {
+    switch(mode) {
+      case DRAW_ON:
+	SetViewMode(w,
+          IsHighlighted(w->app,obj) ? VMX_ELEMNORMAL : VM1_ELEMNORMAL);
+	break;
+      case DRAW_OFF:
+	if (IsHighlighted(w->app,obj)) {SetViewMode(w,VMX_ELEMNORMAL);break;}
+      case DRAW_ERASE:
+	SetViewMode(w,VM0_ELEMNORMAL);
+	break;
+    }
+    x=(x1+x2)/2;
+    y=(y1+y2)/2;
+    DrawViewLine(w,x,y,x+(y2-y1)*w->normalLen/l/w->zoomX,
+      y-(x2-x1)*w->normalLen/l/w->zoomY);
+  }
+}
+
+#define PHI_STEP (M_PI/24) /* the toroidal angle subtended by a wall segment */
+static void Draw3DLine(View w,double x1, double x2) {
+  double ph,cp,sp,ocp,osp;
+
+  ocp=1;osp=0;
+
+  /* if PHI_STEP is too small, will not draw the last segment, so
+     increase the max by a small amount */
+  for (ph=PHI_STEP;ph<=2*M_PI;ph+=PHI_STEP) {
+    cp=cos(ph);sp=sin(ph);
+    DrawViewLine(w,cp*x1,sp*x1,cp*x2,sp*x2);
+    DrawViewLine(w,cp*x1,sp*x1,ocp*x1,osp*x1);
+    DrawViewLine(w,cp*x2,sp*x2,ocp*x2,osp*x2);
+    ocp=cp;osp=sp;
+  }
+}
+
+/* supports drawing all markable objects. (original implementation of
+   VT_TOPVIEW was as a View subfield) */
+
+void Draw3DObjects(View w) {
+  Var v;
+  void* obj;
+  double ph,r,rx,ry,x,y,minX,maxX;
+  Source src;
+  Chord ch;
+  Elem e;
+  int i,bMeshDrawn=0;
+  Index ix;
+
+  if (~w->showFlags & SHW_TOPVIEW) return;
+
+  v=GetVarPtrByType(w->app,VT_TOPVIEW);
+  if (v==NULL || v->val==NULL || IsEmptyGroup(v->val)) return;
+
+  for (obj=Group1st(v->val,&ix);obj!=NULL;obj=Next(&ix)) {
+    switch (GetObjType(obj)) {
+      case T_SOURCE:
+	if (~w->showFlags & SHW_SOURCES) break;
+	src=obj;
+	SetViewMode(w,IsHighlighted(w->app,src) ? VMX_SOURCE : VM1_SOURCE);
+	r=w->srcR/(w->zoomX+w->zoomY)*2;
+	rx=((int)(0.886*w->srcR))/w->zoomX;
+	ry=((int)(0.500*w->srcR))/w->zoomX;
+	for (ph=0;ph<2*M_PI;ph+=PHI_STEP) {
+	  x=cos(ph)*src->x;
+	  y=sin(ph)*src->x;
+	  DrawViewLine(w,x,y-r,x,y+r);
+	  DrawViewLine(w,x,y,x-rx,y-ry);
+	  DrawViewLine(w,x,y,x-rx,y+ry);
+	  DrawViewLine(w,x,y,x+rx,y-ry);
+	  DrawViewLine(w,x,y,x+rx,y+ry);
+	}
+      case T_CHORD:
+	if (~w->showFlags & SHW_CHORDS) break;
+	SetViewMode(w,IsHighlighted(w->app,ch) ? VMX_CHORD : VM1_CHORD);
+	ch=obj;
+	Draw3DLine(w,ch->x1,ch->x2);
+	break;
+      case T_MESHELEMENT:
+      case T_MESHCELL:
+	if (bMeshDrawn) break;
+	if (~w->showFlags & SHW_MESH) break;
+	SetViewMode(w,IsHighlighted(w->app,obj) ?
+	    VMX_MESHELEMENT : VM1_MESHELEMENT);
+	minX=MAXDOUBLE;maxX=-MAXDOUBLE;
+	for (i=0;i<w->app->mesh->pointCount;i++) {
+	  r=(w->app->mesh->points+i)->x;
+	  if (r<minX) minX=r;
+	  if (r>maxX) maxX=r;
+	}
+	Draw3DLine(w,minX,maxX);
+	bMeshDrawn=1;
+	break;
+      case T_ELEM:
+	if (~w->showFlags & SHW_ELEMS) break;
+	e=obj;
+	SetViewMode(w,IsHighlighted(w->app,e) ? VMX_ELEM : VM1_ELEM);
+	Draw3DLine(w,e->n[1]->x,e->n[2]->x);
+	break;
+    }
+  }
 }

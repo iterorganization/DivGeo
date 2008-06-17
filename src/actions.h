@@ -74,7 +74,7 @@ typedef ActRec UndoMarkRec;
 
 /* Any changes to Malloc'ed strings in objects are made via
    ChangeObjStringRec/ActChangeObjString. For a normal operation,
-   the object to be changed should contain it's type id as the first
+   the object to be changed should contain its type id as the first
    field in the object structure. fieldId specifies the field in the
    object structure to be changed; objChange points to the object; obj
    points to the string. obj==NULL means the current string should be
@@ -121,7 +121,7 @@ typedef struct _ChangeObjPointerRec {
 }* ChangeObjPointerRec;
 
 /* ActChangeAppView is called whenever another View becomes active or
-   the user changes zoom factor or showFlags. It's main purpose is to
+   the user changes zoom factor or showFlags. Its main purpose is to
    ensure the Undo command can reverse effects of such user actions.
 */
 typedef struct _ChangeAppViewRec {
@@ -130,6 +130,7 @@ typedef struct _ChangeAppViewRec {
   int mode;
   double minX,minY,maxX,maxY;
   unsigned long showFlags;
+  double xyAngle;
 }* ChangeAppViewRec;
 
 /* Following are action records for various action routines

@@ -8,13 +8,13 @@ struct _XApp {
 
   XAppExt x;
   Group views;
-  int* pargc;
-  char** argv;
-  App config;
-  int bLoadConfig;
   char* configFileName;
+  App config;
   StringSource stringSource;
 
+  int* pargc;
+  char** argv;
+  int bLoadConfig;
 };
 
 #ifndef NO_DUMMIES

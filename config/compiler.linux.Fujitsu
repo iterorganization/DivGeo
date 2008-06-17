@@ -1,3 +1,0 @@
-LIBS= -Wl,-Bstatic -lXm -Wl,-Bdynamic -lXt -lX11 -lm -L/usr/X11R6/lib
-CFLAGS= -g
-CC= cc

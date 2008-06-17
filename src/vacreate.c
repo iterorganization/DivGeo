@@ -62,6 +62,7 @@
 #include <ctype.h>
 #include <values.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "vacreate.h"
 
@@ -109,6 +110,8 @@ static ArgList MakeVaArgList(va_list* pvl,int* pN) {
   String p0;
   XtArgVal p1;
 
+  memset(&a, sizeof(a), 0);
+
 #ifdef DEBUG_SETVALUES
   puts("MakeVaArgList");                /* relcheck_ignore_line */
 #endif
@@ -126,6 +129,7 @@ static ArgList MakeVaArgList(va_list* pvl,int* pN) {
   return a;
 }
 
+/* Create Widget */
 Widget Cw(Widget (*CreateFn)(Widget,String,ArgList,Cardinal),Widget parent,
           void* name,...) {
   Widget wg;
@@ -142,6 +146,7 @@ Widget Cw(Widget (*CreateFn)(Widget,String,ArgList,Cardinal),Widget parent,
   return wg;
 }
 
+/* Create Managed Widget */
 Widget Cmw(Widget (*CreateFn)(Widget,String,ArgList,Cardinal),Widget parent,
           void* name,...) {
   Widget wg;
@@ -494,9 +499,9 @@ Widget CreateMessageDialog(Widget wParent,String name,...) {
 */
     NULL);
   /*
-  XtUnmanageChild(XmMessageBoxGetChild(wBox,XmDIALOG_OK_BUTTON));
-  XtUnmanageChild(XmMessageBoxGetChild(wBox,XmDIALOG_CANCEL_BUTTON));
-  XtUnmanageChild(XmMessageBoxGetChild(wBox,XmDIALOG_HELP_BUTTON));
+  XtUnmanageChild(XtNameToWidget(wBox,"OK"));
+  XtUnmanageChild(XtNameToWidget(wBox,"Cancel"));
+  XtUnmanageChild(XtNameToWidget(wBox,"Help"));
   */
   SetValues(wBox,XmNautoUnmanage,False,NULL);
 
@@ -508,7 +513,7 @@ Widget CreateMessageDialog(Widget wParent,String name,...) {
 }
 
 Widget CreateDialogEx(Widget wParent,String name,va_list* pargs,int flags) {
-  Widget wDlg;
+  Widget wDlg = NULL;
   Atom wm_delete_window;
   ArgList args;
   int argn;
@@ -529,13 +534,14 @@ Widget CreateDialogEx(Widget wParent,String name,va_list* pargs,int flags) {
     CbUnmap,NULL);
 
   if (flags & CDLG_NOLABEL)
-    XtUnmanageChild(XmMessageBoxGetChild(wDlg,XmDIALOG_MESSAGE_LABEL));
+    XtUnmanageChild(XtNameToWidget(wDlg,"Message"));
   if (flags & CDLG_NOOK)
-    XtUnmanageChild(XmMessageBoxGetChild(wDlg,XmDIALOG_OK_BUTTON));
+    XtUnmanageChild(XtNameToWidget(wDlg,"OK"));
   if (flags & CDLG_NOCANCEL)
-    XtUnmanageChild(XmMessageBoxGetChild(wDlg,XmDIALOG_CANCEL_BUTTON));
+    XtUnmanageChild(XtNameToWidget(wDlg,"Cancel"));
   if (flags & CDLG_NOHELP)
-    XtUnmanageChild(XmMessageBoxGetChild(wDlg,XmDIALOG_HELP_BUTTON));
+    XtUnmanageChild(XtNameToWidget(wDlg,"Help"));
+
 
   if (pargs!=NULL) {
     args=MakeVaArgList(pargs,&argn);
@@ -654,9 +660,9 @@ void CbFreeGC(Widget wg,XtPointer xtpGC,XtPointer pcbs) {
 void CbRemovePTimeOut(Widget wg,XtPointer xtppTO,XtPointer pcbs) {
   XtIntervalId* pxtiid=(XtIntervalId*)xtppTO;
 
-  if (*pxtiid!=NULL) {
+  if (*pxtiid!=(int) NULL) {
     XtRemoveTimeOut(*pxtiid);
-    *pxtiid=NULL;
+    *pxtiid=(int) NULL;
   }
 }
 
@@ -737,8 +743,8 @@ void ErrorBox(Widget w,char* name) {
       XmNautoUnmanage,False,
       XmNdeleteResponse,XmDESTROY,
       NULL);
-    XtUnmanageChild(XmMessageBoxGetChild(wDlg,XmDIALOG_CANCEL_BUTTON));
-    XtUnmanageChild(XmMessageBoxGetChild(wDlg,XmDIALOG_HELP_BUTTON));
+    XtUnmanageChild(XtNameToWidget(wDlg,"Cancel"));
+    XtUnmanageChild(XtNameToWidget(wDlg,"Help"));
     XtAddCallback(wDlg,XmNokCallback,CbDestroy,NULL);
   } else {
     GetValues(wDlg,XmNmessageString,&xms,NULL);

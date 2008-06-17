@@ -26,8 +26,8 @@ Widget CreateMessageDlg(Widget wParent,String name,String string) {
 
   wDlg=Cw(XmCreateMessageDialog,wParent,name,
       NULL);
-  XtUnmanageChild(XmMessageBoxGetChild(wDlg,XmDIALOG_HELP_BUTTON));
-  XtUnmanageChild(XmMessageBoxGetChild(wDlg,XmDIALOG_CANCEL_BUTTON));
+  XtUnmanageChild(XtNameToWidget(wDlg,"Help"));
+  XtUnmanageChild(XtNameToWidget(wDlg,"Cancel"));
   xms=MakeXmString(string);
 
   for (j=0,s=string;*s;s++) if (*s=='\n') j++;
@@ -80,7 +80,7 @@ int QuestionBox(Widget w,char* name) {
 
   wg=CreateMessageDlg(w,"questionBox",name);
   XtAddCallback(wg,XmNokCallback,CbStoreTrue,&b);
-  XtManageChild(XmMessageBoxGetChild(wg,XmDIALOG_CANCEL_BUTTON));
+  XtManageChild(XtNameToWidget(wg,"Cancel"));
   ProcessModalDialog(wg);
   return !b;
 }
@@ -92,7 +92,7 @@ int WarningBox(Widget w,char* name) {
 
   wg=CreateMessageDlg(w,"warningBox",name);
   XtAddCallback(wg,XmNokCallback,CbStoreTrue,&b);
-  XtManageChild(XmMessageBoxGetChild(wg,XmDIALOG_CANCEL_BUTTON));
+  XtManageChild(XtNameToWidget(wg,"Cancel"));
   ProcessModalDialog(wg);
   return !b;
 }

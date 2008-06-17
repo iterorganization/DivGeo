@@ -27,8 +27,9 @@ App CreateApp() {
 
   a->minX=a->minY=-1;
   a->maxX=a->maxY=1;
+  a->xyAngle=0;
   a->showFlags=SHW_AXES|SHW_ELEMS|SHW_NODES|SHW_IRRNODES|SHW_TEMPLATE|
-    SHW_SEPARATORS|SHW_MENU|SHW_TOOLBAR|SHW_CHORDS|
+    SHW_SEPARATORS|SHW_MENU|SHW_TOOLBAR|SHW_CHORDS|SHW_3DCHORDS|
     SHW_EQUIL|SHW_SURFACES|SHW_GRIDPOINTS|SHW_GRID|SHW_LABELS|SHW_MESH|
     SHW_XPOINTTESTS;
   a->outputFlags=0;
@@ -248,13 +249,13 @@ void AddUndoRec(App a,ActRec rec) {
     return;
   }
 
-/* Discard redundand UndoMark's
+/* Discard redundant UndoMark's
 */
   if (rec->actProc==(ActProc)ActUndoMark)
     if (umr=Group1st(g,&ix),umr!=NULL && umr->actProc==rec->actProc)
       {FreeActRec(rec);return;}
 
-/* Discard redundand ChangeObjIntRec's
+/* Discard redundant ChangeObjIntRec's
 */
   if (!IsEmptyGroup(a->highlight) &&
       rec->actProc==(ActProc)ActChangeObjInt)
@@ -266,7 +267,7 @@ void AddUndoRec(App a,ActRec rec) {
           coir->bRedraw==((ChangeObjIntRec)rec)->bRedraw)
         {FreeActRec(rec);return;}
 
-/* Discard redundand ChangeObjDoubleRec's
+/* Discard redundant ChangeObjDoubleRec's
 */
   if (!IsEmptyGroup(a->highlight) &&
       rec->actProc==(ActProc)ActChangeObjDouble)
@@ -278,7 +279,7 @@ void AddUndoRec(App a,ActRec rec) {
           codr->bRedraw==((ChangeObjDoubleRec)rec)->bRedraw)
         {FreeActRec(rec);return;}
 
-/* Discard redundand ChangeObjGroup's
+/* Discard redundant ChangeObjGroup's
 */
   if (rec->actProc==(ActProc)ActChangeObjGroup)
     for (cogr=Group1st(g,&ix);!IsUndoMark(cogr);cogr=Next(&ix))
@@ -289,49 +290,49 @@ void AddUndoRec(App a,ActRec rec) {
           !!cogr->status==!((ChangeObjGroupRec)rec)->status)
         {FreeActRec(rec);GroupDel(g,cogr);FreeActRec(cogr);return;}
 
-/* Discard redundand ChangeNode's
+/* Discard redundant ChangeNode's
 */
   if (rec->actProc==(ActProc)ActChangeNode)
     for (cnr=Group1st(g,&ix);cnr!=NULL && cnr->actProc==rec->actProc;
         cnr=Next(&ix))
       if (cnr->n==((ChangeNodeRec)rec)->n) {FreeActRec(rec);return;}
 
-/* Discard redundand ChangeElem's
+/* Discard redundant ChangeElem's
 */
   if (rec->actProc==(ActProc)ActChangeElem)
     for (cer=Group1st(g,&ix);cer!=NULL && cer->actProc==rec->actProc;
         cer=Next(&ix))
       if (cer->e==((ChangeElemRec)rec)->e) {FreeActRec(rec);return;}
 
-/* Discard redundand ChangeGridPointEx's
+/* Discard redundant ChangeGridPointEx's
 */
   if (rec->actProc==(ActProc)ActChangeGridPointEx)
     for (cgxr=Group1st(g,&ix);cgxr!=NULL && cgxr->actProc==rec->actProc;
         cgxr=Next(&ix))
       if (cgxr->gpx==((ChangeGridPointExRec)rec)->gpx) {FreeActRec(rec);return;}
 
-/* Discard redundand ChangeSeparators's
+/* Discard redundant ChangeSeparators's
 */
   if (rec->actProc==(ActProc)ActChangeSeparator)
     for (csepr=Group1st(g,&ix);csepr!=NULL && csepr->actProc==rec->actProc;
         csepr=Next(&ix))
       if(csepr->sep==((ChangeSeparatorRec)rec)->sep){FreeActRec(rec);return;}
 
-/* Discard redundand ChangeSource's
+/* Discard redundant ChangeSource's
 */
   if (rec->actProc==(ActProc)ActChangeSource)
     for (csrcr=Group1st(g,&ix);csrcr!=NULL && csrcr->actProc==rec->actProc;
         csrcr=Next(&ix))
       if (csrcr->src==((ChangeSourceRec)rec)->src) {FreeActRec(rec);return;}
 
-/* Discard redundand ChangeSurfaceEx's
+/* Discard redundant ChangeSurfaceEx's
 */
   if (rec->actProc==(ActProc)ActChangeSurfaceEx)
     for (cser=Group1st(g,&ix);cser!=NULL && cser->actProc==rec->actProc;
         cser=Next(&ix))
       if (cser->sx==((ChangeSurfaceExRec)rec)->sx) {FreeActRec(rec);return;}
 
-/* Discard redundand ChangeMeshPoint's
+/* Discard redundant ChangeMeshPoint's
 */
   if (rec->actProc==(ActProc)ActChangeMeshPoint)
     for (cmptr=Group1st(g,&ix);cmptr!=NULL && !IsUndoMark(cmptr);
@@ -339,8 +340,6 @@ void AddUndoRec(App a,ActRec rec) {
       if (cmptr->mpt==((ChangeMeshPointRec)rec)->mpt) {
         FreeActRec(rec);return;
       }
-
-  if (a->undoMode==UM_NORM) FreeUndoList(a->redoStack);
 
   GroupAdd(g,rec);
 
@@ -789,8 +788,8 @@ int RaiseChangeAppViewUndoRec(App a,int bTestOnly) {
   return 0;
 }
 
-int GetPrevViewInfo(App a,double* pMinX,double* pMinY,double* pMaxX,
-    double* pMaxY,int bCheckOnly) {
+int GetPrevViewInfo(App a,double* pMinX,double* pMinY,double* pMaxX,double*
+    pMaxY,double* pXyAngle,int bCheckOnly) {
   int bStopNext;
   ChangeAppViewRec car;
   ActRec ar;
@@ -827,6 +826,7 @@ int GetPrevViewInfo(App a,double* pMinX,double* pMinY,double* pMaxX,
   if (pMinY!=NULL) *pMinY=car->minY;
   if (pMaxX!=NULL) *pMaxX=car->maxX;
   if (pMaxY!=NULL) *pMaxY=car->maxY;
+  if (pXyAngle!=NULL) *pXyAngle=car->xyAngle;
 
   return 0;
 }

@@ -260,7 +260,7 @@ static void HighlightDragMeshPoint_1(View w,MeshPoint mpt,int status) {
 
 static void MoveMeshPoint_2(MeshPoint mpt,double x,double y) {
   MeshPoint mpt1,mpt2;
-  double h,l;
+  double h = 0,l;
 
   mpt1=mpt2=NULL;
   if (mpt->mesh->app->bDoubleMeshBorder) {
@@ -288,7 +288,7 @@ static void MoveMeshPoint_2(MeshPoint mpt,double x,double y) {
 
 static void MoveMeshPoint_1(MeshPoint mpt,double x,double y) {
   MeshPoint mpt1,mpt2;
-  double h,l;
+  double h = 0,l;
 
   mpt1=mpt2=NULL;
   if (mpt->mesh->app->bDoubleMeshBorder) {
@@ -893,7 +893,7 @@ int PointInsideMeshCell(double xx,double yy,MeshCell mc,int bUseBackups) {
 
 int IsIrregularMeshCell(MeshCell mc) {
   double x,y;
-  int i;
+  int i,j,k;
 
   if (!VIntersect(
       mc->points[0]->x,mc->points[0]->y,
@@ -930,6 +930,15 @@ int IsIrregularMeshCell(MeshCell mc) {
 
   if (!PointInsideMeshCell(mc->centerX,mc->centerY,mc,0))
     return STR_MESH_CELL_BAD_CENTER;
+
+  for (k=0;k<4;k++) {
+    /* find adjacent mesh points; must be cycled through in order (0,1,3,2) */
+    i=k^(k^k>>1)%2+1;
+    j=i^(i^i>>1)%2+1;
+    if ((mc->points[i]->x-mc->points[k]->x)*(mc->points[j]->y-mc->points[i]->y)
+      <(mc->points[j]->x-mc->points[i]->x)*(mc->points[i]->y-mc->points[k]->y))
+      return STR_MESH_CELL_CONCAVE;
+  }
 
   return 0;
 }

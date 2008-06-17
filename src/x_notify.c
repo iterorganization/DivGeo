@@ -11,7 +11,9 @@ void DwNotifyUndoButton(Widget wg,View w,int evt,void* obj,void* d) {
       SetSensitiveEx(wg,!!GroupCount(w->app->redoStack));
       break;
     case 2:
-      SetSensitiveEx(wg,!GetPrevViewInfo(w->app,NULL,NULL,NULL,NULL,True));
+      SetSensitiveEx(wg,!GetPrevViewInfo(w->app,NULL,NULL,NULL,NULL,NULL,
+        True));
+
       break;
     default:
       assert(0);
@@ -154,6 +156,21 @@ void DwNotifyIfNotExists(Widget wg,View w,int evt,void* obj,void* d) {
       break;
     case T_SURFACEZONE:
       SetSensitiveEx(wg,IsEmptyGroup(w->app->surfaceZones));
+      break;
+    default:
+      assert(0);
+  }
+}
+
+void DwNotifyShowFlags(Widget wg,View w,int evt,void* obj,void* d) {
+  if (w->app==NULL) return;
+
+  switch ((int)d) {
+    case 0:
+      SetSensitiveEx(wg,!!(w->showFlags & SHW_STRETCH));
+      break;
+    case 1:
+      SetSensitiveEx(wg,!(w->showFlags & SHW_TOPVIEW));
       break;
     default:
       assert(0);

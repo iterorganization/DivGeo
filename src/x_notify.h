@@ -6,6 +6,7 @@
 void DwNotifyUndoButton(Widget wg,View w,int evt,void* obj,void* d);
 void DwNotifyIfExists(Widget wg,View w,int evt,void* obj,void* d);
 void DwNotifyIfNotExists(Widget wg,View w,int evt,void* obj,void* d);
+void DwNotifyShowFlags(Widget wg,View w,int evt,void* obj,void* d);
 void DwUnmap(Widget wg,View w,int evt,void* obj,void* d);
 void DwDestroy(Widget wg,View w,int evt,void* obj,void* d);
 

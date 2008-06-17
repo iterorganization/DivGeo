@@ -1237,6 +1237,7 @@ int ActChangeAppView(App a,ChangeAppViewRec ar) {
   ur->maxX=a->maxX;
   ur->maxY=a->maxY;
   ur->showFlags=a->showFlags;
+  ur->xyAngle=a->xyAngle;
 
   if (w!=NULL) NotifyChange(a,w);
   DrawAppHighlight(a,DRAW_OFF);
@@ -1259,13 +1260,13 @@ int ActChangeAppView(App a,ChangeAppViewRec ar) {
     w->centerY=(ar->minY+ar->maxY)/2;
     w->zoomX=w->width/(ar->maxX-ar->minX);
     w->zoomY=w->height/(ar->maxY-ar->minY);
-    AdjustViewAspectRatio(w);
+    if (!(ar->showFlags & SHW_STRETCH)) AdjustViewAspectRatio(w);
     a->minX=w->minX=w->centerX-w->width/2/w->zoomX;
     a->minY=w->minY=w->centerY-w->height/2/w->zoomY;
     a->maxX=w->maxX=w->centerX+w->width/2/w->zoomX;
     a->maxY=w->maxY=w->centerY+w->height/2/w->zoomY;
     a->showFlags=w->showFlags=ar->showFlags;
-
+    a->xyAngle=w->xyAngle=ar->xyAngle;
     /* Repaint the active view */
 
     ClearView(w);
@@ -1279,6 +1280,7 @@ int ActChangeAppView(App a,ChangeAppViewRec ar) {
     a->maxX=ar->maxX;
     a->maxY=ar->maxY;
     a->showFlags=ar->showFlags;
+    a->xyAngle=ar->xyAngle;
   }
 
   DrawAppHighlight(a,DRAW_ON);

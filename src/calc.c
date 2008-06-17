@@ -17,6 +17,12 @@ void AddXY(Group g,double x,double y) {
   GroupAdd(g,xy);
 }
 
+void Rotate(double t,double centerX,double centerY,double* px,double* py) {
+  double x=*px,y=*py,ct=cos(t),st=sin(t);
+  *px = centerX + (ct*(x - centerX) - st*(y - centerY));
+  *py = centerY + (st*(x - centerX) + ct*(y - centerY));
+}
+
 double Point2PointDist(double x1,double y1,double x2,double y2) {
   return sqrt(sqr(x1-x2)+sqr(y1-y2));
 }
@@ -40,6 +46,8 @@ double Point2VectorDist(double x1,double y1,double x2, double y2,
 }
 
 /* Return -1 on non-intersection, 0 on intersection */
+/* (x1,y1,x2,y2) is the first segment, and (x3,y3,x4,y4) is the second.
+   *ar and *br are how far along the intersection is on each segment. */
 int VIntersect(double x1,double y1,double x2,double y2,
     double x3,double y3,double x4,double y4,double* ar,double* br) {
   double a,b,d;
@@ -216,7 +224,7 @@ static XPointTest HitXPointTest(App a,double x,double y,double* pDist) {
 Elem HitElem(App a,double x,double y,int* pos,double* pDist) {
   Elem e,eHit;
   double dist,distHit=0;
-  int posHit,p;
+  int posHit = 0,p;
   Index ix;
 
   for (eHit=NULL,e=AppElem1st(a,&ix);e!=NULL;e=Next(&ix)) {
@@ -252,19 +260,54 @@ Separator HitSeparator(App a,double x,double y,double* pDist) {
   return sepHit;
 }
 
+#define CHORD_RES 20
+
 Chord HitChord(App a,double x,double y,int* pos,double* pDist) {
   Chord ch,chHit;
   double dist,distHit=0;
-  int posHit,p;
+  int posHit = 0,p;
+  double i,x1,y1,x2,y2;
   Index ix;
 
   for (chHit=NULL,ch=AppChord1st(a,&ix);ch!=NULL;ch=Next(&ix)) {
-    dist=Point2VectorDist(ch->x1,ch->y1,ch->x2,ch->y2,
-      x,y,&p,NULL);
-    if (chHit==NULL || dist<distHit) {
-      distHit=dist;
-      chHit=ch;
-      posHit=p;
+    if (~a->showFlags & SHW_TOPVIEW) {
+      if (a->showFlags & SHW_CHORDS) {
+	dist=Point2VectorDist(ch->x1,ch->y1,ch->x2,ch->y2,
+            x,y,&p,NULL);
+	if (chHit==NULL || dist<distHit) {
+	  distHit=dist;
+	  chHit=ch;
+	  posHit=p;
+	}
+      }
+      if ((a->showFlags & SHW_3DCHORDS) && (ch->z1!=0 || ch->z2!=0)) {
+	x1=hypot(ch->x1,ch->z1);y1=ch->y1;
+	for (i=1./CHORD_RES;i<1;i+=1./CHORD_RES) {
+	  x2=hypot(ch->x1+i*(ch->x2-ch->x1),ch->z1+i*(ch->z2-ch->z1));
+	  y2=ch->y1+i*(ch->y2-ch->y1);
+	  dist=Point2VectorDist(x1,y1,x2,y2,x,y,&p,NULL);
+	  if (chHit==NULL || dist<distHit) {
+	    distHit=dist;
+	    chHit=ch;
+	    posHit=p;
+	  }
+	  x1=x2;y1=y2;
+	}
+	dist=Point2VectorDist(x1,y1,hypot(ch->x2,ch->z2),ch->y2,x,y,&p,NULL);
+	if (chHit==NULL || dist<distHit) {
+	  distHit=dist;
+	  chHit=ch;
+	  posHit=p;
+	}
+      }
+    } else if (a->showFlags & SHW_CHORDS) {
+      dist=Point2VectorDist(ch->x1,ch->z1,ch->x2,ch->z2,
+          x,y,&p,NULL);
+      if (chHit==NULL || dist<distHit) {
+	distHit=dist;
+	chHit=ch;
+	posHit=p;
+      }
     }
   }
 
@@ -340,7 +383,7 @@ int HitGridPointExPos(App a,double x,double y,int* pzone,double* pvalue) {
   XY xy,xy1;
   Index ix,ix_gps;
   int zHit=-1;
-  double s,d,v,dHit=0,vHit;
+  double s,d,v,dHit=0,vHit=0;
 
   for (gps=AppGridPointSeg1st(a,&ix_gps);gps!=NULL;gps=Next(&ix_gps)) {
     if (!(gps->flags & GPSF_USED)) continue;
@@ -393,7 +436,7 @@ static MeshElement HitMeshElement(App a,double x,double y,int* pos,
     double* pDist) {
   MeshElement me,meHit;
   double dist,distHit=0;
-  int posHit,p,i;
+  int posHit = 0,p,i;
   Index ix;
 
   if (a->mesh==NULL) return NULL;
@@ -436,6 +479,12 @@ static MeshCell HitMeshCell(App a,double x,double y,double* pDist) {
   return mcHit;
 }
 
+/* treats SHW_TOPVIEW as a special case.  to add more 3D objects,
+   handle them under the if clause.  to add functionality to handle
+   any object in topview, get rid of the conditional and handle
+   SHW_TOPVIEW in each function individually. (this is already done
+   for chords). basic behavior would be just to return when topview is
+   on, but more behavior could be added on if desired. */
 void* HitViewObject(View w,double x,double y,long flags) {
   void* p,*pHit;
   double d,dHit=0;
@@ -453,72 +502,80 @@ void* HitViewObject(View w,double x,double y,long flags) {
   flags &= mask;
   pHit=NULL;
 
-  if (flags & SHW_ELEMS) {
-    p=HitElem(w->app,x,y,NULL,&d);
-    if (p!=NULL && (pHit==NULL || d<dHit)) {pHit=p;dHit=d;}
-  }
+  if (w->showFlags & SHW_TOPVIEW) {
+    if (flags & (SHW_CHORDS)) {
+      p=HitChord(w->app,x,y,NULL,&d);
+      if (p!=NULL && (pHit==NULL || d<dHit)) {pHit=p;dHit=d;}
+    }
+  } else {
 
-  if (flags & SHW_SURFACES) {
-    p=HitSurfaceEx(w->app,x,y,&d);
-    if (p!=NULL && (pHit==NULL || d<dHit)) {pHit=p;dHit=d;}
-  }
+    if (flags & SHW_ELEMS) {
+      p=HitElem(w->app,x,y,NULL,&d);
+      if (p!=NULL && (pHit==NULL || d<dHit)) {pHit=p;dHit=d;}
+    }
 
-  if (flags & SHW_SEPARATORS) {
-    p=HitSeparator(w->app,x,y,&d);
-    if (p!=NULL && (pHit==NULL || d<dHit)) {pHit=p;dHit=d;}
-  }
+    if (flags & SHW_SURFACES) {
+      p=HitSurfaceEx(w->app,x,y,&d);
+      if (p!=NULL && (pHit==NULL || d<dHit)) {pHit=p;dHit=d;}
+    }
 
-  if (flags & SHW_SOURCES) {
-    p=HitSource(w->app,x,y,&d);
-    if (p!=NULL && (pHit==NULL || d<dHit)) {pHit=p;dHit=d;}
-  }
+    if (flags & SHW_SEPARATORS) {
+      p=HitSeparator(w->app,x,y,&d);
+      if (p!=NULL && (pHit==NULL || d<dHit)) {pHit=p;dHit=d;}
+    }
 
-  if (flags & SHW_CHORDS) {
-    p=HitChord(w->app,x,y,NULL,&d);
-    if (p!=NULL && (pHit==NULL || d<dHit)) {pHit=p;dHit=d;}
-  }
+    if (flags & SHW_SOURCES) {
+      p=HitSource(w->app,x,y,&d);
+      if (p!=NULL && (pHit==NULL || d<dHit)) {pHit=p;dHit=d;}
+    }
 
-  if (flags & SHW_XPOINTTESTS) {
-    p=HitXPointSeg(w->app,x,y,&d);
-    if (p!=NULL && (pHit==NULL || d<=dHit)) {pHit=p;dHit=d;}
-  }
+    if (flags & (SHW_CHORDS | SHW_3DCHORDS)) {
+      p=HitChord(w->app,x,y,NULL,&d);
+      if (p!=NULL && (pHit==NULL || d<dHit)) {pHit=p;dHit=d;}
+    }
 
-  if (flags & SHWX_MESHELEMENTS) {
-    p=HitMeshElement(w->app,x,y,NULL,&d);
-    if (p!=NULL && (pHit==NULL || d<=dHit))
-      {pHit=p;dHit=d;}
-  }
+    if (flags & SHW_XPOINTTESTS) {
+      p=HitXPointSeg(w->app,x,y,&d);
+      if (p!=NULL && (pHit==NULL || d<=dHit)) {pHit=p;dHit=d;}
+    }
 
-  if (flags & SHWX_MESHCELLS) {
-    p=HitMeshCell(w->app,x,y,&d);
-    if (p!=NULL && (pHit==NULL || d<=dHit))
-      {pHit=p;dHit=d;}
-  }
+    if (flags & SHWX_MESHELEMENTS) {
+      p=HitMeshElement(w->app,x,y,NULL,&d);
+      if (p!=NULL && (pHit==NULL || d<=dHit))
+	{pHit=p;dHit=d;}
+    }
 
-  if (flags & SHWX_MESHPOINTS) {
-    p=HitMeshPoint(w->app,x,y,&d);
-    if (p!=NULL && (pHit==NULL || d<=dHit || d<=w->meshPointRadius/w->zoomX))
-      {pHit=p;dHit=d;}
-  }
+    if (flags & SHWX_MESHCELLS) {
+      p=HitMeshCell(w->app,x,y,&d);
+      if (p!=NULL && (pHit==NULL || d<=dHit))
+	{pHit=p;dHit=d;}
+    }
 
-  if (flags & (SHW_IRRNODES | SHW_NODES)) {
-    p=HitNode(w->app,x,y,&d);
-    if (p!=NULL && (pHit==NULL || d<=dHit || d<w->nodeR/w->zoomX))
-      {pHit=p;dHit=d;}
-  }
+    if (flags & SHWX_MESHPOINTS) {
+      p=HitMeshPoint(w->app,x,y,&d);
+      if (p!=NULL && (pHit==NULL || d<=dHit || d<=w->meshPointRadius/w->zoomX))
+	{pHit=p;dHit=d;}
+    }
 
-  if (flags & SHW_XPOINTTESTS) {
-    p=HitXPointTest(w->app,x,y,&d);
-    xpt=p;
-    if (p!=NULL && (pHit==NULL || d<=dHit ||
-   d<=fabs(w->app->equil->x[xpt->cx2]-w->app->equil->x[xpt->cx1])))
-      {pHit=p;dHit=d;}
-  }
+    if (flags & (SHW_IRRNODES | SHW_NODES)) {
+      p=HitNode(w->app,x,y,&d);
+      if (p!=NULL && (pHit==NULL || d<=dHit || d<w->nodeR/w->zoomX))
+	{pHit=p;dHit=d;}
+    }
 
-  if (flags & SHW_GRIDPOINTS) {
-    p=HitGridPointEx(w->app,x,y,&d);
-    if (p!=NULL && (pHit==NULL || d<dHit || d<w->gridPointLen/2/w->zoomX)) {
-      pHit=p;dHit=d;}
+    if (flags & SHW_XPOINTTESTS) {
+      p=HitXPointTest(w->app,x,y,&d);
+      xpt=p;
+      if (p!=NULL && (pHit==NULL || d<=dHit ||
+	  d<=fabs(w->app->equil->x[xpt->cx2]-w->app->equil->x[xpt->cx1])))
+	{pHit=p;dHit=d;}
+    }
+
+    if (flags & SHW_GRIDPOINTS) {
+      p=HitGridPointEx(w->app,x,y,&d);
+      if (p!=NULL && (pHit==NULL || d<dHit || d<w->gridPointLen/2/w->zoomX)) {
+	pHit=p;dHit=d;}
+    }
   }
 
   return pHit;
@@ -1192,7 +1249,7 @@ void CutPolyLine(Group line,double pos,int bTail) {
 double ProjectPointToPolyLine(Group gxy,double x,double y) {
   XY xy,xy1;
   Index ix;
-  double s,d,v,dHit=0,vHit;
+  double s,d,v,dHit=0,vHit=0;
 
   if (GroupCount(gxy)<2) return 0;
 
@@ -1483,7 +1540,8 @@ char* ExpandFilename(char* name) {
   if (name[0]=='\\' || name[0]=='/') goto noExpand;
 
   *s=0;
-  if (getwd(s)==NULL) goto noExpand;
+  getcwd(s,DG_FNAME_LEN);
+  if (*s==0) goto noExpand;
   if (s[0]=='\\') goto noExpand;  /* Do not handle DOS names */
 
   if (strlen(name)+strlen(s)>sizeof(s)-1) goto noExpand;

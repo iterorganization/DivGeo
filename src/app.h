@@ -47,7 +47,7 @@ struct _App {
 
   int cancelToolFlag,alt,updateLocks;
   int highlightMode,highlightLocks;
-  double minX,minY,maxX,maxY;
+  double minX,minY,maxX,maxY,xyAngle;
   unsigned long showFlags,outputFlags,chFlags;
 
   Group nodes,elems,separators,sources,chords;
@@ -119,7 +119,7 @@ void EnableUndo(App a,int bEnable);
 
 int RaiseChangeAppViewUndoRec(App a,int bTestOnly);
 int GetPrevViewInfo(App a,double* pMinX,double* pMinY,double* pMaxX,
-    double* pMaxY,int bCheckOnly);
+    double* pMaxY,double* pXyAngle,int bCheckOnly);
 void MarkPrevViewDone(App a);
 
 int IsAppUnsaved(App a);

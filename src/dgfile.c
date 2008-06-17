@@ -1,6 +1,6 @@
 #include "dg.h"
 
-#define FILE_VERSION 114
+#define FILE_VERSION 115
 #define DG_VERSION_NEEDED 15000
 
 static struct _FlagsRec showFlags[]={
@@ -23,6 +23,9 @@ static struct _FlagsRec showFlags[]={
   {SHW_TOOLBAR,'='},
   {SHW_XPOINTTESTS,'x'},
   {SHW_MESHDETAILS,'m'},
+  {SHW_STRETCH,'t'},
+  {SHW_TOPVIEW,'v'},
+  {SHW_3DCHORDS,'3'},
   {0,0}
 };
 
@@ -40,6 +43,7 @@ static struct _NameRec varDefTypes[]={
   {VT_INT,"Int"},
   {VT_FLOAT,"Float"},
   {VT_TEXT,"Text"},
+  {VT_FILENAME,"Filename"},
   {VT_ELEM,"Elem"},
   {VT_ELEMS,"Elems"},
   {VT_STRUCTPART,"StructPart"},
@@ -52,6 +56,7 @@ static struct _NameRec varDefTypes[]={
   {VT_MESH_ELEMENTS,"SetOfMeshElements"},
   {VT_MESH_H_ELEMENTS,"SetOfMeshElementsH"},
   {VT_MESH_V_ELEMENTS,"SetOfMeshElementsV"},
+  {VT_TOPVIEW,"TopViewObjects"},
   {0,NULL}
 };
 
@@ -79,13 +84,13 @@ static struct _NameRec meshSlidingModes[]={
 
 static struct _FlagsRec surfaceZoneFlags[]={
   {SZF_LIMITBYSURFACE,'i'},
-  {0,NULL}
+  {0,(int) NULL}
 };
 
 static struct _FlagsRec gridPointSegFlags[]={
   {GPSF_USED,'u'},
   {GPSF_TARGET_CW,'t'},
-  {0,NULL}
+  {0,(int) NULL}
 };
 
 App LoadNormalApp(XApp xap,char* fName,char** pMsg,int* err) {
@@ -242,7 +247,7 @@ static void WriteVar(App a,FILE* f,void* obj,VarDef vd,VarSet vs){
 }
 
 static void WriteVars(App a,FILE* f,void* p) {
-  VarSetDef vsd;
+  VarSetDef vsd = NULL;
   VarDef vd;
   Index ix,ixe;
   void* org;
@@ -280,7 +285,7 @@ static void WriteVars(App a,FILE* f,void* p) {
 
 static void WriteApp_File(App a,FILE* f) {
   int i,j,i1,i2,i3;
-  double f1,f2;
+  double f1,f2 = 0;
   Elem e;
   Node n;
   Separator sep;
@@ -290,7 +295,7 @@ static void WriteApp_File(App a,FILE* f) {
   VarDef vd;
   VarSet vs;
   MeshPoint mpt;
-  MeshCell mc;
+  MeshCell mc = NULL;
   MeshElement me;
   XPointTest xpt;
   GridPointSeg gps;
@@ -385,9 +390,10 @@ static void WriteApp_File(App a,FILE* f) {
 
   fprintf(f,"SurfaceZones114 %d\n",(unsigned)GroupCount(a->surfaceZones));
   for (sz=AppSurfaceZone1st(a,&ix);sz!=NULL;sz=Next(&ix)) {
-    fprintf(f,"%d %d %d %d %s\n",
+    fprintf(f,"%d %d %d %d %s %d\n",
         sz->zone,sz->gpZone1,sz->gpZone2,sz->orient,
-        Flags2Str(sz->flags,surfaceZoneFlags));
+        Flags2Str(sz->flags,surfaceZoneFlags),
+        sz->innermost!=NULL ? sz->innermost->id : -1);
     fprintf(f,"%s\n",GetSurfaceZoneShortName(sz));
     fprintf(f,"%s\n",GetSurfaceZoneLongName(sz));
   }
@@ -414,9 +420,9 @@ static void WriteApp_File(App a,FILE* f) {
   for (src=AppSource1st(a,&ix);src!=NULL;src=Next(&ix))
     fprintf(f,"%e %e\n",src->x,src->y);
 
-  fprintf(f,"Chords106 %u\n",(unsigned)GroupCount(a->chords));
+  fprintf(f,"Chords115 %u\n",(unsigned)GroupCount(a->chords));
   for (ch=AppChord1st(a,&ix);ch!=NULL;ch=Next(&ix))
-    fprintf(f,"%e %e %e %e\n",ch->x1,ch->y1,ch->x2,ch->y2);
+    fprintf(f,"%e %e %e %e %e %e\n",ch->x1,ch->y1,ch->z1,ch->x2,ch->y2,ch->z2);
 
   for (i=0,p=AppMark1st(a,&ix);p!=NULL;p=Next(&ix))
     if (InGroup(a->elems,p)) i++;
@@ -505,8 +511,8 @@ static void WriteApp_File(App a,FILE* f) {
       Int2Name(a->meshSlidingMode,meshSlidingModes),
       a->meshSlidingThreshold,a->bDoubleMeshBorder);
 
-  fprintf(f,"ViewAttr105 %e %e %e %e %s\n",a->minX,a->minY,a->maxX,a->maxY,
-    Flags2Str(a->showFlags,showFlags));
+  fprintf(f,"ViewAttr115 %e %e %e %e %e %s\n",a->minX,a->minY,a->maxX,a->maxY,
+    a->xyAngle,Flags2Str(a->showFlags,showFlags));
 }
 
 static int ReadVar(App a,FILE* f,void* obj,VarDef vd,VarSet vs){
@@ -570,7 +576,7 @@ static int ReadVar(App a,FILE* f,void* obj,VarDef vd,VarSet vs){
 /* IMPORTANT: call AFTER a Vars <nn> { header
 */
 static int ReadVars(App a,FILE* f,void* p) {
-  VarSetDef vsd;
+  VarSetDef vsd = NULL;
   VarDef vd;
   Index ix,ixe;
   void* obj;
@@ -615,7 +621,7 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
   long long1;
   char s[DG_FNAME_LEN*2],s1[DG_FNAME_LEN],s2[DG_FNAME_LEN],
     s3[DG_FNAME_LEN],s4[DG_FNAME_LEN],* ps;
-  double f1,f2,f3,f4;
+  double f1,f2,f3,f4,f5,f6;
   VarSet vs;
   VarSetDef vsd;
   VarDef vd;
@@ -652,6 +658,7 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
     case 112:
     case 113:
     case 114:
+    case 115:
       break;
     default:
       return ERR_BADFILEVERSION;
@@ -795,12 +802,13 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
 
     if (sscanf(s,"SurfaceZones114 %u",&n)==1) for (k=0;k<n;k++) {
        fgets(s,sizeof(s)-1,f); /* szNo2==-1 -> unlimited */
-       r=sscanf(s,"%d%d%d%d%s",&i1,&i2,&i3,&i4,s3);
-       if (r==4) {strcpy(s3,"");r=5;}
-       if (r==5) {
+       r=sscanf(s,"%d%d%d%d%s%d",&i1,&i2,&i3,&i4,s3,&i5);
+       if (r==4) {strcpy(s3,"");r++;}
+       if (r==5) {if (sscanf(s3,"%d",&i5)) strcpy(s3,"");r++;}
+       if (r==6) {
          fgets(s1,sizeof(s1)-1,f);RemoveLF(s1);
          fgets(s2,sizeof(s2)-1,f);RemoveLF(s2);
-         sz=AddSurfaceZone(a,i1,i2,i3,i4);
+         sz=AddSurfaceZone(a,i1,i2,i3,i4,i5);
          if (sz==NULL) {*ef|=DGFE_NEQUIL;goto badSZ;}
          SetSurfaceZoneShortName(sz,s1);
          SetSurfaceZoneLongName(sz,s2);
@@ -814,7 +822,7 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
     if (sscanf(s,"SurfacesEx114 %u",&n)==1) for (k=0;k<n;k++) {
        fgets(s,sizeof(s)-1,f);
        if (sscanf(s,"%d"SCANFLT""SCANFLT""SCANFLT"%s",
-           &i1,&f1,&f2,&f3,s1)==5 && a->equil!=NULL) {
+           &i1,&f1,&f2,&f3,s1)==5) {
          if (i1!=SZN_XY) sx=AddSurfaceEx(a,i1,f1,NULL);
          else sx=AddSurfaceExXY(a,f2,f3,NULL);
          if (sx==NULL) {*ef|=DGFE_NEQUIL;goto badSX;}
@@ -848,6 +856,14 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
        fgets(s,sizeof(s)-1,f);
        if (sscanf(s,SCANFLT""SCANFLT,&f1,&f2)==2)
          AddSource(a,f1,f2);
+       else *ef|=DGFE_SYNTAX;
+    } else
+
+    if (sscanf(s,"Chords115 %u",&n)==1) for (k=0;k<n;k++) {
+       fgets(s,sizeof(s)-1,f);
+       if (sscanf(s,SCANFLT""SCANFLT""SCANFLT""SCANFLT""SCANFLT""SCANFLT,
+           &f1,&f2,&f3,&f4,&f5,&f6)==6)
+         AddChord3D(a,f1,f2,f3,f4,f5,f6);
        else *ef|=DGFE_SYNTAX;
     } else
 
@@ -1022,6 +1038,16 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
       a->minY=f2;
       a->maxX=f3;
       a->maxY=f4;
+    } else
+
+    if (sscanf(s,"ViewAttr115"SCANFLT""SCANFLT""SCANFLT""SCANFLT""SCANFLT"%s",
+        &f1,&f2,&f3,&f4,&f5,s1)==6) {
+      Str2Flags(s1,&a->showFlags,showFlags);
+      a->minX=f1;
+      a->minY=f2;
+      a->maxX=f3;
+      a->maxY=f4;
+      a->xyAngle=f5;
     } else
 
     if (sscanf(s,"OutputFlags111%s",s1)==1) {
@@ -1325,7 +1351,7 @@ int LoadTopology(App a,char* fName,int bDetectXPoints) {
         if (r==5) {
           fgets(s1,sizeof(s1)-1,f);RemoveLF(s1);
           fgets(s2,sizeof(s2)-1,f);RemoveLF(s2);
-          sz=AddSurfaceZone(a,i1,i2,i3,i4);
+          sz=AddSurfaceZone(a,i1,i2,i3,i4,-1);
           if (sz==NULL) {*ef|=DGFE_NEQUIL;goto badSZ;}
           SetSurfaceZoneShortName(sz,s1);
           SetSurfaceZoneLongName(sz,s2);

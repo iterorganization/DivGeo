@@ -317,7 +317,7 @@ int IsEndNode(Node n,Group g) {
 */
 
 int IsIrregularNode(Node n,Group g) {
-  Elem e,e1;
+  Elem e,e1 = NULL;
   Separator sep;
   Index ix;
   int i,j;
@@ -447,7 +447,7 @@ int ElemsConnected(Elem e1,Elem e2) {
 Elem GetNextElem(Elem e,Group g,int node) {
   Index ix;
   int i;
-  Elem e1,e2;
+  Elem e1,e2 = NULL;
 
   if (node<1 || node>2)
     FatalError("GetNextElem()-node%d: fatal error 1",node);
@@ -652,7 +652,7 @@ int OrderStructureElems(App a,Group g0,Group* pggTargets,Group* pggClosed,
       }
     }
 
-    /* Copy the ring into g1 and remove all it's elements from g */
+    /* Copy the ring into g1 and remove all its elements from g */
 
     bTarget=0;
     for (;i;i--) {
@@ -1190,7 +1190,7 @@ int GlueNodes(App a,Group g0Elems,double maxDist,int* prCount) {
 
   ctCount=0;
 
-  /* For each node in g, find it's nearest node, then sort the array */
+  /* For each node in g, find its nearest node, then sort the array */
 
   gN=CreateGroup();
   for (n=Group1st(g,&ix);n!=NULL;n=Next(&ix)) {
@@ -1342,7 +1342,7 @@ int GlueNormals(App a,Group g0,int* prCount) {
   revCnt=0;
   while (!IsEmptyGroup(g)) {
 
-    /* Pick up some element and follow it's chain until it's beginning */
+    /* Pick up some element and follow its chain back to the beginning */
 
     e=e0=Group1st(g,NULL);
     i=1;
@@ -1354,7 +1354,7 @@ int GlueNormals(App a,Group g0,int* prCount) {
       e=e1;
     }
 
-    /* Now follow the chain towards it's other end, reversing normals that
+    /* Now follow the chain towards its other end, reversing normals that
        point to a wrong directions and counting their number */
 
     e0=e;

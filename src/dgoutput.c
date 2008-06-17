@@ -12,7 +12,6 @@
 #define FSTR_SOURCES         "sources\n"
 #define FSTR_PTCOORDS        "  %e, %e, %e\n"   /* relcheck_ignore_line */
 #define FSTR_EQUILFILE       "# equil %s\n"
-#define FSTR_MESHFILE        "# mesh %s\n"
 #define FSTR_TOPONAME        "# topo %s\n"
 #define FSTR_CHORDS          "chords\n"
 #define FSTR_CHORDCOORDS     "  %e, %e, %e, %e\n" /* relcheck_ignore_line */
@@ -106,6 +105,9 @@ static void OutputVar(App a,FILE* f,void* obj,VarDef vd,VarSet vs) {
       zfprintf(f,"  0\n");
       break;
     case VT_TEXT:
+      zfprintf(f,"  dummy\n");
+      break;
+    case VT_FILENAME:
       zfprintf(f,"  dummy\n");
       break;
     default:
@@ -347,7 +349,7 @@ int WriteOutputFile(App a,char* fName) {
 int WriteStructureFile(App a,char* fName) {
   FILE* f=NULL;
   int i,j,r=0,bBroken,bCheck;
-  Elem e,e0,e00,e1;
+  Elem e,e0,e00 = NULL,e1;
   Index ix,ix1;
   Var v;
   double xMin,yMin,xMax,yMax;
@@ -501,7 +503,7 @@ int WriteTargetsFile(App a,char* fName) {
 /*  GridPoint gp; */
   GridPointSeg gps;
   static char* fmt="  %e , %e\n";       /* relcheck_ignore_line */
-  char* cid;
+  char* cid = NULL;
   int area,law,carreFlag,count;
   double delta1,delta2,l1,l2,l,x,y;
   Group g1,g2,g3,gSZ=NULL,gGPS=NULL;
@@ -536,10 +538,6 @@ int WriteTargetsFile(App a,char* fName) {
   /* Output the equilibrium filename */
 
   if (a->equil!=NULL) zfprintf(f,FSTR_EQUILFILE,a->equil->fName);
-
-  /* Output the mesh filename */
-
-  if (a->mesh!=NULL) zfprintf(f,FSTR_MESHFILE,a->mesh->fileName);
 
   /* Output the topology name */
 

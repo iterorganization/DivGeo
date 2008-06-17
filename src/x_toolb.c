@@ -42,6 +42,12 @@ static void DwUpdateToolBox(Widget wToolBar,View w,int evt,void*obj,void*udt) {
   }
 }
 
+/* copy of x_view.c function */
+static void AddDw2ShowFlags(Widget wg,XtPointer w,XtPointer value) {
+  AddDependentWidget((View)w,wg,N_NOW | N_ALT | N_NEWAPP,NULL,
+    DwNotifyShowFlags,value);
+}
+
 static Widget CreateToolBarDlg(View w,Widget wParent) {
   Widget wDlg,wUndo,wRedo,wForm;
   WidgetList wl;
@@ -71,30 +77,39 @@ static Widget CreateToolBarDlg(View w,Widget wParent) {
         CbToolBarDlgSetTool,w,
      "b#!@A:mark",3,3,EhToolSelInput,TlMark,TlMark,
         CbToolBarDlgSetTool,w,
-     "b#!@A:addElem",1,4,EhToolSelInput,TlAddElem,TlAddElem,
-        CbToolBarDlgSetTool,w,
-     "b#!@A:addSrc",2,4,EhToolSelInput,TlAddSource,TlAddSource,
-        CbToolBarDlgSetTool,w,
+     "b#!@A>:addElem",1,4,EhToolSelInput,TlAddElem,TlAddElem,
+        CbToolBarDlgSetTool,w,AddDw2ShowFlags,w,(XtPointer)1,
+     "b#!@A>:addSrc",2,4,EhToolSelInput,TlAddSource,TlAddSource,
+        CbToolBarDlgSetTool,w,AddDw2ShowFlags,w,(XtPointer)1,
      "b#!@A:addChord",3,4,EhToolSelInput,TlAddChord,TlAddChord,
         CbToolBarDlgSetTool,w,
 /*     "b#!@A:setXpt",EhToolSelInput,TlSetXPoint,TlSetXPoint,
         CbToolBarDlgSetTool,w, */
-     "b#!@A:addSurf",2,5,EhToolSelInput,TlAddSurface,TlAddSurface,
+     "b#!@A:extChord",1,5,EhToolSelInput,TlExtChord,TlExtChord,
         CbToolBarDlgSetTool,w,
-     "b#!@A:addGP",3,5,EhToolSelInput,TlAddGridPoint,TlAddGridPoint,
-        CbToolBarDlgSetTool,w,
-     "b#!@A:splitElem",1,6,EhToolSelInput,TlSplitElem,TlSplitElem,
-        CbToolBarDlgSetTool,w,
-     "b#!@A:joinElem",2,6,EhToolSelInput,TlJoinElems,TlJoinElems,
-        CbToolBarDlgSetTool,w,
-     "b#!@A:ctPts",3,6,EhToolSelInput,TlConnectPoints,TlConnectPoints,
-        CbToolBarDlgSetTool,w,
-     "b#!@A:chElem",1,7,EhToolSelInput,TlRepositionElem,TlRepositionElem,
-        CbToolBarDlgSetTool,w,
+     "b#!@A>:addSurf",2,5,EhToolSelInput,TlAddSurface,TlAddSurface,
+        CbToolBarDlgSetTool,w,AddDw2ShowFlags,w,(XtPointer)1,
+     "b#!@A>:addGP",3,5,EhToolSelInput,TlAddGridPoint,TlAddGridPoint,
+        CbToolBarDlgSetTool,w,AddDw2ShowFlags,w,(XtPointer)1,
+     "b#!@A>:splitElem",1,6,EhToolSelInput,TlSplitElem,TlSplitElem,
+        CbToolBarDlgSetTool,w,AddDw2ShowFlags,w,(XtPointer)1,
+     "b#!@A>:joinElem",2,6,EhToolSelInput,TlJoinElems,TlJoinElems,
+        CbToolBarDlgSetTool,w,AddDw2ShowFlags,w,(XtPointer)1,
+     "b#!@A>:ctPts",3,6,EhToolSelInput,TlConnectPoints,TlConnectPoints,
+        CbToolBarDlgSetTool,w,AddDw2ShowFlags,w,(XtPointer)1,
+     "b#!@A>:chElem",1,7,EhToolSelInput,TlRepositionElem,TlRepositionElem,
+        CbToolBarDlgSetTool,w,AddDw2ShowFlags,w,(XtPointer)1,
      "b#!@A:chNormals",2,7,EhToolSelInput,TlMirrorNormals,TlMirrorNormals,
         CbToolBarDlgSetTool,w,
-     "b#!@A:moveMeshPt",3,7,EhToolSelInput,TlMoveMeshPoint,TlMoveMeshPoint,
+     "b#!@A>:moveMeshPt",3,7,EhToolSelInput,TlMoveMeshPoint,TlMoveMeshPoint,
+        CbToolBarDlgSetTool,w,AddDw2ShowFlags,w,(XtPointer)1,
+     "b#!@A:rotate",1,8,EhToolSelInput,TlRotate,TlRotate,
         CbToolBarDlgSetTool,w,
+     "b#!@A>:stretch",2,8,EhToolSelInput,TlStretch,TlStretch,
+        CbToolBarDlgSetTool,w,AddDw2ShowFlags,w,(XtPointer)0,
+     "b#!@A>:adjChord",3,8,EhToolSelInput,TlAdjustChord,TlAdjustChord,
+        CbToolBarDlgSetTool,w,AddDw2ShowFlags,w,(XtPointer)1,
+
     "-#:",
 /*    "l:empty", */
     NULL);

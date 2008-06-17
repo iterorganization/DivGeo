@@ -14,6 +14,8 @@
 
 #define XTBGS XmToggleButtonGetState
 #define XTBSS XmToggleButtonSetState
+#define PSTR_AUTOSAVE_INTERVAL "DG.AutosaveInterval"
+#define DLG_SAVE_INTERVAL "dlgSaveInterval"
 
 XtResource viewExtRes[]={
   XmNtranslations,XmCTranslations,XmRTranslationTable,sizeof(XtTranslations),
@@ -194,6 +196,11 @@ static XtResource viewCfgRes[]={
     XtOffset(View,gridPointSegEndLength),XmRImmediate,(XtPointer)48,
 };
 
+typedef struct _SaveIntervalDlg {
+  View w;
+  Widget wInt,wDlg;
+}* SaveIntervalDlg;
+
 static void GetXViewSize(View w);
 static void ProcessXViewShowFlags(View w);
 static void UpdateXViewShowFlags(View w);
@@ -224,9 +231,13 @@ static void CbDestroyViewShell(Widget wg,XtPointer xtpXapp,XtPointer pcbs);
 static void AddDw2UndoInfo(Widget wg,XtPointer w,XtPointer value);
 static void AddDw2Exists(Widget wg,XtPointer w,XtPointer value);
 static void AddDw2NotExists(Widget wg,XtPointer w,XtPointer value);
+static void AddDw2ShowFlags(Widget wg,XtPointer w,XtPointer value);
 
 static void DwUpdateToolBar(Widget wg,View w,int evt,void*obj,void*udt);
 static void DwRebuildCarreInfo(Widget wg,View w,int evt,void*obj,void*udt);
+
+static void AutosaveProc(View w);
+static void CbSetSaveInterval(Widget wg,SaveIntervalDlg dlg,void* pcbs);
 
 /**********************************************************************\
 *                                                                      *
@@ -297,7 +308,7 @@ View CreateXmView(XApp xap,App app) {
     w->xapp->x->wShell,NULL,0); */
 
   w->x->wShell=XtAppCreateShell("DivGeo","DivGeo",
-    applicationShellWidgetClass,XtDisplay(w->xapp->x->wShell),NULL,0);
+    sessionShellWidgetClass,XtDisplay(w->xapp->x->wShell),NULL,0);
 
   SetValues(w->x->wShell,XmNdeleteResponse,XmDO_NOTHING,
     NULL);
@@ -354,6 +365,7 @@ View CreateXmView(XApp xap,App app) {
     "bA>:redoAll",CbRedoAll,w,AddDw2UndoInfo,w,(XtPointer)1,
     "s:separ",
     "bA:selAll",CbMarkAll,w,
+    "bA:selAllCh",CbMarkAllChords,w,
     "bA:unSelAll",CbUnmarkAll,w,
     "s:separ",
     "c:create",
@@ -402,6 +414,8 @@ View CreateXmView(XApp xap,App app) {
       AddDw2Exists,w,(XtPointer)T_MESH,
     "-:",
     "s:separ",
+    "bA:extChords",CbCmExtChords,w,
+    "s:separ",
     "bA:rotMove",CbCmRotMove,w,
     "-:",
     "c:view",
@@ -413,10 +427,32 @@ View CreateXmView(XApp xap,App app) {
     "bA:showPicture",CbShowPicture,w,
     "bA:showSelection",CbShowSelection,w,
     "s:separ",
+    "c:rotate",
+    "+:rotateMenu",
+    "bA:incAngle",CbIncAngle,w,
+    "bA:decAngle",CbDecAngle,w,
+    "bA:setAngle",CbCmSetAngle,w,
+    "bA:rectify",CbResetAngle,w,
+    "-:",
+    "c>:stretch",AddDw2ShowFlags,w,(XtPointer)0,
+    "+:stretchMenu",
+    "bA>:stretchX",CbStretchX,w,AddDw2ShowFlags,w,(XtPointer)0,
+    "bA>:stretchY",CbStretchY,w,AddDw2ShowFlags,w,(XtPointer)0,
+    "bA>:shrinkX",CbShrinkX,w,AddDw2ShowFlags,w,(XtPointer)0,
+    "bA>:shrinkY",CbShrinkY,w,AddDw2ShowFlags,w,(XtPointer)0,
+    "bA>:stretch",CbCmStretch,w,AddDw2ShowFlags,w,(XtPointer)0,
+    "bA>:justify",CbResetAspectRatio,w,AddDw2ShowFlags,w,(XtPointer)0,
+    "-:",
+    "s:separ",
     "bA>:prevView",CmPrevZoom,(XtPointer)w,AddDw2UndoInfo,w,(XtPointer)2,
     "s:separ",
     "bA:removeLabels",CmRemoveLabels,(XtPointer)w,
     "s:separ",
+    "c:viewopt",
+    "+:viewoptMenu",
+    "t?T:stretch",&w->x->wShStretch,      CbChangeFlags,w,
+    "t?T:topview",&w->x->wShTopView,      CbChangeFlags,w,
+    "-:",
     "c:display",
     "+:displayMenu",
     "t?T:nodes",&w->x->wShNodes,          CbChangeFlags,w,
@@ -424,6 +460,7 @@ View CreateXmView(XApp xap,App app) {
     "t?T:elements",&w->x->wShElems,       CbChangeFlags,w,
     "t?T:sources",&w->x->wShSources,      CbChangeFlags,w,
     "t?T:chords",&w->x->wShChords,        CbChangeFlags,w,
+    "t?T:3dchords",&w->x->wSh3DChords,    CbChangeFlags,w,
     "t?T:separators",&w->x->wShSeparators,CbChangeFlags,w,
     "s:separator",
     "t?T:normals",&w->x->wShNormals,      CbChangeFlags,w,
@@ -505,6 +542,8 @@ View CreateXmView(XApp xap,App app) {
     "t?=T:toolbar",&w->x->wSwToolBar,True,CbSwToolbar,w,
     "t?T=:manualRefresh",&w->x->wSwManualRefresh,CbSwManualRefresh,w,False,
     "s:separ",
+    "bA:saveInterval",CbSetAutosaveInterval,w,
+    "s:separ",
 /*    "bA:setup",CbProgramSetup,w,*/
     "c:setup",
     "+:setupMenu",
@@ -551,28 +590,43 @@ View CreateXmView(XApp xap,App app) {
       "bA@:mark",    CbChangeTool,w,TlMark,
       "bA@:examine", CbChangeTool,w,TlExamine,
       "s:separ",
+      "bA@:rotate",  CbChangeTool,w,TlRotate,
+      "bA@>:stretch",CbChangeTool,w,TlStretch,AddDw2ShowFlags,w,(XtPointer)0,
+      "s:separ",
       "bA@:move",    CbChangeTool,w,TlMoveObject,
       "bA@:remove",  CbChangeTool,w,TlRemoveObject,
       "s:separ",
-      "bA@:addElem", CbChangeTool,w,TlAddElem,
-      "bA@:addSource",CbChangeTool,w,TlAddSource,
+      "bA@>:addElem",CbChangeTool,w,TlAddElem,AddDw2ShowFlags,w,(XtPointer)1,
+      "bA@>:addSource",CbChangeTool,w,TlAddSource,AddDw2ShowFlags,w,
+             (XtPointer)1,
       "bA@:addChord",CbChangeTool,w,TlAddChord,
-      "bA@:addSurf", CbChangeTool,w,TlAddSurface,
-      "bA@:addGP",   CbChangeTool,w,TlAddGridPoint,
+      "bA@>:addSurf",CbChangeTool,w,TlAddSurface,AddDw2ShowFlags,w,
+             (XtPointer)1,
+      "bA@>:addGP",  CbChangeTool,w,TlAddGridPoint,AddDw2ShowFlags,w,
+             (XtPointer)1,
       "s:separ",
 /*      "bA@:setXpt",  CbChangeTool,w,TlSetXPoint,
       "s:separ", */
-      "bA@:moveMeshPoint",CbChangeTool,w,TlMoveMeshPoint,
+      "bA@>:moveMeshPoint",CbChangeTool,w,TlMoveMeshPoint,AddDw2ShowFlags,w,
+             (XtPointer)1,
       "s:separ",
-      "bA@:splitElem",CbChangeTool,w,TlSplitElem,
-      "bA@:joinElem",CbChangeTool,w,TlJoinElems,
-      "bA@:ctPts",   CbChangeTool,w,TlConnectPoints,
-      "bA@:chElem",  CbChangeTool,w,TlRepositionElem,
+      "bA@>:splitElem",CbChangeTool,w,TlSplitElem,AddDw2ShowFlags,w,
+             (XtPointer)1,
+      "bA@>:joinElem",CbChangeTool,w,TlJoinElems,AddDw2ShowFlags,w,
+             (XtPointer)1,
+      "bA@>:ctPts",   CbChangeTool,w,TlConnectPoints,AddDw2ShowFlags,w,
+             (XtPointer)1,
+      "bA@>:chElem",  CbChangeTool,w,TlRepositionElem,AddDw2ShowFlags,w,
+             (XtPointer)1,
       "bA@:chNormals",CbChangeTool,w,TlMirrorNormals,
+      "s:separ",
+      "bA@:extChord",CbChangeTool,w,TlExtChord,
+      "bA@:adjChord",CbChangeTool,w,TlAdjustChord,
       "-:",
       toolWidgetName,&w->x->wTools[i],
       NULL);
   }
+
 
   /* Status bar */
 
@@ -587,18 +641,19 @@ View CreateXmView(XApp xap,App app) {
     XmNrightAttachment,XmATTACH_FORM,
     NULL);
 
+
+  /* DrawingArea */
+
+  w->x->wDraw=Cmw(XmCreateDrawingArea,w->x->wMain,"draw",NULL);
+  XtAddCallback(w->x->wDraw,XmNexposeCallback,(XtCallbackProc)CbExposeView,w);
+  XtAddCallback(w->x->wDraw,XmNresizeCallback,(XtCallbackProc)CbResizeView,w);
+
   SetValues(w->x->wMain,
     XmNmenuBar,w->x->wMenu,
     XmNcommandWindow,w->x->wCommand,
     XmNmessageWindow,w1,
+    XmNworkWindow,w->x->wDraw,
     NULL);
-
-  /* DrawingArea */
-
-  w->x->wDraw=Cmw(XmCreateDrawingArea,w->x->wMain,"draw",
-    NULL);
-  XtAddCallback(w->x->wDraw,XmNexposeCallback,(XtCallbackProc)CbExposeView,w);
-  XtAddCallback(w->x->wDraw,XmNresizeCallback,(XtCallbackProc)CbResizeView,w);
 
   /* Finish initialization/display the window *************************/
 
@@ -665,6 +720,10 @@ View CreateXmView(XApp xap,App app) {
   AddDependentWidget(w,wMnRecent,N_NOW|N_RECENTFILES,NULL,
       DwNotifyRecentFiles,NULL);
 
+  /* Create autosave thread */
+
+  CreateAutosaveInfo(w);
+
   /* Display welcome message */
 
   ViewMsgEx(w,MSG_ABOUT,"$(VERSION)%s",GetVersionStr(DG_VERSION));
@@ -713,6 +772,9 @@ static void DrawXmViewLine(View w,double x1,double y1,double x2,double y2) {
   if (w->app !=NULL && w->app->updateLocks) return;
   if (!XtIsRealized(w->x->wDraw)) return;
 
+  ScreenRotate(w,1,&x1,&y1);
+  ScreenRotate(w,1,&x2,&y2);
+
   if (x1<w->minX && x2>w->minX)
     y1+=(y2-y1)*(w->minX-x1)/(x2-x1),x1=w->minX; else
   if (x2<w->minX && x1>w->minX)
@@ -740,11 +802,51 @@ static void DrawXmViewLine(View w,double x1,double y1,double x2,double y2) {
     ScreenX(w,x1),ScreenY(w,y1),ScreenX(w,x2),ScreenY(w,y2));
 }
 
+/* rotate a rectangle by sign*w->xyAngle about the center of the screen */
+static void RotateRect(View w,int sign,double* px1,double* py1,double* px2,
+    double* py2) {
+  double centerX=(*px1+*px2)/2,centerY=(*py1+*py2)/2;
+
+  ScreenRotate(w,1,&centerX,&centerY);
+  ScreenRotate(w,1,px1,py1);
+  ScreenRotate(w,1,px2,py2);
+  Rotate(-w->xyAngle,centerX,centerY,px1,py1);
+  Rotate(-w->xyAngle,centerX,centerY,px2,py2);
+}
+
+/*#define UPRIGHT_RECTS*/
+/* when UPRIGHT_RECTS is on, on-screen rectangles are drawn upright
+   regardless of rotation angle. as of 8/2007, UPRIGHT_RECTS is not
+   working properly in that the highlight rectangle is not
+   shown/updated correctly for small values of x2-x1. since having a
+   highlight rectangle that woud accurately preview the extent of the
+   screen after a zoom, UPRIGHT_RECTS was not used and instead left as
+   an optional starting point for a future implementation of this
+   feature. */
+
 static void DrawXmViewRect(View w,double x1,double y1,double x2,double y2) {
   int sx1,sy1,sx2,sy2;
+  double ox1,oy1,ox2,oy2,x3,y3,x4,y4;
 
   if (w->app !=NULL && w->app->updateLocks) return;
   if (!XtIsRealized(w->x->wDraw)) return;
+
+#ifndef UPRIGHT_RECTS
+  if (w->xyAngle!=0) {
+    ox1=x1;oy1=y1;ox2=x2;oy2=y2;
+    x1=ox1; y1=oy1;
+    x2=ox2; y2=oy1;
+    x3=ox2; y3=oy2;
+    x4=ox1; y4=oy2;
+
+    ScreenRotate(w,1,&x1,&y1);
+    ScreenRotate(w,1,&x2,&y2);
+    ScreenRotate(w,1,&x3,&y3);
+    ScreenRotate(w,1,&x4,&y4);
+  } else {
+#else
+  if (w->xyAngle!=0) RotateRect(w,1,&x1,&y1,&x2,&y2);
+#endif
 
   sx1=ScreenX(w,x1);
   sy1=ScreenY(w,y1);
@@ -754,12 +856,28 @@ static void DrawXmViewRect(View w,double x1,double y1,double x2,double y2) {
   if (sx1>sx2) swap(sx1,sx2);
   if (sy1>sy2) swap(sy1,sy2);
 
+#ifndef UPRIGHT_RECTS
+  }
+
+  if (w->xyAngle!=0) {
+    XDrawLine(XtDisplay(w->x->wDraw),XtWindow(w->x->wDraw),w->x->gc,
+      ScreenX(w,x1),ScreenY(w,y1),ScreenX(w,x2),ScreenY(w,y2));
+    XDrawLine(XtDisplay(w->x->wDraw),XtWindow(w->x->wDraw),w->x->gc,
+      ScreenX(w,x2),ScreenY(w,y2),ScreenX(w,x3),ScreenY(w,y3));
+    XDrawLine(XtDisplay(w->x->wDraw),XtWindow(w->x->wDraw),w->x->gc,
+      ScreenX(w,x3),ScreenY(w,y3),ScreenX(w,x4),ScreenY(w,y4));
+    XDrawLine(XtDisplay(w->x->wDraw),XtWindow(w->x->wDraw),w->x->gc,
+      ScreenX(w,x4),ScreenY(w,y4),ScreenX(w,x1),ScreenY(w,y1));
+  } else
+#endif
   XDrawRectangle(XtDisplay(w->x->wDraw),XtWindow(w->x->wDraw),w->x->gc,
     sx1,sy1,sx2-sx1,sy2-sy1);
 }
 
 static void DrawXmViewCircle(View w,double x,double y,double r) {
   int wh,h;
+
+  ScreenRotate(w,1,&x,&y);
 
   if (w->app !=NULL && w->app->updateLocks) return;
   if (!XtIsRealized(w->x->wDraw)) return;
@@ -768,7 +886,10 @@ static void DrawXmViewCircle(View w,double x,double y,double r) {
   if (y+r<w->minY) return;
   if (y-r>w->maxY) return;
 
-  if (w->x->bUseSquares) DrawXmViewRect(w,x-r,y-r,x+r,y+r);
+  if (w->x->bUseSquares) {
+    ScreenRotate(w,-1,&x,&y);
+    DrawXmViewRect(w,x-r,y-r,x+r,y+r);
+  }
   else {
     wh=r*w->zoomX;
     h=r*w->zoomY;
@@ -782,6 +903,8 @@ static void DrawXmViewCircle(View w,double x,double y,double r) {
 static void DrawXmViewText(View w,double x,double y,char* text) {
   if (w->app !=NULL && w->app->updateLocks) return;
   if (!XtIsRealized(w->x->wDraw)) return;
+
+  ScreenRotate(w,1,&x,&y);
 
   XDrawString(XtDisplay(w->x->wDraw),XtWindow(w->x->wDraw),w->x->gc,
     ScreenX(w,x),ScreenY(w,y),text,strlen(text));
@@ -1348,6 +1471,9 @@ static void UpdateXViewShowFlags(View w) {
   XTBSS(w->x->wShSources,    !!(w->showFlags & SHW_SOURCES),   False);
   XTBSS(w->x->wShChords,     !!(w->showFlags & SHW_CHORDS),    False);
   XTBSS(w->x->wShMeshDetails,!!(w->showFlags & SHW_MESHDETAILS),False);
+  XTBSS(w->x->wShStretch,    !!(w->showFlags & SHW_STRETCH),   False);
+  XTBSS(w->x->wShTopView,    !!(w->showFlags & SHW_TOPVIEW),   False);
+  XTBSS(w->x->wSh3DChords,   !!(w->showFlags & SHW_3DCHORDS),  False);
 }
 
 static void ProcessXViewShowFlags(View w) {
@@ -1372,6 +1498,9 @@ static void ProcessXViewShowFlags(View w) {
   XTBGS(w->x->wShSources)    ? (f |= SHW_SOURCES)    : (f &=~ SHW_SOURCES);
   XTBGS(w->x->wShChords)     ? (f |= SHW_CHORDS)     : (f &=~ SHW_CHORDS);
   XTBGS(w->x->wShMeshDetails)? (f |= SHW_MESHDETAILS): (f &=~ SHW_MESHDETAILS);
+  XTBGS(w->x->wShStretch)    ? (f |= SHW_STRETCH)    : (f &=~ SHW_STRETCH);
+  XTBGS(w->x->wShTopView)    ? (f |= SHW_TOPVIEW)    : (f &=~ SHW_TOPVIEW);
+  XTBGS(w->x->wSh3DChords)   ? (f |= SHW_3DCHORDS)   : (f &=~ SHW_3DCHORDS);
 
   SetViewFlags(w,f);
 }
@@ -1610,6 +1739,11 @@ static void AddDw2NotExists(Widget wg,XtPointer w,XtPointer value) {
     DwNotifyIfNotExists,value);
 }
 
+static void AddDw2ShowFlags(Widget wg,XtPointer w,XtPointer value) {
+  AddDependentWidget((View)w,wg,N_NOW | N_ALT | N_NEWAPP,NULL,
+    DwNotifyShowFlags,value);
+}
+
 static void CbExposeView(Widget wg,View w,void* pcbs) {
   if (XmToggleButtonGetState(w->x->wSwManualRefresh)) return;
 
@@ -1715,6 +1849,109 @@ void XtActUseTool(Widget wg,XEvent* xev,String* args,Cardinal* argn) {
   if (tp==NULL) return;
 
   CallToolProc(w,tp,tl,xev->xbutton.x,xev->xbutton.y);
+}
+
+/* Autosave-related functions */
+
+void CreateAutosaveInfo(View w) {
+  if (!GetUserPrefsInt(w->xapp,PSTR_AUTOSAVE_INTERVAL)) {
+    LockUserPrefsFile(w->xapp);
+    SetUserPrefsInt(w->xapp,PSTR_AUTOSAVE_INTERVAL,5);
+    UnlockUserPrefsFile(w->xapp);
+  }
+
+  if (w->app->fName!=NULL) {
+    pthread_t saveThr;
+    pthread_create(&saveThr,NULL,(void*)AutosaveProc,w);
+  }
+}
+
+static void AutosaveProc(View w) {
+  String s;
+  int err;
+
+  while (True) {
+    sleep(60*GetUserPrefsInt(w->xapp,PSTR_AUTOSAVE_INTERVAL));
+
+    if (w==NULL) break;
+    if (w->app==NULL) break;
+
+    if (DetectFileType(w->app->fName)==FT_DG_CONFIG) {
+      SetViewMsg(w,GetStr(w,ERR_NOSAVECONFIG));
+      return;
+    }
+
+    /* does not lock variables while auto-saving */
+
+    s=strcat(w->app->fName,"~");
+
+    err=SaveApp(w->app,s,DGFM_APP);
+    if (err) {
+      SetViewMsg(w,GetStr(w,err));
+    } else {
+      SetViewMsg(w,GetStr(w,MSG_FILEAUTOSAVED));
+      w->app->alt=0;
+    }
+
+    *(w->app->fName+strlen(w->app->fName)-1)=0; /* avoid multiple tildes */
+  }
+  pthread_exit(NULL);
+}
+
+Widget OpenAutosaveDlg(View w) {
+  XtPointer xtp;
+  SaveIntervalDlg dlg;
+  Widget wDlg,wg;
+  char s[256];
+
+  wDlg=XtNameToWidget(w->x->wMain,"*"DLG_SAVE_INTERVAL);
+  if (wDlg==NULL) {
+    dlg=Malloc(sizeof(*dlg));
+    dlg->w=w;
+    dlg->wDlg=wDlg=CreateOkCancelDialog(w->x->wMain,DLG_SAVE_INTERVAL);
+    XtAddCallback(wDlg,XmNdestroyCallback,CbFree,(XtPointer)dlg);
+
+    XtAddCallback(wDlg,XmNokCallback,(XtCallbackProc)CbSetSaveInterval,dlg);
+    XtUnmanageChild(XtNameToWidget(wDlg,"Help"));
+
+    wg=Cmw(XmCreateForm,wDlg,"form",
+      NULL);
+    CreateMenuSystem(wg,
+      "l@:saveLabel",0x0101,
+      "x?@:interval",&dlg->wInt,0x0102,
+       NULL);
+    Form2Table(wg);
+    sprintf(s,"%d",GetUserPrefsInt(w->xapp,PSTR_AUTOSAVE_INTERVAL));
+    XmTextSetString(dlg->wInt,s);
+    XtManageChild(wDlg);
+  }
+  else XtPopup(XtParent(wDlg),XtGrabNone);
+
+  UndoMark(w->app);
+  return wDlg;
+}
+
+static void CbSetSaveInterval(Widget wg,SaveIntervalDlg dlg,void* pcbs) {
+  int minutes;
+  char* s;
+
+  SetActiveView(dlg->w);
+  if (dlg->w->app==NULL) return;
+
+  s=XmTextGetString(dlg->wInt);
+  if (sscanf(s,"%d",&minutes)!=1) {
+    XtFree(s);
+    ErrorBox(dlg->w->x->wMain,GetStr(dlg->w,ERR_INVNUMBERS));
+    return;
+  }
+  XtFree(s);
+
+  LockUserPrefsFile(dlg->w->xapp);
+  SetUserPrefsInt(dlg->w->xapp,PSTR_AUTOSAVE_INTERVAL,minutes);
+  UnlockUserPrefsFile(dlg->w->xapp);
+
+  XtPopdown(XtParent(dlg->wDlg));
+  UndoMark(dlg->w->app);
 }
 
 /* Unused

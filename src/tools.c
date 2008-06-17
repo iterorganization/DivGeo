@@ -1,5 +1,7 @@
 #include "dg.h"
 
+/* "Tl_DBLCLK" actually corresponds to Shift+move */
+
 /* Generic tool
 void Tl(View w,int event,double x,double y) {
   d=w->toolData;
@@ -61,7 +63,7 @@ void TlExamine(View w,int event,double x,double y) {
     Group g;
     void* obj;
   }* d;
-  void* p;
+  void* p = NULL;
   Group g;
   MeshPoint mpt;
   MeshCell mc;
@@ -99,7 +101,7 @@ void TlExamine(View w,int event,double x,double y) {
       d->hm=1;
       d->obj=NULL;
       p=HitViewObject(w,x,y,SHW_NODES|SHW_ELEMS|SHW_SURFACES|SHW_GRIDPOINTS|
-          SHW_SEPARATORS|SHW_SOURCES|SHW_CHORDS|
+          SHW_SEPARATORS|SHW_SOURCES|SHW_CHORDS|SHW_3DCHORDS|
           SHW_XPOINTTESTS|
           SHWX_MESHCELLS|SHWX_MESHELEMENTS|SHWX_MESHPOINTS);
       if (p==NULL) {
@@ -153,7 +155,7 @@ void TlExamine(View w,int event,double x,double y) {
       } else {
         if (d->obj!=NULL) p=HitViewObject(w,x,y,SHW_NODES|SHW_ELEMS|
         SHW_SURFACES|SHW_GRIDPOINTS|SHW_SEPARATORS|SHW_SOURCES|SHW_CHORDS|
-        SHW_XPOINTTESTS|
+        SHW_3DCHORDS|SHW_XPOINTTESTS|
         SHWX_MESHCELLS|SHWX_MESHELEMENTS|SHWX_MESHPOINTS);
 
         if (p==NULL || p==d->obj) break;
@@ -222,6 +224,162 @@ void TlExamine(View w,int event,double x,double y) {
   w->toolData=d;
 }
 
+void TlRotate(View w,int event,double x,double y) {
+  struct {
+    int bEnh;
+    double refAngle,t0,t1;
+  }* d;
+  void* p = NULL;
+
+  d=w->toolData;
+  switch(event) {
+    case TL_DISABLE:
+      if (d!=NULL) FatalError("Tool()-disable0: fatal error 2");
+    case TL_ENABLE:
+      break;
+    case TL_DBLCLK:
+      if (d!=NULL) break;
+      break;
+    case TL_PRESS:
+      if (d!=NULL) break;
+      d=Malloc(sizeof(*d));
+      d->bEnh=0;
+      d->refAngle=atan2(y-w->centerY,x-w->centerX);
+      d->t0=w->xyAngle;
+      break;
+    case TL_MOTION:
+      if (d==NULL) break;
+      w->xyAngle+=atan2(y-w->centerY,x-w->centerX)-d->refAngle;
+      ClearView(w);
+      RepaintView(w);
+      break;
+    case TL_RELEASE:
+      if (d==NULL) break;
+      d->t1=w->xyAngle;
+      w->xyAngle=d->t0;
+      SetViewAngle(w,d->t1);
+      UndoMark(w->app);
+      d=Free(d);
+      break;
+    case TL_ENTER:
+    case TL_LEAVE:
+      if (d==NULL) break;
+      break;
+    case TL_CANCEL:
+      if (d==NULL) break;
+      w->xyAngle=d->t0;
+      d=Free(d);
+      ViewMsgEx(w,MSG_CANCELED,NULL);
+      Cancel(w->app);
+      break;
+  }
+  FlushView(w);
+  w->toolData=d;
+}
+
+void TlStretch(View w,int event,double x,double y) {
+  struct {
+    int bEnh,bHoriz;
+    double dx0,dy0,minX0,minY0,maxX0,maxY0,zoomX0,zoomY0,sgnX0,sgnY0;
+    double dx,dy,sgnX,sgnY;
+  }* d;
+  void* p = NULL;
+  double fMinX,fMinY,fMaxX,fMaxY;
+
+  d=w->toolData;
+  ScreenRotate(w,1,&x,&y);
+  switch(event) {
+    case TL_DISABLE:
+      if (d!=NULL) FatalError("Tool()-disable0: fatal error 2");
+    case TL_ENABLE:
+      break;
+    case TL_DBLCLK:
+      if (d!=NULL) break;
+      break;
+    case TL_PRESS:
+      if (d!=NULL) break;
+      if (~w->showFlags & SHW_STRETCH) break;
+      d=Malloc(sizeof(*d));
+      d->bEnh=0;
+      d->dx0=d->dx=(x-w->centerX)*w->zoomX*w->xScaleSign;
+      d->dy0=d->dy=(y-w->centerY)*w->zoomY*w->yScaleSign;
+      d->sgnX0=d->dx0!=0 ? (d->dx0>0 ? 1 : -1) : 0;
+      d->sgnY0=d->dy0!=0 ? (d->dy0>0 ? 1 : -1) : 0;
+      if (!d->sgnX0 || !d->sgnY0 || fabs(d->dx)==fabs(d->dy)) {
+	d=Free(d);
+	break;
+      }
+      d->bHoriz=fabs(d->dx)>fabs(d->dy);
+      d->zoomX0=w->zoomX;
+      d->zoomY0=w->zoomY;
+      d->minX0=w->minX;
+      d->minY0=w->minY;
+      d->maxX0=w->maxX;
+      d->maxY0=w->maxY;
+      break;
+    case TL_MOTION:
+      if (d==NULL) break;
+      if (d->bHoriz) {
+	d->dx=(x-w->centerX)*w->zoomX*w->xScaleSign;
+      } else {
+	d->dy=(y-w->centerY)*w->zoomY*w->yScaleSign;
+      }
+      d->sgnX=d->dx!=0 ? (d->dx>0 ? 1 : -1) : 0;
+      d->sgnY=d->dy!=0 ? (d->dy>0 ? 1 : -1) : 0;
+      if (d->sgnX!=d->sgnX0 || d->sgnY!=d->sgnY0) {
+	break;
+      }
+      if (d->bHoriz) {
+	w->zoomX=d->zoomX0/d->dx0*d->dx;
+	w->minX=w->centerX-w->width/w->zoomX/2.;
+	w->maxX=w->centerX+w->width/w->zoomX/2.;
+      } else {
+	w->zoomY=d->zoomY0/d->dy0*d->dy;
+	w->minY=w->centerY-w->height/w->zoomY/2.;
+	w->maxY=w->centerY+w->height/w->zoomY/2.;
+      }
+      ClearView(w);
+      RepaintView(w);
+      break;
+    case TL_RELEASE:
+      if (d==NULL) break;
+      fMinX=w->minX;
+      fMinY=w->minY;
+      fMaxX=w->maxX;
+      fMaxY=w->maxY;
+      w->zoomX=d->zoomX0;
+      w->zoomY=d->zoomY0;
+      w->minX=d->minX0;
+      w->minY=d->minY0;
+      w->maxX=d->maxX0;
+      w->maxY=d->maxY0;
+      SetViewRect(w,fMinX,fMinY,fMaxX,fMaxY);
+      UndoMark(w->app);
+      d=Free(d);
+      break;
+    case TL_ENTER:
+    case TL_LEAVE:
+      if (d==NULL) break;
+      break;
+    case TL_CANCEL:
+      if (d==NULL) break;
+      w->zoomX=d->zoomX0;
+      w->zoomY=d->zoomY0;
+      w->minX=d->minX0;
+      w->minY=d->minY0;
+      w->maxX=d->maxX0;
+      w->maxY=d->maxY0;
+      d=Free(d);
+      ClearView(w);
+      RepaintView(w);
+      ViewMsgEx(w,MSG_CANCELED,NULL);
+      Cancel(w->app);
+      break;
+  }
+  FlushView(w);
+  w->toolData=d;
+}
+
 void TlMark(View w,int event,double x,double y) {
   struct {
     int bEnh,bMoved;
@@ -268,7 +426,7 @@ void TlMark(View w,int event,double x,double y) {
     case TL_PRESS:
       if (d!=NULL) break;
       obj=HitViewObject(w,x,y,SHW_ELEMS|SHW_SEPARATORS|SHW_SOURCES|
-          SHW_CHORDS|SHWX_MESHCELLS|SHWX_MESHELEMENTS);
+          SHW_CHORDS|SHW_3DCHORDS|SHWX_MESHCELLS|SHWX_MESHELEMENTS);
       if (obj==NULL) {
         SetViewMsg(w,GetStr(w,ERR_NOELEMS));
         break;
@@ -299,6 +457,7 @@ void TlMark(View w,int event,double x,double y) {
     case TL_MOTION:
       if (d==NULL) break;
       if (d->bEnh) {
+	if (w->showFlags & SHW_TOPVIEW) break;
         if (!d->bMoved) {
           d->bMoved=1;
           CancelNonDestructive(w->app);
@@ -472,15 +631,17 @@ void TlMoveObject(View w,int event,double x,double y) {
     double x0;
     int ptNum;
     int bSurfaceExVirtual;
+    double x,y,r; /* used by enhanced/double-click/shift-move, etc. */
   }* d;
   int i,r;
   int area;
-  double value;
+  double value,factor;
   Index ix;
   GridPointEx gpx;
   SurfaceEx sx,s0x;
   SurfaceZone sz;
   Chord ch;
+  double chy1,chy2;
 
   d=w->toolData;
   switch(event) {
@@ -498,6 +659,14 @@ void TlMoveObject(View w,int event,double x,double y) {
       d->obj=HitViewObject(w,x,y,SHW_NODES|SHW_SURFACES|
           SHW_GRIDPOINTS|SHW_SOURCES|SHW_CHORDS);
       switch(GetObjType(d->obj)) {
+        case T_CHORD:
+	  ch=HitChord(w->app,x,y,&d->ptNum,NULL);
+	  d->x=x;
+	  d->y=y;
+	  d->r=(abs(d->ptNum)==1) ?
+	    hypot(ch->x1,ch->z1) : hypot(ch->x2,ch->z2);
+	  if (d->r > 1.e15) puts("really dig d->r");
+	 break;
         default:
           SetHighlightMode(w->app,d->hm=0);
           ViewMsgEx(w,ERR_BADSTRETCHTYPE,"");
@@ -590,18 +759,37 @@ void TlMoveObject(View w,int event,double x,double y) {
           case T_CHORD:
             if (!w->app->highlightMode) break;
             ch=d->obj;
+	    chy1=(~w->showFlags & SHW_TOPVIEW) ? ch->y1 : ch->z1;
+	    chy2=(~w->showFlags & SHW_TOPVIEW) ? ch->y2 : ch->z2;
             i=(abs(d->ptNum)==1) ?
-              ChangeChord(w->app,ch,x,y,ch->x2,ch->y2) :
-              ChangeChord(w->app,ch,ch->x1,ch->y1,x,y);
+              ChangeChord(w->app,ch,x,y,ch->x2,chy2) :
+              ChangeChord(w->app,ch,ch->x1,chy1,x,y);
             if (i) SetViewMsg(w,GetStr(w,i));
             break;
           default:
             FatalError("TlMove()-type%d:fatal error1",GetObjType(d->obj));
         }
         if (!i) SetExamineMsg(w,d->obj);
-     } else {
+      } else {
         if (!d->hm) break;
         switch(GetObjType(d->obj)) {
+          case T_CHORD:
+	    r=0;
+	    if (!w->app->highlightMode) break;
+	    ch=d->obj;
+	    if (~w->showFlags & SHW_TOPVIEW) {
+	      if (abs(d->ptNum)==1)
+		ChangeChord(w->app,ch,ch->x1,y,ch->x2,ch->y2);
+	      else ChangeChord(w->app,ch,ch->x1,ch->y1,ch->x2,y);
+	      SetExamineMsg(w,ch);
+	    } else {
+	      factor=d->r/hypot(x,y);
+	      if (abs(d->ptNum)==1)
+		ChangeChord(w->app,ch,factor*x,factor*y,ch->x2,ch->z2);
+	      else ChangeChord(w->app,ch,ch->x1,ch->z1,factor*x,factor*y);
+	      SetExamineMsg(w,ch);
+	    }
+	    break;
         }
       }
       break;
@@ -671,7 +859,7 @@ void TlRemoveObject(View w,int event,double x,double y) {
       d=Malloc(sizeof(*d));
       d->bEnh=0;
       d->obj=HitViewObject(w,x,y,SHW_NODES|SHW_ELEMS|SHW_XPOINTTESTS|
-          SHW_SURFACES|SHW_GRIDPOINTS|SHW_SOURCES|SHW_CHORDS);
+          SHW_SURFACES|SHW_GRIDPOINTS|SHW_SOURCES|SHW_CHORDS|SHW_3DCHORDS);
       if (d->obj==NULL) {
         d=Free(d);
         break;
@@ -697,7 +885,7 @@ void TlRemoveObject(View w,int event,double x,double y) {
       if (d==NULL) break;
       if (!d->bEnh) {
         p=HitViewObject(w,x,y,SHW_NODES|SHW_ELEMS|SHW_XPOINTTESTS|
-            SHW_SURFACES|SHW_GRIDPOINTS|SHW_SOURCES|SHW_CHORDS);
+            SHW_SURFACES|SHW_GRIDPOINTS|SHW_SOURCES|SHW_CHORDS|SHW_3DCHORDS);
         if (p!=d->obj) {
           UnhighlightAll(w);
           /*Highlight(w,d->obj,0);*/
@@ -1109,7 +1297,7 @@ void TlRepositionElem(View w,int event,double x,double y) {
       AddViewShapeLine(w,d->x0+w->nodeR/w->zoomX,d->y0,
           d->x0,d->y0+w->nodeR/w->zoomY);
 
-      SetViewFlags(w,w->showFlags|SHW_CHORDS|SHW_TEMPLATE);
+      SetViewFlags(w,w->showFlags|SHW_CHORDS|SHW_3DCHORDS|SHW_TEMPLATE);
       SetHighlightMode(w->app,d->hm);
 
       ViewMsgEx(w,w->app->template->dragStatus?
@@ -1445,13 +1633,16 @@ void TlAddGridPoint(View w,int event,double x,double y) {
 
 void TlMirrorNormals(View w,int event,double x,double y) {
   struct {
-    int bEnh,hm;
+    int bEnh,hm,type;
     Elem e;
+    Chord ch;
     Group g;
   }* d;
   Elem e1;
+  Chord ch1;
   Index ix;
   int i;
+  void* obj;
 
   d=w->toolData;
   switch(event) {
@@ -1460,12 +1651,13 @@ void TlMirrorNormals(View w,int event,double x,double y) {
     case TL_ENABLE:
       break;
     case TL_DBLCLK:
+      /* reverses entire chain of elements */
       if (d!=NULL) break;
       d=Malloc(sizeof(*d));
       d->bEnh=1;
       d->hm=1;
       d->e=NULL;
-      e1=HitElem(w->app,x,y,NULL,NULL);
+      e1=HitViewObject(w,x,y,SHW_ELEMS);
       if (e1==NULL) {
         d=Free(d);
         break;
@@ -1490,36 +1682,57 @@ void TlMirrorNormals(View w,int event,double x,double y) {
       d=Malloc(sizeof(*d));
       d->bEnh=0;
       d->hm=1;
-      d->e=HitElem(w->app,x,y,NULL,NULL);
-      if (d->e==NULL) {
+      obj=HitViewObject(w,x,y,SHW_ELEMS|SHW_CHORDS);
+      if (obj==NULL) {
         d=Free(d);
         break;
       }
+      d->type=GetObjType(obj);
+      assert(d->type==T_ELEM || d->type==T_CHORD);
       d->g=CreateGroup();
-      GroupAdd(d->g,d->e);
-      SetViewFlags(w,w->showFlags | SHW_ELEMS|SHW_NORMALS);
-      d->hm=!IsLocked(d->e);
+      GroupAdd(d->g,obj);
+      SetViewFlags(w,w->showFlags | SHW_ELEMS|SHW_CHORDS|SHW_NORMALS);
+      d->hm=!IsLocked(obj);
       SetHighlightMode(w->app,d->hm);
-      Highlight(w,d->e,1);
+      Highlight(w,obj,1);
       if (!w->app->highlightMode) break;
-      RevertElem(w->app,d->e);
+      if (d->type==T_ELEM) {
+	d->e=obj;
+	RevertElem(w->app,d->e);
+      }
+      else {
+	d->ch=obj;
+	ChangeChord3D(w->app,d->ch,d->ch->x2,d->ch->y2,d->ch->z2,
+          d->ch->x1,d->ch->y1,d->ch->z1);
+      }
       break;
     case TL_MOTION:
       if (d==NULL) break;
       if (d->bEnh) {
       } else {
         if (!w->app->highlightMode) break;
-        e1=HitElem(w->app,x,y,NULL,NULL);
-        if (e1==NULL || e1==d->e || IsLocked(e1)) break;
-        i=ElemsConnected(d->e,e1);
-        if (!i) break;
-        if (IsRegularNode(e1->n[1],d->g)) break;
-        if (IsRegularNode(e1->n[2],d->g)) break;
-        d->e=e1;
-        if (InGroup(d->g,d->e)) break;
-        Highlight(w,d->e,1);
-        GroupAdd(d->g,d->e);
-        if (i==2) RevertElem(w->app,d->e);
+	if (d->type==T_ELEM) {
+	  e1=HitElem(w->app,x,y,NULL,NULL);
+	  if (e1==NULL || e1==d->e || IsLocked(e1)) break;
+	  i=ElemsConnected(d->e,e1);
+	  if (!i) break;
+	  if (IsRegularNode(e1->n[1],d->g)) break;
+	  if (IsRegularNode(e1->n[2],d->g)) break;
+	  d->e=e1;
+	  if (InGroup(d->g,d->e)) break;
+	  Highlight(w,d->e,1);
+	  GroupAdd(d->g,d->e);
+	  if (i==2) RevertElem(w->app,d->e);
+	} else {
+	  ch1=HitChord(w->app,x,y,NULL,NULL);
+	  if (ch1==NULL || ch1==d->ch || IsLocked(ch1)) break;
+	  d->ch=ch1;
+	  if (InGroup(d->g,d->ch)) break;
+	  Highlight(w,d->ch,1);
+	  GroupAdd(d->g,d->ch);
+	  ChangeChord3D(w->app,d->ch,d->ch->x2,d->ch->y2,d->ch->z2,
+            d->ch->x1,d->ch->y1,d->ch->z1);
+	}
       }
       break;
     case TL_RELEASE:

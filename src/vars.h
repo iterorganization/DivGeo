@@ -26,6 +26,7 @@
 #define VTF_HASCHORDS        0x1000
 #define VTF_HAS_MESH_OBJECTS 0x2000
 #define VTF_TARGET           0x4000
+#define VTF_FILENAME         0x8000
 
 #define VTM_HASGROUP         (VTF_HASELEMS|VTF_HASCHORDS|VTF_HAS_MESH_OBJECTS)
 
@@ -34,6 +35,7 @@
 #define VT_INT               0x00
 #define VT_FLOAT             0x01
 #define VT_TEXT              0x02
+#define VT_FILENAME          (0x03|VTF_FILENAME)
 #define VT_ELEM              (0x04|VTF_HASELEMS|VTF_LOCKGROUP)
 #define VT_ELEMS             (0x05|VTF_HASELEMS|VTF_LOCKGROUP)
 #define VT_TARGET1           (0x06|VTF_HASELEMS|VTF_LOCKGROUP|VTF_TARGET)
@@ -45,6 +47,7 @@
 #define VT_MESH_ELEMENTS     (0x0C|VTF_HAS_MESH_OBJECTS)
 #define VT_MESH_H_ELEMENTS   (0x0D|VTF_HAS_MESH_OBJECTS)
 #define VT_MESH_V_ELEMENTS   (0x0E|VTF_HAS_MESH_OBJECTS)
+#define VT_TOPVIEW           (0x0F|VTF_HASELEMS)
 
 /* Variable values
 */

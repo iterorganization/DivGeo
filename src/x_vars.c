@@ -7,6 +7,7 @@
 \**********************************************************************/
 
 #define DLG_VARSEDIT "dlgVarsEdit"
+#define DLG_VARSFILESET "dlgVarsFileSet"
 
 #define RF_NEWVAL 0x0001 /* Comment line only */
 #define RF_OLDVAL 0x0002 /* Comment line only */
@@ -67,6 +68,9 @@ static void CbVarsEditFocus(Widget wg,XtPointer pField,XtPointer pcbs);
 static void CbVarsEditCompare_p(Widget wg,XtPointer xtpDlg,XtPointer pcbs);
 static void CbVarsEditDisplay_p(Widget wg,XtPointer xtpDlg,XtPointer pcbs);
 static void CbVarsDlgCollapse(Widget wg,XtPointer xtpDlg,XtPointer pcbs);
+static void CbVarsDlgOpenFileSetDlg(Widget wg,VarsEditField vef,void* pcbs);
+static Widget OpenVarsFileSetDlg(View w,VarsEditField vef);
+static void CbVarsFileSet(Widget wg,VarsEditField vwf,void* xtp);
 
 static void ResetVarsDlgField(VarsEditField vef,unsigned flags);
 static void CollapseVarsDlg(VarsEditDlg dlg,int bCollapse);
@@ -335,6 +339,9 @@ static VarsEditDlg CreateVarsEditDlg(View w,void* obj) {
       vef->wNewValue=wg1=Cmw(XmCreateText,wg,"newValueText",
         XmNuserData,(XtPointer)vef,
         NULL);
+      if (vd->varType & VTF_FILENAME)
+	XtAddCallback(wg1,XmNactivateCallback,
+          (XtCallbackProc)CbVarsDlgOpenFileSetDlg,vef);
       XtAddCallback(vef->wNewValue,XmNvalueChangedCallback,
         (XtCallbackProc)CbVarsDlgInput,(XtPointer)vef);
       XtAddCallback(vef->wNewValue,XmNfocusCallback,
@@ -394,7 +401,7 @@ static VarsEditDlg CreateVarsEditDlg(View w,void* obj) {
 
   return dlg;
 }
-#undef AddW
+#undef ADDW
 
 static void ActVarsDlgPopupMenu(Widget wg,XEvent* xev,String* args,
     Cardinal* pargn) {
@@ -743,6 +750,7 @@ static void CbVarsEditCompare_p(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
     case VT_INT:
     case VT_FLOAT:
     case VT_TEXT:
+    case VT_FILENAME:
       s=XmTextGetString(vef->wNewValue);
       break;
     default:
@@ -785,6 +793,7 @@ static void CbVarsEditCompare_p(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
         else comp=(f1<f2)? 1 : -1;
         break;
       case VT_TEXT:
+      case VT_FILENAME:
         comp=strcmp(s1,s);
         break;
       default:
@@ -871,6 +880,61 @@ static void CbVarsDlgCollapse(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
   VarsEditDlg dlg=(VarsEditDlg)xtpDlg;
 
   CollapseVarsDlg(dlg,!VarsDlgCollapsed(dlg));
+}
+
+static void CbVarsDlgOpenFileSetDlg(Widget wg,VarsEditField vef,void* pcbs) {
+  SetActiveView(vef->dlg->w);
+  if (vef->dlg->w->app==NULL) return;
+
+  OpenVarsFileSetDlg(vef->dlg->w,vef);
+
+}
+
+static Widget OpenVarsFileSetDlg(View w, VarsEditField vef) {
+  Widget wg;
+  XmString xms,xms2;
+  String s;
+
+  wg=XtNameToWidget(w->x->wMain,"*"DLG_VARSFILESET);
+  if (wg==NULL) {
+    wg=Cmw(XmCreateFileSelectionDialog,w->x->wMain,DLG_VARSFILESET,
+      XmNautoUnmanage,False,
+      XmNdeleteResponse,XmDO_NOTHING,
+      NULL);
+    XmAddWMProtocolCallback(XtParent(wg),w->xapp->x->wm_delete_window,
+      CbUnmap,NULL);
+
+    s=getenv(GetStr(w,ENV_VARSFILESETMASK));
+    if (s!=NULL) {
+      xms=XmStringCreateLocalized(s);
+      SetValues(wg,XmNdirMask,xms,NULL);
+      GetValues(wg,XmNdirMask,&xms2,NULL);
+      if (!XmStringCompare(xms,xms2))
+        ErrorBox(w->x->wMain,GetStr(w,ERR_BADMASK));
+      XmStringFree(xms);
+      XmStringFree(xms2);
+    }
+
+    XtAddCallback(wg,XmNokCallback,(XtCallbackProc)CbVarsFileSet,vef);
+    XtAddCallback(wg,XmNcancelCallback,CbUnmap,NULL);
+  } else {
+    XmFileSelectionDoSearch(wg,NULL);
+    XtPopup(XtParent(wg),XtGrabNone);
+  }
+
+  return wg;
+}
+
+static void CbVarsFileSet(Widget wg,VarsEditField vef,void* xtp) {
+  String s;
+
+  SetActiveView(vef->dlg->w);
+
+  s=XmTextGetString(XmFileSelectionBoxGetChild(wg,XmDIALOG_TEXT));
+  XmTextSetString(vef->wNewValue,s);
+  XtFree(s);
+
+  XtPopdown(XtParent(wg));
 }
 
 /**********************************************************************\
@@ -1000,7 +1064,7 @@ static void ResetInvalidVarsDlg(Widget wDlg) {
 
   XmListDeleteAllItems(dlg->wList);
 
-  XtSetSensitive(XmMessageBoxGetChild(dlg->wDlg,XmDIALOG_OK_BUTTON),
+  XtSetSensitive(XtNameToWidget(dlg->wDlg,"OK"),
     CheckAllVars(dlg->w->app,&g));
 
   for (i=0,vd=Group1st(g,&ix);vd!=NULL;i++,vd=Next(&ix)) {

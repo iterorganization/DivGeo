@@ -94,7 +94,7 @@ void CbFileOutput(Widget wg,XtPointer xtpw,XtPointer pcbs) {
 
 void CbEquil(Widget wg,View w,void* xtp) {
   Widget wDlg;
-  XmString xms;
+  XmString xms=NULL;
 
   SetActiveView(w);
   if (w->app==NULL) return;
@@ -105,11 +105,12 @@ void CbEquil(Widget wg,View w,void* xtp) {
   }
 
   OpenEquilDlg(w);
+  XmStringFree(xms);
 }
 
 void CbTemplate(Widget wg,View w,void* xtp) {
   Widget wDlg;
-  XmString xms;
+  XmString xms=NULL;
 
   SetActiveView(w);
   if (w->app==NULL) return;
@@ -120,11 +121,12 @@ void CbTemplate(Widget wg,View w,void* xtp) {
   }
 
   OpenTemplateDlg(w);
+  XmStringFree(xms);
 }
 
 void CbSonnet(Widget wg,View w,void* xtp) {
   Widget wDlg;
-  XmString xms;
+  XmString xms=NULL;
 
   SetActiveView(w);
   if (w->app==NULL) return;
@@ -135,6 +137,7 @@ void CbSonnet(Widget wg,View w,void* xtp) {
   }
 
   OpenSonnetDlg(w);
+  XmStringFree(xms);
 }
 
 void CbFilePrint(Widget wg,XtPointer xtpV,XtPointer pcbs) {
@@ -199,6 +202,15 @@ void CbMarkAll(Widget wg,View w,void* pcbs) {
 
   MarkGroup(w->app,w->app->elems,1);
   SetViewFlags(w,w->showFlags | SHW_ELEMS);
+  UndoMark(w->app);
+}
+
+void CbMarkAllChords(Widget wg,View w,void* pcbs) {
+  if (w->app==NULL) return;
+  SetActiveView(w);
+
+  MarkGroup(w->app,w->app->chords,1);
+  SetViewFlags(w,w->showFlags | SHW_CHORDS);
   UndoMark(w->app);
 }
 
@@ -450,20 +462,108 @@ void CbShowSelection(Widget wg,View w,void* xtp) {
   UndoMark(w->app);
 }
 
+void CbIncAngle(Widget wg,View w,void* pcbs) {
+  ValidatePtr(w,"CbIncAngle");
+  SetActiveView(w);
+
+  SetViewAngle(w,w->xyAngle+M_PI/180);
+  UndoMark(w->app);
+}
+
+void CbDecAngle(Widget wg,View w,void* pcbs) {
+  ValidatePtr(w,"CbDecAngle");
+  SetActiveView(w);
+
+  SetViewAngle(w,w->xyAngle-M_PI/180);
+  UndoMark(w->app);
+}
+
+void CbCmSetAngle(Widget wg,View w,void* pcbs) {
+  if (w->app==NULL) return;
+  SetActiveView(w);
+
+  OpenSetAngleDlg(w);
+  UndoMark(w->app);
+}
+
+void CbResetAngle(Widget wg,View w,void* pcbs) {
+  ValidatePtr(w,"CbDecAngle");
+  SetActiveView(w);
+
+  SetViewAngle(w,0);
+  UndoMark(w->app);
+}
+
+void CbStretchX(Widget wg,View w,void* pcbs) {
+  ValidatePtr(w,"CbStretchX");
+  SetActiveView(w);
+
+  SetViewRect(w,(w->minX+w->centerX)/2,w->minY,(w->maxX+w->centerX)/2,w->maxY);
+  UndoMark(w->app);
+}
+
+void CbStretchY(Widget wg,View w,void* pcbs) {
+  ValidatePtr(w,"CbStretchY");
+  SetActiveView(w);
+
+  SetViewRect(w,w->minX,(w->minY+w->centerY)/2,w->maxX,(w->maxY+w->centerY)/2);
+  UndoMark(w->app);
+}
+
+void CbShrinkX(Widget wg,View w,void* pcbs) {
+  ValidatePtr(w,"CbShrinkX");
+  SetActiveView(w);
+
+  SetViewRect(w,2*w->minX-w->centerX,w->minY,2*w->maxX-w->centerX,w->maxY);
+  UndoMark(w->app);
+}
+
+void CbShrinkY(Widget wg,View w,void* pcbs) {
+  ValidatePtr(w,"CbShrinkY");
+  SetActiveView(w);
+
+  SetViewRect(w,w->minX,2*w->minY-w->centerY,w->maxX,2*w->maxY-w->centerY);
+  UndoMark(w->app);
+}
+
+void CbCmStretch(Widget wg,View w,void* pcbs) {
+  if (w->app==NULL) return;
+  SetActiveView(w);
+
+  OpenStretchDlg(w);
+  UndoMark(w->app);
+}
+
+void CbResetAspectRatio(Widget wg,View w,void* pcbs) {
+  double zoom,x1,x2,y1,y2;
+
+  ValidatePtr(w,"CbResetAspectRatio");
+  SetActiveView(w);
+
+  zoom=min(w->zoomX,w->zoomY);
+  x1=w->centerX-w->width/zoom/2;
+  x2=w->centerX+w->width/zoom/2;
+  y1=w->centerY-w->height/zoom/2;
+  y2=w->centerY+w->height/zoom/2;
+
+  SetViewRect(w,x1,y1,x2,y2);
+  UndoMark(w->app);
+}
+
 void CmPrevZoom(Widget wg,XtPointer xtpV,XtPointer pcbs) {
   View w=(View)xtpV;
-  double minX,minY,maxX,maxY;
+  double minX,minY,maxX,maxY,xyAngle;
   int i;
 
   if (w->app==NULL) return;
   SetActiveView(w);
 
-  i=GetPrevViewInfo(w->app,&minX,&minY,&maxX,&maxY,False);
+  i=GetPrevViewInfo(w->app,&minX,&minY,&maxX,&maxY,&xyAngle,False);
   if (i) {
 /*    SetViewMsg(w,GetStr(w,i)); -- Does not work, because -1 is returned */
     Cancel(w->app);
   } else {
-    SetViewRect(w,minX,minY,maxX,maxY);
+    SetView(w,minX,minY,maxX,maxY,xyAngle);
     MarkPrevViewDone(w->app);
     UndoMark(w->app);
   }
@@ -615,6 +715,21 @@ void CbCmRenumber(Widget wg,View w,void* pcbs) {
   RenumberElems(w->app);
   LockAppUpdate(w->app,-1);
   UndoMark(w->app);
+}
+
+void CbCmExtChords(Widget wg,View w,void* pcbs) {
+  void* obj;
+  int nc=0;
+  Index ix;
+
+  if (w->app==NULL) return;
+  for (obj=Group1st(w->app->mark,&ix);obj!=NULL;obj=Next(&ix))
+    if (GetObjType(obj)==T_CHORD) {
+      nc++;
+      ExtendChord(w->app,(Chord)obj);
+    }
+  if (nc) UndoMark(w->app);
+  else SetViewMsg(w,GetStr(w,MSG_NOMARKEDCHORDS));
 }
 
 void CbCmRemoveEmptyNodes(Widget wg,View w,void* pcbs) {
@@ -859,6 +974,13 @@ void CbSwManualRefresh(Widget wg,XtPointer xtpView,void* pcbs) {
     XtUnmanageChild(w->x->wSepRefresh);
     CbViewRefresh(wg,xtpView,pcbs);
   }
+}
+
+void CbSetAutosaveInterval(Widget wg,View w,void* pcbs) {
+  SetActiveView(w);
+  if (w->app==NULL) return;
+
+  OpenAutosaveDlg(w);
 }
 
 

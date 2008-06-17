@@ -131,6 +131,9 @@
 #define ERR_TARGET_NOT_CROSSED 115 /* A target not crossed by any segment */
 #define ERR_SURFACE_XY        116 /* Cannot output XY-defined surfaces*/
 
+/* In ExtendChord */
+#define ERR_NOELEMSINPATH     117
+
 /* Messages ///////////////////////////////////////////////////////// */
 
 #define MSG_EXAMNODE         1000
@@ -180,6 +183,9 @@
 #define MSG_EXAM_XPOINTSEG   1044
 #define MSG_EXAM_SURFACE_XY  1045
 #define MSG_CALCULATING_SZ_BOUNDS 1046 /* For use in Add/MoveSurface tool */
+#define MSG_FILEAUTOSAVED    1047
+#define MSG_NOBOUNDINGELEMS  1048
+#define MSG_NOMARKEDCHORDS   1049
 
 #define STR_LOCKED           2000
 #define STR_UNLOCKED         2001
@@ -243,6 +249,7 @@
 #define STR_MESH_CELL        2053
 #define STR_MESH_ELEMENT     2054
 #define STR_MESH_POINT       2055
+#define STR_MESH_CELL_CONCAVE 2056
 
 #define FSTR_CFGEXT          3007
 #define FSTR_OUTPUTEXT       3008
@@ -279,5 +286,7 @@
 #define ENV_EQUILMASK2       6009
 #define ENV_TEMPLATEMASK2    6010
 #define ENV_SONNETMASK2      6011
+
+#define ENV_VARSFILESETMASK  6012
 
 #endif

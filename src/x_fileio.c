@@ -410,6 +410,7 @@ static void CbFile_Open(Widget wg,View w,void* xtp) {
         !IsAppUnsaved(w->app)) {
       a2=w->app;
       SetViewApp(w,a);
+      CreateAutosaveInfo(w);
       if (IsEmptyGroup(a2->views)) FreeApp(a2);
       w2=w;
     }  else {
@@ -499,7 +500,7 @@ static void OpenAppUnsavedDlg(View w) {
       CbUnmap,NULL);
     XtAddCallback(wDlg,XmNokCallback,CbAppUnsavedSave,w);
     XtAddCallback(wDlg,XmNcancelCallback,CbUnmap,NULL);
-/*    XtUnmanageChild(XmMessageBoxGetChild(wDlg,XmDIALOG_HELP_BUTTON));*/
+/*    XtUnmanageChild(XtNameToWidget(wDlg,"Help"));*/
     XtAddCallback(wDlg,XmNhelpCallback,CbHelp,(XtPointer)w);
 
     wg=Cmw(XmCreatePushButton,wDlg,"discard",
@@ -546,7 +547,7 @@ static void OpenMeshUnsavedDlg(View w) {
       CbUnmap,NULL);
     XtAddCallback(wDlg,XmNokCallback,CbMeshUnsavedSave,w);
     XtAddCallback(wDlg,XmNcancelCallback,CbUnmap,NULL);
-/*    XtUnmanageChild(XmMessageBoxGetChild(wDlg,XmDIALOG_HELP_BUTTON));*/
+/*    XtUnmanageChild(XtNameToWidget(wDlg,"Help"));*/
     XtAddCallback(wDlg,XmNhelpCallback,CbHelp,(XtPointer)w);
 
     wg=Cmw(XmCreatePushButton,wDlg,"discard",

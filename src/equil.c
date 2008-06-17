@@ -242,7 +242,7 @@ double EqCorrCell(Equil eq,int cx,int cy,double level) {
 }
 
 double EqCellEx(Equil eq,int cx,int cy,int sx,int sy) {
-  int i;
+  int i = 0;
   double x,y,l;
 
   /* return EqCell(eq,cx,cy); */
@@ -367,7 +367,7 @@ int DistributeSurfaces(App a,int area,int count,double a1,double a2,
 int RebuildCarreSurfaces(App a,int area) {
   SurfaceEx sx;
   SurfaceZone sz;
-  int count,law,carreMode,r,foo;
+  int count,law,carreMode,r = 0,foo;
   double a1,a2,l1,l2;
   Index ix;
   char* id;
@@ -504,6 +504,7 @@ int FindCarreMinMaxSurfaceLevel(App a,int nArea,double* pL1,double* pL2,
   SurfaceEx sx;
   Group g,gST,gSC,gSO,gt;
   Index ix,ixg;
+  Elem innermost,tOutermost;
 
   assert(a->outputMode==OUTPUTMODE_CARRE);
   if (bOuterSurfaceNeeded==NULL) bOuterSurfaceNeeded=&bosnBuf;
@@ -530,6 +531,7 @@ int FindCarreMinMaxSurfaceLevel(App a,int nArea,double* pL1,double* pL2,
   if (gps2!=NULL) {
     lMin=gps->level;
     lMax=gps2->level;
+    sz->innermost=NULL;
     *bOuterSurfaceNeeded=0;
     goto AllFound;
   }
@@ -538,6 +540,7 @@ int FindCarreMinMaxSurfaceLevel(App a,int nArea,double* pL1,double* pL2,
 
   if (sz->flags & SZF_LIMITBYSURFACE) {
     lMax=lMin=gps->level;
+    sz->innermost=NULL;
     for (sx=AppSurfaceEx1st(a,&ix);sx!=NULL;sx=Next(&ix)) {
       if (sx->zone==nArea &&
           fabs(sx->level-lMin)>fabs(lMax-lMin)) lMax=sx->level;
@@ -584,14 +587,14 @@ int FindCarreMinMaxSurfaceLevel(App a,int nArea,double* pL1,double* pL2,
 
       if (!FindEquilMinMaxSegment(a->equil,signMinMax,
           e->n[1]->x,e->n[1]->y,e->n[2]->x,e->n[2]->y,&l))
-        if ((l-l1)*signMinMax>0) l1=l;  /* l ">" l1 */
+        if ((l-l1)*signMinMax>0) {l1=l;tOutermost=e;}  /* l ">" l1 */
       if (!FindEquilMinMaxSegment(a->equil,-signMinMax,
           e->n[1]->x,e->n[1]->y,e->n[2]->x,e->n[2]->y,&l))
         if ((l-l2)*signMinMax<0) l2=l;  /* l "<" l2 */
     }
 
     /* If >0 segments in the right zone, adjust min/max values */
-    if (ne && (l1-lMax)*signMinMax<0) lMax=l1;
+    if (ne && (l1-lMax)*signMinMax<0) {lMax=l1;innermost=tOutermost;}
     if (ne && (l2-lMin)*signMinMax>0) lMin=l2;
   }
 
@@ -615,7 +618,7 @@ int FindCarreMinMaxSurfaceLevel(App a,int nArea,double* pL1,double* pL2,
       if (FindEquilMinMaxSegment(a->equil,-signMinMax,
           e->n[1]->x,e->n[1]->y,e->n[2]->x,e->n[2]->y,&l)) continue;
       if ((l-lMin)*signMinMax<=0) continue; /* Skip intersecting elements */
-      if ((l-lMax)*signMinMax<0) lMax=l;
+      if ((l-lMax)*signMinMax<0) {lMax=l;innermost=e;}
     }
   }
 
@@ -626,6 +629,8 @@ int FindCarreMinMaxSurfaceLevel(App a,int nArea,double* pL1,double* pL2,
 
   if (fabs(lMax)==MAXDOUBLE) return ERR_OUTOFEQUIL;  /* $ - risky */
   assert(fabs(lMin)!=MAXDOUBLE);
+
+  sz->innermost = innermost;
 
   AllFound:
   if (pL1!=NULL) *pL1=lMin;

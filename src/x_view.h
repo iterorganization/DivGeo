@@ -42,7 +42,7 @@ struct _ViewExt {
     wCmRefresh,wSepRefresh,
     wShAxes,wShGrid,wShElems,wShNormals,wShNumbers,wShNodes,wShIrrNodes,
     wShTemplate,wShEquil,wShSurfaces,wShGridPoints,wShSonnet,wShSeparators,
-    wShSources,wShChords,wShMeshDetails,
+    wShSources,wShChords,wShMeshDetails,wShStretch,wShTopView,wSh3DChords,
     wCmAddVarSet,wCmDelVarSet,wMnAddVarSet,wMnDelVarSet,wMnVars,
     wSwMenu,wSwToolBar,wSwManualRefresh,
   /*  *wVarsMenuWidgets, -- Replaced with varsMenuWidgets group */
@@ -87,6 +87,8 @@ void CbHelp(Widget wg,XtPointer pView,XtPointer pcbs);
 void CbDisplayHelpLine(Widget wg,XtPointer pWidget,XtPointer pcbs);
 void CbDisplayDataLine(Widget wg,XtPointer pWidget,XtPointer pcbs);
 void CbClearHelpLine(Widget wg,XtPointer pWidget,XtPointer pcbs);
+
+void CreateAutosaveInfo(View w);
 
 #define DISCARD_MESH    0x0001
 #define DISCARD_DOC     0x0002

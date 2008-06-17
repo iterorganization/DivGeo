@@ -22,5 +22,7 @@ void TlMirrorNormals(View w,int event,double x,double y);
 void TlAddSource(View w,int event,double x,double y);
 void TlMoveObject(View w,int event,double x,double y);
 void TlRemoveObject(View w,int event,double x,double y);
+void TlRotate(View w,int event,double x,double y);
+void TlStretch(View w,int event,double x,double y);
 
 #endif

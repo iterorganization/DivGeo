@@ -65,6 +65,9 @@ int GetGroupType(Group g); /* Returns the type or T_MULTIPLE/T_NONE */
 
 void AddXY(Group g,double x,double y);
 
+/* rotate (*px, *py) t radians about (centerX, centerY) */
+void Rotate(double t,double centerX,double centerY,double* px,double* py);
+
 /* Maths //////////////////////////////////////////////////////////// */
 
 void FollowRectCW(int* px,int* py,int cx1,int cy1,int cx2,int cy2);

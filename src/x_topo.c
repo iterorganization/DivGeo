@@ -82,10 +82,10 @@ static Widget OpenTopologyDlg(View w) {
     XmAddWMProtocolCallback(XtParent(wDlg),wm_delete_window,
       CbTopoUnmap,(XtPointer)dlg);
 
-      XtUnmanageChild(XmMessageBoxGetChild(wDlg,XmDIALOG_MESSAGE_LABEL));
-      XtUnmanageChild(XmMessageBoxGetChild(wDlg,XmDIALOG_OK_BUTTON));
-      XtUnmanageChild(XmMessageBoxGetChild(wDlg,XmDIALOG_CANCEL_BUTTON));
-      XtUnmanageChild(XmMessageBoxGetChild(wDlg,XmDIALOG_HELP_BUTTON));
+      XtUnmanageChild(XtNameToWidget(wDlg,"Message"));
+      XtUnmanageChild(XtNameToWidget(wDlg,"OK"));
+      XtUnmanageChild(XtNameToWidget(wDlg,"Cancel"));
+      XtUnmanageChild(XtNameToWidget(wDlg,"Help"));
 
 /*    XtAddCallback(wDlg,XmNokCallback,
         (XtCallbackProc)CbCreateGridPointOk,dlg);
@@ -200,7 +200,7 @@ static Widget OpenTopologyDlg(View w) {
     XtAddCallback(dlg->wSwName,XmNvalueChangedCallback,
         CbToggleManaged,(XtPointer)wFrameName);
 
-/*    wg=XmMessageBoxGetChild(wDlg,XmDIALOG_OK_BUTTON);
+/*    wg=XtNameTWidget(wDlg,"OK");
     AddDependentWidget(w,wg,N_NOW | N_NEWAPP | N_ALT,NULL,
       DwNotifyIfExists,(void*)T_XPOINT_NOLONGEROK);
     XtManageChild(wDlg);
@@ -510,7 +510,7 @@ static void CbTopoSZSetBtn(Widget wg,XtPointer xtpD,XtPointer pcbs) {
 
   if (sz!=NULL) DelSurfaceZone(sz);
 
-  sz=AddSurfaceZone(dlg->w->app,zone,gps1,gps2,orient);
+  sz=AddSurfaceZone(dlg->w->app,zone,gps1,gps2,orient,-1);
   SetSurfaceZoneFlags(sz,flags);
 
   s=XmTextGetString(dlg->wSZname);

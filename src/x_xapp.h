@@ -15,7 +15,7 @@ struct _XAppExt {
   int xViewShellsCount; /* Prevent problems in latent callbacks */
   String helpFile;
   int bPrefsLocked;
-  struct _StringSource strs;
+  StringSource strs;
 };
 
 char* GetUserPrefsString(XApp xa,char* name);
