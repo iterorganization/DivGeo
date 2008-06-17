@@ -1,0 +1,4 @@
+LIBS= -L/usr/X11R6/lib -lXm -lXt -lX11 -lm
+CFLAGS=
+CC=gcc
+INCLUDES=-I/usr/local/include
