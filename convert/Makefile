@@ -1,18 +1,17 @@
-#  VERSION : 14.07.98 20:13
+#  VERSION : 10.12.2004 19:05
 
 VPATH = src
 INCLUDE =
 
-ALL = cnveir
+ALL = cnveir cnvtria
 
 include config/compiler.${OBJECTCODE}
 
-#FC = f77 -c
-#LN = f77
-
 eirdg = cnveir.o
+tridg = cnvtria.o
 
 EIRDG = $(eirdg:%.o=$(OBJECTCODE)/%.o)
+TRIDG = $(tridg:%.o=$(OBJECTCODE)/%.o)
 
 # .SUFFIXES:	 .o .f
 
@@ -27,4 +26,10 @@ all: $(ALL:%=$(OBJECTCODE)/%)
 
 ${OBJECTCODE}/cnveir: $(EIRDG) $(MSCL)/libmscl.a
 	${FC} ${FFLAGS} -o ${OBJECTCODE}/cnveir $(EIRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	if [ -x ${OBJECTCODE}/cnveir ]; then ln -sf ${PWD}/${OBJECTCODE}/cnveir ${SOLPSTOP}/src/bin/${OBJECTCODE}; fi
+
+${OBJECTCODE}/cnvtria: $(TRIDG)
+	${FC} ${FFLAGS} -o ${OBJECTCODE}/cnvtria $(TRIDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+#	if [ -x ${OBJECTCODE}/cnvtria ]; then ln -sf ${PWD}/${OBJECTCODE}/cnvtria ${SOLPSTOP}/src/bin/${OBJECTCODE}; fi
+
 

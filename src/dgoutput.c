@@ -12,6 +12,7 @@
 #define FSTR_SOURCES         "sources\n"
 #define FSTR_PTCOORDS        "  %e, %e, %e\n"   /* relcheck_ignore_line */
 #define FSTR_EQUILFILE       "# equil %s\n"
+#define FSTR_MESHFILE        "# mesh %s\n"
 #define FSTR_TOPONAME        "# topo %s\n"
 #define FSTR_CHORDS          "chords\n"
 #define FSTR_CHORDCOORDS     "  %e, %e, %e, %e\n" /* relcheck_ignore_line */
@@ -535,6 +536,10 @@ int WriteTargetsFile(App a,char* fName) {
   /* Output the equilibrium filename */
 
   if (a->equil!=NULL) zfprintf(f,FSTR_EQUILFILE,a->equil->fName);
+
+  /* Output the mesh filename */
+
+  if (a->mesh!=NULL) zfprintf(f,FSTR_MESHFILE,a->mesh->fileName);
 
   /* Output the topology name */
 

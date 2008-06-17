@@ -1,14 +1,14 @@
 #! /usr/bin/ksh
 
-#  VERSION : 05.03.98 19:38
+#  VERSION : 16.03.2001 17:42
 
 [ "$1" = '' ] && { \
     echo "Usage: lns <Varid>"
-    echo "        This will link the files to the Sonnet directory:"
+    echo "        This will link the files to the Sonnet working directory:"
     echo "                <Varid>.str --> struct.snn"
     echo "                <Varid>.trg --> targets.snn"
     echo "           equilibrium file --> equilibr.snn"
-    echo "        to the Carre directory:"
+    echo "        to the Carre working directory:"
     echo "                <Varid>.str --> dg.str"
     echo "                <Varid>.trg --> dg.trg"
     echo "                <Varid>.dgo --> dg.dgo"
@@ -21,15 +21,49 @@
 c=`basename \`pwd\``
 [ "$c" = divgeo ] && { class=${DEVICE:-iter}; cd class/$class; } || class=$c
 
-ln -sf `pwd`/"$1".str ${SonnetTopDirectory}/device/$class/struct.snn
-ln -sf `pwd`/"$1".trg ${SonnetTopDirectory}/device/$class/targets.snn
-ln -sf `pwd`/"$1".dgo ${SOLPSTOP}/src/DivGeo/uinp/uinput.dg
-ln -sf `pwd`/"$1".trg ${SOLPSTOP}/src/DivGeo/uinp/uinput.trg
+unset no_sonnet no_unip no_carre
+[ -d ${SonnetTopDirectory}/device/$class ] && {
+  ln -sf `pwd`/"$1".str ${SonnetTopDirectory}/device/$class/struct.snn
+  ln -sf `pwd`/"$1".trg ${SonnetTopDirectory}/device/$class/targets.snn
+  true
+} || {
+  print -- "directory not found: ${SonnetTopDirectory}/device/$class"
+  print -- "        ==> no links for Sonnet"
+  no_sonnet=y
+}
+[ -d ${SOLPSTOP}/src/DivGeo/uinp ] && {
+  ln -sf `pwd`/"$1".dgo ${SOLPSTOP}/src/DivGeo/uinp/uinput.dg
+  ln -sf `pwd`/"$1".trg ${SOLPSTOP}/src/DivGeo/uinp/uinput.trg
+} || {
+  print -- "directory not found: ${SOLPSTOP}/src/DivGeo/uinp"
+  print -- "        ==> no links for uinp"
+  no_unip=y
+}
+[ -d ${SOLPSTOP}/src/Carre ] && {
 ln -sf `pwd`/"$1".str ${SOLPSTOP}/src/Carre/dg.str
 ln -sf `pwd`/"$1".trg ${SOLPSTOP}/src/Carre/dg.trg
 ln -sf `pwd`/"$1".dgo ${SOLPSTOP}/src/Carre/dg.dgo
+} || {
+  print -- "directory not found: ${SOLPSTOP}/src/Carre"
+  print -- "        ==> no links for carre"
+  no_carre=y
+}
 
 e=`cat $1.trg | grep '# equil' | cut -f3 -d' '`
+set -A f -- `grep '^lm_equ ' "$1".dgo` &&  {
+  [ -n "${f[1]}" ] && [ ! "${f[1]}" = - ] && {
+    { case "${f[1]}" in
+      ( /* | ./* | ../* ) e="${f[1]}";;
+      ( * ) e="${e%/*}/${f[1]}";;
+    esac; }
+    true
+  } || {
+    print -u2 -- "lns: wrong specification of the real equilibrium file for a limiter configuration"
+    print -u2 -- "    ==> check the DG model"
+    exit 4
+  }
+}
+
 case $e in
   ( ''   ) echo "$1.trg is in old format - no information on the equilibrium there"
            [ -r default.equ ] && { \
@@ -37,14 +71,14 @@ case $e in
                ln -sf `pwd`/default.equ ${SOLPSTOP}/src/Carre/dg.equ
                     echo '-- the default equilibrium file is used';
            } || echo '*** No default equilibrium file found (!!!)';;
-  ( /*   ) ln -sf $e ${SonnetTopDirectory}/device/$class/equilibr.snn
-           ln -sf $e ${SOLPSTOP}/src/Carre/dg.equ;;
+  ( /*   ) [ -z "$no_sonnet" ] && ln -sf $e ${SonnetTopDirectory}/device/$class/equilibr.snn
+           [ -z "$no_carre" ] && ln -sf $e ${SOLPSTOP}/src/Carre/dg.equ;;
   ( ../* ) (d=`dirname $e`; f=`basename $e`; cd $d;
-           ln -sf `pwd`/$f ${SonnetTopDirectory}/device/$class/equilibr.snn
-           ln -sf `pwd`/$f ${SOLPSTOP}/src/Carre/dg.equ);;
+           [ -z "$no_sonnet" ] && ln -sf `pwd`/$f ${SonnetTopDirectory}/device/$class/equilibr.snn
+           [ -z "$no_carre" ] && ln -sf `pwd`/$f ${SOLPSTOP}/src/Carre/dg.equ);;
   ( ./*  ) (d=`dirname $e`; f=`basename $e`; cd $d;
-           ln -sf `pwd`/$f ${SonnetTopDirectory}/device/$class/equilibr.snn
-           ln -sf `pwd`/$f ${SOLPSTOP}/src/Carre/dg.equ);;
-  (   *  ) ln -sf `pwd`/$e ${SonnetTopDirectory}/device/$class/equilibr.snn
-           ln -sf `pwd`/$e ${SOLPSTOP}/src/Carre/dg.equ;;
+           [ -z "$no_sonnet" ] && ln -sf `pwd`/$f ${SonnetTopDirectory}/device/$class/equilibr.snn
+           [ -z "$no_carre" ] && ln -sf `pwd`/$f ${SOLPSTOP}/src/Carre/dg.equ);;
+  (   *  ) [ -z "$no_sonnet" ] && ln -sf `pwd`/$e ${SonnetTopDirectory}/device/$class/equilibr.snn
+           [ -z "$no_carre" ] && ln -sf `pwd`/$e ${SOLPSTOP}/src/Carre/dg.equ;;
 esac

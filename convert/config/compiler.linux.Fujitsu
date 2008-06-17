@@ -1,0 +1,13 @@
+#  VERSION : 08.02.2002 21:53
+
+# The version relying on Fujitsu Fortran installed on AFS
+
+FC      = f95f -v 6.2d
+#FFLAGS	= -g -Am -X9 -AR -fw -Ha -Hs -Hu
+FFLAGS	= -Am -X9 -fw -Kfast,eval -x- -O
+COMPILE = ${FC} -c ${FFLAGS}
+CPP	= /lib/cpp -C -traditional
+
+MSCL	= ${SOLPSTOP}/lib/${OBJECTCODE}
+LDLIBS	= -L$(MSCL) -lmscl /usr/lib/libstdc++.so.2.9
+LDEXTRA	= -Wl,-Map $(OBJECTCODE)/map

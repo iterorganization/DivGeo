@@ -16,7 +16,7 @@
 #include <values.h>
 
 #define DG_FNAME_LEN 256
-#define DG_VERSION 20000
+#define DG_VERSION 20100
 
 #ifdef PC_VERSION
 

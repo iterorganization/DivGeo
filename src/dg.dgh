@@ -1,6 +1,6 @@
 0123456789012345678901234567890123456789
 
-DivGeo help file v200 BETA
+DivGeo help file v201 BETA
 ----------------------------
 
 Main window
@@ -2470,6 +2470,12 @@ version of DG.
 What's New
 
 Here is a brief list of changes in DG:
+
+Version 2.01, March 04, 2004 BETA
+------------------------------------
+
+- New: the mesh filename is added to the *.trg output file
+
 
 Version 2.0, October 12, 1998 BETA
 ------------------------------------
