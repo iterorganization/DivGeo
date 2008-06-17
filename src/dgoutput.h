@@ -22,4 +22,7 @@ int WriteStructureFile(App a,char* fName);
 int CheckVar(App a,Group* pgObjects,VarDef vd,VarSet vs,int* pErr);
 int CheckAllVars(App a,Group* pgErrorPairs);
 
+int SurfaceZoneSortProc(void* p1,void* p2,void* arg);
+int GridPointSegSortProc(void* p1,void* p2,void* arg);
+
 #endif

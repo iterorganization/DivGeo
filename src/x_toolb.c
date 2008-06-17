@@ -43,7 +43,7 @@ static void DwUpdateToolBox(Widget wToolBar,View w,int evt,void*obj,void*udt) {
 }
 
 static Widget CreateToolBarDlg(View w,Widget wParent) {
-  Widget wDlg,wUndo,wRedo;
+  Widget wDlg,wUndo,wRedo,wForm;
   WidgetList wl;
   Cardinal i,j;
 
@@ -55,45 +55,47 @@ static Widget CreateToolBarDlg(View w,Widget wParent) {
 
   XmAddWMProtocolCallback(XtParent(wDlg),w->xapp->x->wm_delete_window,
     CbUnmap,NULL);
-  CreateMenuSystem(wDlg,
-    "bA:close",CbUnmap,NULL,
-    "bA:menu",CbOptionsMenuToggle,w,
-    "bA?:undo",CbUndo,w,&wUndo,
-    "b!@A:move",EhToolSelInput,TlMoveObject,TlMoveObject,
-       CbToolBarDlgSetTool,w,
-    "b!@A:remove",EhToolSelInput,TlRemoveObject,TlRemoveObject,
-       CbToolBarDlgSetTool,w,
-    "bA?:redo",CbRedo,w,&wRedo,
-    "b!@A:examine",EhToolSelInput,TlExamine,TlExamine,
-       CbToolBarDlgSetTool,w,
-    "b!@A:zoom",EhToolSelInput,TlZoom,TlZoom,
-       CbToolBarDlgSetTool,w,
-    "b!@A:mark",EhToolSelInput,TlMark,TlMark,
-       CbToolBarDlgSetTool,w,
-    "b!@A:addElem",EhToolSelInput,TlAddElem,TlAddElem,
-       CbToolBarDlgSetTool,w,
-    "b!@A:addSrc",EhToolSelInput,TlAddSource,TlAddSource,
-       CbToolBarDlgSetTool,w,
-    "b!@A:addChord",EhToolSelInput,TlAddChord,TlAddChord,
-       CbToolBarDlgSetTool,w,
-    "b!@A:setXpt",EhToolSelInput,TlSetXPoint,TlSetXPoint,
-       CbToolBarDlgSetTool,w,
-    "b!@A:addSurf",EhToolSelInput,TlAddSurface,TlAddSurface,
-       CbToolBarDlgSetTool,w,
-    "b!@A:addGP",EhToolSelInput,TlAddGridPoint,TlAddGridPoint,
-       CbToolBarDlgSetTool,w,
-    "b!@A:splitElem",EhToolSelInput,TlSplitElem,TlSplitElem,
-       CbToolBarDlgSetTool,w,
-    "b!@A:joinElem",EhToolSelInput,TlJoinElems,TlJoinElems,
-       CbToolBarDlgSetTool,w,
-    "b!@A:ctPts",EhToolSelInput,TlConnectPoints,TlConnectPoints,
-       CbToolBarDlgSetTool,w,
-    "b!@A:chElem",EhToolSelInput,TlRepositionElem,TlRepositionElem,
-       CbToolBarDlgSetTool,w,
-    "b!@A:chNormals",EhToolSelInput,TlMirrorNormals,TlMirrorNormals,
-       CbToolBarDlgSetTool,w,
-    "b!@A:moveMeshPt",EhToolSelInput,TlMoveMeshPoint,TlMoveMeshPoint,
-       CbToolBarDlgSetTool,w,
+  CreateWidgetSystem(wDlg,
+    "#5?:subForm",&wForm,
+     "b#A:close",1,1,CbUnmap,NULL,
+     "b#A:menu",2,1,CbOptionsMenuToggle,w,
+     "b#A?:undo",3,1,CbUndo,w,&wUndo,
+     "b#!@A:move",1,2,EhToolSelInput,TlMoveObject,TlMoveObject,
+        CbToolBarDlgSetTool,w,
+     "b#!@A:remove",2,2,EhToolSelInput,TlRemoveObject,TlRemoveObject,
+        CbToolBarDlgSetTool,w,
+     "b#A?:redo",3,2,CbRedo,w,&wRedo,
+     "b#!@A:examine",1,3,EhToolSelInput,TlExamine,TlExamine,
+        CbToolBarDlgSetTool,w,
+     "b#!@A:zoom",2,3,EhToolSelInput,TlZoom,TlZoom,
+        CbToolBarDlgSetTool,w,
+     "b#!@A:mark",3,3,EhToolSelInput,TlMark,TlMark,
+        CbToolBarDlgSetTool,w,
+     "b#!@A:addElem",1,4,EhToolSelInput,TlAddElem,TlAddElem,
+        CbToolBarDlgSetTool,w,
+     "b#!@A:addSrc",2,4,EhToolSelInput,TlAddSource,TlAddSource,
+        CbToolBarDlgSetTool,w,
+     "b#!@A:addChord",3,4,EhToolSelInput,TlAddChord,TlAddChord,
+        CbToolBarDlgSetTool,w,
+/*     "b#!@A:setXpt",EhToolSelInput,TlSetXPoint,TlSetXPoint,
+        CbToolBarDlgSetTool,w, */
+     "b#!@A:addSurf",2,5,EhToolSelInput,TlAddSurface,TlAddSurface,
+        CbToolBarDlgSetTool,w,
+     "b#!@A:addGP",3,5,EhToolSelInput,TlAddGridPoint,TlAddGridPoint,
+        CbToolBarDlgSetTool,w,
+     "b#!@A:splitElem",1,6,EhToolSelInput,TlSplitElem,TlSplitElem,
+        CbToolBarDlgSetTool,w,
+     "b#!@A:joinElem",2,6,EhToolSelInput,TlJoinElems,TlJoinElems,
+        CbToolBarDlgSetTool,w,
+     "b#!@A:ctPts",3,6,EhToolSelInput,TlConnectPoints,TlConnectPoints,
+        CbToolBarDlgSetTool,w,
+     "b#!@A:chElem",1,7,EhToolSelInput,TlRepositionElem,TlRepositionElem,
+        CbToolBarDlgSetTool,w,
+     "b#!@A:chNormals",2,7,EhToolSelInput,TlMirrorNormals,TlMirrorNormals,
+        CbToolBarDlgSetTool,w,
+     "b#!@A:moveMeshPt",3,7,EhToolSelInput,TlMoveMeshPoint,TlMoveMeshPoint,
+        CbToolBarDlgSetTool,w,
+    "-#:",
 /*    "l:empty", */
     NULL);
 
@@ -102,7 +104,7 @@ static Widget CreateToolBarDlg(View w,Widget wParent) {
   AddDependentWidget(w,wRedo,N_NOW | N_ALT | N_NEWAPP,NULL,
     DwNotifyUndoButton,(XtPointer)1);
 
-  GetValues(wDlg,
+/*  GetValues(wDlg,
     XmNchildren,&wl,
     XmNnumChildren,&j,
     NULL);
@@ -116,9 +118,9 @@ static Widget CreateToolBarDlg(View w,Widget wParent) {
     XmNleftPosition,(long)(i%3)*10000/3,
     XmNrightAttachment,XmATTACH_POSITION,
     XmNrightPosition,(long)(i%3+1)*10000/3,
-    NULL);
+    NULL); */
 
-  AddDependentWidget(w,wDlg,N_NOW | N_NEWTOOL,NULL,
+  AddDependentWidget(w,wForm,N_NOW | N_NEWTOOL,NULL,
       DwUpdateToolBox,NULL);
 
   return wDlg;

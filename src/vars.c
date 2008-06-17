@@ -153,7 +153,7 @@ static Var GetVarPtr(void* object,VarDef vd,VarSet vs) {
     case T_CHORD:
       assert(vs!=NULL);
       for (v=Group1st(((Chord)object)->vars,&ix);v!=NULL;v=Next(&ix))
-	if (v->def==vd && v->varSet==vs) return v;
+        if (v->def==vd && v->varSet==vs) return v;
       return NULL;
     case T_SOURCE:
       ValidatePtr(vs,"GetVarPtr.SOURCE");
@@ -187,7 +187,6 @@ static Var GetVarPtr(void* object,VarDef vd,VarSet vs) {
 }
 
 void* GetVar(void* object,VarDef vd,VarSet vs) {
-  static Group g=NULL;
   Var v;
   void* val;
 
@@ -196,8 +195,7 @@ void* GetVar(void* object,VarDef vd,VarSet vs) {
 
   if (vd->varType & VTM_HASGROUP) {
     if (val==NULL) {
-      if (g==NULL) g=CreateGroup(); /* $$$ Problems with statistics */
-      val=g;
+      val=GetEmptyStaticGroup();
     }
   } else {
     if (val==NULL/* || !*(char*)val*/) val=GetObjType(object)!=T_VARSETDEF?
@@ -406,12 +404,12 @@ void ChangeHelpString(App a,void* obj,char* helpString) {
     case T_VARSETDEF:
       vsd=obj;
       if (vsd->help!=helpString)
-	SetObjString(a,vsd,GetOffset(VarSetDef,help),helpString,1);
+        SetObjString(a,vsd,GetOffset(VarSetDef,help),helpString,1);
       break;
     case T_VARDEF:
       vd=obj;
       if (vd->help!=helpString)
-	SetObjString(a,vd,GetOffset(VarDef,help),helpString,1);
+        SetObjString(a,vd,GetOffset(VarDef,help),helpString,1);
       break;
     default:
       FatalError("ChangeHelpString()-type %d: fatal error 1",
@@ -426,7 +424,7 @@ void ChangeEnumString(App a,void* obj,char* enumString) {
     case T_VARDEF:
       vd=obj;
       if (vd->enumValues!=enumString)
-	SetObjString(a,vd,GetOffset(VarDef,enumValues),enumString,1);
+        SetObjString(a,vd,GetOffset(VarDef,enumValues),enumString,1);
       break;
     default:
       FatalError("ChangeEnumString()-type %d: fatal error 1",
@@ -515,11 +513,11 @@ Group GetVarOriginGroup(App a,void* object,VarDef vd,int bMarkedOnly) {
             case T_SEPARATOR:
               if (vd->flags & VF_FORSEPARATORS) GroupAdd(g,p);
               break;
-	    case T_SOURCE:
-	      if (vd->flags & VF_FORSOURCES) GroupAdd(g,p);
-	      break;
-	    case T_CHORD:
-	      if (vd->flags & VF_FORCHORDS) GroupAdd(g,p);
+            case T_SOURCE:
+              if (vd->flags & VF_FORSOURCES) GroupAdd(g,p);
+              break;
+            case T_CHORD:
+              if (vd->flags & VF_FORCHORDS) GroupAdd(g,p);
               break;
           }
       } else {
@@ -556,7 +554,7 @@ void* GetVarEx(App a,void* object,VarDef vd) {
     }
   }
   g=FreeGroup(g);
-  
+
   return val;
 }
 
@@ -575,7 +573,7 @@ int GetVarExLocks(App a,void* object,VarDef vd) {
       if (vd->varType & VTM_HASGROUP)
         FatalError("GetVarExLocks()-group: fatal error 1");
       for (v=Group1st(vd->vars,&ix);v!=NULL;v=Next(&ix))
-	if (v->varSet==object && IsLocked(v)) return IsLocked(v);
+        if (v->varSet==object && IsLocked(v)) return IsLocked(v);
       return 0;
     default:
       FatalError("GetVarExLocks()-type%d: fatal error 2",GetObjType(object));
@@ -595,7 +593,7 @@ char* WhyLockedEx(View w,void* object,VarDef vd) {
         return WhyLocked(w,GetVarPtr(object,vd,NULL));
       assert(!(vd->varType & VTM_HASGROUP));
       for (v=Group1st(vd->vars,&ix);v!=NULL;v=Next(&ix))
-	if (v->varSet==object && IsLocked(v)) return WhyLocked(w,v);
+        if (v->varSet==object && IsLocked(v)) return WhyLocked(w,v);
       FatalError("WhyLockedEx()-!locks: fatal error 1");
     default:
       FatalError("WhyLockedEx()-type%d: fatal error 2",GetObjType(object));
@@ -617,7 +615,7 @@ int SetVarEx(App a,void* object,VarDef vd,void* val) {
     if (i) break;
   }
   FreeGroup(g);
-  
+
   return i;
 }
 
@@ -640,7 +638,6 @@ int CheckValue(App a,void* value,int varType,void** errObj) {
   int i,r;
   double f;
   void* p;
-  Surface s;
   Index ix,ixv,ixvd;
   Var v;
   VarDef vdPart;
@@ -654,22 +651,22 @@ int CheckValue(App a,void* value,int varType,void** errObj) {
 
 /*  if (varType & VTF_HASELEMS && value!=NULL)
     for (p=Group1st(value,&ix);p!=NULL;p=Next(&ix))
-	if (GetObjType(p)!=T_ELEM) {
+        if (GetObjType(p)!=T_ELEM) {
       *errObj=p;
       return ERR_WRONGTYPE;
     }
   if (varType & VTF_HASCHORDS && value!=NULL)
     for (p=Group1st(value,&ix);p!=NULL;p=Next(&ix))
-	if (GetObjType(p)!=T_CHORD) {
+        if (GetObjType(p)!=T_CHORD) {
       *errObj=p;
       return ERR_WRONGTYPE;
     } */
-    
+
   if (varType & VTM_HASGROUP) {
     r=CheckGroupForType(value,varType,errObj);
     if (r) return r;
   }
-    
+
   switch(varType) {
     case VT_TEXT:
       return 0;
@@ -694,7 +691,7 @@ int CheckValue(App a,void* value,int varType,void** errObj) {
       if (value==NULL || IsEmptyGroup(value)) return ERR_NOELEMS;
 /*      for (s=AppSurface1st(a,&ix);s!=NULL;s=Next(&ix))
         if (!s->closed&&(i=CheckSurfaceTargetIntersection(s->line,value))!=0)
-	  return i; */
+          return i; */
       return OrderTargetElems(value,errObj);
     case VT_STRUCTURE:
       if (value==NULL || IsEmptyGroup(value)) return ERR_NOELEMS;
@@ -707,18 +704,18 @@ int CheckValue(App a,void* value,int varType,void** errObj) {
       }
       r=OrderStructureElems(a,value,&g1,&g2,&g3,errObj);
       if (!r) {
-	ClearGroup(value);
-	MergeGroupOfGroups(value,g1);
-	MergeGroupOfGroups(value,g2);
-	MergeGroupOfGroups(value,g3);
-	FreeStructureInfo(&g1,&g2,&g3);
+        ClearGroup(value);
+        MergeGroupOfGroups(value,g1);
+        MergeGroupOfGroups(value,g2);
+        MergeGroupOfGroups(value,g3);
+        FreeStructureInfo(&g1,&g2,&g3);
       }
       return r;
     case VT_STRUCTPART:
       if (value==NULL || IsEmptyGroup(value)) return 0;
       v=GetVarPtrByType(a,VT_STRUCTURE);
       if (CheckValue(a,v->val,VT_STRUCTURE,NULL))
-	return ERR_BADSTRUCTURE;
+        return ERR_BADSTRUCTURE;
       if ((i=CheckStructurePart(v->val,value,errObj))!=0) return i;
       return 0;
     case VT_MESH_H_ELEMENTS:
@@ -786,9 +783,9 @@ static int CheckGroupForType(Group g,int varType,void** pErrObj) {
   int t;
   void* p;
   Index ix;
-  
+
   if (pErrObj!=NULL) *pErrObj=NULL;
-  
+
   if (!(varType & VTM_HASGROUP)) return 0;
   else if (varType & VTF_HASELEMS) t=T_ELEM;
   else if (varType & VTF_HASCHORDS) t=T_CHORD;
@@ -803,13 +800,13 @@ static int CheckGroupForType(Group g,int varType,void** pErrObj) {
   } else assert(0);
 
   if (g==NULL) return 0;
-  
+
   for (p=Group1st(g,&ix);p!=NULL;p=Next(&ix)) {
     if (GetObjType(p)!=t) {
       if (pErrObj!=NULL) *pErrObj=p;
       return ERR_WRONGTYPE;
     }
   }
-  
+
   return 0;
-}        
+}

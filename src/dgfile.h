@@ -17,6 +17,9 @@
 #define DGFE_BADSTRUC 0x0080
 #define DGFE_BADXPT   0x0080
 #define DGFE_MESH_FP  0x0100
+#define DGFE_NEQUIL   0x0200
+#define DGFE_OLDTOPO  0x0400
+#define DGFE_OLD_SURFACES_LOST 0x0800
 
 #define DGFM_APP      1
 #define DGFM_CONFIG   2
@@ -26,10 +29,16 @@ App LoadNormalApp(XApp xap,char* fName,char** pMsg,int* err);
 App LoadApp(XApp xap,char* fName,char** pMsg,int* err);
 int SaveApp(App a,char* fName,int mode);
 
+int LoadTopology(App a,char* fName,int bDetectXPoints);
+
 char* GetLoadErrFlagsDescription(XApp xap,int errFlags);
+
+char* GetSurfacesStatsStr(App a);
+char* GetGridPointStatsStr(App a);
 
 /* Private functions
 */
 int ReadOldDgFile(App a,char* fName,int* errFlags);
+void ConvertOldDgSurfaces(App a,int* errFlags);
 
 #endif

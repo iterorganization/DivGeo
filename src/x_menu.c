@@ -148,17 +148,17 @@ void CbFilePrint(Widget wg,XtPointer xtpV,XtPointer pcbs) {
 
 void CmExportMesh(Widget wg,XtPointer xtpV,XtPointer pcbs) {
   View w=(View)xtpV;
-  
+
   SetActiveView(w);
-  
+
   OpenExportMeshDlg(w,False);
 }
 
 void CmExportElemsAsTemplate(Widget wg,XtPointer xtpV,XtPointer pcbs) {
   View w=(View)xtpV;
-  
+
   SetActiveView(w);
-  
+
   OpenExportElemsAsTemplateDlg(w);
 }
 
@@ -236,20 +236,20 @@ void CbCmDelObjects(Widget wg,View w,void* pcbs) {
           case T_ELEM:
           case T_SOURCE:
           case T_CHORD:
-	    if (IsLocked(p)) {
-	      Cancel(w->app);
-	      LabelObject(w,p,GetStr(w,STR_ERRLABEL),True);
-	      SetViewMsg(w,WhyLocked(w,p));
-	      return;
-	    }
-	    DelObject(w->app,p);
+            if (IsLocked(p)) {
+              Cancel(w->app);
+              LabelObject(w,p,GetStr(w,STR_ERRLABEL),True);
+              SetViewMsg(w,WhyLocked(w,p));
+              return;
+            }
+            DelObject(w->app,p);
             break;
           default:
-	    Cancel(w->app);
-	    LabelObject(w,p,GetStr(w,STR_ERRLABEL),True);
-	    SetViewMsg(w,GetStr(w,ERR_DEL_MARKED_OBJECT_TYPE));
-	    return;
-          
+            Cancel(w->app);
+            LabelObject(w,p,GetStr(w,STR_ERRLABEL),True);
+            SetViewMsg(w,GetStr(w,ERR_DEL_MARKED_OBJECT_TYPE));
+            return;
+
         }
       }
       UndoMark(w->app);
@@ -284,13 +284,13 @@ void CbCmDelObjects(Widget wg,View w,void* pcbs) {
       break;
     case T_SOURCE:
       for (p=AppSource1st(w->app,&ix);p!=NULL;p=Next(&ix)) {
-	if (IsLocked(p)) {
-	  Cancel(w->app);
-	  LabelObject(w,p,GetStr(w,STR_ERRLABEL),True);
-	  SetViewMsg(w,WhyLocked(w,p));
-	  return;
-	}
-	DelObject(w->app,p);
+        if (IsLocked(p)) {
+          Cancel(w->app);
+          LabelObject(w,p,GetStr(w,STR_ERRLABEL),True);
+          SetViewMsg(w,WhyLocked(w,p));
+          return;
+        }
+        DelObject(w->app,p);
       }
       UndoMark(w->app);
       ViewMsgEx(w,MSG_SOURCESREMOVED,NULL);
@@ -308,8 +308,8 @@ void CbCmDelObjects(Widget wg,View w,void* pcbs) {
       UndoMark(w->app);
       ViewMsgEx(w,MSG_CHORDSREMOVED,NULL);
       break;
-    case T_SURFACE:
-      for (p=AppSurface1st(w->app,&ix);p!=NULL;p=Next(&ix)) {
+    case T_SURFACEEX:
+      for (p=AppSurfaceEx1st(w->app,&ix);p!=NULL;p=Next(&ix)) {
         if (IsLocked(p)) {
           Cancel(w->app);
           LabelObject(w,p,GetStr(w,STR_ERRLABEL),True);
@@ -321,8 +321,22 @@ void CbCmDelObjects(Widget wg,View w,void* pcbs) {
       UndoMark(w->app);
       ViewMsgEx(w,MSG_SURFACESREMOVED,NULL);
       break;
-    case T_GRIDPOINT:
-      for (p=AppGridPoint1st(w->app,&ix);p!=NULL;p=Next(&ix)) {
+    case T_DEL_VSURFACE:
+      for (p=AppSurfaceEx1st(w->app,&ix);p!=NULL;p=Next(&ix)) {
+        if (!SurfaceExVirtual((SurfaceEx)p)) continue;
+        if (IsLocked(p)) {
+          Cancel(w->app);
+          LabelObject(w,p,GetStr(w,STR_ERRLABEL),True);
+          SetViewMsg(w,WhyLocked(w,p));
+          return;
+        }
+        DelObject(w->app,p);
+      }
+      UndoMark(w->app);
+      ViewMsgEx(w,MSG_SURFACESREMOVED,NULL);
+      break;
+    case T_GRIDPOINTEX:
+      for (p=AppGridPointEx1st(w->app,&ix);p!=NULL;p=Next(&ix)) {
         if (IsLocked(p)) {
           Cancel(w->app);
           LabelObject(w,p,GetStr(w,STR_ERRLABEL),True);
@@ -341,29 +355,29 @@ void CbCmDelObjects(Widget wg,View w,void* pcbs) {
       break;
     case T_EQUIL:
       if (IsLocked(w->app->equil))
-	SetViewMsg(w,WhyLocked(w,w->app->equil));
+        SetViewMsg(w,WhyLocked(w,w->app->equil));
       else {
-	DelObject(w->app,w->app->equil);
-	UndoMark(w->app);
-	ViewMsgEx(w,MSG_EQUILREMOVED,NULL);
+        DelObject(w->app,w->app->equil);
+        UndoMark(w->app);
+        ViewMsgEx(w,MSG_EQUILREMOVED,NULL);
       }
       break;
     case T_TEMPLATE:
       if (IsLocked(w->app->template))
         SetViewMsg(w,WhyLocked(w,w->app->template));
       else {
-	DelObject(w->app,w->app->template);
-	UndoMark(w->app);
-	ViewMsgEx(w,MSG_TEMPLATEREMOVED,NULL);
+        DelObject(w->app,w->app->template);
+        UndoMark(w->app);
+        ViewMsgEx(w,MSG_TEMPLATEREMOVED,NULL);
       }
       break;
     case T_SONNET:
       if (IsLocked(w->app->sonnetData))
         SetViewMsg(w,WhyLocked(w,w->app->sonnetData));
       else {
-	DelObject(w->app,w->app->sonnetData);
-	UndoMark(w->app);
-	ViewMsgEx(w,MSG_SONNETREMOVED,NULL);
+        DelObject(w->app,w->app->sonnetData);
+        UndoMark(w->app);
+        ViewMsgEx(w,MSG_SONNETREMOVED,NULL);
       }
       break;
     case T_MESH:
@@ -371,18 +385,9 @@ void CbCmDelObjects(Widget wg,View w,void* pcbs) {
       if (IsLocked(w->app->mesh))
         SetViewMsg(w,WhyLocked(w,w->app->mesh));
       else {
-	DelObject(w->app,w->app->mesh);
-	UndoMark(w->app);
-	ViewMsgEx(w,MSG_SONNETREMOVED,NULL);
-      }
-      break;
-    case T_XPOINT:
-      if (IsLocked(w->app->xpoint))
-        SetViewMsg(w,WhyLocked(w,w->app->xpoint));
-      else {
-	DelObject(w->app,w->app->xpoint);
-	UndoMark(w->app);
-	ViewMsgEx(w,MSG_XPOINTREMOVED,NULL);
+        DelObject(w->app,w->app->mesh);
+        UndoMark(w->app);
+        ViewMsgEx(w,MSG_SONNETREMOVED,NULL);
       }
       break;
     default:
@@ -481,12 +486,12 @@ void CmViewMeshHeader(Widget wg,XtPointer xtpV,XtPointer pcbs) {
 
   if (w->app==NULL) return;
   SetActiveView(w);
-  
+
   if (w->app->mesh==NULL) {
     ErrorBox(w->x->wMain,GetStr(w,ERR_NOSONNET));
     return;
   }
-  
+
   OpenEditMeshHeaderDlg(w,w->app->mesh);
 }
 
@@ -601,21 +606,6 @@ void CmConvertChordsToElems(Widget wg,XtPointer xtpV,XtPointer pcbs) {
   } else UndoMark(w->app);
 }
 
-
-void CbCmRemoveXPoint(Widget wg,View w,void* pcbs) {
-  int i;
-
-  if (w->app==NULL) return;
-  SetActiveView(w);
-
-  if (w->app->xpoint==NULL) {
-    ErrorBox(w->x->wMain,GetStr(w,ERR_NOXPOINT));
-    return;
-  }
-  DelXPoint(w->app);
-  SetViewMsg(w,GetStr(w,MSG_XPOINTREMOVED));
-  UndoMark(w->app);
-}
 
 void CbCmRenumber(Widget wg,View w,void* pcbs) {
   if (w->app==NULL) return;
@@ -819,9 +809,9 @@ void CbSwMenu(Widget wg,XtPointer xtpView,void* pcbs) {
 
     if (w->x->wBnShowMenu==NULL) {
       w->x->wBnShowMenu=Cmw(XmCreatePushButton,w->x->wDraw,"menuOn",
-	NULL);
+        NULL);
       XtAddCallback(w->x->wBnShowMenu,XmNactivateCallback,
-	(XtCallbackProc)CbOptionsMenuToggle,w);
+        (XtCallbackProc)CbOptionsMenuToggle,w);
     }
 
     XtManageChild(w->x->wBnShowMenu);
@@ -940,6 +930,24 @@ void CbHelpMenu(Widget wg,XtPointer xtpView,XtPointer pcbs) {
 
 void CmTest(Widget wg,XtPointer xtpV,XtPointer pcbs) {
   View w=(View) xtpV;
+  int r=0;
+  SurfaceZone sz;
+  Index ix;
+
+  SetActiveView(w);
+
+/*  for (sz=AppSurfaceZone1st(w->app,&ix);sz!=NULL;sz=Next(&ix)) {
+    SurfaceZoneBounds(w->app,sz,NULL);
+  } */
+
+  SetViewFlags(w,w->showFlags | SHW_CHORDS | SHW_SOURCES);
+  UndoMark(w->app);
+  ViewMsgEx(w,r,"");
+}
+
+#if 0
+void CmTest_ParamSpline(Widget wg,XtPointer xtpV,XtPointer pcbs) {
+  View w=(View) xtpV;
 /*  double* x,* y,* t,* b,* c,* d,* b1,* c1,* d1; */
   double x1,y1,x2,y2,t2;
   int i,j,n;
@@ -950,15 +958,15 @@ void CmTest(Widget wg,XtPointer xtpV,XtPointer pcbs) {
   ParamSplineInfo si;
 
   SetActiveView(w);
-  
+
   s=AppSurface1st(w->app,NULL);assert(s!=NULL);
-  
+
   si=CreateParamSplineInfo(s->line);
   assert(si!=NULL);
 
 
   SetViewMode(w,VMX_CHORD);
-  
+
   SetViewMode(w,VM1_CHORD);
   n=GroupCount(s->line)*PTS;
   for (i=0;i<n;i++) {
@@ -967,6 +975,8 @@ void CmTest(Widget wg,XtPointer xtpV,XtPointer pcbs) {
     x1=x2;
     y1=y2;
   }
-  
+
   si=FreeParamSplineInfo(si);
 }
+
+#endif

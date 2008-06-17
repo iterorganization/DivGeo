@@ -43,9 +43,9 @@ static void CbRotMoveDlgRotate(Widget wg,RotMoveDlg dlg,void* pcbs) {
   if (bN) {
     for (n=AppNode1st(dlg->w->app,&ix);n!=NULL;n=Next(&ix)) {
       if (IsLocked(n)) {
-	Cancel(dlg->w->app);
-	ErrorBox(dlg->wDlg,WhyLocked(dlg->w,n));
-	return;
+        Cancel(dlg->w->app);
+        ErrorBox(dlg->wDlg,WhyLocked(dlg->w,n));
+        return;
       }
       ChangeNode(dlg->w->app,n,-n->y,n->x);
     }
@@ -215,10 +215,10 @@ Widget OpenGluePointsDlg(View w) {
 
     CreateWidgetSystem(dlg->wDlg,
       "#:form",
-	"l#:maxDistLabel",1,1,
-	"x#?:maxDist",2,1,&dlg->wMaxDist,
-	"l#:millimeters",3,1,
-	"t#?:markedOnly",2,2,&dlg->wSwMarkedOnly,
+        "l#:maxDistLabel",1,1,
+        "x#?:maxDist",2,1,&dlg->wMaxDist,
+        "l#:millimeters",3,1,
+        "t#?:markedOnly",2,2,&dlg->wSwMarkedOnly,
       "-#:",
       NULL);
     XtManageChild(dlg->wDlg);
@@ -293,14 +293,14 @@ Widget OpenGlueElemsDlg(View w) {
 
     CreateWidgetSystem(dlg->wDlg,
       "#:form",
-	"l#:thresholdLabel",1,1,
-	"x#?:threshold",2,1,&dlg->wThreshold,
-	"l#:millimeters",3,1,
-	"l#:maxLenLabel",1,2,
-	"x#?:maxLen",2,2,&dlg->wMaxLen,
-	"l#:millimeters",3,2,
-	"t#?:cutLonger",2,3,&dlg->wSwCutLonger,
-	"t#?:markedOnly",2,4,&dlg->wSwMarkedOnly,
+        "l#:thresholdLabel",1,1,
+        "x#?:threshold",2,1,&dlg->wThreshold,
+        "l#:millimeters",3,1,
+        "l#:maxLenLabel",1,2,
+        "x#?:maxLen",2,2,&dlg->wMaxLen,
+        "l#:millimeters",3,2,
+        "t#?:cutLonger",2,3,&dlg->wSwCutLonger,
+        "t#?:markedOnly",2,4,&dlg->wSwMarkedOnly,
       "-#:",
       NULL);
     XtManageChild(dlg->wDlg);
@@ -359,6 +359,6 @@ void CbGroupNormals(Widget wg,XtPointer xtpV,XtPointer pbcs) {
   } else {
     UndoMark(w->app);
     SetViewMsg(w,GetResourceStringEx(w->x->wMain,"msgNormalsGrouped",NULL,
-	"$(COUNT)%d",r));
+        "$(COUNT)%d",r));
   }
 }

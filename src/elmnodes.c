@@ -363,7 +363,7 @@ Node SplitElem(App a,Elem e,int count,int* pErr)  {
 
   for (n0=e->n[1],i=1;i<count;i++) {
     n=AddNode(a,e->n[1]->x+(e->n[2]->x-e->n[1]->x)*(double)i/count,
-	e->n[1]->y+(e->n[2]->y-e->n[1]->y)*(double)i/count);
+        e->n[1]->y+(e->n[2]->y-e->n[1]->y)*(double)i/count);
     assert(n!=NULL);
     e1=AddElem(a,n0,n);
     MarkObject(a,e1,isMarked);
@@ -555,12 +555,14 @@ int OrderStructureElems(App a,Group g0,Group* pggTargets,Group* pggClosed,
     Group* pggBroken,void** errObj) {
   Elem e,e0=NULL;
   Node breakNode=NULL;
-  Group g,g1,t1,t2,tx1,tx2;
-  int i,r,bClosed,bTarget,bT1,bT2;
+  Group g,g1,gt,gt1;
+  int i,r,bClosed,bTarget,bT;
   double yMax=0;
   void* errBuf;
-  Index ix;
+  Index ix,ixt;
   Var v;
+  VarDef vd;
+  VarSet vs;
 
   assert(a->type==T_APP);
 
@@ -586,13 +588,21 @@ int OrderStructureElems(App a,Group g0,Group* pggTargets,Group* pggClosed,
 
   /* Find targets if any. Targets are used only in Carre mode */
 
-  v=GetVarPtrByType(a,VT_TARGET1);
+  gt=CreateGroup();
+  for (vs=AppVarSet1st(a,&ix);vs!=NULL;vs=Next(&ix))
+    for (vd=Group1st(vs->def->varDefs,&ixt);vd!=NULL;vd=Next(&ixt)) {
+      if (!(vd->varType & VTF_TARGET)) continue;
+      gt1=GetVar(vs,vd,NULL);
+      if (GroupCount(gt1)>0) GroupAdd(gt,gt1);
+    }
+
+/*  v=GetVarPtrByType(a,VT_TARGET1);
   if (v==NULL || v->val==NULL || IsEmptyGroup(v->val)) t1=NULL;
   else t1=v->val;
 
   v=GetVarPtrByType(a,VT_TARGET2);
   if (v==NULL || v->val==NULL || IsEmptyGroup(v->val)) t2=NULL;
-  else t2=v->val;
+  else t2=v->val; */
 
 /* Order all structure rings starting from the outermost one */
 
@@ -614,16 +624,16 @@ int OrderStructureElems(App a,Group g0,Group* pggTargets,Group* pggClosed,
     bClosed=1;
     for (e=e0,i=1;;i++) {
       if (IsEndNode(e->n[2],g)) {
-	breakNode=e->n[2];
-	if (a->outputMode==OUTPUTMODE_CARRE) {bClosed=0;break;}
-	*errObj=e->n[2];FreeGroup(g);FreeGroup(g1);
-	FreeStructureInfo(pggTargets,pggClosed,pggBroken);
-	return ERR_BROKEN;
+        breakNode=e->n[2];
+        if (a->outputMode==OUTPUTMODE_CARRE) {bClosed=0;break;}
+        *errObj=e->n[2];FreeGroup(g);FreeGroup(g1);FreeGroup(gt);
+        FreeStructureInfo(pggTargets,pggClosed,pggBroken);
+        return ERR_BROKEN;
       }
       if (!IsRegularNode(e->n[2],g)) {
-	*errObj=e->n[2];FreeGroup(g);FreeGroup(g1);
-	FreeStructureInfo(pggTargets,pggClosed,pggBroken);
-	return ERR_IRREGULAR;
+        *errObj=e->n[2];FreeGroup(g);FreeGroup(g1);FreeGroup(gt);
+        FreeStructureInfo(pggTargets,pggClosed,pggBroken);
+        return ERR_IRREGULAR;
       }
       e=GetNextElem(e,g,2);
       if (e==e0) break;
@@ -634,20 +644,20 @@ int OrderStructureElems(App a,Group g0,Group* pggTargets,Group* pggClosed,
     if (!bClosed) {
       assert(a->outputMode==OUTPUTMODE_CARRE);
       for (i=1;IsRegularNode(e->n[1],g);i++)
-	e=GetNextElem(e,g,1);
+        e=GetNextElem(e,g,1);
       if (!IsEndNode(e->n[1],g)) {
-	*errObj=e->n[1];FreeGroup(g);FreeGroup(g1);
-	FreeStructureInfo(pggTargets,pggClosed,pggBroken);
-	return ERR_IRREGULAR;
+        *errObj=e->n[1];FreeGroup(g);FreeGroup(g1);FreeGroup(gt);
+        FreeStructureInfo(pggTargets,pggClosed,pggBroken);
+        return ERR_IRREGULAR;
       }
     }
 
     /* Copy the ring into g1 and remove all it's elements from g */
 
-    bT1=bT2=bTarget=0;
+    bTarget=0;
     for (;i;i--) {
-      if (t1!=NULL && InGroup(t1,e)) bT1=bTarget=1;
-      if (t2!=NULL && InGroup(t2,e)) bT2=bTarget=1;
+/*      if (t1!=NULL && InGroup(t1,e)) bT1=bTarget=1;
+      if (t2!=NULL && InGroup(t2,e)) bT2=bTarget=1; */
 
       GroupAdd(g1,e);
       e0=e;
@@ -657,25 +667,39 @@ int OrderStructureElems(App a,Group g0,Group* pggTargets,Group* pggClosed,
 
     /* Additional tests */
 
-    if (a->outputMode==OUTPUTMODE_CARRE) {
-      if (bTarget && !bClosed) {
-	*errObj=breakNode;FreeGroup(g);FreeGroup(g1);
-	FreeStructureInfo(pggTargets,pggClosed,pggBroken);
-	return ERR_CARRE_BROKENTARGET;
-      }
+    for (gt1=Group1st(gt,&ixt);gt1!=NULL;gt1=Next(&ixt)) {
+      bT=0;
+      for (e=Group1st(g1,&ix);e!=NULL;e=Next(&ix))
+        if (InGroup(gt1,e)) bT=bTarget=1;
 
-      if (bT1 && !GroupInGroup(t1,g1)) {
-	/* *errObj=e0; */ FreeGroup(g);FreeGroup(g1);
-	FreeStructureInfo(pggTargets,pggClosed,pggBroken);
-	return ERR_CARRE_TARGETXSTRUCTURE;
-      }
-
-      if (bT2 && !GroupInGroup(t2,g1)) {
-	/* *errObj=e0 */;FreeGroup(g);FreeGroup(g1);
-	FreeStructureInfo(pggTargets,pggClosed,pggBroken);
-	return ERR_CARRE_TARGETXSTRUCTURE;
+      if (a->outputMode==OUTPUTMODE_CARRE) {
+        if (bT & !GroupInGroup(gt1,g1)) {
+          /* *errObj=e0; */ FreeGroup(g);FreeGroup(g1);FreeGroup(gt);
+          FreeStructureInfo(pggTargets,pggClosed,pggBroken);
+          return ERR_CARRE_TARGETXSTRUCTURE;
+        }
       }
     }
+
+    if (a->outputMode==OUTPUTMODE_CARRE) {
+      if (bTarget && !bClosed) {
+        *errObj=breakNode;FreeGroup(g);FreeGroup(g1);FreeGroup(gt);
+        FreeStructureInfo(pggTargets,pggClosed,pggBroken);
+        return ERR_CARRE_BROKENTARGET;
+      }
+    }
+
+/*      if (bT1 && !GroupInGroup(t1,g1)) { */
+        /* *errObj=e0; */ /*FreeGroup(g);FreeGroup(g1);
+        FreeStructureInfo(pggTargets,pggClosed,pggBroken);
+        return ERR_CARRE_TARGETXSTRUCTURE;
+      }
+
+      if (bT2 && !GroupInGroup(t2,g1)) {  */
+        /* *errObj=e0 */ /*;FreeGroup(g);FreeGroup(g1);
+        FreeStructureInfo(pggTargets,pggClosed,pggBroken);
+        return ERR_CARRE_TARGETXSTRUCTURE;
+      } */
 
     /* Add g1 to one of the result groups */
 
@@ -690,6 +714,7 @@ int OrderStructureElems(App a,Group g0,Group* pggTargets,Group* pggClosed,
 
   FreeGroup(g1);
   FreeGroup(g);
+  FreeGroup(gt);
 
   return 0;
 }
@@ -836,7 +861,7 @@ int AppendTemplate(App a) {
       i++;
     } else {
       if (IsEmptyNode(n1)) DelNode(a,n1);
-      if (IsEmptyNode(n2)) DelNode(a,n2);
+      if (n1!=n2 && IsEmptyNode(n2)) DelNode(a,n2);
     }
   }
   LockAppUpdate(a,-1);
@@ -966,7 +991,7 @@ int LoadDgTemplateFile(Template t) {
 int Load2ColumnsTemplateFile(Template t) {
   FILE* f;
   char s[500],s1[500];
-  double x,y,xOld,yOld;
+  double x,y,xOld=0,yOld=0;
   int bOld;
   Group g;
 
@@ -979,8 +1004,8 @@ int Load2ColumnsTemplateFile(Template t) {
   while (fgets(s,sizeof(s)-1,f)!=NULL) {
     if (sscanf(s,SCANFLT""SCANFLT,&x,&y)!=2) {
       if (sscanf(s,"%s",s1)!=1) {
-	bOld=0;
-	continue;
+        bOld=0;
+        continue;
       }
       g=FreeMallocedGroup(g);
       fclose(f);
@@ -1018,7 +1043,7 @@ static char* ReadHpglCommand(FILE* f) {
     if (c==EOF) if (!i) return NULL; else break;
     if (isspace(c)) continue;
     if (c==';') break;
-    buf[i++]=tolower(c);
+    buf[i++]=(char)tolower(c);
     if (i>=sizeof(buf)-1) break;
   }
   buf[i]=0;
@@ -1192,16 +1217,16 @@ int GlueNodes(App a,Group g0Elems,double maxDist,int* prCount) {
     for (nn1=Group1st(gN,&ix);nn1!=NULL;nn1=Next(&ix)) {
       if (nn1->n1==nn->n2) {GroupDel(gN,nn1);nn1=Free(nn1);}
       else if (nn1->n2==nn->n1 || nn1->n2==nn->n2) {
-	GroupDel(gN,nn1);
-	nn2=FindNearestNode(nn1->n1,g,maxDist);
-	nn1=Free(nn1);
-	nn1=nn2;
-	if (nn1!=NULL) {
-	  for (nn2=Group1st(gN,&ix1);nn2!=NULL;nn2=Next(&ix1))
-	    if (nn2->dist>nn1->dist) break;
-	  nn2=Prev(&ix1);
-	  GroupAddAt(gN,nn2,nn1);
-	}
+        GroupDel(gN,nn1);
+        nn2=FindNearestNode(nn1->n1,g,maxDist);
+        nn1=Free(nn1);
+        nn1=nn2;
+        if (nn1!=NULL) {
+          for (nn2=Group1st(gN,&ix1);nn2!=NULL;nn2=Next(&ix1))
+            if (nn2->dist>nn1->dist) break;
+          nn2=Prev(&ix1);
+          GroupAddAt(gN,nn2,nn1);
+        }
       }
     }
     Free(nn);
@@ -1249,44 +1274,44 @@ int GlueElems(App a,Group g0,double maxDist,double maxLen,int bCutLonger,
     while (GroupCount(g1)>=1) {
 
       /* Find out how many elements at the beginning can be glued.
-	 The last one to be glued is stored in eMax, or NULL */
+         The last one to be glued is stored in eMax, or NULL */
 
       eMax=NULL;
       e0=e=Group1st(g1,&ix);
       x0=e0->n[1]->x;
       y0=e0->n[1]->y;
       while ((e=Next(&ix))!=NULL) {
-	if (hypot(x0-e->n[2]->x,y0-e->n[2]->y)>maxLen) goto TooFarAway;
-	for (e1=Group1st(g1,&ix1);e1!=e;e1=Next(&ix1)) {
-	  if (Point2VectorDist(x0,y0,e->n[2]->x,e->n[2]->y,
-	      e1->n[2]->x,e1->n[2]->y,NULL,NULL)>maxDist) goto TooFarAway;
-	}
-	eMax=e;
-	TooFarAway:;
+        if (hypot(x0-e->n[2]->x,y0-e->n[2]->y)>maxLen) goto TooFarAway;
+        for (e1=Group1st(g1,&ix1);e1!=e;e1=Next(&ix1)) {
+          if (Point2VectorDist(x0,y0,e->n[2]->x,e->n[2]->y,
+              e1->n[2]->x,e1->n[2]->y,NULL,NULL)>maxDist) goto TooFarAway;
+        }
+        eMax=e;
+        TooFarAway:;
       }
 
       if (eMax!=NULL) {
 
-	/* Glue elements */
+        /* Glue elements */
 
-	for (e=Group1st(g1,&ix);e!=eMax;e=Next(&ix)) {
-	  GroupDel(g1,e);
-	  if (JoinElems(NULL,e->n[2],NULL)!=NULL) {
-	    JoinElems(a,e->n[2],NULL);
-	    joinedCount++;
-	  }
-	}
-	GroupDel(g1,eMax);
+        for (e=Group1st(g1,&ix);e!=eMax;e=Next(&ix)) {
+          GroupDel(g1,e);
+          if (JoinElems(NULL,e->n[2],NULL)!=NULL) {
+            JoinElems(a,e->n[2],NULL);
+            joinedCount++;
+          }
+        }
+        GroupDel(g1,eMax);
       } else {
 
-	/* Remove the 1st element from the group and try to glue the rest */
+        /* Remove the 1st element from the group and try to glue the rest */
 
-	GroupDel(g1,e0);
+        GroupDel(g1,e0);
 
-	/* Cut the only remaining element, if necessary */
+        /* Cut the only remaining element, if necessary */
 
-	h=hypot(e0->n[1]->x-e0->n[2]->x,e0->n[1]->y-e0->n[2]->y);
-	if (bCutLonger && h>maxLen) SplitElem(a,e0,(int)(h/maxLen),NULL);
+        h=hypot(e0->n[1]->x-e0->n[2]->x,e0->n[1]->y-e0->n[2]->y);
+        if (bCutLonger && h>maxLen) SplitElem(a,e0,(int)(h/maxLen),NULL);
       }
     }
 
@@ -1451,9 +1476,9 @@ int PlaceTemplateByHandles(App a,double xa,double ya,double x1,double y1,
   xy.y=ya;
 
   ChangeTemplate(a,
-	-TemplateXY2X(&fakeT,&xy)+x1,
-	-TemplateXY2Y(&fakeT,&xy)+y1,
-	fakeT.angle,fakeT.scale);
+        -TemplateXY2X(&fakeT,&xy)+x1,
+        -TemplateXY2Y(&fakeT,&xy)+y1,
+        fakeT.angle,fakeT.scale);
 
   return 0;
 }
@@ -1496,3 +1521,26 @@ int GetNextElemId(App a) {
 
   return i;
 }
+
+int ElementInTarget(Elem e) {
+  Var v;
+  Index ix;
+
+  assert(e->type==T_ELEM);
+  for (v=Group1st(e->varsContaining,&ix);v!=NULL;v=Next(&ix))
+    if (v->def->varType & VTF_TARGET) return 1;
+
+  return 0;
+}
+
+int PointInTarget(Node n) {
+  Elem e;
+  Index ix;
+
+  assert(n->type==T_NODE);
+  for (e=Group1st(n->elems,&ix);e!=NULL;e=Next(&ix))
+    if (ElementInTarget(e)) return 1;
+
+  return 0;
+}
+

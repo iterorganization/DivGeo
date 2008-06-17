@@ -52,10 +52,10 @@ void CbCmCreateAt(Widget wg,XtPointer arg,XtPointer pcbs) {
     case T_CHORD:
       OpenCreateChordDlg(w);
       break;
-    case T_SURFACE:
+    case T_SURFACEEX:
       OpenCreateSurfaceDlg(w);
       break;
-    case T_GRIDPOINT:
+    case T_GRIDPOINTEX:
       OpenCreateGridPointDlg(w);
       break;
     default:
@@ -398,17 +398,17 @@ static void DG_Init(DistrGraph dg,View w,Widget wDlg,
 
   if (dg->wCount!=NULL)
     XtAddCallback(dg->wCount,XmNvalueChangedCallback,CbDG_NumbersChanged,
-	(XtPointer)dg);
+        (XtPointer)dg);
   if (dg->wAlpha[0]!=NULL)
     XtAddCallback(dg->wAlpha[0],XmNvalueChangedCallback,CbDG_NumbersChanged,
-	(XtPointer)dg);
+        (XtPointer)dg);
   if (dg->wAlpha[1]!=NULL)
     XtAddCallback(dg->wAlpha[1],XmNvalueChangedCallback,CbDG_NumbersChanged,
-	(XtPointer)dg);
+        (XtPointer)dg);
   if (dg->wLaw!=NULL) {
     GetValues(dg->wLaw,XmNsubMenuId,&wg,NULL);
     AddCallbackToTree(wg,xmPushButtonWidgetClass,XmNactivateCallback,
-	CbDG_NumbersChanged,(XtPointer)dg);
+        CbDG_NumbersChanged,(XtPointer)dg);
   }
 
   XtAddCallback(dg->wDraw,XmNexposeCallback,CbDG_Expose,
@@ -486,14 +486,14 @@ static void DG_DrawCurve(DistrGraph dg,int bDrawOrErase,double* pAlpha,
       oy=y;
 
       if (pAlpha!=NULL) {
-	oldAlpha=*pAlpha;
-	*pAlpha=newAlpha;
-	y=dg->margin+GY2I(gh,DG_Law(dg,GI2X(gw,i)));
-	*pAlpha=oldAlpha;
+        oldAlpha=*pAlpha;
+        *pAlpha=newAlpha;
+        y=dg->margin+GY2I(gh,DG_Law(dg,GI2X(gw,i)));
+        *pAlpha=oldAlpha;
 
-	SetForeground(!bDrawOrErase? dg->pxFg : dg->pxBg);
-	if (ox>=0) DrawLine(ox,oy1,x,y);
-	oy1=y;
+        SetForeground(!bDrawOrErase? dg->pxFg : dg->pxBg);
+        if (ox>=0) DrawLine(ox,oy1,x,y);
+        oy1=y;
       }
 
       ox=x;
@@ -523,13 +523,13 @@ static void DG_DrawGraph(DistrGraph dg,int bDrawOrErase) {
     x=dg->margin+dg->extraLeftMargin+GX2I(gw,t);
     if (dg->alpha[0]>0) {
       if (dg->flags & DGD_LINES) {
-	y=dg->margin+GY2I(gh,DG_Law(dg,t));
-	DrawLine(x,dg->height-dg->margin-1,x,y);
-	if (dg->law==DGLAW_FLIPPED) DrawLine(dg->width-dg->margin,y,x,y);
-	else DrawLine(dg->margin+dg->extraLeftMargin,y,x,y);
+        y=dg->margin+GY2I(gh,DG_Law(dg,t));
+        DrawLine(x,dg->height-dg->margin-1,x,y);
+        if (dg->law==DGLAW_FLIPPED) DrawLine(dg->width-dg->margin,y,x,y);
+        else DrawLine(dg->margin+dg->extraLeftMargin,y,x,y);
       }
       if (dg->flags & DGD_DISTR)
-	DrawLine(dg->margin,y,dg->extraLeftMargin+dg->margin,y);
+        DrawLine(dg->margin,y,dg->extraLeftMargin+dg->margin,y);
     } else if (dg->flags & DGD_LINES)
       DrawLine(x,dg->margin+1,x,dg->height-dg->margin);
   }
@@ -559,12 +559,12 @@ static int DG_GetData(DistrGraph dg,int bShowErrors) {
   if (dg->alpha[1]==MAXDOUBLE) dg->alpha[1]=-1;
 
   i=GetResourceInt(dg->wCount,"max",NULL,0);
-  if (dg->count<0 || dg->count>i) {
+  if (dg->count<1 || dg->count>i) {
     dg->count=-1;
     if (bShowErrors) ErrorBox(dg->wDlg,GetResourceStringEx(dg->wCount,
-	"errBadRange",NULL,"$(MIN)%d$(MAX)%d",0,i));
+        "errBadRange",NULL,"$(MIN)%d$(MAX)%d",1,i));
     return -1;
-  }
+  } else dg->count--;
 
   if (dg->alpha[0]<=0) {
     dg->alpha[0]=-1;
@@ -647,9 +647,9 @@ static void CbDG_NumbersChanged(Widget wg,XtPointer xtpG,XtPointer pcbs) {
 
   if (oldLaw!=dg->law) {
     SetLabelString(dg->wAlphaLabel[0],GetResourceString(dg->wAlphaLabel[0],
-	dg->law==DGLAW_DELTA? "labelDelta" : "labelAlpha",NULL,NULL));
+        dg->law==DGLAW_DELTA? "labelDelta" : "labelAlpha",NULL,NULL));
     SetLabelString(dg->wAlphaLabel[1],GetResourceString(dg->wAlphaLabel[1],
-	dg->law==DGLAW_DELTA? "labelDelta" : "labelAlpha",NULL,NULL));
+        dg->law==DGLAW_DELTA? "labelDelta" : "labelAlpha",NULL,NULL));
   }
 
   /* Recalculate deltas if law is Delta and # of points changed */
@@ -805,7 +805,7 @@ static void DG_VisualInput(DistrGraph dg,int evt,int ix,int iy) {
   if (evt==DGI_PRESS) {
     dg->bDragging=True;
     dg->nDragAlpha=
-	((dg->law==DGLAW_2ALPHA || dg->law==DGLAW_DELTA) && x>=0.5) ? 1:0;
+        ((dg->law==DGLAW_2ALPHA || dg->law==DGLAW_DELTA) && x>=0.5) ? 1:0;
     dg->oldDragAlpha=dg->alpha[dg->nDragAlpha];
 
     DG_DrawGraph(dg,False);
@@ -819,7 +819,7 @@ static void DG_VisualInput(DistrGraph dg,int evt,int ix,int iy) {
     case DGI_RELEASE:
       nv=MAXDOUBLE;
       if (x>=0 && x<=1 && y>=0 && y<=1)
-	nv=DG_CalcCoeff(dg,x,y,&dg->alpha[dg->nDragAlpha]);
+        nv=DG_CalcCoeff(dg,x,y,&dg->alpha[dg->nDragAlpha]);
       if (nv==MAXDOUBLE) nv=dg->alpha[dg->nDragAlpha];
       break;
     case DGI_CANCEL:
@@ -870,15 +870,15 @@ void XtActDistrGraph(Widget wg,XEvent* xev,String* args,Cardinal* argn) {
 
   switch(xev->type) {
     case ButtonPress:
-	dg->mouseInside=True;
+        dg->mouseInside=True;
     case ButtonRelease:
-	ix=xev->xbutton.x;
-	iy=xev->xbutton.y;
+        ix=xev->xbutton.x;
+        iy=xev->xbutton.y;
       break;
     case MotionNotify:
-	if (!dg->mouseInside) return;
-	ix=xev->xmotion.x;
-	iy=xev->xmotion.y;
+        if (!dg->mouseInside) return;
+        ix=xev->xmotion.x;
+        iy=xev->xmotion.y;
       break;
     case EnterNotify:
       dg->mouseInside=1;
@@ -916,8 +916,10 @@ void XtActDistrGraph(Widget wg,XEvent* xev,String* args,Cardinal* argn) {
 
 #define CSD_BYPOINT 1
 #define CSD_BYLEVEL 2
+#define TX_CREATESURFACEDLG 16924138
 
 typedef struct _CreateSurfaceDlg {
+  int type;
   View w;
 
   char oldCreatorId[512];
@@ -937,7 +939,7 @@ static void CbCSD_CopyLevel(Widget wg,XtPointer xtpD,XtPointer pcbs);
 static void CbCSD_PickSettings(Widget wg,XtPointer xtpD,XtPointer pcbs);
 static void CbCSD_SelectArea(Widget wg,XtPointer xtpD,XtPointer pcbs);
 static void CbToggleManaged(Widget wg,XtPointer xtpWmanage,XtPointer pcbs);
-static void DwCSD_OutputMode(Widget wg,View w,int evt,void*obj,void*udt);
+static void DwCSD(Widget wg,View w,int evt,void*obj,void*udt);
 
 static Widget OpenCreateSurfaceDlg(View w) {
   XtPointer xtp;
@@ -948,11 +950,13 @@ static Widget OpenCreateSurfaceDlg(View w) {
   wDlg=XtNameToWidget(w->x->wMain,"*"DLG_CREATE_SURFACE);
   if (wDlg==NULL) {
     dlg=Malloc(sizeof(*dlg));
+    dlg->type=TX_CREATESURFACEDLG;
     dlg->w=w;
     strcpy(dlg->oldCreatorId,"");
     dlg->oldOutputMode=-1;
 
     wDlg=dlg->wDlg=CreateOkCancelDialog(w->x->wMain,DLG_CREATE_SURFACE);
+    SetUserData(wDlg,(XtPointer)dlg);
     XtAddCallback(wDlg,XmNdestroyCallback,CbFree,(XtPointer)dlg);
 
     XtAddCallback(wDlg,XmNokCallback,(XtCallbackProc)CbCreateSurfaceOk,dlg);
@@ -961,110 +965,110 @@ static Widget OpenCreateSurfaceDlg(View w) {
       "#:mainForm",
 
        "$+8:dialogKind",XmCreateRadioBox,XmNorientation,XmHORIZONTAL,NULL,
-	"t?:single",&dlg->wSwSingle,
-	"t?:multiple",&wSwMulti,
+        "t?:single",&dlg->wSwSingle,
+        "t?:multiple",&wSwMulti,
        "-:",
 
        /* *** Create Single *** */
 
-       "f5?:tabFrame",&wFrameSingle,
+       "f5?_:tabFrame",&wFrameSingle,
 
-	"#:singleForm",
-	 "$+8:byWhat",XmCreateRadioBox,XmNorientation,XmHORIZONTAL,NULL,
-	  "t?:byLevel",&dlg->wSwByLevel,
-	  "t?:byPoint",&dlg->wSwByPoint,
-	 "-:",
-	 "f5_?:tabFrame",&wFrameXY,
-	  "#:formXY",
-	   "l#:xLabel",1,1,
-	   "x?#:x",&dlg->wX,2,1,
-	   "l#:yLabel",1,2,
-	   "x?#:y",&dlg->wY,2,2,
-	  "-#:",
-	 "-:",
-	 "f5?:tabFrame",&wFrameLevel,
-	  "#:formLevel",
-	   "l#:areaLabel",1,1,
-	   "*:areaMenu",
-	    "b@:area1",(XtPointer)1,
-	    "b@:area2",(XtPointer)2,
-	    "b@:area3",(XtPointer)3,
-	   "-:",
-	   "o?#:area",&dlg->wArea,2,1,
-	   "l#:levelLabel",1,2,
-	   "x?#:level",&dlg->wLevel,2,2,
-	  "-#:",
-	 "-:",
-	"-:",
+        "#:singleForm",
+         "$+8:byWhat",XmCreateRadioBox,XmNorientation,XmHORIZONTAL,NULL,
+          "t?:byLevel",&dlg->wSwByLevel,
+          "t?:byPoint",&dlg->wSwByPoint,
+         "-:",
+         "f5_?:tabFrame",&wFrameXY,
+          "#:formXY",
+           "l#:xLabel",1,1,
+           "x?#:x",&dlg->wX,2,1,
+           "l#:yLabel",1,2,
+           "x?#:y",&dlg->wY,2,2,
+          "-#:",
+         "-:",
+         "f5?:tabFrame",&wFrameLevel,
+          "#:formLevel",
+           "l#:areaLabel",1,1,
+           "*:areaMenu",
+            "b@:area1",(XtPointer)1,
+            "b@:area2",(XtPointer)2,
+            "b@:area3",(XtPointer)3,
+           "-:",
+           "o?#:area",&dlg->wArea,2,1,
+           "l#:levelLabel",1,2,
+           "x?#:level",&dlg->wLevel,2,2,
+          "-#:",
+         "-:",
+        "-:",
        "-:",
 
        /* *** Create Multiple *** */
 
-       "f5_?:tabFrame",&wFrameMulti,
-	"#:distributeForm",
-	 "#2:table",
-	  "l#:areaLabel",1,1,
-	  "*:areaMenu",
-	   "b@A:area1",(XtPointer)1,CbCSD_SelectArea,(XtPointer)dlg,
-	   "b@A:area2",(XtPointer)2,CbCSD_SelectArea,(XtPointer)dlg,
-	   "b@A:area3",(XtPointer)3,CbCSD_SelectArea,(XtPointer)dlg,
-	  "-:",
-	  "o#?:area",2,1,&dlg->wMArea,
-	  "l#?:level1Label",1,2,&dlg->wMLevel1Label,
-	  "x#?:level1",2,2,&dlg->wMLevel1,
-	  "b#A@?:copy1",3,2,CbCSD_CopyLevel,(XtPointer)dlg,1,
-	      &dlg->wMLevel1Pick,
-	  "l#?:level2Label",1,3,&dlg->wMLevel2Label,
-	  "x#?:level2",2,3,&dlg->wMLevel2,
-	  "b#A@?:copy2",3,3,CbCSD_CopyLevel,(XtPointer)dlg,2,
-	      &dlg->wMLevel2Pick,
-	  "l#:countLabel",1,4,
-	  "x#?:count",2,4,&dlg->wMCount,
-	  "l#?:alphaLabel",1,5,&wMAlphaLabel,
-	  "x#?:alpha",2,5,&dlg->wMAlpha,
-	  "l#?:alpha2Label",1,6,&wMAlpha2Label,
-	  "x#?:alpha2",2,6,&dlg->wMAlpha2,
-	  "l#?:lawLabel",1,7,&wLawLabel,
-	  "*:lawMenu",
-	   "b@:lawN",(XtPointer)DGLAW_NORMAL,
-	   "b@:lawR",(XtPointer)DGLAW_FLIPPED,
-	   "b@:lawS",(XtPointer)DGLAW_SYMMETRIC,
-	   "b@:law2",(XtPointer)DGLAW_2ALPHA,
-	   "b@:lawD",(XtPointer)DGLAW_DELTA,
-	  "-:",
-	  "o#?:law",2,7,&dlg->wMLaw,
-	  "b#A:reset",1,8,CbDG_Reset,(XtPointer)&dlg->dg,
-	  "t#?:removeOld",2,8,&dlg->wSwRemoveOld,
-	  "b#A:copy3",4,0,CbCSD_PickSettings,(XtPointer)dlg,
-	 "-#:",
-	 "f5:frame",
-	  "$?:"WG_DISTRGRAPH,XmCreateDrawingArea,NULL,
-	    &dlg->wMDraw,
-	  "-:",
-	 "-:",
-	"-:",
+       "f5?:tabFrame",&wFrameMulti,
+        "#:distributeForm",
+         "#2:table",
+          "l#:areaLabel",1,1,
+          "*:areaMenu",
+           "b@A:area1",(XtPointer)1,CbCSD_SelectArea,(XtPointer)dlg,
+           "b@A:area2",(XtPointer)2,CbCSD_SelectArea,(XtPointer)dlg,
+           "b@A:area3",(XtPointer)3,CbCSD_SelectArea,(XtPointer)dlg,
+          "-:",
+          "o#?:area",2,1,&dlg->wMArea,
+          "l#?:level1Label",1,2,&dlg->wMLevel1Label,
+          "x#?:level1",2,2,&dlg->wMLevel1,
+          "b#A@?:copy1",3,2,CbCSD_CopyLevel,(XtPointer)dlg,1,
+              &dlg->wMLevel1Pick,
+          "l#?:level2Label",1,3,&dlg->wMLevel2Label,
+          "x#?:level2",2,3,&dlg->wMLevel2,
+          "b#A@?:copy2",3,3,CbCSD_CopyLevel,(XtPointer)dlg,2,
+              &dlg->wMLevel2Pick,
+          "l#:countLabel",1,4,
+          "x#?:count",2,4,&dlg->wMCount,
+          "l#?:alphaLabel",1,5,&wMAlphaLabel,
+          "x#?:alpha",2,5,&dlg->wMAlpha,
+          "l#?:alpha2Label",1,6,&wMAlpha2Label,
+          "x#?:alpha2",2,6,&dlg->wMAlpha2,
+          "l#?:lawLabel",1,7,&wLawLabel,
+          "*:lawMenu",
+           "b@:lawN",(XtPointer)DGLAW_NORMAL,
+           "b@:lawR",(XtPointer)DGLAW_FLIPPED,
+           "b@:lawS",(XtPointer)DGLAW_SYMMETRIC,
+           "b@:law2",(XtPointer)DGLAW_2ALPHA,
+           "b@:lawD",(XtPointer)DGLAW_DELTA,
+          "-:",
+          "o#?:law",2,7,&dlg->wMLaw,
+          "b#A:reset",1,8,CbDG_Reset,(XtPointer)&dlg->dg,
+          "t#?:removeOld",2,8,&dlg->wSwRemoveOld,
+          "b#A:copy3",4,0,CbCSD_PickSettings,(XtPointer)dlg,
+         "-#:",
+         "f5:frame",
+          "$?:"WG_DISTRGRAPH,XmCreateDrawingArea,NULL,
+            &dlg->wMDraw,
+          "-:",
+         "-:",
+        "-:",
        "-:",
       /*"-:",*/
       NULL);
 
     XmToggleButtonSetState(dlg->wSwByLevel,True,True);
-    XmToggleButtonSetState(dlg->wSwSingle,True,True);
+    XmToggleButtonSetState(wSwMulti,True,True);
     SetSensitiveEx(dlg->wSwRemoveOld,False);
 
     XtAddCallback(dlg->wSwSingle,XmNvalueChangedCallback,
-	CbToggleManaged,(XtPointer)wFrameSingle);
+        CbToggleManaged,(XtPointer)wFrameSingle);
     XtAddCallback(wSwMulti,XmNvalueChangedCallback,
-	CbToggleManaged,(XtPointer)wFrameMulti);
+        CbToggleManaged,(XtPointer)wFrameMulti);
 
     XtAddCallback(dlg->wSwByLevel,XmNvalueChangedCallback,
-	CbToggleManaged,(XtPointer)wFrameLevel);
+        CbToggleManaged,(XtPointer)wFrameLevel);
     XtAddCallback(dlg->wSwByPoint,XmNvalueChangedCallback,
-	CbToggleManaged,(XtPointer)wFrameXY);
+        CbToggleManaged,(XtPointer)wFrameXY);
 
     /*XtAddCallback(dlg->wMLevel1,XmNvalueChangedCallback,
-	CbCSD_LevelChanged,(XtPointer)dlg);
+        CbCSD_LevelChanged,(XtPointer)dlg);
     XtAddCallback(dlg->wMLevel2,XmNvalueChangedCallback,
-	CbCSD_LevelChanged,(XtPointer)dlg);*/
+        CbCSD_LevelChanged,(XtPointer)dlg);*/
 
     wg=XmMessageBoxGetChild(wDlg,XmDIALOG_OK_BUTTON);
     AddDependentWidget(w,wg,N_NOW | N_NEWAPP | N_ALT,NULL,
@@ -1073,13 +1077,17 @@ static Widget OpenCreateSurfaceDlg(View w) {
     XtManageChild(wDlg);
 
     DG_Init(&dlg->dg,w,dlg->wDlg,
-	dlg->wMDraw,dlg->wMCount,dlg->wMAlpha,wMAlphaLabel,
-	dlg->wMAlpha2,wMAlpha2Label,dlg->wMLaw,wLawLabel);
+        dlg->wMDraw,dlg->wMCount,dlg->wMAlpha,wMAlphaLabel,
+        dlg->wMAlpha2,wMAlpha2Label,dlg->wMLaw,wLawLabel);
 
     AddDependentWidget(w,dlg->wDlg,N_NOW | N_NEWAPP | N_ALT,NULL,
-      DwCSD_OutputMode,(void*)dlg);
+      DwCSD,(void*)dlg);
   }
-  else XtPopup(XtParent(wDlg),XtGrabNone);
+  else {
+    dlg=(CreateSurfaceDlg)GetUserData(wDlg);
+    DwCSD(NULL,w,N_NOW,NULL,dlg);
+    XtPopup(XtParent(wDlg),XtGrabNone);
+  }
 
   SetViewFlags(w,w->showFlags | SHW_SURFACES);
   UndoMark(w->app);
@@ -1091,7 +1099,7 @@ static void CSD_CreateSingle(CreateSurfaceDlg dlg) {
   int i,area;
   double x,y,level;
   char* s,* s1;
-  Surface surf;
+  SurfaceEx surfex;
   Index ix;
 
   SetActiveView(dlg->w);
@@ -1105,7 +1113,12 @@ static void CSD_CreateSingle(CreateSurfaceDlg dlg) {
     return;
   }
 
+  /* Differentiate between "by leven" and "by x-y" */
+
   if (XmToggleButtonGetState(dlg->wSwByLevel)) {
+
+    /* By level - parse area, level */
+
     area=(int)GetOptionMenuValue(dlg->wArea);
     level=GetXmTextDouble(dlg->wLevel);
 
@@ -1114,12 +1127,27 @@ static void CSD_CreateSingle(CreateSurfaceDlg dlg) {
       return;
     }
 
-    i=FindSurfaceOriginPoint(dlg->w->app,area,level,&x,&y);
-    if (i) {
+    /* Check for duplicate surfaces */
+
+    for (surfex=AppSurfaceEx1st(dlg->w->app,&ix);surfex!=NULL;surfex=Next(&ix))
+        if (surfex->zone==area && surfex->level==level) {
+      LabelObject(dlg->w,surfex,GetStr(dlg->w,STR_ERRLABEL),True);
+      UndoMark(dlg->w->app);
+      ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_ALREADYEXISTS));
+      return;
+    }
+
+    /* Try adding the surface */
+
+    surfex=AddSurfaceEx(dlg->w->app,area,level,&i);
+    if (surfex==NULL) {
       ErrorBox(dlg->wDlg,GetStr(dlg->w,i));
       return;
     }
   } else {
+
+    /* Add surface by x-y */
+
     x=GetXmTextDouble(dlg->wX);
     y=GetXmTextDouble(dlg->wY);
 
@@ -1127,21 +1155,27 @@ static void CSD_CreateSingle(CreateSurfaceDlg dlg) {
       ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_INVNUMBERS));
       return;
     }
+
+    /* Check for duplicate surfaces */
+
+    for (surfex=AppSurfaceEx1st(dlg->w->app,&ix);surfex!=NULL;surfex=Next(&ix))
+        if (surfex->bDrawn && surfex->originX==x && surfex->originY==y) {
+      LabelObject(dlg->w,surfex,GetStr(dlg->w,STR_ERRLABEL),True);
+      UndoMark(dlg->w->app);
+      ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_ALREADYEXISTS));
+      return;
+    }
+
+    /* Try adding the surface */
+
+    surfex=AddSurfaceExByXY(dlg->w->app,x,y,&i);
+    if (surfex==NULL) {
+      ErrorBox(dlg->wDlg,GetStr(dlg->w,i));
+      return;
+    }
   }
 
-  for (surf=AppSurface1st(dlg->w->app,&ix);surf!=NULL;surf=Next(&ix))
-      if (surf->originX==x && surf->originY==y) {
-    LabelObject(dlg->w,surf,GetStr(dlg->w,STR_ERRLABEL),True);
-    UndoMark(dlg->w->app);
-    ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_ALREADYEXISTS));
-    return;
-  }
-  surf=AddSurface(dlg->w->app,x,y,&i);
-  if (surf==NULL) {
-    ErrorBox(dlg->wDlg,GetStr(dlg->w,i));
-    return;
-  }
-  LabelObject(dlg->w,surf,GetStr(dlg->w,STR_NEWLABEL),True);
+  LabelObject(dlg->w,surfex,GetStr(dlg->w,STR_NEWLABEL),True);
 
   SetViewFlags(dlg->w,dlg->w->showFlags | SHW_SURFACES);
   UndoMark(dlg->w->app);
@@ -1151,7 +1185,7 @@ static void CSD_CreateMultiple(CreateSurfaceDlg dlg) {
   int area=(int)GetOptionMenuValue(dlg->wMArea);
   double level1,level2,t,x,y,v;
   int i,r,cnt,carreMode;
-  Surface s;
+  SurfaceEx sex;
   Index ix;
   String creatorId;
 
@@ -1159,10 +1193,10 @@ static void CSD_CreateMultiple(CreateSurfaceDlg dlg) {
 
   if (DG_GetData(&dlg->dg,True)) return;
 
-  if (dlg->w->app->xpoint==NULL) {
+/*  if (dlg->w->app->xpoint==NULL) {
     ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_NOXPOINT));
     return;
-  }
+  } */
 
   carreMode=dlg->w->app->outputMode==OUTPUTMODE_CARRE;
 
@@ -1184,7 +1218,7 @@ static void CSD_CreateMultiple(CreateSurfaceDlg dlg) {
 
     if (dlg->dg.law!=DGLAW_DELTA) {
       ErrorBox(dlg->wDlg,
-	  GetResourceString(dlg->wMLaw,"errWrongCarreLaw",NULL,NULL));
+          GetResourceString(dlg->wMLaw,"errWrongCarreLaw",NULL,NULL));
       return;
     }
 
@@ -1196,7 +1230,7 @@ static void CSD_CreateMultiple(CreateSurfaceDlg dlg) {
 
   if (level1==level2) {
     ErrorBox(dlg->wDlg,
-	GetResourceString(dlg->wDlg,"errEqualLevels",NULL,NULL));
+        GetResourceString(dlg->wDlg,"errEqualLevels",NULL,NULL));
     return;
   }
 
@@ -1212,30 +1246,30 @@ static void CSD_CreateMultiple(CreateSurfaceDlg dlg) {
 
       /* Sonnet mode: delete surfaces with matching creatorId */
 
-      for (i=0,s=AppSurface1st(dlg->w->app,&ix);s!=NULL;s=Next(&ix)) {
-	if (!strcmp(StripPrefix(GetSurfaceCreatorId(s),"+"),
-	    StripPrefix(dlg->oldCreatorId,"+")))
-	  {DelSurface(dlg->w->app,s);i++;}
+      for (i=0,sex=AppSurfaceEx1st(dlg->w->app,&ix);sex!=NULL;sex=Next(&ix)) {
+        if (!strcmp(StripPrefix(GetSurfaceExCreatorId(sex),"+"),
+            StripPrefix(dlg->oldCreatorId,"+")))
+          {DelSurfaceEx(sex);i++;}
       }
       if (!i) {
-	Cancel(dlg->w->app);
-	ErrorBox(dlg->wDlg,
-	    GetResourceString(dlg->wDlg,"errOldSurfacesNotFound",NULL,NULL));
-	return;
+        Cancel(dlg->w->app);
+        ErrorBox(dlg->wDlg,
+            GetResourceString(dlg->wDlg,"errOldSurfacesNotFound",NULL,NULL));
+        return;
       }
     } else {
 
       /* Carre mode: delete all surfaces in the area */
       /* -- Now done in DistributeSurfaces, because of level calculation
       for (s=AppSurface1st(dlg->w->app,&ix);s!=NULL;s=Next(&ix))
-	if (GetSurfaceArea(dlg->w->app,s)==area) DelSurface(dlg->w->app,s);
+        if (GetSurfaceArea(dlg->w->app,s)==area) DelSurface(dlg->w->app,s);
 */
 
     }
   } else if (dlg->w->app->outputMode==OUTPUTMODE_CARRE) {
     Cancel(dlg->w->app);
     ErrorBox(dlg->wDlg,
-	GetResourceString(dlg->wDlg,"errCarreOldSurfaces",NULL,NULL));
+        GetResourceString(dlg->wDlg,"errCarreOldSurfaces",NULL,NULL));
     return;
   }
 
@@ -1272,26 +1306,26 @@ static void CbCSD_CopyLevel(Widget wg,XtPointer xtpD,XtPointer pcbs) {
   CreateSurfaceDlg dlg=(CreateSurfaceDlg)xtpD;
   char s[256];
   int area;
-  Surface surf;
+  SurfaceEx surfex;
 
   if (dlg->w->app->outputMode==OUTPUTMODE_CARRE) return;
 
-  surf=dlg->w->lastExaminedSurface;
-  if (surf==NULL || !InGroup(dlg->w->app->surfaces,surf)) {
+  surfex=dlg->w->lastExaminedSurfaceEx;
+  if (surfex==NULL || !InGroup(dlg->w->app->surfacesEx,surfex)) {
     ErrorBox(dlg->wDlg,GetResourceString(dlg->wDlg,
-	"errNoRememberedSurface",NULL,NULL));
+        "errNoRememberedSurface",NULL,NULL));
     return;
   }
 
-  area=GetSurfaceArea(dlg->w->app,surf);
-  if (area<=0) {
-    ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_NOCLOSEDSURFS));
+  area=surfex->zone;
+  if (area<0) {
+    ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_NOSURFZONE));
     return;
   }
 
   SetOptionMenuValue(dlg->wMArea,
       (XtPointer)area);
-  sprintf(s,"%g",surf->level);
+  sprintf(s,"%g",surfex->level);
   switch ((int)GetUserData(wg)) {
     case 1:
       XmTextSetString(dlg->wMLevel1,s);
@@ -1310,16 +1344,16 @@ static void CbCSD_PickSettings(Widget wg,XtPointer xtpD,XtPointer pcbs) {
   int area,count,law,carreFlag;
   double l1,l2,alpha,alpha2;
   char s[256];
-  Surface surf;
+  SurfaceEx surfex;
 
-  surf=dlg->w->lastExaminedSurface;
-  if (surf==NULL || !InGroup(dlg->w->app->surfaces,surf)) {
+  surfex=dlg->w->lastExaminedSurfaceEx;
+  if (surfex==NULL || !InGroup(dlg->w->app->surfacesEx,surfex)) {
     ErrorBox(dlg->wDlg,GetResourceString(dlg->wDlg,
-	"errNoRememberedSurface",NULL,NULL));
+        "errNoRememberedSurface",NULL,NULL));
     return;
   }
 
-  if (ParseSurfaceCreatorId(GetSurfaceCreatorId(surf),
+  if (ParseSurfaceCreatorId(GetSurfaceExCreatorId(surfex),
       &area,&count,&alpha,&alpha2,&law,&l1,&l2,&carreFlag)) {
     ErrorBox(dlg->wDlg,
       GetResourceString(dlg->wDlg,"errBadCreatorId",NULL,NULL));
@@ -1337,11 +1371,11 @@ static void CbCSD_PickSettings(Widget wg,XtPointer xtpD,XtPointer pcbs) {
     sprintf(s,"%g",l1);XmTextSetString(dlg->wMLevel1,s);
     sprintf(s,"%g",l2);XmTextSetString(dlg->wMLevel2,s);
   }
-  sprintf(s,"%d",count);XmTextSetString(dlg->dg.wCount,s);
+  sprintf(s,"%d",count+1);XmTextSetString(dlg->dg.wCount,s);
   sprintf(s,"%g",alpha);XmTextSetString(dlg->dg.wAlpha[0],s);
   sprintf(s,"%g",alpha2);XmTextSetString(dlg->dg.wAlpha[1],s);
   SetOptionMenuValue(dlg->dg.wLaw,(XtPointer)law);
-  strcpy(dlg->oldCreatorId,GetSurfaceCreatorId(surf));
+  strcpy(dlg->oldCreatorId,GetSurfaceExCreatorId(surfex));
 
   CbDG_NumbersChanged(NULL,(XtPointer)&dlg->dg,NULL);
   if (dlg->w->app->outputMode!=OUTPUTMODE_CARRE) {
@@ -1359,30 +1393,61 @@ static void CbCSD_SelectArea(Widget wg,XtPointer xtpD,XtPointer pcbs) {
   }
 }
 
-static void DwCSD_OutputMode(Widget wg,View w,int evt,void*obj,void*udt) {
+static void DwCSD(Widget wg,View w,int evt,void*obj,void*udt) {
   CreateSurfaceDlg dlg=(CreateSurfaceDlg)udt;
   int b;
+  XmString* xmsa;
+  int i,xmsca,xmsc;
+  XtPointer* values;
+  SurfaceZone sz;
+  Index ix;
 
-  if (dlg->oldOutputMode==dlg->w->app->outputMode) return;
-  dlg->oldOutputMode=dlg->w->app->outputMode;
+  assert(dlg->type==TX_CREATESURFACEDLG);
 
-  b=dlg->w->app->outputMode==OUTPUTMODE_CARRE;
+  if (evt==N_ALT && !IsMapped(XtParent(dlg->wDlg))) return;
 
-  SetSensitiveEx(dlg->wMLevel1,!b);
-  SetSensitiveEx(dlg->wMLevel1Label,!b);
-  SetSensitiveEx(dlg->wMLevel1Pick,!b);
-  SetSensitiveEx(dlg->wMLevel2,!b);
-  SetSensitiveEx(dlg->wMLevel2Label,!b);
-  SetSensitiveEx(dlg->wMLevel2Pick,!b);
-  SetSensitiveEx(dlg->wSwRemoveOld,!b);
-  XmToggleButtonSetState(dlg->wSwRemoveOld,b,True);
+  /* Update the list of surfaces on topo change */
+  if (evt==N_NOW || evt==N_NEWAPP ||
+      (evt==N_ALT && w->x->changes & CHF_TOPOLOGY)) {
+    xmsca=GroupCount(w->app->surfaceZones);
+    xmsa=Malloc(sizeof(*xmsa)*xmsca+1);
+    values=Malloc(sizeof(*values)*xmsca+1);
+    for (xmsc=0,sz=AppSurfaceZone1st(w->app,&ix);sz!=NULL;sz=Next(&ix)) {
+      if (!SurfaceZoneIsUsed(sz)) continue;
+      xmsa[xmsc]=MakeXmString(GetSurfaceZoneDescription(sz));
+      values[xmsc]=(XtPointer)sz->zone;
+      xmsc++;
+    }
+    SetOptionMenuItems(dlg->wArea,xmsc,xmsa,values);
+    SetOptionMenuItems(dlg->wMArea,xmsc,xmsa,values);
+    for (i=0;i<xmsc;i++) XmStringFree(xmsa[i]);
+    Free(xmsa);
+    Free(values);
+  }
 
-  if (b) {
-    XmTextSetString(dlg->wMLevel1,"");
-    XmTextSetString(dlg->wMLevel2,"");
-    SetOptionMenuValue(dlg->wMLaw,(XtPointer)DGLAW_DELTA);
-    SetSensitiveEx(dlg->wSwRemoveOld,False);
-    CbDG_NumbersChanged(NULL,(XtPointer)&dlg->dg,NULL);
+  /* Check for an output mode change */
+
+  if (dlg->oldOutputMode!=dlg->w->app->outputMode) {
+    dlg->oldOutputMode=dlg->w->app->outputMode;
+
+    b=dlg->w->app->outputMode==OUTPUTMODE_CARRE;
+
+    SetSensitiveEx(dlg->wMLevel1,!b);
+    SetSensitiveEx(dlg->wMLevel1Label,!b);
+    SetSensitiveEx(dlg->wMLevel1Pick,!b);
+    SetSensitiveEx(dlg->wMLevel2,!b);
+    SetSensitiveEx(dlg->wMLevel2Label,!b);
+    SetSensitiveEx(dlg->wMLevel2Pick,!b);
+    SetSensitiveEx(dlg->wSwRemoveOld,!b);
+    XmToggleButtonSetState(dlg->wSwRemoveOld,b,True);
+
+    if (b) {
+      XmTextSetString(dlg->wMLevel1,"");
+      XmTextSetString(dlg->wMLevel2,"");
+      SetOptionMenuValue(dlg->wMLaw,(XtPointer)DGLAW_DELTA);
+      SetSensitiveEx(dlg->wSwRemoveOld,False);
+      CbDG_NumbersChanged(NULL,(XtPointer)&dlg->dg,NULL);
+    }
   }
 }
 
@@ -1400,7 +1465,10 @@ static void CbToggleManaged(Widget wg,XtPointer xtpWmanage,XtPointer pcbs) {
 /* //                                                              // */
 /* ////////////////////////////////////////////////////////////////// */
 
+#define TX_CGRIDPOINTDLG 98790873
+
 typedef struct _CreateGridPointDlg {
+  int type;
   View w;
 
   int oldOutputMode;
@@ -1413,7 +1481,7 @@ typedef struct _CreateGridPointDlg {
 
 static void CbCreateGridPointOk(Widget wg,XtPointer xtpD,XtPointer pcbs);
 static void CbCGPD_PickSettings(Widget wg,XtPointer xtpD,XtPointer pcbs);
-static void DwCGPD_OutputMode(Widget wg,View w,int evt,void*obj,void*udt);
+static void DwCGPD(Widget wg,View w,int evt,void*obj,void*udt);
 
 static Widget OpenCreateGridPointDlg(View w) {
   XtPointer xtp;
@@ -1424,95 +1492,99 @@ static Widget OpenCreateGridPointDlg(View w) {
   wDlg=XtNameToWidget(w->x->wMain,"*"DLG_CREATE_GPOINT);
   if (wDlg==NULL) {
     dlg=Malloc(sizeof(*dlg));
+    dlg->type=TX_CGRIDPOINTDLG;
     dlg->w=w;
     dlg->oldOutputMode=-1;
 
     dlg->wDlg=wDlg=CreateOkCancelDialog(w->x->wMain,DLG_CREATE_GPOINT);
+    SetUserData(dlg->wDlg,(XtPointer)dlg);
     XtAddCallback(wDlg,XmNdestroyCallback,CbFree,(XtPointer)dlg);
 
     XtAddCallback(wDlg,XmNokCallback,
-	(XtCallbackProc)CbCreateGridPointOk,dlg);
+        (XtCallbackProc)CbCreateGridPointOk,dlg);
     XtAddCallback(wDlg,XmNhelpCallback,CbHelp,(XtPointer)w);
 
     CreateWidgetSystem(wDlg,
       "#:mainForm",
        "$+8:dialogKind",XmCreateRadioBox,XmNorientation,XmHORIZONTAL,NULL,
-	"t?:single",&dlg->wSwSingle,
-	"t?:multiple",&wSwMultiple,
+        "t?:single",&dlg->wSwSingle,
+        "t?:multiple",&wSwMultiple,
        "-:",
 
        /* *** Create Single *** */
 
-       "f5?:tabFrame",&wFrameSingle,
-	"#:singleForm",
-	 "l#:areaLabel",1,1,
-	 "*:areaMenu",
-	  "b@:area0",0,
-	  "b@?:area1",1,&wg1,
-	  "b@:area2",2,
-	 "-:",
-	 "o#?:area",2,1,&dlg->wArea,
-	 "l#:valueLabel",1,2,
-	 "x?#:value",&dlg->wValue,2,2,
-	"-#:",
+       "f5?_:tabFrame",&wFrameSingle,
+        "#:singleForm",
+         "l#:areaLabel",1,1,
+         "*:areaMenu",
+          "b@:area0",0,
+          "b@?:area1",1,&wg1,
+          "b@:area2",2,
+         "-:",
+         "o#?:area",2,1,&dlg->wArea,
+         "l#:valueLabel",1,2,
+         "x?#:value",&dlg->wValue,2,2,
+        "-#:",
        "-:",
 
        /* *** Create Multiple *** */
 
-       "f5?_:tabFrame",&wFrameMultiple,
-	"#:distributeForm",
-	 "#2:table",
-	 "l#:zoneLabel",1,1,
-	 "*:zoneMenu",
-	  "b@:area0",(XtPointer)0,
-	  "b@:area1",(XtPointer)1,
-	  "b@:area2",(XtPointer)2,
-	 "-:",
-	 "o#?:zone",2,1,&dlg->wMZone,
-	 "l#:countLabel",1,2,
-	 "x#?:count",2,2,&dlg->wMCount,
-	 "l#?:alphaLabel",1,3,&wMAlphaLabel,
-	 "x#?:alpha",2,3,&dlg->wMAlpha,
-	 "l#?:alpha2Label",1,4,&wMAlpha2Label,
-	 "x#?:alpha2",2,4,&dlg->wMAlpha2,
-	 "l#?:lawLabel",1,5,&wLawLabel,
-	 "*:lawMenu",
-	  "b@:lawN",(XtPointer)DGLAW_NORMAL,
-	  "b@:lawR",(XtPointer)DGLAW_FLIPPED,
-	  "b@:lawS",(XtPointer)DGLAW_SYMMETRIC,
-	  "b@:law2",(XtPointer)DGLAW_2ALPHA,
-	  "b@:lawD",(XtPointer)DGLAW_DELTA,
-	 "-:",
-	 "o#?:law",2,5,&dlg->wMLaw,
-	 "b#A:reset",1,6,CbDG_Reset,(XtPointer)&dlg->dg,
-	 "b#A:copy3",4,0,CbCGPD_PickSettings,(XtPointer)dlg,
-	"-#:",
-	"f5:frame",
-	 "$?:"WG_DISTRGRAPH,XmCreateDrawingArea,NULL,&dlg->wMDraw,
-	"-:",
+       "f5?:tabFrame",&wFrameMultiple,
+        "#:distributeForm",
+         "#2:table",
+         "l#:zoneLabel",1,1,
+         "*:zoneMenu",
+          "b@:area0",(XtPointer)0,
+          "b@:area1",(XtPointer)1,
+          "b@:area2",(XtPointer)2,
+         "-:",
+         "o#?:zone",2,1,&dlg->wMZone,
+         "l#:countLabel",1,2,
+         "x#?:count",2,2,&dlg->wMCount,
+         "l#?:alphaLabel",1,3,&wMAlphaLabel,
+         "x#?:alpha",2,3,&dlg->wMAlpha,
+         "l#?:alpha2Label",1,4,&wMAlpha2Label,
+         "x#?:alpha2",2,4,&dlg->wMAlpha2,
+         "l#?:lawLabel",1,5,&wLawLabel,
+         "*:lawMenu",
+          "b@:lawN",(XtPointer)DGLAW_NORMAL,
+          "b@:lawR",(XtPointer)DGLAW_FLIPPED,
+          "b@:lawS",(XtPointer)DGLAW_SYMMETRIC,
+          "b@:law2",(XtPointer)DGLAW_2ALPHA,
+          "b@:lawD",(XtPointer)DGLAW_DELTA,
+         "-:",
+         "o#?:law",2,5,&dlg->wMLaw,
+         "b#A:reset",1,6,CbDG_Reset,(XtPointer)&dlg->dg,
+         "b#A:copy3",4,0,CbCGPD_PickSettings,(XtPointer)dlg,
+        "-#:",
+        "f5:frame",
+         "$?:"WG_DISTRGRAPH,XmCreateDrawingArea,NULL,&dlg->wMDraw,
+        "-:",
        "-:",
       "-:",
       NULL);
 
-    XmToggleButtonSetState(dlg->wSwSingle,True,True);
+    XmToggleButtonSetState(wSwMultiple,True,True);
     XtAddCallback(dlg->wSwSingle,XmNvalueChangedCallback,
-	CbToggleManaged,(XtPointer)wFrameSingle);
+        CbToggleManaged,(XtPointer)wFrameSingle);
     XtAddCallback(wSwMultiple,XmNvalueChangedCallback,
-	CbToggleManaged,(XtPointer)wFrameMultiple);
+        CbToggleManaged,(XtPointer)wFrameMultiple);
 
     wg=XmMessageBoxGetChild(wDlg,XmDIALOG_OK_BUTTON);
-    AddDependentWidget(w,wg,N_NOW | N_NEWAPP | N_ALT,NULL,
-      DwNotifyIfExists,(void*)T_XPOINT);
     XtManageChild(wDlg);
 
     DG_Init(&dlg->dg,w,dlg->wDlg,
-	dlg->wMDraw,dlg->wMCount,dlg->wMAlpha,wMAlphaLabel,
-	dlg->wMAlpha2,wMAlpha2Label,dlg->wMLaw,wLawLabel);
+        dlg->wMDraw,dlg->wMCount,dlg->wMAlpha,wMAlphaLabel,
+        dlg->wMAlpha2,wMAlpha2Label,dlg->wMLaw,wLawLabel);
 
     AddDependentWidget(w,dlg->wDlg,N_NOW | N_NEWAPP | N_ALT,NULL,
-      DwCGPD_OutputMode,(void*)dlg);
+      DwCGPD,(void*)dlg);
   }
-  else XtPopup(XtParent(wDlg),XtGrabNone);
+  else {
+    dlg=(CreateGridPointDlg)GetUserData(wDlg);
+    DwCGPD(NULL,w,N_NOW,NULL,dlg);
+    XtPopup(XtParent(wDlg),XtGrabNone);
+  }
 
   SetViewFlags(w,w->showFlags | SHW_GRIDPOINTS);
   UndoMark(w->app);
@@ -1531,14 +1603,14 @@ static String CGPD_MakeCreatorId(CreateGridPointDlg dlg,int zone) {
 */
 
 static void CGPD_CreateSingle(CreateGridPointDlg dlg) {
-  GridPoint gp;
+  GridPointEx gpx;
   int area;
   double value;
   Index ix;
 
   SetActiveView(dlg->w);
   if (dlg->w->app==NULL) return;
-  if (dlg->w->app->xpoint==NULL) return;
+/*  if (dlg->w->app->xpoint==NULL) return; */
 
   /* Prevent manual editing in Carre mode */
 
@@ -1546,6 +1618,8 @@ static void CGPD_CreateSingle(CreateGridPointDlg dlg) {
     ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_CARRE_INHIBITS));
     return;
   }
+
+  /* Parse area and value */
 
   area=(int)GetOptionMenuValue(dlg->wArea);
 
@@ -1555,24 +1629,26 @@ static void CGPD_CreateSingle(CreateGridPointDlg dlg) {
     return;
   }
 
+  /* Check for bad values */
+
   if (value<0 || value>1) {
     ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_INVAREA));
     return;
   }
 
-  for (gp=AppGridPoint1st(dlg->w->app,&ix);gp!=NULL;gp=Next(&ix))
-      if (gp->area==area && gp->value==value) {
-    LabelObject(dlg->w,gp,GetStr(dlg->w,STR_ERRLABEL),True);
+  for (gpx=AppGridPointEx1st(dlg->w->app,&ix);gpx!=NULL;gpx=Next(&ix))
+      if (gpx->zone==area && gpx->value==value) {
+    LabelObject(dlg->w,gpx,GetStr(dlg->w,STR_ERRLABEL),True);
     UndoMark(dlg->w->app);
     ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_ALREADYEXISTS));
     return;
   }
-  gp=AddGridPoint(dlg->w->app,area,value);
-  if (gp==NULL) {
+  gpx=AddGridPointEx(dlg->w->app,area,value);
+  if (gpx==NULL) {
     ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_INTERNALGP));
     return;
   }
-  LabelObject(dlg->w,gp,GetStr(dlg->w,STR_NEWLABEL),True);
+  LabelObject(dlg->w,gpx,GetStr(dlg->w,STR_NEWLABEL),True);
 
   SetViewFlags(dlg->w,dlg->w->showFlags | SHW_GRIDPOINTS);
   UndoMark(dlg->w->app);
@@ -1582,7 +1658,7 @@ static void CGPD_CreateMultiple(CreateGridPointDlg dlg) {
   int zone=(int)GetOptionMenuValue(dlg->wMZone);
   int i,carreMode,r;
   double v;
-  GridPoint gp;
+  GridPointEx gpx;
   Index ix;
   String creatorId;
 
@@ -1593,13 +1669,13 @@ static void CGPD_CreateMultiple(CreateGridPointDlg dlg) {
   if (carreMode) {
     if (dlg->dg.law!=DGLAW_DELTA) {
       ErrorBox(dlg->wDlg,
-	  GetResourceString(dlg->wMLaw,"errWrongCarreLaw",NULL,NULL));
+          GetResourceString(dlg->wMLaw,"errWrongCarreLaw",NULL,NULL));
       return;
     }
   }
 
-  for (gp=AppGridPoint1st(dlg->w->app,&ix);gp!=NULL;gp=Next(&ix))
-    if (gp->area==zone) DelGridPoint(dlg->w->app,gp);
+  for (gpx=AppGridPointEx1st(dlg->w->app,&ix);gpx!=NULL;gpx=Next(&ix))
+    if (gpx->zone==zone) DelGridPointEx(gpx);
 
   r=DistributeGridPoints(dlg->w->app,zone,dlg->dg.count,dlg->dg.alpha[0],
       dlg->dg.alpha[1],dlg->dg.law,carreMode);
@@ -1626,16 +1702,16 @@ static void CbCGPD_PickSettings(Widget wg,XtPointer xtpD,XtPointer pcbs) {
   int area,count,law,carreFlag;
   double alpha,alpha2;
   char s[256];
-  GridPoint gp;
+  GridPointEx gpx;
 
-  gp=dlg->w->lastExaminedGridPoint;
-  if (gp==NULL || !InGroup(dlg->w->app->gridPoints,gp)) {
+  gpx=dlg->w->lastExaminedGridPointEx;
+  if (gpx==NULL || !InGroup(dlg->w->app->gridPointsEx,gpx)) {
     ErrorBox(dlg->wDlg,GetResourceString(dlg->wDlg,
-	"errNoRememberedGridPoint",NULL,NULL));
+        "errNoRememberedGridPoint",NULL,NULL));
     return;
   }
 
-  if (ParseGridPointCreatorId(GetGridPointCreatorId(gp),
+  if (ParseGridPointCreatorId(GetGridPointExCreatorId(gpx),
       &area,&count,&alpha,&alpha2,&law,&carreFlag)) {
     ErrorBox(dlg->wDlg,
       GetResourceString(dlg->wDlg,"errBadCreatorId",NULL,NULL));
@@ -1649,7 +1725,7 @@ static void CbCGPD_PickSettings(Widget wg,XtPointer xtpD,XtPointer pcbs) {
   }
 
   SetOptionMenuValue(dlg->wMZone,(XtPointer)area);
-  sprintf(s,"%d",count);XmTextSetString(dlg->dg.wCount,s);
+  sprintf(s,"%d",count+1);XmTextSetString(dlg->dg.wCount,s);
   sprintf(s,"%g",alpha);XmTextSetString(dlg->dg.wAlpha[0],s);
   sprintf(s,"%g",alpha2);XmTextSetString(dlg->dg.wAlpha[1],s);
   SetOptionMenuValue(dlg->dg.wLaw,(XtPointer)law);
@@ -1657,18 +1733,49 @@ static void CbCGPD_PickSettings(Widget wg,XtPointer xtpD,XtPointer pcbs) {
   CbDG_NumbersChanged(NULL,(XtPointer)&dlg->dg,NULL);
 }
 
-static void DwCGPD_OutputMode(Widget wg,View w,int evt,void*obj,void*udt) {
+static void DwCGPD(Widget wg,View w,int evt,void*obj,void*udt) {
   CreateGridPointDlg dlg=(CreateGridPointDlg)udt;
+  GridPointSeg gps;
+  XmString* xmsa;
+  XtPointer* values;
+  int xmsc,xmsca,i;
+  Index ix;
   int b;
 
-  if (dlg->oldOutputMode==dlg->w->app->outputMode) return;
-  dlg->oldOutputMode=dlg->w->app->outputMode;
+  assert(dlg->type==TX_CGRIDPOINTDLG);
 
-  b=dlg->w->app->outputMode==OUTPUTMODE_CARRE;
+  /* Do nothing if unmapped */
+  if (evt==N_ALT && !IsMapped(XtParent(dlg->wDlg))) return;
 
-  if (b) {
-    SetOptionMenuValue(dlg->wMLaw,(XtPointer)DGLAW_DELTA);
-    CbDG_NumbersChanged(NULL,(XtPointer)&dlg->dg,NULL);
+  /* Update the list of separatrix segments on topo change */
+  if (evt==N_NOW || evt==N_NEWAPP ||
+      (evt==N_ALT && w->x->changes & CHF_TOPOLOGY)) {
+    xmsca=GroupCount(w->app->gridPointSegs);
+    xmsa=Malloc(sizeof(*xmsa)*xmsca+1);
+    values=Malloc(sizeof(*values)*xmsca+1);
+    for (xmsc=0,gps=AppGridPointSeg1st(w->app,&ix);gps!=NULL;gps=Next(&ix)) {
+      if (!GridPointSegIsUsed(gps)) continue;
+      xmsa[xmsc]=MakeXmString(GetGridPointSegDescription(gps));
+      values[xmsc]=(XtPointer)gps->zone;
+      xmsc++;
+    }
+    SetOptionMenuItems(dlg->wArea,xmsc,xmsa,values);
+    SetOptionMenuItems(dlg->wMZone,xmsc,xmsa,values);
+    for (i=0;i<xmsc;i++) XmStringFree(xmsa[i]);
+    Free(xmsa);
+    Free(values);
+  }
+
+  /* Make adjustments if the output mode has changed */
+  if (dlg->oldOutputMode!=dlg->w->app->outputMode) {
+    dlg->oldOutputMode=dlg->w->app->outputMode;
+
+    b=dlg->w->app->outputMode==OUTPUTMODE_CARRE;
+
+    if (b) {
+      SetOptionMenuValue(dlg->wMLaw,(XtPointer)DGLAW_DELTA);
+      CbDG_NumbersChanged(NULL,(XtPointer)&dlg->dg,NULL);
+    }
   }
 }
 

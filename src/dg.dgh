@@ -1,7 +1,7 @@
 0123456789012345678901234567890123456789
 
-DivGeo help file v1.42
-----------------------
+DivGeo help file v200 BETA
+----------------------------
 
 Main window
 
@@ -829,6 +829,157 @@ To close the dialog box, press Close.
 
 ---
 
+Import topology... dialog box
+
+Use this dialog box to import a
+topology from another DG file. DG will
+create X points, separatrix segments
+and equilibrium zones similar to those
+in that DG file.
+
+To import an existing disk file, select
+a filename and press Open.
+
+To go to another directory, select it
+from the Directories list and press
+Filter.
+
+To cancel the operation, press Cancel.
+
+The "Detect X points" toggle button
+determines whether DG should
+automatically detect X points in the
+equilibrium. It should normally be left
+on.
+
+If DG chooses wrong X point(s), you
+should manually detect all X points
+using the "Edit topology" dialog box
+and delete all unused X points with the
+"Delete" tool. Then, you should import
+the topology with "Detect X points"
+disabled.
+
+The default filter string is taken from
+the DG_IMPORT_TOPOLOGY_MASK environment
+variable if it is set.
+
+---
+
+Edit topology... dialog box
+
+This dialog box allows you to edit X
+points, separatrix sections,
+equilibrium zones and to set the
+topology name which is written into the
+output file.
+
+While this dialog box is open, the
+Examine and Delete tools in the view
+window can affect X points and
+separatrix segments.
+
+Defining a topology usually consists of
+these steps:
+
+1. Detecting all X points.
+2. Deleting unneeded X points
+   with the Delete tool.
+3. Detecting all separatrix
+   sections.
+4. Setting values for sections
+   used for grid points.
+5. Defining equilibrium zones
+   for magnetic surfaces.
+6. Setting the topology name.
+
+In order to detect all X points, click
+on the "X Points" radio button, then on
+"Detect All". All X points in the
+current equilibrium will be detected
+and a new set of separatrix sections
+created. This will erase all
+information about any previous
+sections.
+
+In order to detect all separatrix
+sections, click on the "Sections" radio
+button, then on "Detect All".
+Separatrix sections connected to the X
+points will be created, thus erasing
+any previous sections. NOTE: this step
+is necessary after deleting any X
+points, because otherwise some sections
+could be cut by gradients from deleted
+X points.
+
+In order to change parameters for a
+separatrix section, highlight the
+section in question with the Examine
+tool, change values in the dialog box
+and press Change. "Has grid points"
+specifies whether the user should be
+able to define grid points on the
+section and should normally be enabled
+for sections in use. "Section number"
+is the number of the section, as
+written into the output file, and also
+serves as the number of the target
+limiting this section, if any. "Name"
+should be a short name shown in the
+Statistics dialog box. "Description"
+should be a longer name, used in some
+option menus. "Reverse target", when
+enabled, causes the points of the
+corresponding target to be output in
+the clockwise order rather than
+counterclockwise.
+
+In order to change the direction of a
+section, highlight it with the Examine
+tool and press "Change direction".
+
+Click on the "Zones" radio button in
+order to edit equilibrium zones for
+magnetic surfaces.
+
+In order to create a new zone, select
+"(New)" in the list box, enter values
+and press "Set". "Zone number" is the
+zone number, written into the output
+file. "Name" and "Description" are
+short and long names, similar to those
+for separatrix sections. "Base
+separatrix section" should be the number
+of an adjacent section. "Orientation"
+specifies whether the zone is to the
+left or to the right of the base
+section, when looking into it's
+direction. "Limiting section" can be
+used to specify the number of a limiting
+separatrix section for zones confined
+between two separatrices, and should be
+left empty in other cases. "Has O point"
+specifies whether there is an O point
+inside the zone.
+
+In oder to modify a zone, select it from
+the list, change parameters and press
+"Set".
+
+In order to delete a zone, select it
+from the list and press "Delete".
+
+You should assign a name to the
+topology, which will be written into
+the output file. In order to assign a
+name, click on the "Name" radio button,
+enter the desired topology name and
+press "Set". The name should be a single
+word.
+
+---
+
 Variables... dialog box
 
 Use this dialog box to set variables.
@@ -908,7 +1059,7 @@ is cleared for variables that apply to
 elements, sources or chords when marked
 objects have different values.
 
-The "Hold" toggle button controls how 
+The "Hold" toggle button controls how
 text fields for variables that apply to
 elements, sources or chords are
 updated. When "Hold" is disabled, these
@@ -1340,30 +1491,22 @@ affect all supported kinds of objects.
 
 ---
 
-Move/Stretch tool
+Move tool
 
-The Move/Stretch tool allows you to
-visually move objects in the work area.
+The "Move" allows you to visually move
+objects in the work area.
 
 To move an object, point to it and press
 the mouse button the tool is assigned
 to. Drag the object to the new location
 and release the mouse button.
 
-To "stretch" a group of objects, point
-to one object in the group and press
-Shift+mouse button. Drag the object to
-the new location and release the mouse
-button.
-
-In the current version of DG, stretching
-is only supported for grid points.
-
-In Carre mode, you may not move surfaces
-and grid points except for redefining
-the innermost surface in the main
-plasma. In the latter case, all other
-surfaces in the area will be deleted.
+In Carre mode, you may not move
+magnetic surfaces and grid points
+except for redefining the innermost
+magnetic surface in the main plasma. In
+the latter case, all other surfaces in
+the area will be deleted.
 
 ---
 
@@ -1444,21 +1587,33 @@ chord and release the mouse button.
 Add Surface tool
 
 The Add Surface tool lets you create
-surfaces.
+magnetic surfaces.
 
 An equilibrium must be imported before
 defining surfaces.
 
-To create a surface, point to some
-location inside the equilibrium and
-press the mouse button the tool is
-assigned to. By moving the mouse, you
-can adjust the position of the surface.
-When finished, release the mouse button.
+To create a magnetic surface, point to
+some location inside an equilibrium
+zone and press the mouse button the
+tool is assigned to. By moving the
+mouse, you can adjust the position of
+the surface. When finished, release the
+mouse button.
 
 In Carre mode, you may not add any
 surfaces except for creating a surface
 in an empty main plasma area.
+
+You can also add "virtual" surfaces,
+which can exist outside of defined
+equilibrium zones and cannot be written
+into the output file. In order to
+create a virtual surface, press
+Shift+mouse button inside the
+equilibrium. By moving the mouse, you
+can adjust the position of the surface.
+When finished, release the mouse
+button.
 
 ---
 
@@ -1688,7 +1843,7 @@ from the output mode selected from the
 
 ---
 
-File|Template... menu command
+File|Import|Template... menu command
 
 This command brings up the Template...
 dialog box allowing you to import a
@@ -1696,7 +1851,7 @@ template.
 
 ---
 
-File|Equilibrium... menu command
+File|Import|Equilibrium... menu command
 
 This command brings up the Equilibrium...
 dialog box allowing you to import an
@@ -1704,11 +1859,19 @@ equilibrium.
 
 ---
 
-File|Mesh... menu command
+File|Import|Mesh... menu command
 
 This command brings up the Mesh...
 dialog box allowing you to import a
 mesh.
+
+---
+
+File|Import|Topology... menu command
+
+This command brings up the "Import
+Topology" dialog box allowing you to
+import a topology from another DG file.
 
 ---
 
@@ -1845,6 +2008,12 @@ Edit|Delete|Unused points menu command
 
 This command deletes all points that
 have no elements attached.
+
+---
+
+Edit|Delete|Virtual surfaces menu command
+
+This command deletes all virtual surfaces.
 
 ---
 
@@ -2096,6 +2265,14 @@ structure.
 
 ---
 
+Commands|Edit topology... menu command
+
+This menu command brings up the "Edit
+topology" dialog box, allowing you to
+manually define the topology.
+
+---
+
 Variables|Add ... menu command
 
 This command creates a layer of
@@ -2294,6 +2471,41 @@ What's New
 
 Here is a brief list of changes in DG:
 
+Version 2.0, October 12, 1998 BETA
+------------------------------------
+
+- New: multiple-null topology support.
+  - More than 1 X point allowed.
+  - X points, separatrix sections and equilibrium zones can be manually
+    defined using the "Commanda|Edit topology..." menu command.
+  - The topology can also be imported from an existing DG file using the
+    "File|Import|Topology..." menu command, in most cases.
+  - Magnetic surfaces and grid points now "survive" loading a different
+    equilibrium and reappear once a topology has been imported/created.
+    Magnetic surfaces retain the same "zone" and "level" values.
+  - No need to remove X point(s) prior to modifying targets.
+  - Magnetic surfaces can now only be created inside equilibrium zones,
+    as defined in the topology.
+  - "Virtual" surfaces can be created anywhere in the equilibrium by 
+    using Shift+Add Surface tool. Virtual surfaces cannot be exported.
+  - "Set X Point" tool no longer available. X points now defined in the 
+    topology.
+  - The "Move" tool can no longer "stretch" grid points in a section.
+  - "Edit|Delete|X Point" menu command no longer available. Individual X
+    points can be deleted with the "Delete" tool while editing topology.
+  - In "Create multiple..." dialog boxes, you now specify the number of 
+    radial and poloidal cells instead of the number of magnetic surfaces 
+    and grid points.
+  - The "Statistics" dialog box now counts cells instead of magnetic 
+    surfaces and grid points.
+  - A single-null topology must be imported into DG 1.x files in order to
+    see magnetic surfaces and grid points.
+
+- Interface
+  - "View|Mesh header..." now sensitive.
+  - Some menu items from "File" moved into "File|Import".
+
+
 Version 1.42, March 5, 1998
 ---------------------------
 
@@ -2309,7 +2521,7 @@ Version 1.41, March 3, 1998
   - Mesh file headers now preserved when exporting a mesh file.
   - "View|Mesh header..." menu command for viewing and editing them.
   - "File|Export|Elements as Template..." menu command and dialog box.
-    
+
 - Interface
   - "View|Previous" renamed to "View|Previous view".
   - New environment variables.
@@ -2350,7 +2562,7 @@ Version 1.4, November 2, 1997
   - Mesh objects can now be examined.
   - Mesh cells and elements can now be marked.
   - New types of variables for storing sets of mesh cells and elements.
-  
+
 - Interface
   - New "Variables" dialog box
     - More compact layout.

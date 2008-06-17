@@ -9,7 +9,7 @@
 int ActUndoMark(App a,ActRec ar) {
   ActRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   ur=CreateActRec(sizeof(*ur),(ActProc)ActUndoMark);
   AddUndoRec(a,ur);
@@ -20,7 +20,7 @@ int ActAddNode(App a,AddNodeRec ar) {
   DelNodeRec ur;
   Node n;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   ur=CreateActRec(sizeof(*ur),(ActProc)ActDelNode);
   ur->n=ar->obj;
@@ -48,7 +48,7 @@ int ActAddNode(App a,AddNodeRec ar) {
 int ActDelNode(App a,DelNodeRec ar) {
   ActRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   if (ar->n->locks) FatalError("ActDelNode()-locks: fatal error 2");
   if (!IsEmptyGroup(ar->n->elems))
@@ -82,7 +82,7 @@ int ActChangeNode(App a,ChangeNodeRec ar) {
   Elem e;
   Separator sep;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   if (ar->n->locks) FatalError("ActChangeNode()-locks: fatal error 1");
 
@@ -123,7 +123,7 @@ int ActAddElem(App a,AddElemRec ar) {
   DelElemRec ur;
   Elem e;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   ur=CreateActRec(sizeof(*ur),(ActProc)ActDelElem);
   ur->e=ar->obj;
@@ -163,7 +163,7 @@ int ActAddElem(App a,AddElemRec ar) {
 int ActDelElem(App a,DelElemRec ar) {
   AddElemRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   if (ar->e->locks)
     FatalError("ActDelElem()-locks: fatal error 1");
@@ -201,7 +201,7 @@ int ActDelElem(App a,DelElemRec ar) {
 int ActChangeElem(App a,ChangeElemRec ar) {
   ChangeElemRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   if (ar->e->locks && (ar->e->n[1] != ar->n1 || ar->e->n[2] != ar->n2))
     FatalError("ActChangeElem()-locks: fatal error 1");
@@ -253,7 +253,7 @@ int ActAddEquil(App a,AddEquilRec ar) {
   DelEquilRec ur;
   Equil eq;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   assert(a->equil==NULL);
 
@@ -298,14 +298,14 @@ int ActAddEquil(App a,AddEquilRec ar) {
 int ActDelEquil(App a,DelEquilRec ar) {
   AddEquilRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   if (ar->eq->locks) FatalError("ActDelEquil()-locks: fatal error 1");
-  assert(IsEmptyGroup(a->surfaces));
-  assert(a->xpoint==NULL);
-  
-  if (ar->eq->hSplines!=NULL || ar->eq->vSplines!=NULL)
+
+  if (ar->eq->sspline!=NULL || ar->eq->hSplines!=NULL || ar->eq->vSplines!=NULL)
     FreeEquilSplines(ar->eq);
+
+  if (ar->eq->cache!=NULL) FreeEquilCache(ar->eq);
 
   ur=CreateActRec(sizeof(*ur),(ActProc)ActAddEquil);
   ur->obj=ar->eq;
@@ -329,168 +329,12 @@ int ActDelEquil(App a,DelEquilRec ar) {
   return 0;
 }
 
-int ActAddSurface(App a,AddSurfaceRec ar) {
-  Surface s;
-  DelSurfaceRec ur;
-  int i,cx,cy;
-  double level;
-  Group g;
-  Var t1,t2;
-
-  if (AppLocked(a)) return;
-
-  ValidatePtr(a->equil,"ActAddSurface.equil");
-
-  s=ar->obj;
-  if (GetEquilCell(a->equil,s->originX,s->originY,&cx,&cy))
-    return ERR_OUTOFEQUIL;
-  if (GetEquilLevel(a->equil,s->originX,s->originY,&level,NULL,NULL))
-    FatalError("ActAddSurface()-level: fatal error 1");
-  i=CalcSurfaceLine(a->equil,cx,cy,level,&g);
-  if (i<0) return ERR_FLAT_EQUIL;
-
-  if (a->bStrict && !i) {
-    t1=GetVarPtrByType(a,VT_TARGET1);
-    if (t1!=NULL &&
-	!CheckValue(a,t1->val,VT_TARGET1,NULL) &&
-	CheckSurfaceTargetIntersection(g,t1->val)) {
-      g=FreeMallocedGroup(g);
-      return ERR_SURFTARGETINS;
-    }
-    t2=GetVarPtrByType(a,VT_TARGET2);
-    if (t2!=NULL &&
-	!CheckValue(a,t2->val,VT_TARGET2,NULL) &&
-	CheckSurfaceTargetIntersection(g,t2->val)) {
-      g=FreeMallocedGroup(g);
-      return ERR_SURFTARGETINS;
-    }
-  }
-
-  ar->obj=NULL;
-
-  ur=CreateActRec(sizeof(*ur),(ActProc)ActDelSurface);
-  ur->s=s;
-
-  NotifyAdd(a,s);
-  DrawAppHighlight(a,DRAW_OFF);
-
-  s->line=g;
-  s->closed=i;
-  s->level=level;
-  /*LockObject(a->equil,1);*/
-  GroupAdd(a->surfaces,s);
-  if (!a->equil->signInside && s->closed)
-    a->equil->signInside=sign(s->level);
-
-  DrawAppObject(a,s,DRAW_ON);
-
-  DrawAppHighlight(a,DRAW_ON);
-  NotifyAdded(a,s);
-
-  AddAppUpdate(a);
-  AddUndoRec(a,(ActRec)ur);
-  return 0;
-}
-
-int ActDelSurface(App a,DelSurfaceRec ar) {
-  AddSurfaceRec ur;
-
-  if (AppLocked(a)) return;
-
-  if (ar->s->locks)
-    FatalError("ActDelSurface()-locks: fatal error 1");
-
-  ur=CreateActRec(sizeof(*ur),(ActProc) ActAddSurface);
-  ur->obj=ar->s;
-
-  NotifyDel(a,ar->s);
-  DrawAppHighlight(a,DRAW_OFF);
-
-  DrawAppObject(a,ar->s,DRAW_ERASE);
-
-  GroupDel(a->surfaces,ar->s);
-  /*LockObject(a->equil,-1);*/
-  ar->s->line=FreeMallocedGroup(ar->s->line);
-
-  DrawAppHighlight(a,DRAW_ON);
-  NotifyDeleted(a,ar->s);
-
-  AddAppUpdate(a);
-  AddUndoRec(a,(ActRec)ur);
-  return 0;
-}
-
-int ActChangeSurface(App a,ChangeSurfaceRec ar) {
-  ChangeSurfaceRec ur;
-  int i,cx,cy;
-  double level;
-  Group g;
-  Var t1,t2;
-
-  if (AppLocked(a)) return;
-
-  if (ar->s->locks)
-    FatalError("ActChangeSurface()-locks: fatal error 1");
-
-  if (GetEquilCell(a->equil,ar->x,ar->y,&cx,&cy)) return ERR_OUTOFEQUIL;
-  if (GetEquilLevel(a->equil,ar->x,ar->y,&level,NULL,NULL))
-    FatalError("ActChangeSurface()-level: fatal error 1");
-  i=CalcSurfaceLine(a->equil,cx,cy,level,&g);
-  if (i<0) return ERR_BADSURFORIGIN;
-
-  if (a->bStrict && !i) {
-    t1=GetVarPtrByType(a,VT_TARGET1);
-    if (t1!=NULL &&
-	!CheckValue(a,t1->val,VT_TARGET1,NULL) &&
-	CheckSurfaceTargetIntersection(g,t1->val)) {
-      g=FreeMallocedGroup(g);
-      return ERR_SURFTARGETINS;
-    }
-    t2=GetVarPtrByType(a,VT_TARGET2);
-    if (t2!=NULL &&
-	!CheckValue(a,t2->val,VT_TARGET2,NULL) &&
-	CheckSurfaceTargetIntersection(g,t2->val)) {
-      g=FreeMallocedGroup(g);
-      return ERR_SURFTARGETINS;
-    }
-  }
-
-  ur=CreateActRec(sizeof(*ur),(ActProc) ActChangeSurface);
-  ur->s=ar->s;
-  ur->x=ar->s->originX;
-  ur->y=ar->s->originY;
-
-  NotifyChange(a,ar->s);
-  DrawAppHighlight(a,DRAW_OFF);
-
-  DrawAppObject(a,ar->s,DRAW_OFF);
-
-  ar->s->originX=ar->x;
-  ar->s->originY=ar->y;
-  ar->s->line=FreeMallocedGroup(ar->s->line);
-  ar->s->line=g;
-  ar->s->level=level;
-  ar->s->closed=i;
-
-  if (!a->equil->signInside && ar->s->closed)
-    a->equil->signInside=sign(ar->s->level);
-
-  DrawAppObject(a,ar->s,DRAW_ON);
-
-  DrawAppHighlight(a,DRAW_ON);
-  NotifyChanged(a,ar->s);
-
-  AddAppUpdate(a);
-  AddUndoRec(a,(ActRec)ur);
-  return 0;
-}
-
 int ActAddTemplate(App a,AddTemplateRec ar) {
   Template t;
   DelTemplateRec ur;
   int i;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   assert(a->template==NULL);
 
@@ -541,7 +385,7 @@ int ActAddTemplate(App a,AddTemplateRec ar) {
 int ActDelTemplate(App a,DelTemplateRec ar) {
   AddTemplateRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   ur=CreateActRec(sizeof(*ur),(ActProc)ActAddTemplate);
   ur->obj=ar->t;
@@ -565,7 +409,7 @@ int ActDelTemplate(App a,DelTemplateRec ar) {
 int ActChangeTemplate(App a,ChangeTemplateRec ar) {
   ChangeTemplateRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   ur=CreateActRec(sizeof(*ur),(ActProc)ActChangeTemplate);
   ur->t=ar->t;
@@ -598,7 +442,7 @@ int ActAddVarSetDef(App a,AddVarSetDefRec ar) {
   VarSetDef vsd;
   DelVarSetDefRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   vsd=ar->obj;
   ar->obj=NULL;
@@ -627,7 +471,7 @@ int ActDelVarSetDef(App a,DelVarSetDefRec ar) {
   VarSetDef vsd;
   AddVarSetDefRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   vsd=ar->delete;
   if (vsd->locks)
@@ -658,7 +502,7 @@ int ActDelVarSetDef(App a,DelVarSetDefRec ar) {
 int ActChangeVarSetDef(App a,ChangeVarSetDefRec ar) {
   ChangeVarSetDefRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   if (ar->vsd->locks)
     FatalError("ActChangeVarSetDef()-locks: fatal error 1");
@@ -690,7 +534,7 @@ int ActAddVarDef(App a,AddVarDefRec ar) {
   VarDef vd;
   DelVarDefRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   vd=ar->obj;
   ar->obj=NULL;
@@ -720,7 +564,7 @@ int ActDelVarDef(App a,DelVarDefRec ar) {
   VarDef vd;
   AddVarDefRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   vd=ar->delete;
   if (vd->locks)
@@ -749,7 +593,7 @@ int ActDelVarDef(App a,DelVarDefRec ar) {
 int ActChangeVarDef(App a,ChangeVarDefRec ar) {
   ChangeVarDefRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   if (ar->vd->locks)
     FatalError("ActChangeVarDef()-locks: fatal error 1");
@@ -792,7 +636,7 @@ int ActAddVarSet(App a,AddVarSetRec ar) {
   VarSet vs;
   DelVarSetRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   vs=ar->obj;
   ar->obj=NULL;
@@ -820,7 +664,7 @@ int ActDelVarSet(App a,DelVarSetRec ar) {
   VarSet vs;
   AddVarSetRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   vs=ar->delete;
   if (vs->locks)
@@ -850,7 +694,7 @@ int ActAddVar(App a,AddVarRec ar) {
   DelVarRec ur;
   Var v;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   v=ar->obj;
   ar->obj=NULL;
@@ -899,7 +743,7 @@ int ActDelVar(App a,DelVarRec ar) {
   AddVarRec ur;
   Var v;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   v=ar->delete;
   if (v->locks)
@@ -955,7 +799,7 @@ int ActChangeObjString(App a,ChangeObjStringRec ar) {
   Var v;
   char** ps;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   ur=CreateActRec(sizeof(*ur),(ActProc)ActChangeObjString);
   ur->objChange=ar->objChange;
@@ -978,6 +822,7 @@ int ActChangeObjString(App a,ChangeObjStringRec ar) {
   if (ar->bRedraw) {
     DrawAppObject(a,ar->objChange,DRAW_ON);
     DrawAppHighlight(a,DRAW_ON);
+    AddAppUpdate(a);
   }
 
   NotifyChanged(a,ar->objChange);
@@ -994,7 +839,7 @@ int ActChangeObjGroup(App a,ChangeObjGroupRec ar) {
   Index ix;
   Group* pg;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   ur=CreateActRec(sizeof(*ur),(ActProc)ActChangeObjGroup);
   ur->objChange=ar->objChange;
@@ -1022,6 +867,7 @@ int ActChangeObjGroup(App a,ChangeObjGroupRec ar) {
     DrawAppObject(a,ar->member,DRAW_ON);
     DrawAppObject(a,ar->objChange,DRAW_ON);
     DrawAppHighlight(a,DRAW_ON);
+    AddAppUpdate(a);
   }
 
   if (a!=ar->objChange)NotifyChanged(a,ar->objChange);
@@ -1036,7 +882,7 @@ int ActChangeObjInt(App a,ChangeObjIntRec ar) {
   ChangeObjIntRec ur;
   void* pv;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   ur=CreateActRec(sizeof(*ur),(ActProc)ActChangeObjInt);
   ur->objChange=ar->objChange;
@@ -1073,6 +919,7 @@ int ActChangeObjInt(App a,ChangeObjIntRec ar) {
   if (ar->bRedraw) {
     DrawAppObject(a,ar->objChange,DRAW_ON);
     DrawAppHighlight(a,DRAW_ON);
+    AddAppUpdate(a);
   }
 
   NotifyChanged(a,ar->objChange);
@@ -1085,7 +932,7 @@ int ActChangeObjPointer(App a,ChangeObjPointerRec ar) {
   ChangeObjPointerRec ur;
   void** pv;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   ur=CreateActRec(sizeof(*ur),(ActProc)ActChangeObjPointer);
   ur->objChange=ar->objChange;
@@ -1114,6 +961,7 @@ int ActChangeObjPointer(App a,ChangeObjPointerRec ar) {
   if (ar->bRedraw) {
     DrawAppObject(a,ar->objChange,DRAW_ON);
     DrawAppHighlight(a,DRAW_ON);
+    AddAppUpdate(a);
   }
 
   NotifyChanged(a,ar->objChange);
@@ -1126,7 +974,7 @@ int ActChangeObjDouble(App a,ChangeObjDoubleRec ar) {
   ChangeObjDoubleRec ur;
   void* pv;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   ur=CreateActRec(sizeof(*ur),(ActProc)ActChangeObjDouble);
   ur->objChange=ar->objChange;
@@ -1155,6 +1003,7 @@ int ActChangeObjDouble(App a,ChangeObjDoubleRec ar) {
   if (ar->bRedraw) {
     DrawAppObject(a,ar->objChange,DRAW_ON);
     DrawAppHighlight(a,DRAW_ON);
+    AddAppUpdate(a);
   }
 
   NotifyChanged(a,ar->objChange);
@@ -1163,6 +1012,7 @@ int ActChangeObjDouble(App a,ChangeObjDoubleRec ar) {
   return 0;
 }
 
+#ifdef OLDEQ
 int ActAddXPoint(App a,AddXPointRec ar) {
   DelXPointRec ur;
   XPoint xpt;
@@ -1171,7 +1021,9 @@ int ActAddXPoint(App a,AddXPointRec ar) {
   GridPoint gp;
   Index ix;
 
-  if (AppLocked(a)) return;
+  assert(0);
+
+  if (AppLocked(a)) return 0;
 
   if (a->xpoint!=NULL) FatalError("ActAddXPoint()-!null: fatal error 1");
   ValidatePtr(a->equil,"ActAddXPoint.equil");
@@ -1222,7 +1074,9 @@ int ActDelXPoint(App a,DelXPointRec ar) {
   GridPoint gp;
   Index ix;
 
-  if (AppLocked(a)) return;
+  assert(0);
+
+  if (AppLocked(a)) return 0;
 
   if (a->xpoint->locks)
     FatalError("ActDelXPoint()-locks: fatal error 1");
@@ -1262,7 +1116,7 @@ int ActAddGridPoint(App a,AddGridPointRec ar) {
   DelGridPointRec ur;
   Index ix;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   gp=ar->obj;
   ar->obj=NULL;
@@ -1297,7 +1151,7 @@ int ActChangeGridPoint(App a,ChangeGridPointRec ar) {
   ChangeGridPointRec ur;
   Index ix;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   if (ar->gp->locks)
     FatalError("ActChangeGridPoint()-locks: fatal error 1");
@@ -1340,7 +1194,7 @@ int ActDelGridPoint(App a,DelGridPointRec ar) {
   AddGridPointRec ur;
   GridPoint gp;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   gp=ar->delete;
 
@@ -1363,6 +1217,7 @@ int ActDelGridPoint(App a,DelGridPointRec ar) {
   AddUndoRec(a,ur);
   return 0;
 }
+#endif
 
 /* ChangeAppView: change zoom factor/flags
    Also used when switching between windows */
@@ -1371,7 +1226,7 @@ int ActChangeAppView(App a,ChangeAppViewRec ar) {
   ChangeAppViewRec ur=NULL;
   View w=a->activeAppView;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   /* Preserve the undo information */
 
@@ -1438,7 +1293,7 @@ int ActAddSonnetData(App a,AddSonnetDataRec ar) {
   DelSonnetDataRec ur;
   int i;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   if (a->sonnetData!=NULL)
     FatalError("ActAddSonnetData()-!null: fatal error 1");
@@ -1481,7 +1336,7 @@ int ActDelSonnetData(App a,DelSonnetDataRec ar) {
   AddSonnetDataRec ur;
   SonnetData sd;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   sd=ar->delete;
   assert(!sd->locks);
@@ -1511,7 +1366,7 @@ int ActLockAppUpdate(App a,LockAppUpdateRec ar) {
   View w;
   Index ix;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   ur=CreateActRec(sizeof(*ur),(ActProc)ActLockAppUpdate);
   ur->updateLocks=a->updateLocks;
@@ -1537,7 +1392,7 @@ int ActAddSeparator(App a,AddSeparatorRec ar) {
   DelSeparatorRec ur;
   Separator sep;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   ValidatePtr(a->sonnetData,"ActAddSeparator.sonnetData");
 
@@ -1575,7 +1430,7 @@ int ActDelSeparator(App a,DelSeparatorRec ar) {
   AddSeparatorRec ur;
   Separator sep;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   sep=ar->delete;
   if (sep->locks)
@@ -1609,7 +1464,7 @@ int ActDelSeparator(App a,DelSeparatorRec ar) {
 int ActChangeSeparator(App a,ChangeSeparatorRec ar) {
   ChangeSeparatorRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   if (ar->sep->locks && (ar->x!=ar->sep->x || ar->y!=ar->sep->y ||
       ar->n!=ar->sep->n))
@@ -1658,7 +1513,7 @@ int ActAddSource(App a,AddSourceRec ar) {
   DelSourceRec ur;
   Source src;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   src=ar->obj;
   ar->obj=NULL;
@@ -1687,7 +1542,7 @@ int ActDelSource(App a,DelSourceRec ar) {
   Source src;
   AddSourceRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   src=ar->delete;
   assert(!src->locks);
@@ -1716,7 +1571,7 @@ int ActDelSource(App a,DelSourceRec ar) {
 int ActChangeSource(App a,ChangeSourceRec ar) {
   ChangeSourceRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   assert(!ar->src->locks);
 

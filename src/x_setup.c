@@ -181,7 +181,7 @@ static Widget OpenVarSetDefListDlg(View w) {
     dlg->vsdSelect=NULL;
 
     AddDependentWidget(w,wDlg,N_NOW|N_ALT|N_NEWAPP,NULL,
-	DwVarSetDefList,dlg);
+        DwVarSetDefList,dlg);
 
     XtManageChild(dlg->wDlg);
   }
@@ -389,7 +389,7 @@ static Widget OpenVarSetDefEditDlg(View w,VarSetDef vsd) {
     dlg->wVarDefs=NULL;
 
     AddDependentWidget(w,wDlg,N_NOW|N_ALT|N_DEL|N_NEWAPP,NULL,
-	DwVarSetDefEdit,dlg);
+        DwVarSetDefEdit,dlg);
     ResetVarSetDefEditDlg(wDlg);
     XtManageChild(dlg->wDlg);
   }
@@ -519,8 +519,8 @@ static void CbVarSetDefEditOk(Widget wg,XtPointer xDlg,XtPointer pcbs) {
   if (vsMax>1) {
     for (vd=Group1st(dlg->vsd->varDefs,&ix);vd!=NULL;vd=Next(&ix))
       if (vd->varType & VTF_SINGLE) {
-	ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_SINGLE));
-	return;
+        ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_SINGLE));
+        return;
       }
   }
 
@@ -628,7 +628,7 @@ static Widget OpenVarDefEditDlg(View w,VarDef vd) {
 
     ResetVarDefEditDlg(wDlg);
     AddDependentWidget(w,wDlg,N_NOW|N_ALT|N_DEL|N_NEWAPP,NULL,
-	DwVarDefEdit,dlg);
+        DwVarDefEdit,dlg);
     Form2Table(wg);
     XtManageChild(dlg->wDlg);
   }
@@ -723,7 +723,7 @@ static void CbVarDefEditOk(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
     }
     for (vd=AppVarDef1st(dlg->w->app,&ix);vd!=NULL;vd=Next(&ix)) {
       if (vd!=dlg->vd && vd->varType==type) {
-	ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_SINGLE));
+        ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_SINGLE));
         return;
       }
     }
@@ -734,21 +734,21 @@ static void CbVarDefEditOk(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
   if (opt & VF_LAYERINDEX) {
     if (opt & VFM_MULTIPLE) {
       ErrorBox(dlg->wDlg,GetResourceString(dlg->wDlg,"errIndexMultiple",
-	  NULL,NULL));
+          NULL,NULL));
       return;
     }
     if (type & VTM_HASGROUP) {
       ErrorBox(dlg->wDlg,GetResourceString(dlg->wDlg,"errIndexGroup",
-	  NULL,NULL));
+          NULL,NULL));
       return;
     }
     for (vd=Group1st(dlg->vd->varSetDef->varDefs,&ix);vd!=NULL;
-	vd=Next(&ix)) {
+        vd=Next(&ix)) {
       if (vd==dlg->vd) continue;
       if (vd->flags & VF_LAYERINDEX) {
-	ErrorBox(dlg->wDlg,GetResourceStringEx(dlg->wDlg,"errIndex2nd",
-	    NULL,"$(NAME)%s$(DESCR)%s",vd->name,vd->descr));
-	return;
+        ErrorBox(dlg->wDlg,GetResourceStringEx(dlg->wDlg,"errIndex2nd",
+            NULL,"$(NAME)%s$(DESCR)%s",vd->name,vd->descr));
+        return;
       }
     }
   }
@@ -916,9 +916,9 @@ static void CbSaveConfigDlgOk(Widget wDlg,XtPointer xtpV,XtPointer pcbs) {
 
   if (a==NULL) return;
   xap=w->xapp;
-  if (a->xpoint!=NULL || a->equil!=NULL || a->template!=NULL ||
+  if (a->equil!=NULL || a->template!=NULL ||
       !IsEmptyGroup(a->nodes) || !IsEmptyGroup(a->elems) ||
-      !IsEmptyGroup(a->surfaces) || !IsEmptyGroup(a->gridPoints) ||
+      !IsEmptyGroup(a->surfacesEx) || !IsEmptyGroup(a->gridPointsEx) ||
       !IsEmptyGroup(a->separators))
     if (WarningBox(wDlg,GetStr(w,QUE_WITHGEOMETRY))) return;
 
@@ -960,9 +960,9 @@ static void CbSaveConfigDlgOk(Widget wDlg,XtPointer xtpV,XtPointer pcbs) {
   if (!IsEmptyGroup(g))
     if (!QuestionBox(wDlg,GetStr(w,QUE_UPDATEAPPS)))
       for (a=Group1st(g,&ix);a!=NULL;a=Next(&ix)) {
-	if (IsEmptyGroup(a->views)) continue;
-	UpdateLoadedApp(a,xap->config);
-	UndoMark(a);
+        if (IsEmptyGroup(a->views)) continue;
+        UpdateLoadedApp(a,xap->config);
+        UndoMark(a);
       }
   g=FreeGroup(g);
 
@@ -1005,7 +1005,7 @@ static Widget OpenHelpEditDlg(View w,VarDef vd) {
 
     ResetHelpEditDlg(wDlg);
     AddDependentWidget(w,wDlg,N_NOW|N_ALT|N_DEL|N_NEWAPP,NULL,
-	DwHelpEdit,dlg);
+        DwHelpEdit,dlg);
 
     XtManageChild(wDlg);
   }
@@ -1098,7 +1098,7 @@ static Widget OpenVarDefCreateDlg(View w,VarSetDef vsd,int row,int col) {
     NULL);
     Form2Table(wg);
     AddDependentWidget(w,wDlg,N_NOW|N_ALT|N_DEL|N_NEWAPP,NULL,
-	DwVarDefCreate,dlg);
+        DwVarDefCreate,dlg);
 
     XtManageChild(wDlg);
   }
@@ -1201,8 +1201,8 @@ Widget OpenOutputModeDlg(View w) {
     CreateMenuSystem(wDlg,
       "#:form",
        "$+8#:mode",XmCreateRadioBox,XmNorientation,XmHORIZONTAL,NULL,0,1,
-	"t?:sonnet",&dlg->wSwSonnet,
-	"t?:carre",&dlg->wSwCarre,
+        "t?:sonnet",&dlg->wSwSonnet,
+        "t?:carre",&dlg->wSwCarre,
        "-:",
        "s-#:sep",0,2,
        "t#?:vars",1,3,&dlg->wSwVars,
@@ -1224,7 +1224,7 @@ Widget OpenOutputModeDlg(View w) {
     XtPopup(XtParent(wDlg),XtGrabNone);
   }
     /*AddDependentWidget(w,wDlg,N_NOW|N_ALT|N_DEL|N_NEWAPP,NULL,
-	DwVarDefCreate,dlg); */
+        DwVarDefCreate,dlg); */
   return wDlg;
 }
 
@@ -1330,22 +1330,22 @@ Widget OpenMeshOptionsDlg(View w) {
 static void ResetMeshOptionsDlg(Widget wDlg) {
   MeshOptionsDlg dlg=(MeshOptionsDlg)GetUserData(wDlg);
   char s[1024];
-  
+
   assert(dlg!=NULL);
 
   SetOptionMenuValue(dlg->wMode,(XtPointer)dlg->w->app->meshSlidingMode);
-  
+
   sprintf(s,"%g",dlg->w->app->meshSlidingThreshold);
   XmTextSetString(dlg->wSlidingThreshold,s);
 
   XmToggleButtonSetState(dlg->wSwDoubleBorder,dlg->w->app->bDoubleMeshBorder,
     True);
 }
-  
+
 static void AcceptMeshOptionsDlg(Widget wDlg) {
   MeshOptionsDlg dlg=(MeshOptionsDlg)GetUserData(wDlg);
   double d;
-    
+
   assert(dlg!=NULL);
 
   d=GetXmTextDouble(dlg->wSlidingThreshold);
@@ -1356,16 +1356,16 @@ static void AcceptMeshOptionsDlg(Widget wDlg) {
     return;
   }
   SetMeshSlidingThreshold(dlg->w->app,d);
-  
+
   SetDoubleMeshBorderFlag(dlg->w->app,
       XmToggleButtonGetState(dlg->wSwDoubleBorder));
-  
+
   SetMeshSlidingMode(dlg->w->app,(int)GetOptionMenuValue(dlg->wMode));
-  
+
   UndoMark(dlg->w->app);
   XtPopdown(XtParent(dlg->wDlg));
 }
-  
+
 static void CbSetMeshOptions(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
   AcceptMeshOptionsDlg(wg);
 }

@@ -37,7 +37,7 @@ typedef struct _VarsEditDlg {
   int updateFlag,bKeepHoldFlag,
     nSensitive,            /* # of sensitive fields */
     bViewAlreadyDestroyed; /* If set, do not update View */
-  
+
   Group fields;
 
   Widget wDlg,wSwHold,wPopupMenu,wVarsFrame,wVarsForm,
@@ -79,7 +79,7 @@ static XtActionsRec varsDlgActions[]={
 
 static void CbVarsDlgClose(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
   VarsEditDlg dlg=(VarsEditDlg)xtpDlg;
-  
+
   XtPopdown(XtParent(dlg->wDlg));
 }
 
@@ -103,18 +103,18 @@ static void DwNotifyVarsDlg(Widget wg,View w,int evt,void* obj,
         XtDestroyWidget(XtParent(dlg->wDlg));
         break;
       }
-      
+
       /* Change the rest only if mapped */
-      
+
       if (!IsMapped(XtParent(dlg->wDlg))) break;
-      
+
     case N_USER:
       if (w->x->changes & CHF_VARS || evt==N_USER) {
         SetValues(XtParent(dlg->wDlg),XmNtitle,
           GetObjDescription(dlg->w,dlg->obj),
           NULL);
       }
-      
+
       if (w->x->changes & (CHF_VARS|CHF_MARK) || evt==N_USER) {
         i=dlg->wSwHold==NULL ? 0 : XmToggleButtonGetState(dlg->wSwHold);
         for (vef=Group1st(dlg->fields,&ixv);vef!=NULL;vef=Next(&ixv))
@@ -161,7 +161,7 @@ static VarsEditDlg CreateVarsEditDlg(View w,void* obj) {
   dlg->popupMenuField=NULL;
   dlg->nSensitive=0;
   dlg->bViewAlreadyDestroyed=0;
-  
+
   /* Create the dialog */
 
   dlg->wDlg=Cw(XmCreateFormDialog,w->x->wMain,DLG_VARSEDIT,
@@ -172,7 +172,7 @@ static VarsEditDlg CreateVarsEditDlg(View w,void* obj) {
       (XtPointer)dlg);
   XmAddWMProtocolCallback(XtParent(dlg->wDlg),w->xapp->x->wm_delete_window,
     (XtCallbackProc)CbVarsDlgClose,dlg);
-    
+
   dlg->fields=CreateGroup();
 
   switch(GetObjType(obj)) {
@@ -203,7 +203,7 @@ static VarsEditDlg CreateVarsEditDlg(View w,void* obj) {
 
   dlg->rows=dlg->cols=0;
   dlg->wBnAcceptAll=dlg->wBnResetAll=NULL;
-  
+
   for (k=j=i=0,vd=Group1st(dlg->vsd->varDefs,&ix);vd!=NULL;vd=Next(&ix)) {
     vd->varType & VTM_HASGROUP ? i++ : j++;
     if (vd->flags & VFM_MULTIPLE) k++;
@@ -251,7 +251,7 @@ static VarsEditDlg CreateVarsEditDlg(View w,void* obj) {
     XmNtopAttachment,XmATTACH_WIDGET,
     XmNtopWidget,wg,
     NULL);
-    
+
   CreateWidgetSystem(wForm1,
     "s8:separ",
     "l2?:message",&dlg->wMessage,
@@ -353,7 +353,7 @@ static VarsEditDlg CreateVarsEditDlg(View w,void* obj) {
       XtAddCallback(wg1,XmNdisarmCallback,CbVarsEditFocus,(XtPointer)vef);
       ADDW(wg1,3);
     }
- 
+
     wg1=vef->wBnSet=Cmw(XmCreatePushButton,wg,"set",
       XmNarrowDirection,XmARROW_RIGHT,
         XmNuserData,(XtPointer)vef,
@@ -366,19 +366,19 @@ static VarsEditDlg CreateVarsEditDlg(View w,void* obj) {
 
     vef->wOldValue=NULL;
   }
-  
+
   dlg->popupMenuField=NULL;
 
   CreateFormTable(wg,pi,pic);
   pi=Free(pi);
-  
+
   XtManageChild(dlg->wVarsForm);
-  
+
   /* Adjust ScrolledWindow size */
 
   XtQueryGeometry(dlg->wVarsForm,NULL,&xtwg);
   GetValues(dlg->wVarsFrame,XmNspacing,&spacing,NULL);
-  
+
   XtMakeResizeRequest(dlg->wVarsFrame,
       xtwg.width+spacing,xtwg.height+spacing,NULL,NULL);
 
@@ -387,7 +387,7 @@ static VarsEditDlg CreateVarsEditDlg(View w,void* obj) {
   AddDependentWidget(w,dlg->wDlg,N_NEWAPP | N_ALT | N_DEL | N_DESTROYVIEW,NULL,
     (DwNotifyProc)DwNotifyVarsDlg,dlg);
   XtManageChild(dlg->wDlg);
-  
+
   /* Add to the list of active dialogs */
 
   GroupAdd(w->x->varsDialogs,dlg);
@@ -403,10 +403,10 @@ static void ActVarsDlgPopupMenu(Widget wg,XEvent* xev,String* args,
   if (vef->type!=XT_VEF) return;
 
   vef->dlg->popupMenuField=vef;
-  
+
   SetSensitiveEx(vef->dlg->wMbCompare,vef->vd->flags & VFM_MULTIPLE);
   SetSensitiveEx(vef->dlg->wMbDisplay,vef->vd->flags & VFM_MULTIPLE);
-  
+
   XmMenuPosition(vef->dlg->wPopupMenu,&xev->xbutton);
   XtManageChild(vef->dlg->wPopupMenu);
 }
@@ -414,12 +414,12 @@ static void ActVarsDlgPopupMenu(Widget wg,XEvent* xev,String* args,
 static void CbVarsDlgInput(Widget wg,XtPointer xtpVef,XtPointer pcbs) {
   VarsEditField vef=(VarsEditField)xtpVef;
   assert(vef->type==XT_VEF);
-  
+
   if (vef->dlg->wSwHold!=NULL && !vef->dlg->bKeepHoldFlag) {
     if (!XmToggleButtonGetState(vef->dlg->wSwHold))
       XmToggleButtonSetState(vef->dlg->wSwHold,True,True);
   }
-    
+
   ResetVarsDlgField(vef,RF_SENS);
 }
 
@@ -455,7 +455,7 @@ static char* GetVarValueDescr(View w,void* value,VarDef vd) {
   }
   FatalError("GetVarsDlgFieldValue()-return: fatal error 1");
 }
- 
+
 
 static void ResetVarsDlgField(VarsEditField vef,unsigned flags) {
   char* s,* s1;
@@ -480,14 +480,14 @@ static void ResetVarsDlgField(VarsEditField vef,unsigned flags) {
           (XtPointer)(flags & RF_NEWVAL? XT_NEWVAL : XT_VEF));
     }
   }
-  
+
   if (flags & RF_CLEARVAL) {
     if (GetUserData(vef->dlg->wMessage)==(XtPointer)XT_VEF) {
       SetLabelString(vef->dlg->wMessage,"");
       SetUserData(vef->dlg->wMessage,NULL);
     }
   }
-  
+
   if (flags & RF_VALUE) {
     vef->dlg->bKeepHoldFlag++;
     if (vef->wNewValue!=NULL && XmIsText(vef->wNewValue)) {
@@ -497,13 +497,13 @@ static void ResetVarsDlgField(VarsEditField vef,unsigned flags) {
     }
     vef->dlg->bKeepHoldFlag--;
   }
-    
+
   if (flags & RF_SEL) {
     if (vef->vd->varType & VTM_HASGROUP) {
       MarkGroup(vef->dlg->a,p,10);
     }
   }
-  
+
   if (flags & RF_SENS) {
     b=-1;
     if (!(vef->vd->varType & VTM_HASGROUP) && vef->wNewValue!=NULL &&
@@ -528,19 +528,19 @@ static void ResetVarsDlgField(VarsEditField vef,unsigned flags) {
       }
 
       SetSensitiveEx(vef->wBnSet,vef->bSensitive);
-      if (vef->dlg->wBnAcceptAll!=NULL) 
+      if (vef->dlg->wBnAcceptAll!=NULL)
         SetSensitiveEx(vef->dlg->wBnAcceptAll,!!vef->dlg->nSensitive);
 
       if (vef->dlg->wBnResetAll!=NULL) {
         SetSensitiveEx(vef->dlg->wBnResetAll,!!vef->dlg->nSensitive ||
-            (vef->dlg->wSwHold!=NULL && 
+            (vef->dlg->wSwHold!=NULL &&
             XmToggleButtonGetState(vef->dlg->wSwHold)));
       }
     }
   }
-  
+
 }
-        
+
 static int AcceptVarsDlgField(VarsEditField vef) {
   void* val,* errObj=NULL;
   int r;
@@ -609,9 +609,9 @@ static void CbVarsDlgResetVar(Widget wg,VarsEditField vef,void* pcbs) {
 
 static void CbVarsDlgResetVar_n(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
   VarsEditDlg dlg=(VarsEditDlg)xtpDlg;
-  
+
   if (dlg->popupMenuField==NULL) return;
-  
+
   ResetVarsDlgField(dlg->popupMenuField,RF_VALUE|RF_SEL|RF_SENS|RF_HOLD);
   UndoMark(dlg->a);
 }
@@ -687,7 +687,7 @@ static void CbDestroyVarsEditDlg(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
   VarsEditDlg dlg=(VarsEditDlg)xtpDlg;
 
   if (!dlg->bViewAlreadyDestroyed) GroupDel(dlg->w->x->varsDialogs,dlg);
-  
+
   if (dlg->fields!=NULL) dlg->fields=FreeMallocedGroup(dlg->fields);
   dlg=Free(dlg);
 }
@@ -730,10 +730,10 @@ static void CbVarsEditCompare_p(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
   Group g;
   Index ix;
   void* p;
-  
+
   if (vef==NULL || vef->type!=XT_VEF) return;
   if (vef->wNewValue==NULL || !XmIsText(vef->wNewValue)) return;
-  
+
   if (!(vef->vd->flags & VFM_MULTIPLE)) {
     ErrorBox(dlg->wDlg,GetResourceString(dlg->wDlg,"errBadScope",NULL,NULL));
     return;
@@ -748,7 +748,7 @@ static void CbVarsEditCompare_p(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
     default:
       return;
   }
-  
+
   switch (vef->vd->varType) {
     case VT_INT:
       if (sscanf(s,"%d",&i1)!=1) {
@@ -767,9 +767,9 @@ static void CbVarsEditCompare_p(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
       }
       break;
   }
-      
+
   g=GetVarOriginGroup(dlg->w->app,dlg->obj,vef->vd,0);
-  
+
   for (p=Group1st(g,&ix);p!=NULL;p=Next(&ix)) {
     s1=GetVar(p,vef->vd,dlg->obj);
 
@@ -790,7 +790,7 @@ static void CbVarsEditCompare_p(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
       default:
         assert(0);
     }
-    
+
     switch (mode) {
       case CV_MARK_EQUAL:
         if (comp!=0) GroupDel(g,p);
@@ -815,7 +815,7 @@ static void CbVarsEditCompare_p(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
     }
   }
   XtFree(s);
-  
+
   MarkGroup(dlg->w->app,g,10);
   UndoMark(dlg->w->app);
 
@@ -825,7 +825,7 @@ static void CbVarsEditCompare_p(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
   SetUserData(dlg->wMessage,(XtPointer)XT_COMP);
 
   g=FreeGroup(g);
-}  
+}
 
 /* To be called ONLY from the action-triggered popup menu */
 static void CbVarsEditDisplay_p(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
@@ -835,9 +835,9 @@ static void CbVarsEditDisplay_p(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
   Group g;
   Index ix;
   void* p;
-  
+
   if (vef==NULL || vef->type!=XT_VEF) return;
-  
+
   if (!(vef->vd->flags & VFM_MULTIPLE)) {
     ErrorBox(dlg->wDlg,GetResourceString(dlg->wDlg,"errBadScope",NULL,NULL));
     return;
@@ -846,16 +846,16 @@ static void CbVarsEditDisplay_p(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
   g=GetVarOriginGroup(dlg->w->app,dlg->obj,vef->vd,0);
 
   RemoveAllViewLabels(dlg->w);
-  
+
   for (p=Group1st(g,&ix);p!=NULL;p=Next(&ix)) {
     s=GetVar(p,vef->vd,dlg->obj);
     LabelObject(dlg->w,p,GetVarValueDescr(dlg->w,s,vef->vd),False);
   }
 
   g=FreeGroup(g);
-  
+
   UndoMark(dlg->w->app);
-}  
+}
 
 static void CollapseVarsDlg(VarsEditDlg dlg,int bCollapse) {
   if (bCollapse && !VarsDlgCollapsed(dlg)) {
@@ -869,7 +869,7 @@ static void CollapseVarsDlg(VarsEditDlg dlg,int bCollapse) {
 
 static void CbVarsDlgCollapse(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
   VarsEditDlg dlg=(VarsEditDlg)xtpDlg;
-  
+
   CollapseVarsDlg(dlg,!VarsDlgCollapsed(dlg));
 }
 
@@ -919,7 +919,7 @@ Widget OpenInvalidVarsDlg(View w) {
       (XtPointer)dlg);
 
     AddDependentWidget(w,wDlg,N_NOW|N_ALT|N_NEWAPP,NULL,
-	DwInvalidVars,dlg);
+        DwInvalidVars,dlg);
 
     ResetInvalidVarsDlg(wDlg);
     XtManageChild(wDlg);
@@ -958,7 +958,7 @@ static void CbInvalidVarsWhere(Widget wg,XtPointer xDlg,XtPointer pcbs) {
   if (vd->varType & VTM_HASGROUP) {
     MarkGroup(dlg->w->app,GetVar(vs,vd,NULL),10);
     if (!IsEmptyGroup(g)) LabelObject(dlg->w,Group1st(g,NULL),
-	GetStr(dlg->w,STR_ERRLABEL),True);
+        GetStr(dlg->w,STR_ERRLABEL),True);
   } else MarkGroup(dlg->w->app,g,10);
 
   FreeGroup(g);

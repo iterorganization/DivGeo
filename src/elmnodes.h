@@ -93,6 +93,9 @@ int PlaceTemplateByHandles(App a,double xa,double ya,double x1,double y1,
 void SetMaxElemId(App a,int id);
 int GetNextElemId(App a);
 
+int ElementInTarget(Elem e);
+int PointInTarget(Node n);
+
 /* Private functions - only for Act_xx
 */
 int LoadDgTemplateFile(Template t);

@@ -2,8 +2,8 @@
 
 #define MAKESTREX_BUF 3000
 #define MAKESTREX_CHR '\x1'
-#define STATICSTR_LEN 400
-#define STATICSTR_CNT 10
+#define STATICSTR_LEN 4000
+#define STATICSTR_CNT 20
 
 #define MIN_RECTW     1e-4
 #define MIN_RECTH     1e-4
@@ -42,8 +42,8 @@ View CreateAbstractView() {
   w->activeTool=NULL;
   w->toolData=NULL;
 
-  w->lastExaminedSurface=NULL;
-  w->lastExaminedGridPoint=NULL;
+  w->lastExaminedSurfaceEx=NULL;
+  w->lastExaminedGridPointEx=NULL;
 
   w->labels=CreateGroup();
   w->shapes=CreateGroup();
@@ -59,6 +59,8 @@ View CreateAbstractView() {
 
   w->xScaleSign=1;
   w->yScaleSign=1;
+
+  w->bEditTopology=0;
 
   w->hrMinX=w->hrMaxX=w->hrMinY=w->hrMaxY=w->bHrShown=0;
 
@@ -323,14 +325,11 @@ void DrawObject(View w,void* obj,int mode) {
     case T_EQUIL:
       DrawEquil(w,obj,mode);
       break;
-    case T_SURFACE:
-      DrawSurface(w,obj,mode);
+    case T_SURFACEEX:
+      DrawSurfaceEx(w,obj,mode);
       break;
     case T_TEMPLATE:
       DrawTemplate(w,obj,mode);
-      break;
-    case T_XPOINT:
-      DrawXPoint(w,obj,mode);
       break;
     case T_XPOINTTEST:
       DrawXPointTest(w,obj,mode);
@@ -338,8 +337,8 @@ void DrawObject(View w,void* obj,int mode) {
     case T_XPOINTSEG:
       DrawXPointSeg(w,obj,mode);
       break;
-    case T_GRIDPOINT:
-      DrawGridPoint(w,obj,mode);
+    case T_GRIDPOINTEX:
+      DrawGridPointEx(w,obj,mode);
       break;
     case T_SONNET:
       DrawSonnetData(w,obj,mode);
@@ -367,6 +366,11 @@ void DrawObject(View w,void* obj,int mode) {
       break;
     case T_MESHPOINT:
       break;
+    case T_SURFACEZONE:
+      DrawSurfaceZone(w,obj,mode);
+      break;
+    case T_GRIDPOINTSEG:
+      DrawGridPointSeg(w,obj,mode);
     case T_VARSETDEF:
     case T_VARDEF:
     case T_VARSET:
@@ -387,14 +391,16 @@ void RepaintView(View w) {
   void* p;
   Node n;
   Elem e;
-  Surface s;
-  GridPoint gp;
   ViewLabel vl;
   Separator sep;
   Source src;
   Chord ch;
   XPointTest xpt;
   XPointSeg xps;
+  GridPointEx gpx;
+  SurfaceZone sz;
+  SurfaceEx sx;
+  GridPointSeg gps;
 
   ValidatePtr(w,"RepaintView");
   if (w->app==NULL) return;
@@ -415,18 +421,24 @@ void RepaintView(View w) {
   DrawAxes(w);
   if (w->app->template!=NULL) DrawObject(w,w->app->template,DRAW_ON);
 
-  if (w->app->xpoint!=NULL) DrawObject(w,w->app->xpoint,DRAW_ON);
-
   for (xpt=AppXPointTest1st(w->app,&ix);xpt!=NULL;xpt=Next(&ix))
     DrawObject(w,xpt,DRAW_ON);
 
   for (xps=AppXPointSeg1st(w->app,&ix);xps!=NULL;xps=Next(&ix))
     DrawObject(w,xps,DRAW_ON);
 
-  for (s=AppSurface1st(w->app,&ix);s!=NULL;s=Next(&ix))
-    DrawObject(w,s,DRAW_ON);
-  for (gp=AppGridPoint1st(w->app,&ix);gp!=NULL;gp=Next(&ix))
-    DrawObject(w,gp,DRAW_ON);
+  for (gps=AppGridPointSeg1st(w->app,&ix);gps!=NULL;gps=Next(&ix))
+    DrawObject(w,gps,DRAW_ON);
+
+  for (sz=AppSurfaceZone1st(w->app,&ix);sz!=NULL;sz=Next(&ix))
+    DrawObject(w,sz,DRAW_ON);
+
+  for (sx=AppSurfaceEx1st(w->app,&ix);sx!=NULL;sx=Next(&ix))
+    DrawObject(w,sx,DRAW_ON);
+
+  for (gpx=AppGridPointEx1st(w->app,&ix);gpx!=NULL;gpx=Next(&ix))
+    DrawObject(w,gpx,DRAW_ON);
+
   if (w->app->mesh!=NULL) DrawWholeMesh(w,w->app->mesh,DRAW_ON);
   if (w->app->sonnetData!=NULL) DrawObject(w,w->app->sonnetData,DRAW_ON);
   for (e=AppElem1st(w->app,&ix);e!=NULL;e=Next(&ix))
@@ -489,14 +501,18 @@ void UnhighlightAll(View w) {
 void SetExamineMsg(View w,void* obj) {
   Node n;
   Elem e;
-  Surface s;
-  GridPoint gp;
+  SurfaceEx sx;
+  GridPointEx gpx;
   Separator sep;
   Source src;
   Chord ch;
   MeshPoint mpt;
   MeshCell mc;
   MeshElement me;
+  XPointTest xpt;
+  XPointSeg xps;
+  GridPointSeg gps;
+  SurfaceZone sz;
   int i,r;
   double f;
   Index ix;
@@ -515,33 +531,34 @@ void SetExamineMsg(View w,void* obj) {
       f=hypot(e->n[1]->x-e->n[2]->x,e->n[1]->y-e->n[2]->y);
       ViewMsgEx(w,MSG_EXAMELEM,
         "$(X1)%g$(Y1)%g$(X2)%g$(Y2)%g$(EX1)%e$(EY1)%e$(EX2)%e$(EY2)%e"
-	"$(LEN)%g$(ELEN)%e$(ID)%d$(VARS1)%d",
+        "$(LEN)%g$(ELEN)%e$(ID)%d$(VARS1)%d",
         e->n[1]->x,e->n[1]->y,e->n[2]->x,e->n[2]->y,
-	e->n[1]->x,e->n[1]->y,e->n[2]->x,e->n[2]->y,f,f,e->id,
-	GroupCount(e->varsContaining));
+        e->n[1]->x,e->n[1]->y,e->n[2]->x,e->n[2]->y,f,f,e->id,
+        GroupCount(e->varsContaining));
       break;
-    case T_SURFACE:
-      s=obj;
-      i=GetSurfaceArea(w->app,s),
-      ViewMsgEx(w,MSG_EXAMSURFACE,
+    case T_SURFACEEX:
+      sx=obj;
+      i=sx->zone; /*GetSurfaceArea(w->app,s),*/
+      sz= i!=SZN_XY? FindSurfaceZone(sx->app,i) : NULL;
+      ViewMsgEx(w,sx->zone==SZN_XY? MSG_EXAM_SURFACE_XY : MSG_EXAMSURFACE,
         "$(NAREA)%d$(AREA)%s$(LEVEL)%g$(ELEVEL)%e"
-	"$(X)%g$(Y)%g$(EX)%e$(EY)%e$(CREATOR)%s",
-        i,GetStr(w,STR_DSURFAREABASE+i),s->level,s->level,
-	s->originX,s->originY,s->originX,s->originY,
-	GetSurfaceCreatorId(s));
-
-      w->lastExaminedSurface=s;
+        "$(X)%g$(Y)%g$(EX)%e$(EY)%e$(CREATOR)%s",
+        i,sz!=NULL? GetSurfaceZoneLongName(sz) : "---",
+        sx->level,sx->level,
+        sx->originX,sx->originY,sx->originX,sx->originY,
+        GetSurfaceExCreatorId(sx));
+      w->lastExaminedSurfaceEx=sx;
       break;
-    case T_GRIDPOINT:
-      for (i=0,gp=AppGridPoint1st(w->app,&ix);gp!=NULL && gp!=obj;
-          gp=Next(&ix))
-        if (gp->area==((GridPoint)obj)->area) i++;
-      gp=obj;
+    case T_GRIDPOINTEX:
+      gpx=obj;
+      gps=FindGridPointSeg(w->app,gpx->zone);
       ViewMsgEx(w,MSG_EXAMGRIDPOINT,
-	"$(NAREA)%d$(AREA)%s$(VALUE)%g$(EVALUE)%e$(NUMBER)%d$(CREATOR)%s",
-        gp->area,GetStr(w,STR_DGRPOINTAREABASE+gp->area),
-	gp->value,gp->value,i+1,GetGridPointCreatorId(gp));
-      w->lastExaminedGridPoint=gp;
+        "$(NAREA)%d$(AREA)%s$(VALUE)%g$(EVALUE)%e$(NUMBER)%d$(CREATOR)%s",
+        gpx->zone,
+        gps!=NULL? GetGridPointSegLongName(gps) : "---",
+        gpx->value,gpx->value,GetGridPointExNumber(w->app,gpx),
+        GetGridPointExCreatorId(gpx));
+      w->lastExaminedGridPointEx=gpx;
       break;
     case T_SEPARATOR:
       sep=obj;
@@ -553,18 +570,18 @@ void SetExamineMsg(View w,void* obj) {
     case T_SOURCE:
       src=obj;
       ViewMsgEx(w,MSG_EXAMSOURCE,
-	"$(X)%g$(Y)%g$(EX)%e$(EY)%e",
-	src->x,src->y,src->x,src->y);
+        "$(X)%g$(Y)%g$(EX)%e$(EY)%e",
+        src->x,src->y,src->x,src->y);
       break;
     case T_CHORD:
       ch=obj;
       ViewMsgEx(w,MSG_EXAMCHORD,
-	"$(X1)%g$(Y1)%g$(X2)%g$(Y2)%g$(LEN)%g"
-	"$(EX1)%e$(EY1)%e$(EX2)%e$(EY2)%e%(LEN)%e"
-	"$(NUMBER)%d",
-	ch->x1,ch->y1,ch->x2,ch->y2,hypot(ch->x2-ch->x1,ch->y2-ch->y1),
-	ch->x1,ch->y1,ch->x2,ch->y2,hypot(ch->x2-ch->x1,ch->y2-ch->y1),
-	GroupIndex(w->app->chords,ch)+1
+        "$(X1)%g$(Y1)%g$(X2)%g$(Y2)%g$(LEN)%g"
+        "$(EX1)%e$(EY1)%e$(EX2)%e$(EY2)%e%(LEN)%e"
+        "$(NUMBER)%d",
+        ch->x1,ch->y1,ch->x2,ch->y2,hypot(ch->x2-ch->x1,ch->y2-ch->y1),
+        ch->x1,ch->y1,ch->x2,ch->y2,hypot(ch->x2-ch->x1,ch->y2-ch->y1),
+        GroupIndex(w->app->chords,ch)+1
       );
       break;
     case T_MESHCELL:
@@ -591,6 +608,27 @@ void SetExamineMsg(View w,void* obj) {
       ViewMsgEx(w,MSG_EXAM_MESH_POINT,
         "$(X)%g$(Y)%g$(EX)%e$(EY)%e$(NX)%d$(NY)%d",
         mpt->x,mpt->y,mpt->x,mpt->y,mpt->nx,mpt->ny);
+      break;
+    case T_XPOINTTEST:
+      xpt=obj;
+      assert(w->app->equil!=NULL);
+      ViewMsgEx(w,MSG_EXAM_XPOINTTEST,
+        "$(X1)%g$(X2)%g$(Y1)%g$(Y2)%g""$(ID)%d$(LEVEL)%g"
+        "$(LVLMIN)%g$(LVLMAX)%g""$(CENTERX)%g$(CENTERY)%g",
+        EqX(w->app->equil,xpt->cx1),EqX(w->app->equil,xpt->cx1),
+        EqX(w->app->equil,xpt->cx2),EqX(w->app->equil,xpt->cy2),
+        xpt->id,xpt->level,xpt->lvlMin,xpt->lvlMax,xpt->centerX,
+        xpt->centerY);
+      break;
+    case T_XPOINTSEG:
+      xps=obj;
+      gps=FindGridPointSegBySegment(w->app,xps);
+      ViewMsgEx(w,MSG_EXAM_XPOINTSEG,
+        "$(XPTID)%d$(XPSNUMBER)%d$(ZONE)%d$(DIR)%d$(TARGETDIR)%d"
+        "$(LEVEL)%g$(LINELENGTH)%g$(NAME)%s$(DESCR)%s",
+        xps->xpt->id,xps->number,gps->zone,gps->dir,gps->targetDir,
+        gps->level,gps->lineLength,
+        GetGridPointSegShortName(gps),GetGridPointSegLongName(gps));
       break;
     default:
       break;
@@ -623,9 +661,9 @@ void ShowPicture(View w) {
   if (w->showFlags & SHW_CHORDS)
     CalcGroupExtents(w->app->chords,&minX,&minY,&maxX,&maxY);
   if (w->showFlags & SHW_SURFACES)
-    CalcGroupExtents(w->app->surfaces,&minX,&minY,&maxX,&maxY);
-  if (w->showFlags & SHW_GRIDPOINTS && w->app->xpoint!=NULL)
-    CalcGroupExtents(w->app->gridPoints,&minX,&minY,&maxX,&maxY);
+    CalcGroupExtents(w->app->surfacesEx,&minX,&minY,&maxX,&maxY);
+  if (w->showFlags & SHW_GRIDPOINTS)
+    CalcGroupExtents(w->app->gridPointsEx,&minX,&minY,&maxX,&maxY);
   if (w->app->template!=NULL && w->showFlags & SHW_TEMPLATE)
     CalcObjExtents(w->app->template,&minX,&minY,&maxX,&maxY);
   if (w->app->sonnetData!=NULL && w->showFlags & SHW_MESH)
@@ -634,8 +672,8 @@ void ShowPicture(View w) {
     CalcObjExtents(w->app->equil,&minX,&minY,&maxX,&maxY);
   if ((w->app->mesh!=NULL && w->showFlags & SHW_MESH))
     CalcObjExtents(w->app->mesh,&minX,&minY,&maxX,&maxY);
-  if ((w->app->xpoint!=NULL && w->showFlags & SHWM_XPOINT))
-    CalcObjExtents(w->app->xpoint,&minX,&minY,&maxX,&maxY);
+  if (ViewShowTopology(w))
+    CalcGroupExtents(w->app->gridPointSegs,&minX,&minY,&maxX,&maxY);
 
   if (minX>maxX)
     SetViewRect(w,-1,-1,1,1);
@@ -688,13 +726,13 @@ void RemoveAllViewLabels(View w) {
 void LabelObject(View w,void* obj,char* label,int bShowIt) {
   Elem e;
   Node n;
-  Surface s;
-  GridPoint gp;
   Separator sep;
   Source src;
   Chord ch;
   MeshElement me;
   MeshCell mc;
+  SurfaceEx sex;
+  GridPointEx gpx;
 
   switch(GetObjType(obj)) {
     case T_NODE:
@@ -713,20 +751,12 @@ void LabelObject(View w,void* obj,char* label,int bShowIt) {
     case T_SEPARATOR:
       sep=obj;
       AddViewLabel(w,(sep->n->x+sep->x)/2,(sep->n->y+sep->y)/2,
-	label,bShowIt);
+        label,bShowIt);
       break;
     case T_CHORD:
       ch=obj;
       AddViewLabel(w,(ch->x1+ch->x2)/2,(ch->y1+ch->y2)/2,
         label,bShowIt);
-      break;
-    case T_SURFACE:
-      s=obj;
-      AddViewLabel(w,s->originX,s->originY,label,bShowIt);
-      break;
-    case T_GRIDPOINT:
-      gp=obj;
-      if (w->app->xpoint!=NULL) AddViewLabel(w,gp->x,gp->y,label,bShowIt);
       break;
     case T_MESHELEMENT:
       me=obj;
@@ -736,6 +766,14 @@ void LabelObject(View w,void* obj,char* label,int bShowIt) {
     case T_MESHCELL:
       mc=obj;
       AddViewLabel(w,mc->centerX,mc->centerY,label,bShowIt);
+      break;
+    case T_SURFACEEX:
+      sex=obj;
+      if (sex->bCoordsOk) AddViewLabel(w,sex->originX,sex->originY,label,bShowIt);
+      break;
+    case T_GRIDPOINTEX:
+      gpx=obj;
+      if (gpx->bCoordsOk) AddViewLabel(w,gpx->x,gpx->y,label,bShowIt);
       break;
     default:
       FatalError("LabelObject()-type%d: fatal error 1",GetObjType(obj));
@@ -765,31 +803,28 @@ char* GetObjDescription(View w,void* obj) {
     switch(GetObjType(obj)) {
       case T_NODE:return GetStr(w,STR_NODE);
       case T_ELEM:return GetStr(w,STR_ELEM);
-      case T_SURFACE:return GetStr(w,STR_SURFACE);
-      case T_GRIDPOINT:return GetStr(w,STR_GRIDPOINT);
       case T_SEPARATOR:return GetStr(w,STR_SEPARATOR);
       case T_SOURCE:return GetStr(w,STR_SOURCE);
       case T_CHORD:return GetStr(w,STR_CHORD);
       case T_EQUIL:return GetStr(w,STR_EQUIL);
       case T_TEMPLATE:return GetStr(w,STR_TEMPLATE);
       case T_SONNET:return GetStr(w,STR_SONNET);
-      case T_XPOINT:return GetStr(w,STR_XPOINT);
       case T_XPOINTTEST:return GetStr(w,STR_XPOINTTEST);
       case T_XPOINTSEG:return GetStr(w,STR_XPOINTSEG);
       case T_VARSETDEF:return ((VarSetDef)obj)->descr;
       case T_VARSET:
         vs=obj;
-	strcpy(buf,vs->def->descr);
+        strcpy(buf,vs->def->descr);
 
-	/* Append index if necessary */
+        /* Append index if necessary */
 
-	s=GetIndexVarValue(vs);
+        s=GetIndexVarValue(vs);
 
-	if (s!=NULL) {
-	  sprintf(buf+strlen(buf)," %s",s);
-	} else if (GroupCount(vs->def->varSets)>1) {
-	  sprintf(buf+strlen(buf)," #%d",GroupIndex(vs->def->varSets,vs)+1);
-	}
+        if (s!=NULL) {
+          sprintf(buf+strlen(buf)," %s",s);
+        } else if (GroupCount(vs->def->varSets)>1) {
+          sprintf(buf+strlen(buf)," #%d",GroupIndex(vs->def->varSets,vs)+1);
+        }
 
         return buf;
       case T_VARDEF:
@@ -997,4 +1032,51 @@ void AddViewArrow(View w,double x1,double y1,double x2,double y2) {
 
   AddViewShapeLine(w,x2+x1+y1*h,y2+y1+x1*h,x2,y2);
   AddViewShapeLine(w,x2+x1-y1*h,y2+y1+x1*h,x2,y2);
+}
+
+void SetViewEditTopology(View w,int bEnable) {
+  if (bEnable==w->bEditTopology) return;
+
+  w->bEditTopology=bEnable;
+  ClearView(w);
+  RepaintView(w);
+}
+
+void DrawPolyLine(View w,Group g,double startPos,double endPos) {
+  XY xy,xy1;
+  Index ix;
+  double l=0,h,x1,y1,x2,y2;
+
+  if (endPos<0) endPos=MAXDOUBLE;
+
+  /* Get the first segment */
+
+  xy1=Group1st(g,&ix);
+  if (xy1==NULL) return;
+
+  /* Follow the line */
+  for (;xy=Next(&ix),xy!=NULL;l+=h,xy1=xy) {
+    h=hypot(xy->x-xy1->x,xy->y-xy1->y);
+
+    /* Skip segments not displayed at all */
+    if (l>=endPos || l+h<=startPos) continue;
+
+    /* Draw a complete or partial segment */
+    if (l<startPos) {
+      x1=xy1->x+(xy->x-xy1->x)*(startPos-l)/h;
+      y1=xy1->y+(xy->y-xy1->y)*(startPos-l)/h;
+    } else {
+      x1=xy1->x;
+      y1=xy1->y;
+    }
+
+    if (l+h>endPos) {
+      x2=xy1->x+(xy->x-xy1->x)*(endPos-l)/h;
+      y2=xy1->y+(xy->y-xy1->y)*(endPos-l)/h;
+    } else {
+      x2=xy->x;
+      y2=xy->y;
+    }
+    DrawViewLine(w,x1,y1,x2,y2);
+  }
 }

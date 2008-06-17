@@ -1,7 +1,7 @@
 #include "dg.h"
 
-#define FILE_VERSION 113
-#define DG_VERSION_NEEDED 14100
+#define FILE_VERSION 114
+#define DG_VERSION_NEEDED 15000
 
 static struct _FlagsRec showFlags[]={
   {SHW_AXES,'X'},
@@ -77,6 +77,17 @@ static struct _NameRec meshSlidingModes[]={
   {0,NULL}
 };
 
+static struct _FlagsRec surfaceZoneFlags[]={
+  {SZF_LIMITBYSURFACE,'i'},
+  {0,NULL}
+};
+
+static struct _FlagsRec gridPointSegFlags[]={
+  {GPSF_USED,'u'},
+  {GPSF_TARGET_CW,'t'},
+  {0,NULL}
+};
+
 App LoadNormalApp(XApp xap,char* fName,char** pMsg,int* err) {
   App a;
   char* s,*s1;
@@ -102,6 +113,7 @@ App LoadNormalApp(XApp xap,char* fName,char** pMsg,int* err) {
   *pMsg=s;
 
   FreeUndoInfo(a);
+  RecalcTopologyCache(a);
 
   return a;
 }
@@ -109,6 +121,12 @@ App LoadNormalApp(XApp xap,char* fName,char** pMsg,int* err) {
 char* GetLoadErrFlagsDescription(XApp xap,int errFlags) {
   char* s=NULL;
 
+  if (errFlags & DGFE_OLDTOPO) {
+    s=ReallocString(s,XAppStr(xap,WRN_OLDTOPO));s=ReallocString(s,"\n");
+  }
+  if (errFlags & DGFE_OLD_SURFACES_LOST) {
+    s=ReallocString(s,XAppStr(xap,WRN_OLD_SURFACES_LOST));s=ReallocString(s,"\n");
+  }
   if (errFlags & DGFE_NOEQUIL) {
     s=ReallocString(s,XAppStr(xap,WRN_NOEQUIL));s=ReallocString(s,"\n");
   }
@@ -198,18 +216,18 @@ static void WriteVar(App a,FILE* f,void* obj,VarDef vd,VarSet vs){
       g=GetVar(obj,vd,vs);
       fprintf(f,"Group100 %u\n",(unsigned)GroupCount(g));
       for (e=Group1st(g,&ix);e!=NULL;e=Next(&ix))
-	fprintf(f,"%u\n",(unsigned)GroupIndex(a->elems,e));
+        fprintf(f,"%u\n",(unsigned)GroupIndex(a->elems,e));
     } else if (vd->varType & VTF_HASCHORDS) {
       g=GetVar(obj,vd,vs);
       fprintf(f,"Group100 %u\n",(unsigned)GroupCount(g));
       for (ch=Group1st(g,&ix);ch!=NULL;ch=Next(&ix))
-	fprintf(f,"%u\n",(unsigned)GroupIndex(a->chords,ch));
+        fprintf(f,"%u\n",(unsigned)GroupIndex(a->chords,ch));
     } else if (vd->varType & VTF_HAS_MESH_OBJECTS) {
       g=GetVar(obj,vd,vs);
       fprintf(f,"Group100 %u\n",(unsigned)GroupCount(g));
       if (vd->varType==VT_MESH_CELLS) {
         for (mc=Group1st(g,&ix);mc!=NULL;mc=Next(&ix)) fprintf(f,"%d\n",mc->eN);
-      } else {  
+      } else {
         for (me=Group1st(g,&ix);me!=NULL;me=Next(&ix)) {
           GetMeshElementId(me,&i1,&i2);
           fprintf(f,"%d %d\n",i1,i2);
@@ -250,10 +268,10 @@ static void WriteVars(App a,FILE* f,void* p) {
         for (org=AppSeparator1st(a,&ixe);org!=NULL;org=Next(&ixe))
           WriteVar(a,f,org,vd,p);
       if (vd->flags & VF_FORSOURCES)
-	for (org=AppSource1st(a,&ixe);org!=NULL;org=Next(&ixe))
-	  WriteVar(a,f,org,vd,p);
+        for (org=AppSource1st(a,&ixe);org!=NULL;org=Next(&ixe))
+          WriteVar(a,f,org,vd,p);
       if (vd->flags & VF_FORCHORDS)
-	for (org=AppChord1st(a,&ixe);org!=NULL;org=Next(&ixe))
+        for (org=AppChord1st(a,&ixe);org!=NULL;org=Next(&ixe))
           WriteVar(a,f,org,vd,p);
     } else
       WriteVar(a,f,p,vd,NULL);
@@ -261,11 +279,10 @@ static void WriteVars(App a,FILE* f,void* p) {
 }
 
 static void WriteApp_File(App a,FILE* f) {
-  int i,j;
+  int i,j,i1,i2,i3;
+  double f1,f2;
   Elem e;
   Node n;
-  Surface s;
-  GridPoint gp;
   Separator sep;
   Source src;
   Chord ch;
@@ -275,13 +292,23 @@ static void WriteApp_File(App a,FILE* f) {
   MeshPoint mpt;
   MeshCell mc;
   MeshElement me;
+  XPointTest xpt;
+  GridPointSeg gps;
+  SurfaceEx sx;
+  GridPointEx gpx;
+  SurfaceZone sz;
   void* p;
   Group g;
   Index ix,ix1;
 
   fprintf(f,"DgFile %d {\n; For compatibility\n}\n",FILE_VERSION);
 
-  if (a->equil!=NULL) fprintf(f,"Equil100 %s\n",a->equil->fName);
+  if (a->equil!=NULL) {
+    fprintf(f,"Equil100 %s\n",a->equil->fName);
+    fprintf(f,"EquilHints114 %e %e %e %e\n",
+      EqX(a->equil,0),EqY(a->equil,0),
+      EqX(a->equil,EqSX(a->equil)-1),EqY(a->equil,EqSY(a->equil)-1));
+  }
 
   if (a->template!=NULL) fprintf(f,"Template110 %e %e %e %e %s\n",
     a->template->xIncr,a->template->yIncr,a->template->angle,
@@ -301,7 +328,7 @@ static void WriteApp_File(App a,FILE* f) {
         fprintf(f,"MeshPoint112 %d %d %e %e\n",mc->eN,j,mpt->x,mpt->y);
       }
     }
-    
+
     if (a->mesh->alt && a->mesh->headerString!=NULL) {
       fprintf(f,"MeshFileHeader113\n");
       WriteText(a->mesh->headerString,f);
@@ -317,13 +344,66 @@ static void WriteApp_File(App a,FILE* f) {
     fprintf(f,"%u %u %d\n",(unsigned)GroupIndex(a->nodes,e->n[1]),
         (unsigned)GroupIndex(a->nodes,e->n[2]),e->id);
 
-  fprintf(f,"Surfaces108 %u\n",(unsigned)GroupCount(a->surfaces));
-  for (s=AppSurface1st(a,&ix);s!=NULL;s=Next(&ix))
-    fprintf(f,"%e %e %s\n",s->originX,s->originY,GetSurfaceCreatorId(s));
+  fprintf(f,"XPointsEx114 %d\n",(unsigned)GroupCount(a->xpointTests));
+  for (xpt=AppXPointTest1st(a,&ix);xpt!=NULL;xpt=Next(&ix)) {
+    fprintf(f,"%d %d %d %d %d %e %e %e\n",
+        xpt->cx1,xpt->cy1,xpt->cx2,xpt->cy2,xpt->id,xpt->level,
+        xpt->centerX,xpt->centerY);
+  }
 
-  fprintf(f,"GridPoints108 %u\n",(unsigned)GroupCount(a->gridPoints));
-  for (gp=AppGridPoint1st(a,&ix);gp!=NULL;gp=Next(&ix))
-    fprintf(f,"%d %e %s\n",gp->area,gp->value,GetGridPointCreatorId(gp));
+  fprintf(f,"GridPointSegs114 %d\n",(unsigned)GroupCount(a->gridPointSegs));
+  for (gps=AppGridPointSeg1st(a,&ix);gps!=NULL;gps=Next(&ix)) {
+    g=CreateGroup();
+    GroupAdd(g,gps->xps->xpt);
+    for (xpt=AppXPointTest1st(a,&ix1);xpt!=NULL;xpt=Next(&ix1))
+      if (InGroup(xpt->segs,gps->xps))
+        if (!InGroup(g,xpt)) GroupAdd(g,xpt);
+    i3=0;
+    i2=-1;
+    if (GroupCount(g)<1) {i1=-1;f1=XPS_ANGLE_BAD;}
+    else {
+      xpt=gps->xps->xpt;
+      i1=xpt->id;
+      f1=CalcXPointSegAngle(a,gps->xps,gps->xps->xpt);
+      f2=CalcLineLength(gps->xps->line);
+      if (GroupCount(g)>1) {
+        for (xpt=Group1st(g,&ix);xpt!=NULL;xpt=Next(&ix))
+          if (xpt!=gps->xps->xpt) i2=xpt->id;
+      }
+    }
+
+    fprintf(f,"%d %d %e %e %d %d %d %d %d %e %e %s\n",
+        gps->xps->xpt->id,gps->xps->number,
+        gps->xps->startPos,gps->xps->endPos,
+        gps->zone,gps->dir,gps->targetDir,i1,i2,f1,f2,
+        Flags2Str(gps->flags,gridPointSegFlags));
+    fprintf(f,"%s\n",GetGridPointSegShortName(gps));
+    fprintf(f,"%s\n",GetGridPointSegLongName(gps));
+
+    FreeGroup(g);
+  }
+
+  fprintf(f,"SurfaceZones114 %d\n",(unsigned)GroupCount(a->surfaceZones));
+  for (sz=AppSurfaceZone1st(a,&ix);sz!=NULL;sz=Next(&ix)) {
+    fprintf(f,"%d %d %d %d %s\n",
+        sz->zone,sz->gpZone1,sz->gpZone2,sz->orient,
+        Flags2Str(sz->flags,surfaceZoneFlags));
+    fprintf(f,"%s\n",GetSurfaceZoneShortName(sz));
+    fprintf(f,"%s\n",GetSurfaceZoneLongName(sz));
+  }
+
+  fprintf(f,"SurfacesEx114 %d\n",(unsigned)GroupCount(a->surfacesEx));
+  for (sx=AppSurfaceEx1st(a,&ix);sx!=NULL;sx=Next(&ix)) {
+    fprintf(f,"%d %e %e %e %s\n",
+        sx->zone,sx->level,sx->originX,sx->originY,
+        GetSurfaceExCreatorId(sx));
+  }
+
+  fprintf(f,"GridPointsEx114 %d\n",(unsigned)GroupCount(a->gridPointsEx));
+  for (gpx=AppGridPointEx1st(a,&ix);gpx!=NULL;gpx=Next(&ix)) {
+    fprintf(f,"%d %e %s\n",
+        gpx->zone,gpx->value,GetGridPointExCreatorId(gpx));
+  }
 
   fprintf(f,"Separators101 %u\n",(unsigned)GroupCount(a->separators));
   for (sep=AppSeparator1st(a,&ix);sep!=NULL;sep=Next(&ix))
@@ -388,7 +468,6 @@ static void WriteApp_File(App a,FILE* f) {
     }
     g=FreeGroup(g);
   }
-
   fprintf(f,"VarSetDefs101 %u\n",(unsigned)GroupCount(a->varSetDefs));
   for (vsd=AppVarSetDef1st(a,&ix);vsd!=NULL;vsd=Next(&ix)) {
     fprintf(f,"%s\n%s\n",vsd->name,vsd->descr);
@@ -414,11 +493,10 @@ static void WriteApp_File(App a,FILE* f) {
     WriteVars(a,f,vs);
   }
 
-  if (a->xpoint!=NULL) fprintf(f,"XPoint100 %e %e %e %e\n",
-    a->xpoint->x1,a->xpoint->y1,a->xpoint->x2,a->xpoint->y2);
   fprintf(f,"MaxElemId101 %d\n",a->maxElemId);
   fprintf(f,"CreaTime101\n%s\n",a->creationTime==NULL ? "---" :
     a->creationTime);
+  fprintf(f,"TopoName114 %s\n",GetTopologyName(a));
 
   fprintf(f,"OutputMode109 %s\n",Int2Name(a->outputMode,outputModes));
   fprintf(f,"OutputFlags111 %s\n",Flags2Str(a->outputFlags,outputFlags));
@@ -443,43 +521,43 @@ static int ReadVar(App a,FILE* f,void* obj,VarDef vd,VarSet vs){
     if (vd->varType & VTF_HASELEMS) {
       fgets(s,sizeof(s)-1,f);
       if (sscanf(s,"Group100 %u",&n)==1) {
-	g=CreateGroup();
-	while (n--) {
-	  fgets(s,sizeof(s)-1,f);
-	  if (sscanf(s,"%u",&i)==1) GroupAdd(g,GroupAt(a->elems,i));
-	}
-	SetVar(a,obj,vd,vs,g);
-	g=FreeGroup(g);
+        g=CreateGroup();
+        while (n--) {
+          fgets(s,sizeof(s)-1,f);
+          if (sscanf(s,"%u",&i)==1) GroupAdd(g,GroupAt(a->elems,i));
+        }
+        SetVar(a,obj,vd,vs,g);
+        g=FreeGroup(g);
       } else return -1;
     } else if (vd->varType & VTF_HASCHORDS) {
       fgets(s,sizeof(s)-1,f);
       if (sscanf(s,"Group100 %u",&n)==1) {
-	g=CreateGroup();
-	while (n--) {
-	  fgets(s,sizeof(s)-1,f);
-	  if (sscanf(s,"%u",&i)==1) GroupAdd(g,GroupAt(a->chords,i));
-	}
-	SetVar(a,obj,vd,vs,g);
-	g=FreeGroup(g);
+        g=CreateGroup();
+        while (n--) {
+          fgets(s,sizeof(s)-1,f);
+          if (sscanf(s,"%u",&i)==1) GroupAdd(g,GroupAt(a->chords,i));
+        }
+        SetVar(a,obj,vd,vs,g);
+        g=FreeGroup(g);
       } else return -1;
     } else if (vd->varType & VTF_HAS_MESH_OBJECTS) {
       fgets(s,sizeof(s)-1,f);
       if (sscanf(s,"Group100 %u",&n)==1) {
-	g=CreateGroup();
-	while (n--) {
-	  fgets(s,sizeof(s)-1,f);
+        g=CreateGroup();
+        while (n--) {
+          fgets(s,sizeof(s)-1,f);
           if (vd->varType==VT_MESH_CELLS) {
-            if (a->mesh!=NULL && sscanf(s,"%d",&i1)==1) 
+            if (a->mesh!=NULL && sscanf(s,"%d",&i1)==1)
               if ((mc=FindMeshCellByNumber(a->mesh,i1))!=NULL)
                 GroupAdd(g,mc);
           } else {
-            if (a->mesh!=NULL && sscanf(s,"%d %d",&i1,&i2)==2) 
+            if (a->mesh!=NULL && sscanf(s,"%d %d",&i1,&i2)==2)
               if ((me=FindMeshElementById(a->mesh,i1,i2))!=NULL)
                 GroupAdd(g,me);
           }
-	}
-	SetVar(a,obj,vd,vs,g);
-	g=FreeGroup(g);
+        }
+        SetVar(a,obj,vd,vs,g);
+        g=FreeGroup(g);
       } else return -1;
     } else assert(0);
   } else {
@@ -517,10 +595,10 @@ static int ReadVars(App a,FILE* f,void* p) {
         for (obj=AppSeparator1st(a,&ixe);obj!=NULL;obj=Next(&ixe))
           fErr|=ReadVar(a,f,obj,vd,p);
       if (vd->flags & VF_FORSOURCES)
-	for (obj=AppSource1st(a,&ixe);obj!=NULL;obj=Next(&ixe))
-	  fErr|=ReadVar(a,f,obj,vd,p);
+        for (obj=AppSource1st(a,&ixe);obj!=NULL;obj=Next(&ixe))
+          fErr|=ReadVar(a,f,obj,vd,p);
       if (vd->flags & VF_FORCHORDS)
-	for (obj=AppChord1st(a,&ixe);obj!=NULL;obj=Next(&ixe))
+        for (obj=AppChord1st(a,&ixe);obj!=NULL;obj=Next(&ixe))
           fErr|=ReadVar(a,f,obj,vd,p);
     }
     else
@@ -531,7 +609,7 @@ static int ReadVars(App a,FILE* f,void* p) {
 }
 
 static int ReadApp_File(App a,FILE* f,int* ef) {
-  int version=0,i,i1,i2;
+  int version=0,i,i1,i2,i3,i4,i5,r;
   unsigned k,n,n1,n2;
   unsigned long fl;
   long long1;
@@ -541,10 +619,14 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
   VarSet vs;
   VarSetDef vsd;
   VarDef vd;
-  Surface surf;
-  GridPoint gp;
   MeshCell mc;
   MeshElement me;
+  XPointTest xpt;
+  XPointSeg xps;
+  GridPointSeg gps;
+  SurfaceZone sz;
+  SurfaceEx sx;
+  GridPointEx gpx;
   int bMeshFingerprintOk=0;
   Index ix;
 
@@ -569,6 +651,7 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
     case 111:
     case 112:
     case 113:
+    case 114:
       break;
     default:
       return ERR_BADFILEVERSION;
@@ -585,6 +668,10 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
       if (AddEquil(a,GetShortFName(s1))) *ef|=DGFE_NOEQUIL;
     } else
 
+    if (sscanf(s,"EquilHints114 "SCANFLT""SCANFLT""SCANFLT""SCANFLT,
+        &f1,&f2,&f3,&f4)==4) {
+      /* Ignore */
+    } else
     if (sscanf(s,"Template100"SCANFLT""SCANFLT"%d%s",&f1,&f2,&i1,s1)==4) {
       if (AddTemplate(a,s1,f1,f2,M_PI*i1/2,1))
       if (AddTemplate(a,GetShortFName(s1),f1,f2,M_PI*i1/2,1))
@@ -592,7 +679,7 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
     } else
 
     if (sscanf(s,"Template110"SCANFLT""SCANFLT""SCANFLT""SCANFLT"%s",
-	&f1,&f2,&f3,&f4,s1)==5) {
+        &f1,&f2,&f3,&f4,s1)==5) {
       if (AddTemplate(a,s1,f1,f2,f3,f4))
       if (AddTemplate(a,GetShortFName(s1),f1,f2,f3,f4))
       *ef|=DGFE_NOTEMPL;
@@ -603,12 +690,12 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
       if (LoadMesh(a,s1))
       if (a->fName==NULL || (strcpy(s2,GetFilePath(a->fName)),
           strcat(s2,GetShortFName(s1)),LoadMesh(a,s2)))
-      if (LoadMesh(a,GetShortFName(s1))) 
+      if (LoadMesh(a,GetShortFName(s1)))
       *ef|=DGFE_NOSONNET;
     } else
 
     if (sscanf(s,"MeshFingerprint112 %lx",&long1)==1) {
-      if (a->mesh!=NULL && long1==a->mesh->fingerprint) 
+      if (a->mesh!=NULL && long1==a->mesh->fingerprint)
         bMeshFingerprintOk=1;
     } else
 
@@ -628,40 +715,126 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
     if (sscanf(s,"Elems100 %u",&n)==1) for (k=0;k<n;k++) {
        fgets(s,sizeof(s)-1,f);
        if (sscanf(s,"%u %u %d",&n1,&n2,&i1)==3) {
-	    ChangeElemId(a,
-	       AddElem(a,GroupAt(a->nodes,n1),GroupAt(a->nodes,n2)),i1);
+            ChangeElemId(a,
+               AddElem(a,GroupAt(a->nodes,n1),GroupAt(a->nodes,n2)),i1);
        } else *ef|=DGFE_SYNTAX;
     } else
 
     if (sscanf(s,"Surfaces100 %u",&n)==1) for (k=0;k<n;k++) {
        fgets(s,sizeof(s)-1,f);
-       if (sscanf(s,SCANFLT""SCANFLT,&f1,&f2)==2 && a->equil!=NULL)
-	 AddSurface(a,f1,f2,NULL);
+       if (sscanf(s,SCANFLT""SCANFLT,&f1,&f2)==2 && a->equil!=NULL) {
+         AddSurfaceExXY(a,f1,f2,NULL);
+         *ef|=DGFE_OLDTOPO;
+       }
        else *ef|=DGFE_SYNTAX;
     } else
 
     if (sscanf(s,"Surfaces108 %u",&n)==1) for (k=0;k<n;k++) {
        fgets(s,sizeof(s)-1,f);
        if (sscanf(s,SCANFLT""SCANFLT"%s",&f1,&f2,s1)==3 && a->equil!=NULL) {
-	 i1=0;
-	 surf=AddSurface(a,f1,f2,&i1);
-	 if (surf!=NULL) ChangeSurfaceCreatorId(a,surf,s1);
+         i1=0;
+         sx=AddSurfaceExXY(a,f1,f2,&i1);
+         if (sx!=NULL) {
+           ChangeSurfaceExCreatorId(sx,s1);
+          *ef|=DGFE_OLDTOPO;
+         }
        } else *ef|=DGFE_SYNTAX;
     } else
 
     if (sscanf(s,"GridPoints100 %u",&n)==1) for (k=0;k<n;k++) {
        fgets(s,sizeof(s)-1,f);
        if (sscanf(s,"%d"SCANFLT,&i1,&f1)==2)
-	 AddGridPoint(a,i1,f1);
+         AddGridPointEx(a,i1,f1);
        else *ef|=DGFE_SYNTAX;
     } else
 
     if (sscanf(s,"GridPoints108 %u",&n)==1) for (k=0;k<n;k++) {
        fgets(s,sizeof(s)-1,f);
        if (sscanf(s,"%d"SCANFLT"%s",&i1,&f1,s1)==3) {
-	 gp=AddGridPoint(a,i1,f1);
-	 if (gp!=NULL) ChangeGridPointCreatorId(a,gp,s1);
+         gpx=AddGridPointEx(a,i1,f1);
+         if (gpx!=NULL) ChangeGridPointExCreatorId(gpx,s1);
        } else *ef|=DGFE_SYNTAX;
+    } else
+
+    if (sscanf(s,"XPointsEx114 %u",&n)==1) for (k=0;k<n;k++) {
+       fgets(s,sizeof(s)-1,f);
+       if (sscanf(s,"%d%d%d%d%d"SCANFLT,&i1,&i2,&i3,&i4,&i5,&f1)==6) {
+         xpt=AddXPointTest(a,i1,i2,i3,i4,f1,i5);
+         if (xpt==NULL) *ef|=DGFE_NEQUIL;
+       } else *ef|=DGFE_SYNTAX;
+    } else
+
+    if (sscanf(s,"GridPointSegs114 %u",&n)==1) for (k=0;k<n;k++) {
+       fgets(s,sizeof(s)-1,f);
+       r=sscanf(s,"%d%d"SCANFLT""SCANFLT"%d%d%d",
+           &i1,&i2,&f1,&f2,&i3,&i4,&i5);
+       if (sscanf(s,"%s%s%s%s%s%s%s%s%s%s%s%s",
+           s1,s1,s1,s1,s1,s1,s1,s1,s1,s1,s1,s3)!=12) strcpy(s3,"");
+       if (r==7) {
+         fgets(s1,sizeof(s1)-1,f);RemoveLF(s1);
+         fgets(s2,sizeof(s2)-1,f);RemoveLF(s2);
+
+         xpt=FindXPointTest(a,i1);
+         if (xpt==NULL) {*ef|=DGFE_NEQUIL;goto bad;}
+         xps=AddXPointSeg(a,xpt,i2,f1,f2);
+         if (xps==NULL) {*ef|=DGFE_NEQUIL;goto bad;}
+         gps=FindGridPointSegBySegment(a,xps);
+         assert(gps!=NULL);
+
+         SetGridPointSegZone(gps,i3);
+         SetGridPointSegDir(gps,i4);
+         SetGridPointSegTargetDir(gps,i5);
+         SetGridPointSegShortName(gps,s1);
+         SetGridPointSegLongName(gps,s2);
+         fl=0;Str2Flags(s3,&fl,gridPointSegFlags);
+         SetGridPointSegFlags(gps,fl);
+
+         bad:;
+       } else *ef|=DGFE_SYNTAX;
+    } else
+
+    if (sscanf(s,"SurfaceZones114 %u",&n)==1) for (k=0;k<n;k++) {
+       fgets(s,sizeof(s)-1,f); /* szNo2==-1 -> unlimited */
+       r=sscanf(s,"%d%d%d%d%s",&i1,&i2,&i3,&i4,s3);
+       if (r==4) {strcpy(s3,"");r=5;}
+       if (r==5) {
+         fgets(s1,sizeof(s1)-1,f);RemoveLF(s1);
+         fgets(s2,sizeof(s2)-1,f);RemoveLF(s2);
+         sz=AddSurfaceZone(a,i1,i2,i3,i4);
+         if (sz==NULL) {*ef|=DGFE_NEQUIL;goto badSZ;}
+         SetSurfaceZoneShortName(sz,s1);
+         SetSurfaceZoneLongName(sz,s2);
+         fl=0;Str2Flags(s3,&fl,surfaceZoneFlags);
+         SetSurfaceZoneFlags(sz,fl);
+         badSZ:;
+       }
+       else *ef|=DGFE_SYNTAX;
+    } else
+
+    if (sscanf(s,"SurfacesEx114 %u",&n)==1) for (k=0;k<n;k++) {
+       fgets(s,sizeof(s)-1,f);
+       if (sscanf(s,"%d"SCANFLT""SCANFLT""SCANFLT"%s",
+           &i1,&f1,&f2,&f3,s1)==5) {
+         if (i1!=SZN_XY) sx=AddSurfaceEx(a,i1,f1,NULL);
+         else sx=AddSurfaceExXY(a,f2,f3,NULL);
+         if (sx==NULL) {*ef|=DGFE_NEQUIL;goto badSX;}
+         ChangeSurfaceExCreatorId(sx,s1);
+
+         badSX:;
+       }
+       else *ef|=DGFE_SYNTAX;
+    } else
+
+    if (sscanf(s,"GridPointsEx114 %u",&n)==1) for (k=0;k<n;k++) {
+       fgets(s,sizeof(s)-1,f);
+       if (sscanf(s,"%d"SCANFLT"%s",&i1,&f1,s1)==3) {
+         gpx=AddGridPointEx(a,i1,f1);
+         if (gpx==NULL) {*ef|=DGFE_NEQUIL;goto badGPX;}
+         ChangeGridPointExCreatorId(gpx,s1);
+
+         badGPX:;
+       }
+       else *ef|=DGFE_SYNTAX;
     } else
 
     if (sscanf(s,"Separators101 %u",&n)==1) for (k=0;k<n;k++) {
@@ -674,14 +847,14 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
     if (sscanf(s,"Sources104 %u",&n)==1) for (k=0;k<n;k++) {
        fgets(s,sizeof(s)-1,f);
        if (sscanf(s,SCANFLT""SCANFLT,&f1,&f2)==2)
-	 AddSource(a,f1,f2);
+         AddSource(a,f1,f2);
        else *ef|=DGFE_SYNTAX;
     } else
 
     if (sscanf(s,"Chords106 %u",&n)==1) for (k=0;k<n;k++) {
        fgets(s,sizeof(s)-1,f);
        if (sscanf(s,SCANFLT""SCANFLT""SCANFLT""SCANFLT,&f1,&f2,&f3,&f4)==4)
-	 AddChord(a,f1,f2,f3,f4);
+         AddChord(a,f1,f2,f3,f4);
        else *ef|=DGFE_SYNTAX;
     } else
 
@@ -808,14 +981,15 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
        vs=AddVarSet(a,GroupAt(a->varSetDefs,n1));
        fgets(s,sizeof(s)-1,f);
        if (sscanf(s,"Vars100 %u",&n1)!=1 && sscanf(s,"Vars104 %u",&n1)!=1
-	   && sscanf(s,"Vars110 %u",&n1)!=1)
+           && sscanf(s,"Vars110 %u",&n1)!=1)
          {*ef|=DGFE_SYNTAX;continue;}
        if (ReadVars(a,f,vs)) *ef|=DGFE_SYNTAX;
     } else
 
     if (sscanf(s,"XPoint100"SCANFLT""SCANFLT""SCANFLT""SCANFLT,
         &f1,&f2,&f3,&f4)==4) {
-      if (a->equil!=NULL) i1=AddXPoint(a,f1,f2,f3,f4);
+/*      if (a->equil!=NULL) i1=AddXPoint(a,f1,f2,f3,f4);  -- obsolete */
+      *ef |= DGFE_OLDTOPO;
     } else
 
     if (sscanf(s,"MaxElemId101%d",&i1)==1) {
@@ -831,6 +1005,10 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
       SetAppOutputMode(a,Name2Int(s1,outputModes));
     } else
 
+    if (sscanf(s,"TopoName114 %s",s1)==1) {
+      SetTopologyName(a,s1);
+    } else
+
 /* ViewAttr103 may contain invalid flags due to errors in some versions
    of DG
 */
@@ -838,7 +1016,7 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
         &f1,&f2,&f3,&f4,s1)==5); else
 
     if (sscanf(s,"ViewAttr105"SCANFLT""SCANFLT""SCANFLT""SCANFLT"%s",
-	&f1,&f2,&f3,&f4,s1)==5) {
+        &f1,&f2,&f3,&f4,s1)==5) {
       Str2Flags(s1,&a->showFlags,showFlags);
       a->minX=f1;
       a->minY=f2;
@@ -855,7 +1033,7 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
       SetMeshSlidingThreshold(a,f1);
       SetDoubleMeshBorderFlag(a,i1);
     } else
-    
+
     if (!strcmp(s,"MeshFileHeader113")) {
       ps=ReadText(f);
       if (a->mesh!=NULL) SetMeshHeaderString(a->mesh,ps);
@@ -865,6 +1043,7 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
     *ef |= DGFE_SYNTAX;
   }
 
+  if (*ef & DGFE_OLDTOPO) ConvertOldDgSurfaces(a,ef);
 
   return 0;
 }
@@ -908,18 +1087,13 @@ int SaveApp(App a,char* fName,int mode) {
     "Mesh:                   %s\n\n",a->mesh->fileName);
 
   if (!IsEmptyGroup(a->elems))
-   fprintf(f,"Elements:               %u\n",(unsigned)GroupCount(a->elems));
+    fprintf(f,"Elements:               %u\n",(unsigned)GroupCount(a->elems));
 
-  if (a->equil!=NULL) {
-    if (a->equil->signInside)
-      fprintf(f,"Surfaces:               %d+%d+%d\n",
-        CountSurfaces(a,1),CountSurfaces(a,2),CountSurfaces(a,3));
-    else fprintf(f,"Surfaces:               %u\n",
-      (unsigned)GroupCount(a->surfaces));
+  if (!IsEmptyGroup(a->surfaceZones)) {
+    fprintf(f,"Radial cells:           %s\n",GetSurfacesStatsStr(a));
   }
-  if (!IsEmptyGroup(a->gridPoints))
-    fprintf(f,"Grid points:            %u+%u+%u\n",
-      CountGridPoints(a,0),CountGridPoints(a,1),CountGridPoints(a,2));
+  if (!IsEmptyGroup(a->gridPointSegs))
+    fprintf(f,"Poloidal Cells:         %s\n",GetGridPointStatsStr(a));
   if (!IsEmptyGroup(a->separators))
     fprintf(f,"Separators:             %u\n",GroupCount(a->separators));
   if (!IsEmptyGroup(a->sources))
@@ -980,3 +1154,277 @@ App LoadApp(XApp xap,char* fName,char** pMsg,int* err) {
   if (pMsg!=NULL) *pMsg=GetLoadErrFlagsDescription(xap,errFlags);
   return a;
 }
+
+/* Topology mgmt //////////////////////////////////////////////////// */
+
+int LoadTopology(App a,char* fName,int bDetectXPoints) {
+  int version=0,i,i1,i2,i3,i4,i5,i6,i7,i8,r;
+  unsigned k,n,n1,n2,zoneMin,numberMin;
+  unsigned long fl;
+  long long1;
+  char s[DG_FNAME_LEN*2],s1[DG_FNAME_LEN],s2[DG_FNAME_LEN],
+    s3[DG_FNAME_LEN],s4[DG_FNAME_LEN],* ps;
+  double f1,f2,f3,f4,d,dMin,angle;
+  XPointTest xpt,xptMin;
+  XPointSeg xps,xpsMin;
+  GridPointSeg gps;
+  SurfaceZone sz;
+  SurfaceEx sx;
+  GridPointEx gpx;
+  int bMeshFingerprintOk=0;
+  Index ix;
+  int efPos;
+  int* ef=&efPos;
+  int bEqHints=0,bXpts=0,bGpss=0,bSZs=0;
+  double eqx1=0,eqy1=0,eqx2=0,eqy2=0;
+  double eqX1,eqY1,eqX2,eqY2;
+  Group g;
+
+  FILE* f;
+
+  if (a->equil==NULL) return ERR_NOEQUIL;
+  eqX1=EqX(a->equil,0);
+  eqY1=EqY(a->equil,0);
+  eqX2=EqX(a->equil,EqSX(a->equil)-1);
+  eqY2=EqY(a->equil,EqSY(a->equil)-1);
+
+  f=fopen(fName,"r");
+  if (f==NULL) return ERR_FILENOTFOUND;
+
+  *ef=0;
+  while (fgets(s,sizeof(s)-1,f)!=NULL) {
+    if (sscanf(s,"DgFile%d",&version)==1) break;
+  }
+
+  if (!version) return ERR_BADFILE;
+  switch(version) {
+    case 114:
+      break;
+    default:
+      return ERR_OLD_FILE_NO_TOPOLOGY;
+  }
+
+  fgets(s,sizeof(s)-1,f);
+  fgets(s,sizeof(s)-1,f);
+
+  while (fgets(s,sizeof(s)-1,f)!=NULL) {
+    RemoveLF(s);
+
+    if (sscanf(s,"EquilHints114 "SCANFLT""SCANFLT""SCANFLT""SCANFLT,
+        &f1,&f2,&f3,&f4)==4) {
+      eqx1=f1;
+      eqy1=f2;
+      eqx2=f3;
+      eqy2=f4;
+      bEqHints=0;
+    } else
+
+    if (sscanf(s,"XPointsEx114 %u",&n)==1) {
+      if (bDetectXPoints) DetectXPoints(a);
+      g=CreateGroup();
+      for (k=0;k<n;k++) {
+        fgets(s,sizeof(s)-1,f);
+        if (sscanf(s,"%d%d%d%d%d"SCANFLT""SCANFLT""SCANFLT,
+            &i1,&i2,&i3,&i4,&i5,&f1,&f2,&f3)==8) {
+          f2=eqX1+(f2-eqx1)/(eqx2-eqx1)*(eqX2-eqX1);
+          f3=eqY1+(f3-eqy1)/(eqy2-eqy1)*(eqY2-eqY1);
+
+          dMin=MAXDOUBLE;xptMin=NULL;
+          for (xpt=AppXPointTest1st(a,&ix);xpt!=NULL;xpt=Next(&ix)) {
+            d=hypot(xpt->centerX-f2,xpt->centerY-f3);
+            if (d<dMin) {dMin=d;xptMin=xpt;}
+          }
+
+          if (xptMin!=NULL) {
+            SetXPointTestId(a,xptMin,i5);
+            GroupAdd(g,xptMin);
+          }
+        }
+      }
+
+      for (xpt=AppXPointTest1st(a,&ix);xpt!=NULL;xpt=Next(&ix)) {
+        if (!InGroup(g,xpt)) DelXPointTest(a,xpt);
+      }
+      g=FreeGroup(g);
+    } else
+    if (sscanf(s,"GridPointSegs114 %u",&n)==1) {
+      DetectXPointSegs(a);
+      g=CreateGroup();
+
+      for (k=0;k<n;k++) {
+        fgets(s,sizeof(s)-1,f);
+        if (sscanf(s,"%s%s%s%s%s%s%s%s%s%s%s%s",
+           s1,s1,s1,s1,s1,s1,s1,s1,s1,s1,s1,s3)!=12) strcpy(s3,"");
+        if (sscanf(s,"%d%d"SCANFLT""SCANFLT"%d%d%d%d%d"SCANFLT""SCANFLT,
+            &i1,&i2,&f1,&f2,&i3,&i4,&i5,&i6,&i7,&f3,&f4)==11) {
+          if (f4<=0) f4=1; /* Bugfix for DG files made with beta */
+          fgets(s1,sizeof(s1)-1,f);RemoveLF(s1);
+          fgets(s2,sizeof(s2)-1,f);RemoveLF(s2);
+
+          xpt=FindXPointTest(a,i6);
+          if (xpt==NULL) {*ef|=DGFE_NEQUIL;goto bad;}
+
+          dMin=MAXDOUBLE;xpsMin=NULL;
+          for (xps=Group1st(xpt->segs,&ix);xps!=NULL;xps=Next(&ix)) {
+            angle=CalcXPointSegAngle(a,xps,xpt);
+            d=fabs(angle-f3);
+            if (d>180) d=fabs(d-360); /* Correct for "-179 vs +179" */
+            if (d<dMin) {dMin=d;xpsMin=xps;}
+          }
+          if (xpsMin==NULL) goto bad;
+
+          xptMin=xpsMin->xpt;
+          numberMin=xpsMin->number;
+
+          dMin=MAXDOUBLE;xpsMin=NULL;
+          for (xps=Group1st(xpt->segs,&ix);xps!=NULL;xps=Next(&ix)) {
+            if (xps->number!=numberMin || xps->xpt!=xptMin) continue;
+            d=fabs(f1/f4-xps->startPos/xps->lineLen);
+            if (d<dMin) {dMin=d;xpsMin=xps;}
+          }
+
+          gps=FindGridPointSegBySegment(a,xpsMin);
+          assert(gps!=NULL);
+
+          SetGridPointSegZone(gps,i3);
+          SetGridPointSegDir(gps,i4);
+          SetGridPointSegTargetDir(gps,i5);
+          SetGridPointSegShortName(gps,s1);
+          SetGridPointSegLongName(gps,s2);
+
+          if (xpt!=gps->xps->xpt) {
+            SetGridPointSegDir(gps,-gps->dir);
+            SetGridPointSegTargetDir(gps,-gps->targetDir);
+          }
+
+          fl=0;Str2Flags(s3,&fl,gridPointSegFlags);
+          SetGridPointSegFlags(gps,fl);
+
+          GroupAdd(g,gps->xps);
+
+          /*xps=AddXPointSeg(a,xpt,i2,f1,f2);
+          if (xps==NULL) {*ef|=DGFE_NEQUIL;goto bad;} */
+
+          bad:;
+        } else *ef|=DGFE_SYNTAX;
+      }
+      for (xps=AppXPointSeg1st(a,&ix);xps!=NULL;xps=Next(&ix))
+        if (!InGroup(g,xps)) DelXPointSeg(a,xps);
+
+      FreeGroup(g);
+
+    } else
+    if (sscanf(s,"SurfaceZones114 %u",&n)==1) {
+      for (sz=AppSurfaceZone1st(a,&ix);sz!=NULL;sz=Next(&ix))
+        DelSurfaceZone(sz);
+      for (k=0;k<n;k++) {
+        fgets(s,sizeof(s)-1,f); /* szNo2==-1 -> unlimited */
+
+        r=sscanf(s,"%d%d%d%d%s",&i1,&i2,&i3,&i4,s3);
+        if (r==4) {strcpy(s3,"");r=5;}
+        if (r==5) {
+          fgets(s1,sizeof(s1)-1,f);RemoveLF(s1);
+          fgets(s2,sizeof(s2)-1,f);RemoveLF(s2);
+          sz=AddSurfaceZone(a,i1,i2,i3,i4);
+          if (sz==NULL) {*ef|=DGFE_NEQUIL;goto badSZ;}
+          SetSurfaceZoneShortName(sz,s1);
+          SetSurfaceZoneLongName(sz,s2);
+
+          fl=0;Str2Flags(s3,&fl,surfaceZoneFlags);
+          SetSurfaceZoneFlags(sz,fl);
+
+          badSZ:;
+        }
+        else *ef|=DGFE_SYNTAX;
+      }
+    } else
+
+    if (sscanf(s,"TopoName114 %s",s1)==1) {
+      SetTopologyName(a,s1);
+    } else
+
+    *ef |= DGFE_SYNTAX;
+  }
+
+  fclose(f);
+  
+  RecalcTopologyCache(a);
+  return 0;
+}
+
+/* Private; used only from Read[Old]DgFile */
+/* Converts XY-Surfaces into regular ones using "old" topology */
+void ConvertOldDgSurfaces(App a,int* ef) {
+  SurfaceEx sx;
+  Index ix;
+  int signInside=0;
+  Group g;
+  double level;
+  int zone;
+
+  for (sx=AppSurfaceEx1st(a,&ix);sx!=NULL;sx=Next(&ix))
+    if (sx->zone==SZN_XY && SurfaceExClosed(sx)) break;
+
+  if (sx!=NULL) signInside=sx->level>0? 1 : -1;
+
+  g=CopyGroup(a->surfacesEx,NULL);
+  for (sx=Group1st(g,&ix);sx!=NULL;sx=Next(&ix)) {
+    if (sx->zone!=SZN_XY) continue;
+    level=sx->level;
+    if (SurfaceExClosed(sx)) zone=1;
+    else if (sx->level*signInside<0) zone=2;
+    else zone=3;
+    DelSurfaceEx(sx);
+    if (signInside) AddSurfaceEx(a,zone,level,NULL);
+    else *ef |= DGFE_OLD_SURFACES_LOST;
+  }
+  FreeGroup(g);
+}
+
+/* Returns # of radial cells */
+char* GetSurfacesStatsStr(App a) {
+  SurfaceZone sz;
+  SurfaceEx sx;
+  Index ixsz,ixsx;
+  int n;
+  static char s[2048];
+  char buf[2048];
+
+  *s=0;
+  for (sz=AppSurfaceZone1st(a,&ixsz);sz!=NULL;sz=Next(&ixsz)) {
+    for (n=0,sx=AppSurfaceEx1st(a,&ixsx);sx!=NULL;sx=Next(&ixsx))
+      if (SurfaceExOk(sx) && sx->zone==sz->zone) n++;
+
+      /* Add one extra cell if limited by segments from both sides */
+      if (sz->gpZone2>=0) n++;
+    sprintf(buf,"%d%s ",n,GetSurfaceZoneShortName(sz));
+    strcat(s,buf);
+  }
+
+  return s;
+}
+
+/* Return the # of poloidal cells */
+char* GetGridPointStatsStr(App a) {
+  GridPointSeg gps;
+  GridPointEx gpx;
+  Index ixsz,ixsx;
+  int n;
+  static char s[2048];
+  char buf[2048];
+
+  *s=0;
+  for (gps=AppGridPointSeg1st(a,&ixsz);gps!=NULL;gps=Next(&ixsz)) {
+    if (!GridPointSegIsUsed(gps)) continue;
+    for (n=0,gpx=AppGridPointEx1st(a,&ixsx);gpx!=NULL;gpx=Next(&ixsx))
+      if (GridPointExOk(gpx) && gpx->zone==gps->zone) n++;
+
+    n++; /* # of cells = # of grid points + 1 */
+    sprintf(buf,"%d%s ",n,GetGridPointSegShortName(gps));
+    strcat(s,buf);
+  }
+
+  return s;
+}
+
+

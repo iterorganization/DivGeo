@@ -273,19 +273,20 @@ Chord HitChord(App a,double x,double y,int* pos,double* pDist) {
   return chHit;
 }
 
-Surface HitSurface(App a,double x,double y,double* pDist) {
-  Surface s,sHit;
+static SurfaceEx HitSurfaceEx(App a,double x,double y,double* pDist) {
+  SurfaceEx s,sHit;
   XY xy1,xy2;
   double dist,distHit=0;
   Index ix,ixy;
 
-  for (sHit=NULL,s=AppSurface1st(a,&ix);s!=NULL;s=Next(&ix)) {
-    for (xy1=SurfaceLine1st(s,&ixy);(xy2=Next(&ixy))!=NULL;xy1=xy2) {
+  for (sHit=NULL,s=AppSurfaceEx1st(a,&ix);s!=NULL;s=Next(&ix)) {
+    if (!s->bCoordsOk) continue;
+    for (xy1=Group1st(s->line,&ixy);(xy2=Next(&ixy))!=NULL;xy1=xy2) {
       dist=Point2VectorDist(xy1->x,xy1->y,xy2->x,xy2->y,
-	x,y,NULL,NULL);
+        x,y,NULL,NULL);
       if (sHit==NULL || dist<distHit) {
-	distHit=dist;
-	sHit=s;
+        distHit=dist;
+        sHit=s;
       }
     }
   }
@@ -316,54 +317,56 @@ XPointSeg HitXPointSeg(App a,double x,double y,double* pDist) {
   return sHit;
 }
 
-GridPoint HitGridPoint(App a,double x,double y,double* pDist) {
-  GridPoint gp,gpHit;
+static GridPointEx HitGridPointEx(App a,double x,double y,double* pDist) {
+  GridPointEx gpx,gpxHit;
   double d,dHit=0;
   Index ix;
 
-  if (a->xpoint==NULL) FatalError("HitGridPoint()-!xpoint: fatal error 1");
-
-  for (gpHit=NULL,gp=AppGridPoint1st(a,&ix);gp!=NULL;gp=Next(&ix)) {
-    d=hypot(x-gp->x,y-gp->y);
-    if (gpHit==NULL || d<dHit) {
-      gpHit=gp;
+  for (gpxHit=NULL,gpx=AppGridPointEx1st(a,&ix);gpx!=NULL;gpx=Next(&ix)) {
+    if (!gpx->bCoordsOk) continue;
+    d=hypot(x-gpx->x,y-gpx->y);
+    if (gpxHit==NULL || d<dHit) {
+      gpxHit=gpx;
       dHit=d;
     }
   }
 
   if (pDist!=NULL) *pDist=dHit;
-  return gpHit;
+  return gpxHit;
 }
 
-int HitGridPointPos(App a,double x,double y,int* parea,double* pvalue) {
+int HitGridPointExPos(App a,double x,double y,int* pzone,double* pvalue) {
+  GridPointSeg gps,gpsHit=NULL;
   XY xy,xy1;
-  Index ix;
-  int ar,aHit=-1;
+  Index ix,ix_gps;
+  int zHit=-1;
   double s,d,v,dHit=0,vHit;
 
-  if (a->xpoint==NULL)FatalError("HitGridPointPos()-!xpoint: fatal error 1");
-
-  for (ar=0;ar<3;ar++) {
-    xy=Group1st(a->xpoint->line[ar],&ix);
-    ValidatePtr(xy,"HitGridPointPos.loop");
+  for (gps=AppGridPointSeg1st(a,&ix_gps);gps!=NULL;gps=Next(&ix_gps)) {
+    if (!(gps->flags & GPSF_USED)) continue;
+    xy=Group1st(gps->line,&ix);
+    ValidatePtr(xy,"HitGridPointExPos.loop");
     for (s=0;(xy1=Next(&ix))!=NULL;xy=xy1) {
       d=Point2VectorDist(xy->x,xy->y,xy1->x,xy1->y,x,y,NULL,&v);
-      v=s+v*hypot(xy->x-xy1->x,xy->y-xy1->y)/a->xpoint->lineLen[ar];
-      if (aHit<0 || d<dHit) {
-        aHit=ar;
+      v=s+v*hypot(xy->x-xy1->x,xy->y-xy1->y)/gps->lineLength;
+      if (zHit<0 || d<dHit) {
+        zHit=gps->zone;
         dHit=d;
         vHit=v;
+        gpsHit=gps;
       }
-      s+=hypot(xy->x-xy1->x,xy->y-xy1->y)/a->xpoint->lineLen[ar];
+      s+=hypot(xy->x-xy1->x,xy->y-xy1->y)/gps->lineLength;
     }
   }
   if (vHit<0) vHit=0;
   if (vHit>1) vHit=1;
-  if (aHit>=0) {
+  if (gpsHit!=NULL && gpsHit->dir<0) vHit=1-vHit;
+
+  if (zHit>=0) {
     if (pvalue!=NULL) *pvalue=vHit;
-    if (parea!=NULL) *parea=aHit;
+    if (pzone!=NULL) *pzone=zHit;
   }
-  return aHit<0 ? -1 : 0;
+  return zHit<0 ? -1 : 0;
 }
 
 static MeshPoint HitMeshPoint(App a,double x,double y,double* pDist) {
@@ -418,8 +421,8 @@ static MeshCell HitMeshCell(App a,double x,double y,double* pDist) {
   int i;
 
   if (a->mesh==NULL) return NULL;
-  
-  
+
+
   for (mcHit=NULL,i=0;i<a->mesh->cellCount;i++) {
     mc=a->mesh->cells+i;
     dist=hypot(mc->centerX-x,mc->centerY-y);
@@ -442,9 +445,11 @@ void* HitViewObject(View w,double x,double y,long flags) {
   if (flags & SHW_NODES) flags |= SHW_IRRNODES;
 
   mask=w->showFlags;
-  if (mask & SHW_MESH) 
+  if (mask & SHW_MESH)
     mask |= SHWX_MESHCELLS|SHWX_MESHELEMENTS|SHWX_MESHPOINTS;
-  
+
+  if (!w->bEditTopology) mask=mask & ~(SHW_XPOINTTESTS);
+
   flags &= mask;
   pHit=NULL;
 
@@ -454,12 +459,7 @@ void* HitViewObject(View w,double x,double y,long flags) {
   }
 
   if (flags & SHW_SURFACES) {
-    p=HitSurface(w->app,x,y,&d);
-    if (p!=NULL && (pHit==NULL || d<dHit)) {pHit=p;dHit=d;}
-  }
-
-  if (flags & SHW_GRIDPOINTS && w->app->xpoint!=NULL) {
-    p=HitGridPoint(w->app,x,y,&d);
+    p=HitSurfaceEx(w->app,x,y,&d);
     if (p!=NULL && (pHit==NULL || d<dHit)) {pHit=p;dHit=d;}
   }
 
@@ -511,8 +511,14 @@ void* HitViewObject(View w,double x,double y,long flags) {
     p=HitXPointTest(w->app,x,y,&d);
     xpt=p;
     if (p!=NULL && (pHit==NULL || d<=dHit ||
-	d<=fabs(w->app->equil->x[xpt->cx2]-w->app->equil->x[xpt->cx1])))
+   d<=fabs(w->app->equil->x[xpt->cx2]-w->app->equil->x[xpt->cx1])))
       {pHit=p;dHit=d;}
+  }
+
+  if (flags & SHW_GRIDPOINTS) {
+    p=HitGridPointEx(w->app,x,y,&d);
+    if (p!=NULL && (pHit==NULL || d<dHit || d<w->gridPointLen/2/w->zoomX)) {
+      pHit=p;dHit=d;}
   }
 
   return pHit;
@@ -527,9 +533,9 @@ Group CoveredViewObjects(View w,double x1,double y1,double x2,double y2,
   long mask;
 
   mask=w->showFlags;
-  if (mask & SHW_MESH) 
+  if (mask & SHW_MESH)
     mask |= SHWX_MESHCELLS|SHWX_MESHELEMENTS|SHWX_MESHPOINTS;
-  
+
 
   if (flags & SHW_NODES) flags |= SHW_IRRNODES;
   flags &= mask;
@@ -555,7 +561,7 @@ Group CoveredViewObjects(View w,double x1,double y1,double x2,double y2,
     for (p=AppChord1st(w->app,&ix);p!=NULL;p=Next(&ix))
       if (ObjectInRectangle(p,x1,y1,x2,y2)) GroupAdd(g,p);
   }
-  
+
   if (flags & SHWX_MESHCELLS && w->app->mesh!=NULL) {
     for (i=0;p=w->app->mesh->cells+i,i<w->app->mesh->cellCount;i++)
       if (ObjectInRectangle(p,x1,y1,x2,y2)) GroupAdd(g,p);
@@ -577,8 +583,6 @@ void CalcObjExtents(void* obj,double* pMinX,double* pMinY,double* pMaxX,
   Chord ch;
   Elem e;
   Separator sep;
-  Surface s;
-  GridPoint gp;
   Equil eq;
   Template t;
   SonnetData sd;
@@ -586,8 +590,10 @@ void CalcObjExtents(void* obj,double* pMinX,double* pMinY,double* pMaxX,
   MeshPoint mpt;
   MeshCell mc;
   MeshElement me;
-  XPoint xpt;
   XY xy;
+  GridPointSeg gps;
+  SurfaceEx sx;
+  GridPointEx gpx;
   double x,y;
   int i;
 
@@ -623,35 +629,54 @@ void CalcObjExtents(void* obj,double* pMinX,double* pMinY,double* pMaxX,
       *pMinX=min(*pMinX,sep->x);*pMaxX=max(*pMaxX,sep->x);
       *pMinY=min(*pMinY,sep->y);*pMaxY=max(*pMaxY,sep->y);
       break;
-    case T_SURFACE:
-      s=obj;
-      for (xy=Group1st(s->line,&ix);xy!=NULL;xy=Next(&ix)) {
-	if (*pMinX>*pMaxX) {
-	  *pMinX=*pMinY=MAXDOUBLE;
-	  *pMaxX=*pMaxY=-MAXDOUBLE;
-	}
-	*pMinX=min(*pMinX,xy->x);*pMaxX=max(*pMaxX,xy->x);
-	*pMinY=min(*pMinY,xy->y);*pMaxY=max(*pMaxY,xy->y);
+    case T_SURFACEEX:
+      sx=obj;
+      if (sx->line!=NULL) {
+        for (xy=Group1st(sx->line,&ix);xy!=NULL;xy=Next(&ix)) {
+          if (*pMinX>*pMaxX) {
+            *pMinX=*pMinY=MAXDOUBLE;
+            *pMaxX=*pMaxY=-MAXDOUBLE;
+          }
+          *pMinX=min(*pMinX,xy->x);*pMaxX=max(*pMaxX,xy->x);
+          *pMinY=min(*pMinY,xy->y);*pMaxY=max(*pMaxY,xy->y);
+        }
       }
       break;
-    case T_GRIDPOINT:
-      gp=obj;
-      if (*pMinX>*pMaxX) {
-	*pMinX=*pMinY=MAXDOUBLE;
-	*pMaxX=*pMaxY=-MAXDOUBLE;
+    case T_GRIDPOINTEX:
+      gpx=obj;
+      if (gpx->bCoordsOk) {
+        if (*pMinX>*pMaxX) {
+          *pMinX=*pMinY=MAXDOUBLE;
+          *pMaxX=*pMaxY=-MAXDOUBLE;
+        }
+        *pMinX=min(*pMinX,gpx->x);*pMaxX=max(*pMaxY,gpx->x);
+        *pMinY=min(*pMinY,gpx->y);*pMaxY=max(*pMaxY,gpx->y);
       }
-      *pMinX=min(*pMinX,gp->x);*pMaxX=max(*pMaxY,gp->x);
-      *pMinY=min(*pMinY,gp->y);*pMaxY=max(*pMaxY,gp->y);
+      break;
+    case T_GRIDPOINTSEG:
+      gps=obj;
+      if (gps->line!=NULL) {
+        for (xy=Group1st(gps->line,&ix);xy!=NULL;xy=Next(&ix)) {
+          if (*pMinX>*pMaxX) {
+            *pMinX=*pMinY=MAXDOUBLE;
+            *pMaxX=*pMaxY=-MAXDOUBLE;
+          }
+          *pMinX=min(*pMinX,xy->x);*pMaxX=max(*pMaxX,xy->x);
+          *pMinY=min(*pMinY,xy->y);*pMaxY=max(*pMaxY,xy->y);
+        }
+      }
+      break;
+    case T_SURFACEZONE: /* $ */
       break;
     case T_TEMPLATE:
       t=obj;
       xy=Group1st(t->points,&ix);
       if (*pMinX>*pMaxX) {*pMinX=*pMaxX=xy->x;*pMinY=*pMaxY=xy->y;}
       while (xy!=NULL) {
-	x=TemplateXY2X(t,xy);
-	y=TemplateXY2Y(t,xy);
-	*pMinX=min(*pMinX,x);*pMaxX=max(*pMaxX,x);
-	*pMinY=min(*pMinY,y);*pMaxY=max(*pMaxY,y);
+        x=TemplateXY2X(t,xy);
+        y=TemplateXY2Y(t,xy);
+        *pMinX=min(*pMinX,x);*pMaxX=max(*pMaxX,x);
+        *pMinY=min(*pMinY,y);*pMaxY=max(*pMaxY,y);
         xy=Next(&ix);
       }
       break;
@@ -679,17 +704,17 @@ void CalcObjExtents(void* obj,double* pMinX,double* pMinY,double* pMaxX,
       break;
     case T_MESH:
       m=obj;
-      for (i=0;i<m->pointCount;i++) 
+      for (i=0;i<m->pointCount;i++)
         CalcObjExtents(m->points+i,pMinX,pMinY,pMaxX,pMaxY);
       break;
     case T_MESHELEMENT:
       me=obj;
-      for (i=0;i<2;i++) 
+      for (i=0;i<2;i++)
         CalcObjExtents(me->points[i],pMinX,pMinY,pMaxX,pMaxY);
       break;
     case T_MESHCELL:
       mc=obj;
-      for (i=0;i<4;i++) 
+      for (i=0;i<4;i++)
         CalcObjExtents(mc->points[i],pMinX,pMinY,pMaxX,pMaxY);
       break;
     case T_MESHPOINT:
@@ -700,19 +725,6 @@ void CalcObjExtents(void* obj,double* pMinX,double* pMinY,double* pMaxX,
       }
       *pMinX=min(*pMinX,mpt->x);*pMaxX=max(*pMaxX,mpt->x);
       *pMinY=min(*pMinY,mpt->y);*pMaxY=max(*pMaxY,mpt->y);
-      break;
-    case T_XPOINT:
-      xpt=obj;
-      for (i=0;i<3;i++) {
-	for (xy=Group1st(xpt->line[i],&ix);xy!=NULL;xy=Next(&ix)) {
-	  if (*pMinX>*pMaxX) {
-	    *pMinX=*pMinY=MAXDOUBLE;
-	    *pMaxX=*pMaxY=-MAXDOUBLE;
-	  }
-	  *pMinX=min(*pMinX,xy->x);*pMaxX=max(*pMaxX,xy->x);
-	  *pMinY=min(*pMinY,xy->y);*pMaxY=max(*pMaxY,xy->y);
-	}
-      }
       break;
     default:
       FatalError("CalcObjExtents()-type%d: fatal error 1",GetObjType(obj));
@@ -767,8 +779,6 @@ int DetectFileType(char* fName) {
 int LockObject(void* obj,int incr) {
   Node n;
   Elem e;
-  Surface s;
-  GridPoint gp;
   Separator sep;
   Var v;
   VarSet vs;
@@ -782,12 +792,6 @@ int LockObject(void* obj,int incr) {
     case T_ELEM:
       e=obj;
       return e->locks+=incr;
-    case T_SURFACE:
-      s=obj;
-      return s->locks+=incr;
-    case T_GRIDPOINT:
-      gp=obj;
-      return gp->locks+=incr;
     case T_SEPARATOR:
       sep=obj;
       return sep->locks+=incr;
@@ -799,8 +803,6 @@ int LockObject(void* obj,int incr) {
       return ((Equil)obj)->locks+=incr;
     case T_SONNET:
       return ((SonnetData)obj)->locks+=incr;
-    case T_XPOINT:
-      return ((XPoint)obj)->locks+=incr;
     case T_XPOINTTEST:
       return ((XPointTest)obj)->locks+=incr;
     case T_XPOINTSEG:
@@ -861,31 +863,30 @@ void* TranslateId(PtrTable t,int id) {
 }
 
 int CountSurfaces(App a,int area) {
-  Surface s;
+  SurfaceEx sx;
   Index ix;
   int i;
 
-  if (a->equil==NULL || !a->equil->signInside) return 0;
-  for (i=0,s=AppSurface1st(a,&ix);s!=NULL;s=Next(&ix))
-    if (GetSurfaceArea(a,s)==area) i++;
+/*  if (a->equil==NULL) return 0; */
+  for (i=0,sx=AppSurfaceEx1st(a,&ix);sx!=NULL;sx=Next(&ix))
+    if (SurfaceExOk(sx) && sx->zone==area) i++;
 
   return i;
 }
 
 int CountGridPoints(App a,int area) {
-  GridPoint gp;
+  GridPointEx gpx;
   Index ix;
   int i;
 
-  for (i=0,gp=AppGridPoint1st(a,&ix);gp!=NULL;gp=Next(&ix))
-    if (gp->area==area) i++;
+  for (i=0,gpx=AppGridPointEx1st(a,&ix);gpx!=NULL;gpx=Next(&ix))
+    if (GridPointExOk(gpx) && gpx->zone==area) i++;
 
   return i;
 }
 
 void* GetLockingObject(App a,void* object) {
   Index ix,ix1;
-  Surface s;
   Separator sep;
   VarSetDef vsd;
   VarSet vs;
@@ -896,30 +897,21 @@ void* GetLockingObject(App a,void* object) {
   switch(GetObjType(object)) {
     case T_NODE:
 /*      n=object;*/
-      if (a->xpoint!=NULL) return IsLocked(a->xpoint) ?
-        GetLockingObject(a,a->xpoint) : a->xpoint;
       break;
     case T_SOURCE:
     case T_SEPARATOR:
     case T_ELEM:
       if (!a->bStrict) {
-	if (a->xpoint!=NULL) return IsLocked(a->xpoint)?
-	    GetLockingObject(a,a->xpoint):a->xpoint;
-	assert(0);
+        assert(0);
       }
 
       for (vd=AppVarDef1st(a,&ix);vd!=NULL;vd=Next(&ix))
-	if (vd->varType & VTM_HASGROUP) /* $$$ - didn't understand well */
+        if (vd->varType & VTM_HASGROUP) /* $$$ - didn't understand well */
           for (v=Group1st(vd->vars,&ix1);v!=NULL;v=Next(&ix1))
-	    if (v->val!=NULL && InGroup(v->val,object)) return IsLocked(v) ?
+            if (v->val!=NULL && InGroup(v->val,object)) return IsLocked(v) ?
                 GetLockingObject(a,v) : v;
       break;
     case T_EQUIL:
-      if (a->xpoint!=NULL)
-	return IsLocked(a->xpoint)? GetLockingObject(a,a->xpoint):a->xpoint;
-      s=AppSurface1st(a,NULL);
-      if (s!=NULL) return IsLocked(s) ? GetLockingObject(a,s) : s;
-
       p=AppXPointTest1st(a,NULL);
       if (p!=NULL) return IsLocked(p) ? GetLockingObject(a,p) : p;
 
@@ -929,8 +921,8 @@ void* GetLockingObject(App a,void* object) {
       break;
     case T_XPOINTTEST:
       if (a->bStrict) {
-	p=Group1st(((XPointTest)object)->segs,NULL);
-	if (p!=NULL) return IsLocked(p) ? GetLockingObject(a,p) : p;
+        p=Group1st(((XPointTest)object)->segs,NULL);
+        if (p!=NULL) return IsLocked(p) ? GetLockingObject(a,p) : p;
       }
       break;
     case T_SONNET:
@@ -939,24 +931,21 @@ void* GetLockingObject(App a,void* object) {
       break;
     case T_VAR:
       v=object;
-      if ((v->def->varType==VT_TARGET1 || v->def->varType==VT_TARGET2) &&
-          a->xpoint!=NULL)
-	return IsLocked(a->xpoint)? GetLockingObject(a,a->xpoint):a->xpoint;
       break;
     case T_VARDEF:
       vd=object;
       for (v=Group1st(vd->vars,&ix);v!=NULL;v=Next(&ix))
-	if (IsLocked(v)) return GetLockingObject(a,v);
+        if (IsLocked(v)) return GetLockingObject(a,v);
       break;
     case T_VARSET:
       vs=object;
       for (v=Group1st(vs->vars,&ix);v!=NULL;v=Next(&ix))
-	if (IsLocked(v)) return GetLockingObject(a,v);
+        if (IsLocked(v)) return GetLockingObject(a,v);
       break;
     case T_VARSETDEF:
       vsd=object;
       for (vd=Group1st(vsd->varDefs,&ix);vd!=NULL;vd=Next(&ix))
-	if (IsLocked(vd)) return GetLockingObject(a,vd);
+        if (IsLocked(vd)) return GetLockingObject(a,vd);
       break;
   }
   FatalError("GetLockingObject()-type%d:fatal error 1",GetObjType(object));
@@ -975,16 +964,16 @@ int IsLocked(void* obj) {
       e=(Elem)obj;
       if (e->app->bStrict && !IsEmptyGroup(e->varsContaining)) return 1;
       return ((Elem)obj)->locks;
-    case T_SURFACE:return ((Surface)obj)->locks;
-    case T_GRIDPOINT:return ((GridPoint)obj)->locks;
+    case T_SURFACEEX:return ((SurfaceEx)obj)->locks;
+    case T_GRIDPOINTEX:return ((GridPointEx)obj)->locks;
     case T_SEPARATOR:return ((Separator)obj)->locks;
     case T_SOURCE:return ((Source)obj)->locks;
     case T_CHORD:return ((Chord)obj)->locks;
     case T_EQUIL:
       eq=(Equil)obj;
-      if (eq->app->bStrict && (eq->app->xpoint!=NULL ||
-	!IsEmptyGroup(eq->app->surfaces) ||
-	!IsEmptyGroup(eq->app->xpointTests)
+      if (eq->app->bStrict && (/*eq->app->xpoint!=NULL || */
+        
+        !IsEmptyGroup(eq->app->xpointTests)
       ) ) return 1;
 
       return ((Equil)obj)->locks;
@@ -992,9 +981,8 @@ int IsLocked(void* obj) {
     case T_SONNET:
       sd=(SonnetData)obj;
       if (sd->app->bStrict &&
-	!IsEmptyGroup(sd->app->separators) ) return 1;
+        !IsEmptyGroup(sd->app->separators) ) return 1;
       return sd->locks;
-    case T_XPOINT:return ((XPoint)obj)->locks;
     case T_XPOINTTEST:
       xpt=obj;
       if (xpt->app->bStrict && !IsEmptyGroup(xpt->segs)) return 1;
@@ -1013,6 +1001,23 @@ int IsLocked(void* obj) {
   return 0;
 }
 
+int IsCarreLocked(void* object) {
+  SurfaceEx sx;
+  GridPointEx gpx;
+  
+  switch (GetObjType(object)) {
+    case T_SURFACEEX:
+      sx=(SurfaceEx)object;
+      return sx->app->outputMode==OUTPUTMODE_CARRE && !SurfaceExVirtual(sx);
+    case T_GRIDPOINTEX:
+      gpx=(GridPointEx)object;
+      return gpx->app->outputMode==OUTPUTMODE_CARRE;
+    default:
+      return 0;
+  }
+  return 0; /* Make the compiler happy */
+}
+
 int CompStrings(char* str1,char* str2) {
   if ((str1==NULL || !*str1) && (str2==NULL || !*str2)) return 0;
   if (str1!=NULL && str2==NULL) return -1;
@@ -1025,7 +1030,7 @@ char* Flags2Str(unsigned long flags,FlagsRec fr) {
   int i;
 
   for (i=0;fr[i].c;i++) {
-    buf[2*i]=(flags & fr[i].mask) ? '+' : '-';
+    buf[2*i]=(char)((flags & fr[i].mask) ? '+' : '-');
     buf[2*i+1]=fr[i].c;
   }
   buf[2*i]=0;
@@ -1088,6 +1093,34 @@ int CompPolyLines(Group line1,Group line2) {
   return -1;
 }
 
+int CompPolyLinesEx(Group line1,Group line2,double maxError) {
+  Index ix1,ix2;
+  XY xy1,xy2;
+
+  if (GroupCount(line1)!=GroupCount(line2)) return -1;
+
+  xy1=Group1st(line1,&ix1);
+  xy2=Group1st(line2,&ix2);
+  for(;xy1!=NULL;xy1=Next(&ix1),xy2=Next(&ix2))
+    if (hypot(xy1->x-xy2->x,xy1->y-xy2->y)>maxError) break;
+
+  if (xy1==NULL) return 0;
+
+  RevertGroup(line2);
+
+  xy1=Group1st(line1,&ix1);
+  xy2=Group1st(line2,&ix2);
+  for(;xy1!=NULL;xy1=Next(&ix1),xy2=Next(&ix2))
+    if (hypot(xy1->x-xy2->x,xy1->y-xy2->y)>maxError) break;
+
+  RevertGroup(line2);
+
+  if (xy1==NULL) return 0;
+
+  return -1;
+}
+
+/* Returns 0 on success */
 int PolyLinesIntersect(Group line1,Group line2,double* pos1,double* pos2) {
   XY xy1a,xy1b,xy2a,xy2b;
   Index ix1,ix2;
@@ -1100,7 +1133,7 @@ int PolyLinesIntersect(Group line1,Group line2,double* pos1,double* pos2) {
     len2=0;
     for (xy2a=Group1st(line2,&ix2);(xy2b=Next(&ix2))!=NULL;xy2a=xy2b) {
       if (VIntersect(xy1a->x,xy1a->y,xy1b->x,xy1b->y,
-	  xy2a->x,xy2a->y,xy2b->x,xy2b->y,&r1t,&r2t)) continue;
+          xy2a->x,xy2a->y,xy2b->x,xy2b->y,&r1t,&r2t)) continue;
 
       /* Intersection detected */
 
@@ -1135,19 +1168,19 @@ void CutPolyLine(Group line,double pos,int bTail) {
       ny=xy1->y+(xy->y-xy1->y)*(pos-l1)/h;
 
       if (bTail) {
-	xy1->x=nx;
-	xy1->y=ny;
-	for (xy=Group1st(line,&ix);xy!=xy1;xy=Next(&ix)) {
-	  GroupDel(line,xy);
-	  Free(xy);
-	}
+        xy1->x=nx;
+        xy1->y=ny;
+        for (xy=Group1st(line,&ix);xy!=xy1;xy=Next(&ix)) {
+          GroupDel(line,xy);
+          Free(xy);
+        }
       } else {
-	xy->x=nx;
-	xy->y=ny;
-	while ((xy=Next(&ix))!=NULL) {
-	  GroupDel(line,xy);
-	  Free(xy);
-	}
+        xy->x=nx;
+        xy->y=ny;
+        while ((xy=Next(&ix))!=NULL) {
+          GroupDel(line,xy);
+          Free(xy);
+        }
       }
       break;
     }
@@ -1178,11 +1211,24 @@ double ProjectPointToPolyLine(Group gxy,double x,double y) {
   }
   if (vHit<0) vHit=0;
   if (vHit>s) vHit=s;
-  
+
   return vHit;
 }
 
-  
+double PointToPolyLineDist(Group gxy,double x,double y) {
+  XY xy;
+  Index ix;
+  double d,dMin=MAXDOUBLE;
+
+  for (xy=Group1st(gxy,&ix);xy!=NULL;xy=Next(&ix)) {
+    d=hypot(x-xy->x,y-xy->y);
+    if (d<dMin) dMin=d;
+  }
+
+  return dMin;
+}
+
+
 int GetPolyLinePoint(Group gxy,double length,double* x,double* y) {
   double s,l/*,x,y*/;
   XY xy,xy1;
@@ -1204,7 +1250,7 @@ int GetPolyLinePoint(Group gxy,double length,double* x,double* y) {
   *x=xy->x;*y=xy->y;
   return -1;
 }
-  
+
 
 void FollowRectCW(int* px,int* py,int cx1,int cy1,int cx2,int cy2) {
   if (cx2<cx1) swap(cx2,cx1);
@@ -1273,9 +1319,9 @@ static int CalcDeltaCoeffs(double d1,double dn,int cnt,
     denom = -((n-1)*(n-1))*(n-2)/6.;
     if (denom==0) return -1;
     aa = (d1*(-n)*(n+1)*(n-1)/6. - dn*(n+1)*(n-1)/3. + l*(n-1))
-	  /denom;
+          /denom;
     bb = (d1*(-(n+1)*(2*n+1)/6. + n*n) + dn*((n+1)*(2*n+1)/6. - 1)
-	  + l*(1-n*n)/n)/denom;
+          + l*(1-n*n)/n)/denom;
     cc = (n-1)*(-d1/2. - dn/2. + l/n)/denom;
   }
 
@@ -1312,8 +1358,8 @@ double DistributeLaw(double x,int law,double alpha,double alpha2,int cnt) {
       if (CalcDeltaCoeffs(alpha,alpha2,cnt,&aa,&bb,&cc)) return -1;
 
       if (x<0) {
-	for (i=1;i<=n;i++) if (aa+bb*i+cc*i*i<=0) return -1;
-	return 1;
+        for (i=1;i<=n;i++) if (aa+bb*i+cc*i*i<=0) return -1;
+        return 1;
       }
 
       n=min(n,x*n+1);
@@ -1324,12 +1370,15 @@ double DistributeLaw(double x,int law,double alpha,double alpha2,int cnt) {
     default:
       assert(0);
   }
+
+  assert(0);
+  return 0; /* Make the compiler happy */
 }
 
 #define SCNT 10
 #define SLEN 256
 
-static char* GetLocalStaticStr() {
+static char* GetLocalStaticStr(void) {
   static int index=0;
   static char buf[SCNT][SLEN+1];
 
@@ -1351,7 +1400,7 @@ char* GetVersionStr(int v) {
   if (v/100%100==0) strcat(buf,".0");
 
   l=strlen(buf);
-  if (v%100/10!=0) buf[l++]='a'+v%100/10-1;
+  if (v%100/10!=0) buf[l++]=(char)('a'+v%100/10-1);
 
   if (v%10==9) buf[l++]='$';
   else assert(v%10==0);
@@ -1385,19 +1434,19 @@ int ObjectInRectangle(void* object,double x1,double y1,double x2,double y2){
     case T_ELEM:
       e=(Elem)object;
       return VectorInRectangle(e->n[1]->x,e->n[1]->y,e->n[2]->x,e->n[2]->y,
-	  x1,y1,x2,y2);
+          x1,y1,x2,y2);
     case T_CHORD:
       ch=(Chord)object;
       return VectorInRectangle(ch->x1,ch->y1,ch->x2,ch->y2,x1,y1,x2,y2);
     case T_SEPARATOR:
       sep=(Separator)object;
       return VectorInRectangle(sep->x,sep->y,sep->n->x,sep->n->y,
-	  x1,y1,x2,y2);
+          x1,y1,x2,y2);
     case T_MESHELEMENT:
       me=(MeshElement)object;
       return VectorInRectangle(me->points[0]->x,me->points[0]->y,
           me->points[1]->x,me->points[1]->y,
-	  x1,y1,x2,y2);
+          x1,y1,x2,y2);
     case T_SOURCE:
       src=(Source)object;
       return PointInRectangle(src->x,src->y,x1,y1,x2,y2);
@@ -1418,7 +1467,7 @@ int ObjectInRectangle(void* object,double x1,double y1,double x2,double y2){
  *
  * Limitations: Supposed to resolve file names only. Directory names
  *              containing '..'/'.' at the very end are not expanded.
-		Does not fully resolve DOS filenames.
+                Does not fully resolve DOS filenames.
 */
 
 char* ExpandFilename(char* name) {

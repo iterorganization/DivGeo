@@ -54,7 +54,7 @@ static void SetupSlideMeshPoint(View w,MoveMeshPointData d) {
   Group g;
   Index ix;
   MeshPoint mpt1;
-  Surface s;
+  SurfaceEx sx;
   XY xy;
   double pos,pos1,dpL,dpR;
   int i;
@@ -85,31 +85,31 @@ static void SetupSlideMeshPoint(View w,MoveMeshPointData d) {
       return;
     }
 
-    s=AddSurface(w->app,d->mpt->backupX,d->mpt->backupY,&i);
-    if (s==NULL) {
+    sx=AddSurfaceExXY(w->app,d->mpt->backupX,d->mpt->backupY,&i);
+    if (sx==NULL) {
       SetHighlightMode(w->app,d->hm=0);
       HighlightDragMeshPoint(w,d->mpt,1);
       SetViewMsg(w,GetStr(w,i));
       return;
     }
-    if (s->line==NULL || IsEmptyGroup(s->line)) {
-      s=DelSurface(w->app,s);
+    if (!SurfaceExOk(sx) || sx->line==NULL || IsEmptyGroup(sx->line)) {
+      sx=DelSurfaceEx(sx);
       SetHighlightMode(w->app,d->hm=0);
       HighlightDragMeshPoint(w,d->mpt,1);
       return;
     }
 
     d->gXY=CreateGroup();
-    for (xy=Group1st(s->line,&ix);xy!=NULL;xy=Next(&ix))
+    for (xy=Group1st(sx->line,&ix);xy!=NULL;xy=Next(&ix))
       AddXY(d->gXY,xy->x,xy->y);
 
-    if (s->closed) for (i=0;i<GroupCount(d->gXY)/2;i++) {
+    if (SurfaceExClosed(sx)) for (i=0;i<GroupCount(d->gXY)/2;i++) {
       xy=Group1st(d->gXY,NULL);
       GroupDel(d->gXY,xy);
       GroupAdd(d->gXY,xy);
     }
 
-    DelSurface(w->app,s);
+    DelSurfaceEx(sx);
 
   } else if (w->app->meshSlidingMode & MSMF_USE_POINTS) {
 
@@ -445,8 +445,8 @@ void TlMoveMeshPoint(View w,int event,double x,double y) {
       d->mpt=HitViewObject(w,x,y,SHWX_MESHPOINTS);
 
       if (d->mpt==NULL) {
-	d=Free(d);
-	break;
+        d=Free(d);
+        break;
       }
 
       d->hm=!IsLocked(d->mpt);
@@ -472,8 +472,8 @@ void TlMoveMeshPoint(View w,int event,double x,double y) {
       if (d==NULL) break;
       if (d->mpt->x==x && d->mpt->y==y) break;
       if (d->bEnh) {
-	ChangeMeshPoint(d->mpt,x,y);
-	d->bMoved=1;
+        ChangeMeshPoint(d->mpt,x,y);
+        d->bMoved=1;
       } else DoSlideMeshPoint(w,d,x,y);
       SetExamineMsg(w,d->mpt);
       break;
@@ -555,24 +555,24 @@ void SetMeshHeaderString(Mesh m,char* hs) {
 
 /* Works exactly like strtok but also returns empty strings between
    two adjacent delimiters */
-   
+
 
 static char* xstrtok(char* s1,char* s2) {
   static char* stored_s=NULL;
   int i;
-  
+
   if (s1!=NULL) stored_s=s1;
   if (stored_s==NULL) return NULL;
-  
+
   s1=stored_s;
-  
+
   for (;*stored_s;stored_s++) {
     for (i=0;s2[i];i++) if (s2[i]==*stored_s) {
       *stored_s++=0;
       return s1;
     }
   }
-  
+
   stored_s=NULL;
   return s1;
 }
@@ -580,20 +580,20 @@ static char* xstrtok(char* s1,char* s2) {
 int CheckMeshHeaderString(Mesh m,char* hs) {
   char* s,*s1;
   int i,bIDString=0;
-  
+
   if (*hs && hs[strlen(hs)-1]!='\n') return ERR_MESH_HDR_NO_LF;
-  
+
   s1=MallocString(hs);
-  
+
   s=xstrtok(s1,"\n");
-  
+
   for (i=0;s!=NULL;i++) {
     if (!strcmp(s,"   Element output:") && i<10) bIDString=1;
     s=xstrtok(NULL,"\n");
   }
-  
+
   Free(s1);
-  
+
   if (!bIDString) return ERR_MESH_HDR_NO_ID;
 
   return 0;
@@ -635,12 +635,12 @@ static int CalcGradient(Equil eq,double x,double y,double* pGrad) {
   *pGrad=0;
 
   if (eq==NULL) return ERR_NOEQUIL;
-  
+
   if (x<=min(eq->x[0],eq->x[eq->sx-1]) || x>=max(eq->x[0],eq->x[eq->sx-1]) ||
       y<=min(eq->y[0],eq->y[eq->sy-1]) || y>=max(eq->y[0],eq->y[eq->sy-1]))
     return ERR_MESH_OUT_OF_EQUIL;
 
-  if (eq->hSplines==NULL || eq->hSplines==NULL) 
+  if (eq->hSplines==NULL || eq->hSplines==NULL)
     CalcEquilSplines(eq);
 
   gXY=CreateGroup();
@@ -652,7 +652,7 @@ static int CalcGradient(Equil eq,double x,double y,double* pGrad) {
   CalcSimpleSplineDY(si,x,&gx);
   si=FreeSimpleSplineInfo(si);
   gXY=FreeMallocedGroup(gXY);
-  
+
   gXY=CreateGroup();
   for (i=0;i<eq->sy;i++) {
     CalcSimpleSplineValue(eq->hSplines[i],x,&t);
@@ -664,7 +664,7 @@ static int CalcGradient(Equil eq,double x,double y,double* pGrad) {
   gXY=FreeMallocedGroup(gXY);
 
   *pGrad=hypot(gx,gy);
-  
+
   return 0;
 }
 
@@ -705,7 +705,7 @@ int RecalculateMeshCellCenter(MeshCell mc) {
 
   k=CalcGradient(mc->mesh->app->equil,mc->centerX,mc->centerY,&r);
   if (k) return k;
-  
+
   /* Multiply the old field ratio by the ratio of gradients */
 
   if (ra!=0) SetMeshCellFieldRatio(mc,r/ra*mc->backupRatio);
@@ -988,7 +988,7 @@ int LoadMesh(App a,char* fName) {
   }
 
   if (r==0) r=CreateMeshTopology(&m,mcdG);
-  
+
 
   if (r==0) {
     if (a->mesh!=NULL) DelMesh(a->mesh);
@@ -1000,23 +1000,23 @@ int LoadMesh(App a,char* fName) {
     ar.obj=m;
     r=ActAddMesh(a,&ar);
   }
-  
+
   if (r==0 && cmtG!=NULL) {
     for (l=0,s=Group1st(cmtG,&ix);s!=NULL;s=Next(&ix))
       l+=strlen(s);
-    
+
     hs=Malloc(l+1);
     for (l=0,s=Group1st(cmtG,&ix);s!=NULL;s=Next(&ix)) {
       strcpy(hs+l,s);
       l+=strlen(s);
     }
-    
+
     SetMeshHeaderString(m,hs);
     SetMeshAlt(m,0);
     Free(hs);
   }
-      
-    
+
+
 
   if (mcdG!=NULL) mcdG=FreeMallocedGroup(mcdG);
   if (cmtG!=NULL) cmtG=FreeMallocedGroup(cmtG);
@@ -1052,11 +1052,11 @@ static int LoadSonnetMeshFile(char* fName,Group* pG,Group cmtG,
 
   while (fgets(s,sizeof(s)-1,f)!=NULL) {
     if (sscanf(s,"   Element    %d = (  %d,  %d): ( "SCANFLT","SCANFLT
-	")      ( "SCANFLT","SCANFLT")", &eN,&i,&j,&x1,&y1,&x2,&y2)!=7) {
-      if (bBeg) GroupAdd(cmtG,MallocString(s));  
+        ")      ( "SCANFLT","SCANFLT")", &eN,&i,&j,&x1,&y1,&x2,&y2)!=7) {
+      if (bBeg) GroupAdd(cmtG,MallocString(s));
       continue;
     }
-    
+
     bBeg=0;
 
     if (eN<0 || i<0 || j<0) {
@@ -1070,7 +1070,7 @@ static int LoadSonnetMeshFile(char* fName,Group* pG,Group cmtG,
 
     assert(fgets(s,sizeof(s)-1,f)!=NULL);
     if (sscanf(s,"   Field ratio  =  "SCANFLT"             ( "SCANFLT","
-	SCANFLT")",&ratio,&cX,&cY)!=3) {
+        SCANFLT")",&ratio,&cX,&cY)!=3) {
       fclose(f);
       *pG=mcdG=FreeMallocedGroup(mcdG);
       return ERR_BADFILE;
@@ -1081,7 +1081,7 @@ static int LoadSonnetMeshFile(char* fName,Group* pG,Group cmtG,
 
     assert(fgets(s,sizeof(s)-1,f)!=NULL);
     if (sscanf(s,"                             ( "SCANFLT","SCANFLT
-	")      ( "SCANFLT","SCANFLT")",&x3,&y3,&x4,&y4)!=4) {
+        ")      ( "SCANFLT","SCANFLT")",&x3,&y3,&x4,&y4)!=4) {
       fclose(f);
       *pG=mcdG=FreeMallocedGroup(mcdG);
       return ERR_BADFILE;
@@ -1488,7 +1488,7 @@ static int CreateMeshTopology(Mesh* pM,Group mcdG) {
     /* Create the mesh cell */
 
     mcd->mc=mc=AddMeshCell(m,mcd->eN,mcd->nx,mcd->ny,pt1,pt2,pt3,pt4,
-	mcd->cX,mcd->cY,mcd->ratio);
+        mcd->cX,mcd->cY,mcd->ratio);
     assert(mc!=NULL);
     pt1->cells[3]=pt2->cells[2]=pt3->cells[1]=pt4->cells[0]=mc;
 
@@ -1637,7 +1637,7 @@ static int ActDelMesh(App a,DelRec ar) {
   Mesh m;
   int i;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   m=ar->delete;
   assert(m==a->mesh);
@@ -1677,7 +1677,7 @@ int ActChangeMeshPoint(App a,ChangeMeshPointRec ar) {
   MeshCell mc;
   int i,j;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   assert(!ar->mpt->locks);
 
@@ -1738,12 +1738,12 @@ void DrawMeshElement(View w,MeshElement me,int mode) {
   if (IsMarked(w->app,me) && !IsHighlighted(w->app,me)) {
     switch(mode) {
       case DRAW_ON:
-	SetViewMode(w,VM1_ELEMMARK);
-	break;
+        SetViewMode(w,VM1_ELEMMARK);
+        break;
       case DRAW_OFF:
       case DRAW_ERASE:
-	SetViewMode(w,VM0_ELEMMARK);
-	break;
+        SetViewMode(w,VM0_ELEMMARK);
+        break;
     }
     DrawViewLine(w,me->points[0]->x,me->points[0]->y,
       me->points[1]->x,me->points[1]->y);

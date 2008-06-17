@@ -21,17 +21,18 @@ struct _View {
   int updateFlag;
   Group labels,shapes;
   double stretchPower;
+  int bEditTopology; /* Affects visual appearance & HitObject() */
 
   double hrMinX,hrMinY,hrMaxX,hrMaxY;  /* Highlight rectangle */
   int bHrShown;
 
-  Surface lastExaminedSurface;
-  GridPoint lastExaminedGridPoint;
+  SurfaceEx lastExaminedSurfaceEx;
+  GridPointEx lastExaminedGridPointEx;
 
 /* Implementation-independent cfg variables */
   int nodeR,equilLen,minZoomX,minZoomY,normalLen,gridPointLen,srcR,
     arrowWidth,arrowLength,gridCellMax,labelOffsetX,labelOffsetY,shpIncr,
-    meshCellCenterLen,meshPointRadius;
+    meshCellCenterLen,meshPointRadius,gridPointSegEndLength;
 
 /* Virtual functions */
 
@@ -78,14 +79,11 @@ struct _StringSource {
 #define T_ELEM          1
 #define T_NODE          2
 #define T_EQUIL         3
-#define T_SURFACE       4
 #define T_TEMPLATE      7
 #define T_VARSETDEF     8
 #define T_VARDEF        9
 #define T_VARSET       10
 #define T_VAR          11
-#define T_XPOINT       12
-#define T_GRIDPOINT    13
 #define T_APP          14
 #define T_XAPP         15
 #define T_VIEW         16
@@ -103,12 +101,17 @@ struct _StringSource {
 #define T_MESHPOINT    28
 #define T_MESHELEMENT  29
 #define T_STRINGSOURCE 30
+#define T_GRIDPOINTSEG 31
+#define T_GRIDPOINTEX  32
+#define T_SURFACEZONE  33
+#define T_SURFACEEX    34
 
 #define T_USER        10000
 #define T_EMPTYNODE   10001  /* For DwIfExists() */
 #define T_MULTIPLE    10002  /* For GetGroupType */
 #define T_NONE        10003  /* For GetGroupType */
 #define T_MARKING     10004  /* For Edit|Delete marked */
+#define T_DEL_VSURFACE 10005 /* For Edit|Delete virtual surfaces */
 
 /* Modes for DrawObject()/Draw_xxx()/DrawAppHighlight
 */
@@ -154,9 +157,9 @@ struct _StringSource {
 #define SHW_XPOINTTESTS 0x00040000L
 #define SHW_MESHDETAILS 0x00080000L
 
-#define SHWX_MESHPOINTS 0x80000000L
+#define SHWX_MESHPOINTS   0x80000000L
 #define SHWX_MESHELEMENTS 0x40000000L
-#define SHWX_MESHCELLS  0x20000000L
+#define SHWX_MESHCELLS    0x20000000L
 
 #define SHWM_XPOINT (SHW_SURFACES | SHW_GRIDPOINTS)
 
@@ -173,6 +176,7 @@ struct _StringSource {
 #define N_NEWAPP        0x0080
 #define N_MARK          0x0100
 #define N_DESTROYVIEW   0x0200
+#define N_EXAMINE       0x0400
 
 #define N_RECENTFILES   0x1000
 #define N_NEWTOOL       0x2000
@@ -215,12 +219,15 @@ void RemoveAllViewLabels(View w);
 void LabelObject(View w,void* obj,char* label,int bShowIt);
 void DrawHighlightRect(View w,int mode);
 
+void SetViewEditTopology(View w,int bEnable);
+
 ViewShape AddViewShapeLine(View w,double x1,double y1,double x2,double y2);
 void* DelViewShape(View w,ViewShape vs);
 void ClearViewShapes(View w);
 void DrawViewShape(View w,ViewShape vs,int mode);
 void DrawAllViewShapes(View w,int mode);
 void AddViewArrow(View w,double x1,double y1,double x2,double y2);
+void DrawPolyLine(View w,Group g,double startPos,double endPos);
 
 char* GetStrVaEx(View w,int id,char* fmt,va_list args);
 
@@ -259,6 +266,7 @@ void SetHighlightRect(View w,double x1,double y1,double x2,double y2);
 #define NotifyMarked(a,obj)  NotifyAppViews((a),N_MARK,(obj))
 #define NotifyNewApp(w)      NotifyView((w),    N_NEWAPP,NULL)
 #define NotifyNewTool(w)     NotifyView((w),    N_NEWTOOL,NULL)
+#define NotifyExamine(a,obj) NotifyAppViews((a),N_EXAMINE,(obj))
 
 /* Modes for SetViewMode
 */

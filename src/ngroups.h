@@ -56,7 +56,7 @@ void* Free(void* p) ;
 char* MallocString(char* str);
 char* ReallocString(char* s,char* s1);
 
-unsigned GetSafeAlignment();
+unsigned GetSafeAlignment(void);
 unsigned SafeAlignedSize(unsigned size);
 void* SafeAlignedPointer(void* p,void* base);
 
@@ -80,5 +80,7 @@ void* GroupAt(Group g,size_t index);
 int GroupInGroup(Group g,Group in);
 int InGroupCount(Group g,void* p);
 void GroupQSort(Group g,GroupSortProc gsp,void* userData);
+
+Group GetEmptyStaticGroup(void);
 
 #endif

@@ -83,20 +83,20 @@ double SurroundingCircleRadius(double dx1,double dy1,double dx2,double dy2);
 /* PolyLines //////////////////////////////////////////////////////// */
 
 int CompPolyLines(Group line1,Group line2);
+int CompPolyLinesEx(Group line1,Group line2,double maxError);
 int PolyLinesIntersect(Group line1,Group line2,double* pos1,double* pos2);
 void CutPolyLine(Group line,double pos,int bTail);
 double ProjectPointToPolyLine(Group gxy,double x,double y);
 int GetPolyLinePoint(Group gxy,double length,double* x,double* y);
+double PointToPolyLineDist(Group gxy,double x,double y);
 
 /* Hit test for objects ///////////////////////////////////////////// */
 
 Node HitNode(App a,double x,double y,double* dist);
 Elem HitElem(App a,double x,double y,int* pos,double* dist);
 Chord HitChord(App a,double x,double y,int* pos,double* dist);
-Surface HitSurface(App a,double x,double y,double* dist);
-GridPoint HitGridPoint(App a,double x,double y,double* pDist);
 Separator HitSeparator(App a,double x,double y,double* pDist);
-int HitGridPointPos(App a,double x,double y,int* parea,double* pvalue);
+int HitGridPointExPos(App a,double x,double y,int* pzone,double* pvalue);
 void* HitViewObject(View w,double x,double y,long flags);
 Group CoveredViewObjects(View w,double x1,double y1,double x2,double y2,
     long flags);
@@ -119,6 +119,7 @@ int CountGridPoints(App a,int area);
 
 void* GetLockingObject(App a,void* object);
 int IsLocked(void* object);
+int IsCarreLocked(void* object); /* Handles surfaces, grid pts only */
 
 /* String manipulation ////////////////////////////////////////////// */
 
@@ -151,7 +152,7 @@ double DistributeLaw(double x,int law,double alpha,double alpha2,int cnt);
 #define DGLAW_2ALPHA    2       /* is written to and read from DG files. */
 #define DGLAW_SYMMETRIC 3       /* These constants may NOT be removed or */
 #define DGLAW_DELTA     4       /* changed without installing additional */
-				/* tests.                                */
+                                /* tests.                                */
 
 /* File types /////////////////////////////////////////////////////// */
 

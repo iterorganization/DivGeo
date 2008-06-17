@@ -29,39 +29,47 @@ int AddEquil(App a,char* fName) {
   eq->app=a;
   eq->sx=eq->sy=0;
   eq->hSplines=eq->vSplines=NULL;
+  eq->sspline=NULL;
+  eq->cache=NULL;
 
   ar.obj=eq;
 
   strncpy(eq->fName,fName,sizeof(eq->fName)-1);
   i=ActAddEquil(a,&ar);
-  if (i!=ERR_FILENOTFOUND) {if (ar.obj!=NULL) ar.obj=Free(ar.obj);return i;}
+  if (i!=ERR_FILENOTFOUND) {if (ar.obj!=NULL) ar.obj=Free(ar.obj);goto Ok;}
 
   if (a->fName!=NULL) {
     strncpy(eq->fName,a->fName,sizeof(eq->fName)-1);
     strcat(GetFilePath(eq->fName),GetShortFName(fName));
     i=ActAddEquil(a,&ar);
-    if (i!=ERR_FILENOTFOUND) {if (ar.obj!=NULL) ar.obj=Free(ar.obj);return i;}
+    if (i!=ERR_FILENOTFOUND) {if (ar.obj!=NULL) ar.obj=Free(ar.obj);goto Ok;}
   }
 
   strncpy(eq->fName,GetShortFName(fName),sizeof(eq->fName)-1);
   i=ActAddEquil(a,&ar);
-  if (i!=ERR_FILENOTFOUND) {if (ar.obj!=NULL) ar.obj=Free(ar.obj);return i;}
+  if (i!=ERR_FILENOTFOUND) {if (ar.obj!=NULL) ar.obj=Free(ar.obj);goto Ok;}
 
 /*  strncpy(eq->fName,a->xapp->argv[0],sizeof(eq->fName)-1);
   strcat(GetFilePath(eq->fName),GetShortFName(fName));
   i=ActAddEquil(a,&ar);
-  if (i!=ERR_FILENOTFOUND) {if (ar.obj!=NULL) ar.obj=Free(ar.obj);return i;}
+  if (i!=ERR_FILENOTFOUND) {if (ar.obj!=NULL) ar.obj=Free(ar.obj);goto Ok;}
 */
   if (ar.obj!=NULL) ar.obj=Free(ar.obj);
-  
-  if (a->equil!=NULL) CalcEquilSplines(a->equil);
-  
+
+Ok:
+  if (a->equil!=NULL) {
+    CalcEquilSplines(a->equil);
+    if (!EquilSplinesOk(a->equil)) {
+      i=ERR_EQUIL_SPLINE;
+      DelEquil(a);
+    }
+  }
+
   return i;
 }
 
 int DelEquil(App a) {
   struct _DelEquilRec ar;
-  Surface s;
   XPointTest xpt;
   Index ix;
 
@@ -69,75 +77,11 @@ int DelEquil(App a) {
   if (a->equil==NULL) FatalError("DelEquil()-null: fatal error 1");
   if (a->bStrict && IsLocked(a->equil)) return ERR_LOCKED;
 
-  if (a->xpoint!=NULL) DelXPoint(a);
-  for (s=AppSurface1st(a,&ix);s!=NULL;s=Next(&ix))
-    DelSurface(a,s);
-
   for (xpt=AppXPointTest1st(a,&ix);xpt!=NULL;xpt=Next(&ix))
     DelXPointTest(a,xpt);
 
   ar.eq=a->equil;
   ActDelEquil(a,&ar);
-  return 0;
-}
-
-Surface AddSurface(App a,double x,double y,int* pErr) {
-  struct _ActRec ar;
-  Surface s;
-  int i;
-
-  ValidatePtr(a,"AddSurface");
-
-  s=Malloc(sizeof(*s));
-  s->type=T_SURFACE;
-  s->locks=0;
-  s->originX=x;
-  s->originY=y;
-  s->line=NULL;
-  s->creatorId=NULL;
-
-  ar.obj=s;
-  i=ActAddSurface(a,&ar);
-
-  if (i) s=Free(s);
-  if (pErr!=NULL) *pErr=i;
-
-  return s;
-}
-
-void* DelSurface(App a,Surface s) {
-  struct _DelSurfaceRec ar;
-
-  ChangeSurfaceCreatorId(a,s,NULL);
-
-  ar.s=s;
-  ActDelSurface(a,&ar);
-
-  return NULL;
-}
-
-int ChangeSurface(App a,Surface s,double x,double y) {
-  struct _ChangeSurfaceRec ar;
-  int i;
-
-  ar.s=s;
-  ar.x=x;
-  ar.y=y;
-  i=ActChangeSurface(a,&ar);
-
-  if (i) return i;
-
-  if (*GetSurfaceCreatorId(s)==CID_UNCHANGEDFLAG)
-    ChangeSurfaceCreatorId(a,s,GetSurfaceCreatorId(s)+1);
-
-  return i;
-}
-
-int ChangeSurfaceCreatorId(App a,Surface s,char* id) {
-  if (id!=NULL && !strcmp(id,GetSurfaceCreatorId(s))) return 0;
-
-  SetObjString(a,s,GetOffset(Surface,creatorId),id,0);
-
   return 0;
 }
 
@@ -168,6 +112,9 @@ int CalcEquilSplines(Equil eq) {
     assert(eq->vSplines[j]!=NULL);
     gXY=FreeMallocedGroup(gXY);
   }
+
+  eq->sspline=CreateSurfaceSplineInfo(eq->sx,eq->sy,eq->x,eq->y,eq->val);
+
   return 0;
 }
 
@@ -184,7 +131,28 @@ int FreeEquilSplines(Equil eq) {
     eq->vSplines=Free(eq->vSplines);
   }
 
+  if (eq->sspline!=NULL) eq->sspline=FreeSurfaceSplineInfo(eq->sspline);
+
   return 0;
+}
+
+void AllocEquilCache(Equil eq,int sx,int sy) {
+  int i;
+
+  assert(sx!=0 && sy!=0);
+
+  if (eq->cache!=NULL) FreeEquilCache(eq);
+
+  eq->cache=Malloc(sizeof(*eq->cache)*sx*sy);
+  for (i=sx*sy-1;i>=0;i--) eq->cache[i]=MAXDOUBLE;
+  eq->cacheSx=sx;
+  eq->cacheSy=sy;
+}
+
+void FreeEquilCache(Equil eq) {
+  assert(eq->cache!=NULL);
+  eq->cache=Free(eq->cache);
+  eq->cacheSx=eq->cacheSy=0;
 }
 
 int GetEquilCell(Equil eq,double x,double y,int* px,int* py) {
@@ -200,10 +168,50 @@ int GetEquilCell(Equil eq,double x,double y,int* px,int* py) {
   return 0;
 }
 
+int GetEquilCellEx(Equil eq,double x,double y,int* px,int* py,int sx,int sy){
+  int i;
+
+  /* return GetEquilCell(eq,x,y,px,py); */
+
+/* puts("EqCellX"); */
+
+  if (!inrange(x,eq->x[0],eq->x[eq->sx-1])) return -1;
+  if (!inrange(y,eq->y[0],eq->y[eq->sy-1])) return -1;
+
+  *px=(x-eq->x[0])/(eq->x[eq->sx-1]-eq->x[0])*(sx-1);
+  *py=(y-eq->y[0])/(eq->y[eq->sy-1]-eq->y[0])*(sy-1);
+
+/*  *px=min(*px,sx-2);
+  *py=min(*py,sy-2);
+  *px=max(*px,0);
+  *py=max(*py,0);
+*/
+/* printf("%d %d\n",*px,*py); */
+
+/*  for (i=0;i<eq->sx-1;i++)
+    if (inrange(x,eq->x[i],eq->x[i+1])) {*px=i;break;}
+  if (i>=eq->sx-1) return -1;
+  for (i=0;i<eq->sy-1;i++)
+    if (inrange(y,eq->y[i],eq->y[i+1])) {*py=i;break;}
+  if (i>=eq->sy-1) return -1; */
+
+  return 0;
+}
+
+
 int GetEquilLevel(Equil eq,double x,double y,double* pLevel,
     double* pGradX,double* pGradY) {
   int cx,cy;
   double a1,a2,a3,a4,a13,a24,a13d,a24d;
+
+  if (eq->sspline==NULL) CalcEquilSplines(eq);
+  assert(eq->sspline!=NULL);
+
+  if (!SurfaceSplineValidXY(eq->sspline,x,y)) return -1;
+
+  return CalcSurfaceSplineValue(eq->sspline,x,y,pLevel,pGradX,pGradY);
+
+/* -- Bilinear
 
   if (GetEquilCell(eq,x,y,&cx,&cy)) return -1;
 
@@ -224,6 +232,7 @@ int GetEquilLevel(Equil eq,double x,double y,double* pLevel,
   }
 
   return 0;
+*/
 }
 
 double EqCorrCell(Equil eq,int cx,int cy,double level) {
@@ -232,22 +241,40 @@ double EqCorrCell(Equil eq,int cx,int cy,double level) {
   return (a=EqCell(eq,cx,cy))==level ? a+(eq->maxVal-eq->minVal)*1e-7 : a;
 }
 
-/* Return:
-   0 - area unknown (unknown sign inside the separatrix)
-   1 - closed surface
-   2 - sign opposite to that of closed surfaces
-   2 - sign the same as that of closed surfaces
-*/
+double EqCellEx(Equil eq,int cx,int cy,int sx,int sy) {
+  int i;
+  double x,y,l;
 
-int GetSurfaceArea(App a,Surface s) {
-  if (a->equil->signInside==0) return 0;
-  if (s->closed) return 1;
+  /* return EqCell(eq,cx,cy); */
 
-  return s->level*a->equil->signInside>0 ? 3 : 2;
+  assert(cx>=0 && cx<sx && cy>=0 && cy<sy);
+  if (eq->cache!=NULL && sx==eq->cacheSx && sy==eq->cacheSy) {
+    l=eq->cache[i=cx+cy*eq->cacheSx];
+    if (l!=MAXDOUBLE) return l;
+  }
+
+  x=eq->x[0]+(eq->x[eq->sx-1]-eq->x[0])*cx/(sx-1);
+  y=eq->y[0]+(eq->y[eq->sy-1]-eq->y[0])*cy/(sy-1);
+
+  x=max(x,min(eq->x[0],eq->x[eq->sx-1]));
+  x=min(x,max(eq->x[0],eq->x[eq->sx-1]));
+  y=max(y,min(eq->y[0],eq->y[eq->sy-1]));
+  y=min(y,max(eq->y[0],eq->y[eq->sy-1]));
+
+  assert(!GetEquilLevel(eq,x,y,&l,NULL,NULL));
+
+  if (eq->cache!=NULL && sx==eq->cacheSx && sy==eq->cacheSy) {
+    eq->cache[i]=l;
+  }
+
+  return l;
 }
 
-char* GetSurfaceCreatorId(Surface s) {
-  return s->creatorId==NULL? "*" : s->creatorId;
+double EqCorrCellEx(Equil eq,int cx,int cy,double level,int sx,int sy) {
+  double a;
+
+  return (a=EqCellEx(eq,cx,cy,sx,sy))==level ?
+      a+(eq->maxVal-eq->minVal)*1e-7 : a;
 }
 
 char* ConstructSurfaceCreatorId(int area,int count,double alpha1,
@@ -275,36 +302,26 @@ int ParseSurfaceCreatorId(char* id,int* pArea,int* pCount,double* pAlpha1,
 int DistributeSurfaces(App a,int area,int count,double a1,double a2,
     int law,double level1,double level2,int carreMode,char** oldId) {
   char* creatorId;
-  int i,cnt,r;
+  int i,cnt,r,bosr;
   double v,t;
-  Surface s;
+  SurfaceEx sex;
   Index ix;
 
   /* In Carre mode, determine the levels automatically */
 
   if (carreMode) {
-    level1=0;
-
-    switch (area) {
-      case 1:
-      case 2:
-      case 3:
-	r=FindCarreMinMaxSurfaceLevel(a,area,&level1,&level2);
-	if (r) {
-	  if (r==ERR_OUTOFEQUIL) r=ERR_CARRE_OUTOFEQUIL;
-	  return r;
-	}
-	break;
-      default:
-	assert(0);
+    r=FindCarreMinMaxSurfaceLevel(a,area,&level1,&level2,&bosr);
+    if (r) {
+      if (r==ERR_OUTOFEQUIL) r=ERR_CARRE_OUTOFEQUIL;
+      return r;
     }
   }
 
   /* Delete existing surfaces in Carre mode. Cannot be done earlier
      due to level calculations in main plasma */
 
-  if (carreMode) for (s=AppSurface1st(a,&ix);s!=NULL;s=Next(&ix))
-    if (GetSurfaceArea(a,s)==area) DelSurface(a,s);
+  if (carreMode) for (sex=AppSurfaceEx1st(a,&ix);sex!=NULL;sex=Next(&ix))
+    if (sex->zone==area) DelSurfaceEx(sex);
 
   /* Construct a creatorId from creation parameters */
 
@@ -316,7 +333,7 @@ int DistributeSurfaces(App a,int area,int count,double a1,double a2,
   cnt=count;
 
   /* Carre mode: one extra bounding surface */
-  if (carreMode) cnt++;
+  if (carreMode && bosr) cnt++;
 
   for (i=0;i<cnt;i++) {
     v=DistributeLaw((i+1)/(double)(count+1),law,a1,a2,count);
@@ -327,17 +344,17 @@ int DistributeSurfaces(App a,int area,int count,double a1,double a2,
     if (v<0 || v>1) {
       Cancel(dlg->w->app);
       ErrorBox(dlg->wDlg,
-	GetResourceString(dlg->dg.wLaw,"errBadLaw",NULL,NULL));
+        GetResourceString(dlg->dg.wLaw,"errBadLaw",NULL,NULL));
       return;
     } --- */
 
     t=level1+(level2-level1)*v;
 
-    s=AddSurfaceByLevel(a,area,t,&r);
-    if (s==NULL) {
+    sex=AddSurfaceEx(a,area,t,&r);
+    if (sex==NULL) {
       return r;
     }
-    ChangeSurfaceCreatorId(a,s,creatorId);
+    ChangeSurfaceExCreatorId(sex,creatorId);
   }
 
   if (oldId!=NULL) *oldId=creatorId;
@@ -348,7 +365,8 @@ int DistributeSurfaces(App a,int area,int count,double a1,double a2,
 /* Area==-1 means recursively process all areas */
 
 int RebuildCarreSurfaces(App a,int area) {
-  Surface s;
+  SurfaceEx sx;
+  SurfaceZone sz;
   int count,law,carreMode,r,foo;
   double a1,a2,l1,l2;
   Index ix;
@@ -357,41 +375,27 @@ int RebuildCarreSurfaces(App a,int area) {
   if (a->outputMode!=OUTPUTMODE_CARRE) return ERR_CARRE_MODE_NEEDED;
 
   if (area<0) {
-    r=RebuildCarreSurfaces(a,1);if (r) return r;
-    r=RebuildCarreSurfaces(a,2);if (r) return r;
-    r=RebuildCarreSurfaces(a,3);if (r) return r;
+    for (sz=AppSurfaceZone1st(a,&ix);sz!=NULL;sz=Next(&ix))
+      r=RebuildCarreSurfaces(a,sz->zone);if (r) return r;
     return 0;
   }
 
   if (!CountSurfaces(a,area)) return 0;  /* $$ - maybe some errorcode? */
 
-  for (s=AppSurface1st(a,&ix);s!=NULL;s=Next(&ix)) {
-    if (GetSurfaceArea(a,s)!=area) continue;
-    id=GetSurfaceCreatorId(s);
+  for (sx=AppSurfaceEx1st(a,&ix);sx!=NULL;sx=Next(&ix)) {
+    if (sx->zone!=area) continue;
+    id=GetSurfaceExCreatorId(sx);
     if (ParseSurfaceCreatorId(id,&foo,&count,
-	&a1,&a2,&law,&l1,&l2,&carreMode))
+        &a1,&a2,&law,&l1,&l2,&carreMode))
       continue;
     if (carreMode) break;
   }
 
-  if (s==NULL) return 0;  /* $$ - maybe some errorcode? */
+  if (sx==NULL) return 0;  /* $$ - maybe some errorcode? */
 
   r=DistributeSurfaces(a,area,count,a1,a2,law,l1,l2,carreMode,NULL);
 
   return r;
-}
-
-Surface AddSurfaceByLevel(App a,int area,double level,int* pErr) {
-  double x,y;
-  int r;
-
-  r=FindSurfaceOriginPoint(a,area,level,&x,&y);
-  if (r) {
-    if (pErr!=NULL) *pErr=r;
-    return NULL;
-  }
-
-  return AddSurface(a,x,y,pErr);
 }
 
 int WriteDgEquil(Equil eq,char* fName,int sx,int sy) {
@@ -410,6 +414,46 @@ int WriteDgEquil(Equil eq,char* fName,int sx,int sy) {
   for (i=0;i<sy;i++) for (j=0;j<sx;j++)
     fprintf(f,"%e\n",EqCell(eq,j*eq->sx/sx,i*eq->sy/sy));
 
+  fclose(f);
+
+  return 0;
+}
+
+int WriteSplineEquil(Equil eq,char* fName,int sx,int sy) {
+  FILE* f;
+  unsigned i,j;
+  SurfaceSplineInfo si;
+  double z;
+
+  if (eq->sspline==NULL) CalcEquilSplines(eq);
+  assert(eq->sspline!=NULL);
+
+  si=eq->sspline;
+
+/*   si=CreateSurfaceSplineInfo(eq->sx,eq->sy,eq->x,eq->y,eq->val);
+  assert(si!=NULL);
+ */
+  f=fopen(fName,"w");
+  if (f==NULL) return ERR_FWRITE;
+
+  fprintf(f,"DivGeo equilibrium file>>\nWidth=%d\nHeight=%d\n",sx,sy);
+  for (i=0;i<sx;i++) fprintf(f,"%e\n",
+      eq->x[0]+(eq->x[eq->sx-1]-eq->x[0])*i/(sx));
+  fprintf(f,"\n");
+  for (i=0;i<sy;i++) fprintf(f,"%e\n",
+      eq->y[0]+(eq->y[eq->sy-1]-eq->y[0])*i/(sy));
+  fprintf(f,"\n");
+
+  for (i=0;i<sy;i++) for (j=0;j<sx;j++) {
+    assert(CalcSurfaceSplineValue(si,
+      eq->x[0]+(eq->x[eq->sx-1]-eq->x[0])*j/(sx),
+      eq->y[0]+(eq->y[eq->sy-1]-eq->y[0])*i/(sy),
+      &z,NULL,NULL)==0);
+    fprintf(f,"%e\n",z);
+  }
+
+/*   FreeSurfaceSplineInfo(si);
+ */
   fclose(f);
 
   return 0;
@@ -445,50 +489,73 @@ static int FindEquilMinMaxSegment(Equil eq,int signMinMax,
   return 0;
 }
 
-int FindCarreMinMaxSurfaceLevel(App a,int nArea,double* pL1,double* pL2) {
+extern View w;
+extern App a;
+
+int FindCarreMinMaxSurfaceLevel(App a,int nArea,double* pL1,double* pL2,
+    int* bOuterSurfaceNeeded) {
   Var v;
   Elem e;
-  double l,lMin,lMax,l1,l2;
-  int signMinMax,r;
-  Surface s;
+  double l,lMin,lMax,l1,l2,xMin=0,yMin=0,xMax=0,yMax=0;
+  int signMinMax,r,zone,zone2,bosnBuf,ne;
+  SurfaceZone sz;
+  GridPointSeg gps,gps2;
+  /*Surface s;*/
+  SurfaceEx sx;
   Group g,gST,gSC,gSO,gt;
   Index ix,ixg;
 
   assert(a->outputMode==OUTPUTMODE_CARRE);
+  if (bOuterSurfaceNeeded==NULL) bOuterSurfaceNeeded=&bosnBuf;
+  *bOuterSurfaceNeeded=1;
 
   /* Make sure requirements are met */
 
   if (a->equil==NULL) return ERR_NOEQUIL;
-  if (!a->equil->signInside) return ERR_NOCLOSEDSURFS;
+/*  if (!a->equil->signInside) return ERR_NOCLOSEDSURFS; */
 
-  /* Find signMinMax and do special processing for the main plasma */
+  /* Find the surface zone and the base separatrix segment */
 
-  switch(nArea) {
-    case 1:
-      /* Special case Area 1: use the innermost closed surface */
+  sz=FindSurfaceZone(a,nArea);
+  assert(sz!=NULL);
+  gps=FindGridPointSeg(a,sz->gpZone1);
+  assert(gps!=NULL);
+  if (sz->gpZone2>=0) {
+    gps2=FindGridPointSeg(a,sz->gpZone2);
+    assert(gps2!=NULL);
+  } else gps2=NULL;
 
-      lMax=lMin=0;
-      for (s=AppSurface1st(a,&ix);s!=NULL;s=Next(&ix)) {
-	if (GetSurfaceArea(a,s)==nArea &&
-	    fabs(s->level-lMin)>fabs(lMax-lMin)) lMax=s->level;
-      }
-      if (lMax==lMin) return ERR_CARRE_AREA1SURFACES;
-      goto AllFound;
-      break;
-    case 2:
-      signMinMax=-a->equil->signInside;
-      break;
-    case 3:
-      signMinMax=a->equil->signInside;
-      break;
-    default:
-      assert(0);
+  /* Do special processing for "between"-type zones */
+
+  if (gps2!=NULL) {
+    lMin=gps->level;
+    lMax=gps2->level;
+    *bOuterSurfaceNeeded=0;
+    goto AllFound;
   }
 
-  /* Fetch & split structure, fetch targets */
+  /* Do special processing for "main plasma"-type zones */
 
-  lMin=0;
-  lMax=signMinMax*MAXDOUBLE;
+  if (sz->flags & SZF_LIMITBYSURFACE) {
+    lMax=lMin=gps->level;
+    for (sx=AppSurfaceEx1st(a,&ix);sx!=NULL;sx=Next(&ix)) {
+      if (sx->zone==nArea &&
+          fabs(sx->level-lMin)>fabs(lMax-lMin)) lMax=sx->level;
+    }
+    if (lMax==lMin) return ERR_CARRE_AREA1SURFACES;
+    goto AllFound;
+  }
+
+  signMinMax=sz->sign;
+  assert(signMinMax==1 || signMinMax==-1);
+
+  /* Preset "min" and "max" levels */
+
+  lMin=gps->level;
+  if (gps2!=NULL) lMax=gps2->level; /* Should never happen */
+  else lMax=signMinMax*MAXDOUBLE;
+
+  /* Fetch & split structure, fetch targets */
 
   v=GetVarPtrByType(a,VT_STRUCTURE);
   if (v==NULL || v->val==NULL || IsEmptyGroup(v->val))
@@ -501,18 +568,32 @@ int FindCarreMinMaxSurfaceLevel(App a,int nArea,double* pL1,double* pL2) {
 
   for (g=Group1st(gST,&ixg);g!=NULL;g=Next(&ixg)) {
     l1=-signMinMax*MAXDOUBLE;l2=signMinMax*MAXDOUBLE;
-    for (e=Group1st(g,&ix);e!=NULL;e=Next(&ix)) {
-      if (!FindEquilMinMaxSegment(a->equil,signMinMax,
-	  e->n[1]->x,e->n[1]->y,e->n[2]->x,e->n[2]->y,&l))
-	if ((l-l1)*signMinMax>0) l1=l;
-      if (!FindEquilMinMaxSegment(a->equil,-signMinMax,
-	  e->n[1]->x,e->n[1]->y,e->n[2]->x,e->n[2]->y,&l))
-	if ((l-l2)*signMinMax<0) l2=l;
-    }
-    if ((l1-lMax)*signMinMax<0) lMax=l1;
-    if ((l2-lMin)*signMinMax>0) lMin=l2;
-  }
 
+    /* Find extrema in this part of structure */
+
+    for (ne=0,e=Group1st(g,&ix);e!=NULL;e=Next(&ix)) {
+      zone=GetSurfaceZoneByXY(a,e->n[1]->x,e->n[1]->y,NULL,&r);
+      zone2=GetSurfaceZoneByXY(a,e->n[2]->x,e->n[2]->y,NULL,&r);
+
+      /* Ignore elements that do not belong to the zone in question */
+
+      if (zone!=sz->zone && zone2!=sz->zone) continue;
+      ne++;
+
+      /* Get min/max level values on the segment */
+
+      if (!FindEquilMinMaxSegment(a->equil,signMinMax,
+          e->n[1]->x,e->n[1]->y,e->n[2]->x,e->n[2]->y,&l))
+        if ((l-l1)*signMinMax>0) l1=l;  /* l ">" l1 */
+      if (!FindEquilMinMaxSegment(a->equil,-signMinMax,
+          e->n[1]->x,e->n[1]->y,e->n[2]->x,e->n[2]->y,&l))
+        if ((l-l2)*signMinMax<0) l2=l;  /* l "<" l2 */
+    }
+
+    /* If >0 segments in the right zone, adjust min/max values */
+    if (ne && (l1-lMax)*signMinMax<0) lMax=l1;
+    if (ne && (l2-lMin)*signMinMax>0) lMin=l2;
+  }
 
   /* Make sure they are restricted by other structures */
 
@@ -521,9 +602,19 @@ int FindCarreMinMaxSurfaceLevel(App a,int nArea,double* pL1,double* pL2) {
 
   for (g=Group1st(gt,&ixg);g!=NULL;g=Next(&ixg)) {
     for (e=Group1st(g,&ix);e!=NULL;e=Next(&ix)) {
+
+      /* Process only elements from the same zone */
+
+      r=0;
+      zone=GetSurfaceZoneByXY(a,e->n[1]->x,e->n[1]->y,NULL,&r);
+      if (zone<0) {
+        continue;
+      }
+      if (zone!=nArea) continue; /* Not from this zone */
+
       if (FindEquilMinMaxSegment(a->equil,-signMinMax,
-	  e->n[1]->x,e->n[1]->y,e->n[2]->x,e->n[2]->y,&l)) continue;
-      if (l*signMinMax<=0) continue; /* Skip elements in other areas */
+          e->n[1]->x,e->n[1]->y,e->n[2]->x,e->n[2]->y,&l)) continue;
+      if ((l-lMin)*signMinMax<=0) continue; /* Skip intersecting elements */
       if ((l-lMax)*signMinMax<0) lMax=l;
     }
   }
@@ -537,7 +628,6 @@ int FindCarreMinMaxSurfaceLevel(App a,int nArea,double* pL1,double* pL2) {
   assert(fabs(lMin)!=MAXDOUBLE);
 
   AllFound:
-
   if (pL1!=NULL) *pL1=lMin;
   if (pL2!=NULL) *pL2=lMax;
 
@@ -648,44 +738,57 @@ void CalcEquilValues(Equil eq) {
   eq->signInside=0;
 }
 
+
+#define EqXEx(eq,cx,_sx)\
+  ((eq)->x[0]+((eq)->x[(eq)->sx-1]-(eq)->x[0])*(cx)/((_sx)-1))
+
+#define EqYEx(eq,cy,_sy)\
+  ((eq)->y[0]+((eq)->y[(eq)->sy-1]-(eq)->y[0])*(cy)/((_sy)-1))
+
+
+
 void CalcSurfData(Equil eq,int cx,int cy,double level,
-    struct _SurfCell* sc) {
+    struct _SurfCell* sc,int sx,int sy) {
   double a1,a2;
   int d;
 
   sc->n=sc->f=0;
-  if (cx<0 || cy<0 || cx>=eq->sx-1 || cy>=eq->sy-1) return;
-  a1=EqCorrCell(eq,cx,cy,level);
-  a2=EqCorrCell(eq,cx+1,cy,level);
+  if (cx<0 || cy<0 || cx>=sx-1 || cy>=sy-1) return;
+  a1=EqCorrCellEx(eq,cx,cy,level,sx,sy);
+  a2=EqCorrCellEx(eq,cx+1,cy,level,sx,sy);
   if (inrange(level,a1,a2)) {
     d=CS_YM;
-    sc->x[d]=eq->x[cx]+(eq->x[cx+1]-eq->x[cx])*(level-a1)/(a2-a1);
-    sc->y[d]=eq->y[cy];
+    sc->x[d]=EqXEx(eq,cx,sx)+
+        (EqXEx(eq,cx+1,sx)-EqXEx(eq,cx,sx))*(level-a1)/(a2-a1);
+    sc->y[d]=EqYEx(eq,cy,sy);
     sc->f |= CSF_YM;
     sc->d[sc->n++]=d;
   }
-  a2=EqCorrCell(eq,cx,cy+1,level);
+  a2=EqCorrCellEx(eq,cx,cy+1,level,sx,sy);
   if (inrange_s(level,a1,a2)) {
     d=CS_XM;
-    sc->x[d]=eq->x[cx];
-    sc->y[d]=eq->y[cy]+(eq->y[cy+1]-eq->y[cy])*(level-a1)/(a2-a1);
+    sc->x[d]=EqXEx(eq,cx,sx);
+    sc->y[d]=EqYEx(eq,cy,sy)+
+        (EqYEx(eq,cy+1,sy)-EqYEx(eq,cy,sy))*(level-a1)/(a2-a1);
     sc->f |= CSF_XM;
     sc->d[sc->n++]=d;
   }
-  a1=EqCorrCell(eq,cx,cy+1,level);
-  a2=EqCorrCell(eq,cx+1,cy+1,level);
+  a1=EqCorrCellEx(eq,cx,cy+1,level,sx,sy);
+  a2=EqCorrCellEx(eq,cx+1,cy+1,level,sx,sy);
   if (inrange(level,a1,a2)) {
     d=CS_YP;
-    sc->x[d]=eq->x[cx]+(eq->x[cx+1]-eq->x[cx])*(level-a1)/(a2-a1);
-    sc->y[d]=eq->y[cy+1];
+    sc->x[d]=EqXEx(eq,cx,sx)+
+        (EqXEx(eq,cx+1,sx)-EqXEx(eq,cx,sx))*(level-a1)/(a2-a1);
+    sc->y[d]=EqYEx(eq,cy+1,sy);
     sc->f |= CSF_YP;
     sc->d[sc->n++]=d;
   }
-  a1=EqCorrCell(eq,cx+1,cy,level);
+  a1=EqCorrCellEx(eq,cx+1,cy,level,sx,sy);
   if (inrange_s(level,a1,a2)) {
     d=CS_XP;
-    sc->x[d]=eq->x[cx+1];
-    sc->y[d]=eq->y[cy]+(eq->y[cy+1]-eq->y[cy])*(level-a1)/(a2-a1);
+    sc->x[d]=EqXEx(eq,cx+1,sx);
+    sc->y[d]=EqYEx(eq,cy,sy)+
+        (EqYEx(eq,cy+1,sy)-EqYEx(eq,cy,sy))*(level-a1)/(a2-a1);
     sc->f |= CSF_XP;
     sc->d[sc->n++]=d;
   }
@@ -699,14 +802,15 @@ void CalcSurfData(Equil eq,int cx,int cy,double level,
             1 = ok, surface closed
 */
 
-int CalcSurfaceLine(Equil eq,int cx,int cy,double level,Group* gXY) {
+int CalcSurfaceLine(Equil eq,int cx,int cy,double level,Group* gXY,
+    int sx,int sy) {
   struct _SurfCell sc;
   int oCx,oCy,d,closed=0;
   Group g;
 
   oCx=cx;
   oCy=cy;
-  CalcSurfData(eq,cx,cy,level,&sc);
+  CalcSurfData(eq,cx,cy,level,&sc,sx,sy);
   if (sc.n!=2 && sc.n!=4) return -1;
   d=sc.d[0];
   g=CreateGroup();
@@ -717,7 +821,7 @@ int CalcSurfaceLine(Equil eq,int cx,int cy,double level,Group* gXY) {
     if (d==CS_YP) cy++;
     if (d==CS_XM) cx--;
     if (d==CS_XP) cx++;
-    CalcSurfData(eq,cx,cy,level,&sc);
+    CalcSurfData(eq,cx,cy,level,&sc,sx,sy);
     if (sc.n==2) {
       d= (d^2)==sc.d[0] ? sc.d[1] : sc.d[0];
     }
@@ -729,7 +833,7 @@ int CalcSurfaceLine(Equil eq,int cx,int cy,double level,Group* gXY) {
   } while (sc.n==2 || sc.n==4);
 
   RevertGroup(g);
-  CalcSurfData(eq,cx=oCx,cy=oCy,level,&sc);
+  CalcSurfData(eq,cx=oCx,cy=oCy,level,&sc,sx,sy);
   d= sc.n==2 ? sc.d[1] : sc.d[0]^2;
   do {
     AddXY(g,sc.x[d],sc.y[d]);
@@ -737,7 +841,7 @@ int CalcSurfaceLine(Equil eq,int cx,int cy,double level,Group* gXY) {
     if (d==CS_YP) cy++;
     if (d==CS_XM) cx--;
     if (d==CS_XP) cx++;
-    CalcSurfData(eq,cx,cy,level,&sc);
+    CalcSurfData(eq,cx,cy,level,&sc,sx,sy);
     if (sc.n==2) {
       d= (d^2)==sc.d[0] ? sc.d[1] : sc.d[0];
     }

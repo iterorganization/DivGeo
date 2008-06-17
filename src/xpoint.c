@@ -2,115 +2,34 @@
 
 /* Old stuff /////////////////////////////////////////////// */
 
-#define XPLEVEL 0
-
-#define EqIn(eq,x0,y0,cx1,cy1,cx2,cy2) \
+#define DEL_DUP_MAX_ERROR 1e-2
+#define XPS_ANGLE_FRACTION 0.03
+#define XPS_ANGLE_CELLS_MIN 2
+/*
+#define __EqIn(eq,x0,y0,cx1,cy1,cx2,cy2) \
   (x0>=eq->x[cx1] && y0>=eq->y[cy1] && x0<=eq->x[cx2] && y0<=eq->y[cy2])
 
-#define EqInS(eq,x0,y0,cx1,cy1,cx2,cy2) \
-  (x0>eq->x[cx1] && y0>eq->y[cy1] && x0<eq->x[cx2] && y0<eq->y[cy2])
+#define __EqInS(eq,x0,y0,cx1,cy1,cx2,cy2) \
+  (x0>eq->x[cx1] && y0>eq->y[cy1] && x0<eq->x[cx2] && y0<eq->y[cy2]) */
 
-int AddXPoint(App a,double x1,double y1,double x2,double y2) {
-  XPoint xpt;
-  struct _ActRec ar;
-  int i;
+static int EqIn(Equil eq,
+    double x0,double y0,int cx1,int cy1,int cx2,int cy2) {
+  if (x0<min(eq->x[cx1],eq->x[cx2]) || x0>max(eq->x[cx1],eq->x[cx2]) ||
+      y0<min(eq->y[cy1],eq->y[cy2]) || y0>max(eq->y[cy1],eq->y[cy2]))
+    return 0;
 
-  ValidatePtr(a,"AddXPoint");
-  ValidatePtr(a->equil,"AddXPoint.equil");
-
-  xpt=Malloc(sizeof(*xpt));
-  xpt->type=T_XPOINT;
-  xpt->locks=0;
-  xpt->x1=x1;
-  xpt->y1=y1;
-  xpt->x2=x2;
-  xpt->y2=y2;
-  xpt->lpx=xpt->lpy=-1;
-  if (xpt->x1>xpt->x2) swap(xpt->x1,xpt->x2);
-  if (xpt->y1>xpt->y2) swap(xpt->y1,xpt->y2);
-
-  if (a->xpoint!=NULL) DelXPoint(a);
-
-  ar.obj=xpt;
-  i=ActAddXPoint(a,&ar);
-
-  if (i) Free(xpt);
-
-  return i;
+  return 1;
 }
 
-void DelXPoint(App a) {
-  struct _DelRec ar;
+static int EqInS(Equil eq,
+    double x0,double y0,int cx1,int cy1,int cx2,int cy2) {
+  if (x0<=min(eq->x[cx1],eq->x[cx2]) || x0>=max(eq->x[cx1],eq->x[cx2]) ||
+      y0<=min(eq->y[cy1],eq->y[cy2]) || y0>=max(eq->y[cy1],eq->y[cy2]))
+    return 0;
 
-  ValidatePtr(a,"DelXPoint");
-  ValidatePtr(a->xpoint,"DelXPoint.xpoint");
-
-  ar.delete=a->xpoint;
-  ActDelXPoint(a,&ar);
+  return 1;
 }
 
-GridPoint AddGridPoint(App a,int area,double value) {
-  GridPoint gp;
-  struct _ActRec ar;
-
-  if (area<0 || area>2)
-    FatalError("AddGridPoint()-area%d: fatal error 1",area);
-  if (value<0 || value>1)
-    /* relcheck_ignore_line */ FatalError("AddGridPoint()-value%f: fatal error 1",value);
-
-
-  gp=Malloc(sizeof(*gp));
-  gp->type=T_GRIDPOINT;
-  gp->locks=0;
-  gp->area=area;
-  gp->value=value;
-  gp->creatorId=NULL;
-
-  ar.obj=gp;
-  ActAddGridPoint(a,&ar);
-
-  return gp;
-}
-
-void ChangeGridPoint(App a,GridPoint gp,int area,double value) {
-  struct _ChangeGridPointRec ar;
-
-  if (area<0 || area>2)
-    FatalError("ChangeGridPoint()-area%d: fatal error 1",area);
-  if (value<0 || value>1)
-    /* relcheck_ignore_line */ FatalError("ChangeGridPoint()-value%f: fatal error 1",value);
-
-  ar.gp=gp;
-  ar.area=area;
-  ar.value=value;
-  ActChangeGridPoint(a,&ar);
-
-  if (*GetGridPointCreatorId(gp)==CID_UNCHANGEDFLAG)
-    ChangeGridPointCreatorId(a,gp,GetGridPointCreatorId(gp)+1);
-}
-
-void* DelGridPoint(App a,GridPoint gp) {
-  struct _DelRec ar;
-
-  ChangeGridPointCreatorId(a,gp,NULL);
-
-  ar.delete=gp;
-  ActDelGridPoint(a,&ar);
-
-  return NULL;
-}
-
-int ChangeGridPointCreatorId(App a,GridPoint gp,char* id) {
-  if (id!=NULL && !strcmp(id,GetGridPointCreatorId(gp))) return 0;
-
-  SetObjString(a,gp,GetOffset(GridPoint,creatorId),id,0);
-
-  return 0;
-}
-
-char* GetGridPointCreatorId(GridPoint gp) {
-  return gp->creatorId==NULL? "*" : gp->creatorId;
-}
 
 char* ConstructGridPointCreatorId(int zone,int count,double alpha1,double
     alpha2,int law,int carreFlag) {
@@ -136,14 +55,14 @@ int ParseGridPointCreatorId(char* id,int* pArea,int* pCount,double* pAlpha1,
 
 int DistributeGridPoints(App a,int area,int count,double a1,double a2,
     int law,int carreMode) {
-  GridPoint gp;
+  GridPointEx gpx;
   char* creatorId;
   int i;
   double v;
   Index ix;
 
-  for (gp=AppGridPoint1st(a,&ix);gp!=NULL;gp=Next(&ix))
-    if (gp->area==area) DelGridPoint(a,gp);
+  for (gpx=AppGridPointEx1st(a,&ix);gpx!=NULL;gpx=Next(&ix))
+    if (gpx->zone==area) DelGridPointEx(gpx);
 
   creatorId=ConstructGridPointCreatorId(area,count,a1,a2,law,carreMode);
 
@@ -155,12 +74,12 @@ int DistributeGridPoints(App a,int area,int count,double a1,double a2,
     /* if (v<0 || v>1) { --- Works bad with Carre mode
       Cancel(dlg->w->app);
       ErrorBox(dlg->wDlg,
-	  GetResourceString(dlg->dg.wLaw,"errBadLaw",NULL,NULL));
+          GetResourceString(dlg->dg.wLaw,"errBadLaw",NULL,NULL));
       return;
     } --- */
 
-    gp=AddGridPoint(a,area,v);
-    ChangeGridPointCreatorId(a,gp,creatorId);
+    gpx=AddGridPointEx(a,area,v);
+    ChangeGridPointExCreatorId(gpx,creatorId);
   }
 
   return 0;
@@ -169,7 +88,8 @@ int DistributeGridPoints(App a,int area,int count,double a1,double a2,
 /* Area==-1 means recursively process all areas */
 
 int RebuildCarreGridPoints(App a,int area) {
-  GridPoint gp;
+  GridPointEx gpx;
+  GridPointSeg gps;
   int count,law,carreMode,r,foo;
   double a1,a2;
   Index ix;
@@ -178,25 +98,25 @@ int RebuildCarreGridPoints(App a,int area) {
   if (a->outputMode!=OUTPUTMODE_CARRE) return ERR_CARRE_MODE_NEEDED;
 
   if (area<0) {
-    r=RebuildCarreGridPoints(a,SPA_LOOP);if (r) return r;
-    r=RebuildCarreGridPoints(a,SPA_TARGET1);if (r) return r;
-    r=RebuildCarreGridPoints(a,SPA_TARGET2);if (r) return r;
+    for (gps=AppGridPointSeg1st(a,&ix);gps!=NULL;gps=Next(&ix))
+      if (gps->flags & GPSF_USED) RebuildCarreGridPoints(a,gps->zone);
     return 0;
   }
 
+
   if (!CountGridPoints(a,area)) return 0;  /* $$ - maybe some errorcode? */
 
-  for (gp=AppGridPoint1st(a,&ix);gp!=NULL;gp=Next(&ix)) {
-    if (gp->area!=area) continue;
-    id=GetGridPointCreatorId(gp);
+  for (gpx=AppGridPointEx1st(a,&ix);gpx!=NULL;gpx=Next(&ix)) {
+    if (gpx->zone!=area) continue;
+    id=GetGridPointExCreatorId(gpx);
     if (ParseGridPointCreatorId(id,&foo,&count,
-	&a1,&a2,&law,&carreMode))
+        &a1,&a2,&law,&carreMode))
       continue;
     if (carreMode) break;
   }
 
   /* $$ - maybe some errorcode if no gridpoints? */
-  if (gp==NULL) {count=0;a1=a2=1;law=DGLAW_NORMAL;carreMode=1;}
+  if (gpx==NULL) {count=0;a1=a2=1;law=DGLAW_NORMAL;carreMode=1;}
 
   r=DistributeGridPoints(a,area,count,a1,a2,law,carreMode);
 
@@ -263,333 +183,6 @@ static int CutLineByTargets(Group line,Group t1,Group t2) {
   return 0;
 }
 
-int CalcXPointLine(Equil eq,XPoint xpt,int cx1,int cy1,int cx2,int cy2,
-    Group t1,Group t2) {
-  int i,/*j,k,*/n;
-  Group line[4];
-  int closed[4];
-  XY xy,xy1/*,xyt,xyt1*/;
-  Index ix/*,ix1*/;
-  XY xx[4];
-  double r;
-  int err;
-
-  if (cx1>cx2) swap(cx1,cx2);
-  if (cy1>cy2) swap(cy1,cy2);
-  cx2=min(cx2,eq->sx-2);
-  cy2=min(cy2,eq->sy-2);
-  if (cx2<=cx1 || cy2<=cy1) return ERR_OUTOFEQUIL;
-
-  n=0;
-  for (i=0;i<4;i++) line[i]=NULL;
-
-  for (i=cx1;i<cx2;i++)  if (inrange_s(XPLEVEL,EqCorrCell(eq,i,cy1,XPLEVEL),
-      EqCorrCell(eq,i+1,cy1,XPLEVEL))) {
-    if (n==4) goto err_toomany;
-    closed[n]=CalcSurfaceLine(eq,i,cy1,XPLEVEL,&line[n]);
-    if (closed[n]>=0) n++;
-  }
-  for (i=cx1;i<cx2;i++)  if (inrange_s(XPLEVEL,EqCorrCell(eq,i,cy2,XPLEVEL),
-      EqCorrCell(eq,i+1,cy2,XPLEVEL))) {
-    if (n==4) goto err_toomany;
-    closed[n]=CalcSurfaceLine(eq,i,cy2,XPLEVEL,&line[n]);
-    if (closed[n]>=0) n++;
-  }
-  for (i=cy1;i<cy2;i++)  if (inrange_s(XPLEVEL,EqCorrCell(eq,cx1,i,XPLEVEL),
-      EqCorrCell(eq,cx1,i+1,XPLEVEL))) {
-    if (n==4) goto err_toomany;
-    closed[n]=CalcSurfaceLine(eq,cx1,i,XPLEVEL,&line[n]);
-    if (closed[n]>=0) n++;
-  }
-  for (i=cy1;i<cy2;i++)  if (inrange_s(XPLEVEL,EqCorrCell(eq,cx2,i,XPLEVEL),
-      EqCorrCell(eq,cx2,i,XPLEVEL))) {
-    if (n==4) goto err_toomany;
-    closed[n]=CalcSurfaceLine(eq,cx2,i,XPLEVEL,&line[n]);
-    if (closed[n]>=0) n++;
-  }
-  if (n<2) {err=ERR_BADXPOINT;goto genErr;}
-
-  if (n<4) {line[n]=line[0];closed[n++]=closed[0];line[0]=NULL;}
-  for (i=1;i<n;i++) if (!closed[i]) {line[0]=line[i];line[i]=NULL;break;}
-  if (n>1 && !closed[1] && line[1]!=NULL) line[1]=FreeMallocedGroup(line[1]);
-  for (i=2;i<n;i++) if (closed[i]) {line[1]=line[i];line[i]=NULL;break;}
-  for (i=2;i<n;i++) if (line[i]!=NULL) line[i]=FreeMallocedGroup(line[i]);
-  if (line[0]==NULL) {err=ERR_BADXPOINT;goto genErr;}
-
-  if ((err=CutLineByTargets(line[0],t1,t2))!=0) goto genErr;
-
-  if (line[1]!=NULL) {
-    line[2]=CreateGroup();
-    for (xy=Group1st(line[1],&ix);xy!=NULL;xy=Next(&ix))
-      if (inrange_s(xy->x,eq->x[cx1],eq->x[cx2]) &&
-          inrange_s(xy->y,eq->y[cy1],eq->y[cy2])) break;
-    if (xy==NULL) return ERR_BADXPOINT;
-    xy1=xy;
-    for (;xy!=NULL;xy=Next(&ix))
-      if (!inrange_s(xy->x,eq->x[cx1],eq->x[cx2]) ||
-          !inrange_s(xy->y,eq->y[cy1],eq->y[cy2])) break;
-    if (xy!=NULL) for (;xy!=NULL;xy=Next(&ix)) AddXY(line[2],xy->x,xy->y);
-    for (xy=Group1st(line[1],&ix);xy!=xy1;xy=Next(&ix))
-      AddXY(line[2],xy->x,xy->y);
-    line[1]=FreeMallocedGroup(line[1]);
-  }
-  line[1]=CreateGroup();
-  for (xy=Group1st(line[0],&ix);xy!=NULL;xy=Next(&ix)) {
-    if (inrange_s(xy->x,eq->x[cx1],eq->x[cx2]) &&
-        inrange_s(xy->y,eq->y[cy1],eq->y[cy2])) break;
-    AddXY(line[1],xy->x,xy->y);
-  }
-  for (;xy!=NULL;xy=Next(&ix))
-    if (!inrange_s(xy->x,eq->x[cx1],eq->x[cx2]) ||
-        !inrange_s(xy->y,eq->y[cy1],eq->y[cy2])) break;
-
-  if (line[2]==NULL) {
-    line[2]=CreateGroup();
-    for (;xy!=NULL;xy=Next(&ix)) {
-      if (inrange_s(xy->x,eq->x[cx1],eq->x[cx2]) &&
-          inrange_s(xy->y,eq->y[cy1],eq->y[cy2])) break;
-      AddXY(line[2],xy->x,xy->y);
-    }
-    for (;xy!=NULL;xy=Next(&ix))
-      if (!inrange_s(xy->x,eq->x[cx1],eq->x[cx2]) ||
-          !inrange_s(xy->y,eq->y[cy1],eq->y[cy2])) break;
-  }
-
-  line[3]=CreateGroup();
-  for (;xy!=NULL;xy=Next(&ix)) AddXY(line[3],xy->x,xy->y);
-  line[0]=FreeMallocedGroup(line[0]);
-
-  for (i=1;i<4;i++) if (IsEmptyGroup(line[i])) {
-    err=ERR_BADXPOINT;goto genErr;
-  }
-
-  RevertGroup(line[1]);
-  xx[0]=Group1st(line[1],NULL);
-  RevertGroup(line[1]);
-  xx[2]=Group1st(line[2],NULL);
-  RevertGroup(line[2]);
-  xx[1]=Group1st(line[2],NULL);
-  xx[3]=Group1st(line[3],NULL);
-  if (VIntersect(xx[0]->x,xx[0]->y,xx[2]->x,xx[2]->y,xx[1]->x,xx[1]->y,
-      xx[3]->x,xx[3]->y,&r,NULL)) {
-    RevertGroup(line[2]);
-    if (VIntersect(xx[0]->x,xx[0]->y,xx[1]->x,xx[1]->y,xx[2]->x,xx[2]->y,
-        xx[3]->x,xx[3]->y,&r,NULL))
-          return ERR_BADXPOINT;
-    xx[0]->x+=(xx[1]->x-xx[0]->x)*r;
-    xx[0]->y+=(xx[1]->y-xx[0]->y)*r;
-  } else {
-    xx[0]->x+=(xx[2]->x-xx[0]->x)*r;
-    xx[0]->y+=(xx[2]->y-xx[0]->y)*r;
-  }
-  for (i=1;i<4;i++) {
-    xx[i]->x=xx[0]->x;
-    xx[i]->y=xx[0]->y;
-  }
-
-  xpt->line[1]=line[1];
-  xpt->line[0]=line[2];
-  xpt->line[2]=line[3];
-  for (i=0;i<3;i++) xpt->lineLen[i]=CalcLineLength(xpt->line[i]);
-
-  return 0;
-
-  err_toomany:
-  err=ERR_BADXPOINT;
-  genErr:
-  for (i=0;i<4;i++) if (line[i]!=NULL) line[i]=FreeMallocedGroup(line[i]);
-  return err;
-}
-
-void CalcGridPointCoords(XPoint xp,GridPoint gp) {
-  double s,l/*,x,y*/;
-  XY xy,xy1;
-  Index ix;
-
-  xy=Group1st(xp->line[gp->area],&ix);
-  if (xy==NULL) FatalError("CalcGridPointCoords()-empty: fatal error 1");
-  for (s=0;(xy1=Next(&ix))!=NULL;xy=xy1) {
-    l=hypot(xy->x-xy1->x,xy->y-xy1->y)/xp->lineLen[gp->area];
-    if (l+s>=gp->value) {
-      gp->x=xy->x+(xy1->x-xy->x)*(gp->value-s)/l;
-      gp->y=xy->y+(xy1->y-xy->y)*(gp->value-s)/l;
-      gp->dx=(xy1->x-xy->x)/l/xp->lineLen[gp->area];
-      gp->dy=(xy1->y-xy->y)/l/xp->lineLen[gp->area];
-      return;
-    }
-    s+=l;
-  }
-  gp->x=xy->x;gp->y=xy->y;gp->dx=1;gp->dy=0;
-}
-
-#define EQX a->equil->x
-#define EQY a->equil->y
-#define EQL(x,y) EqCell(a->equil,(x),(y))
-
-/* Level==MAXDOUBLE to find the peak */
-
-int FindSurfaceOriginPoint(App a,int area,double level,
-    double* px,double* py) {
-  Chord ch;
-  int ocx,ocy,cx,cy,cxe,cye,cx1,cy1,cx2,cy2,b,len;
-  int i,s,s0,bPeakSearch;
-  double ol,l;
-
-  if (a->equil==NULL) return ERR_NOEQUIL;
-  if (a->xpoint==NULL) return ERR_NOXPOINT;
-
-  if (GetEquilCell(a->equil,a->xpoint->x1,a->xpoint->y1,&cx1,&cy1))
-    return ERR_OUTOFEQUIL;
-  if (GetEquilCell(a->equil,a->xpoint->x2,a->xpoint->y2,&cx2,&cy2))
-    return ERR_OUTOFEQUIL;
-
-  i=FindLoopPoint(a);
-  if (i) return i;
-  s0=s=a->equil->signInside;
-  if (!s) return ERR_NOCLOSEDSURFS;
-
-  /* Special case: peak search */
-
-  bPeakSearch=0;
-  if (level==MAXDOUBLE) {
-    bPeakSearch=1;
-    if (a->equil->signInside<0) level=-level;
-  }
-
-  /* Check if the given level can exist in the given area */
-
-  switch(area) {
-    case 1:
-    case 3:
-      if ((level-XPLEVEL)*s<=0) return ERR_LEVELNOTINAREA;
-      break;
-    case 2:
-      if (bPeakSearch) level=-level;
-      if ((level-XPLEVEL)*s>=0) return ERR_LEVELNOTINAREA;
-      break;
-    }
-
-  cx=a->xpoint->lpx;
-  cy=a->xpoint->lpy;
-
-  /* Find a segment on the X Point rectangle that faces
-     the desired surface area */
-
-  len=0;
-  switch(area) {
-    case 3:
-      while ((EqCell(a->equil,cx,cy)-XPLEVEL)*s>0)
-	FollowRectCW(&cx,&cy,cx1,cy1,cx2,cy2);
-      s=-s;
-    case 2:
-      while ((EqCell(a->equil,cx,cy)-XPLEVEL)*s>0)
-	FollowRectCW(&cx,&cy,cx1,cy1,cx2,cy2);
-      s=-s;
-    case 1:
-      while ((EqCell(a->equil,cx,cy)-XPLEVEL)*s>0)
-	FollowRectCW(&cx,&cy,cx1,cy1,cx2,cy2);
-      cxe=cx;cye=cy;
-      do {
-	len++;
-	FollowRectCCW(&cx,&cy,cx1,cy1,cx2,cy2);
-      } while ((EqCell(a->equil,cx,cy)-XPLEVEL)*s>0);
-      break;
-    default: assert(0);
-  }
-
-  /* See if the desired surface intersects the X Point rectangle */
-
-  do {
-    ocx=cx;
-    ocy=cy;
-    ol=EqCell(a->equil,cx,cy);
-
-    FollowRectCW(&cx,&cy,cx1,cy1,cx2,cy2);
-    l=EqCell(a->equil,cx,cy);
-
-    if (min(l,ol)<=level && max(l,ol)>=level) goto Found;
-  } while (cx!=cxe || cy!=cye);
-
-  /* Level not found on the rectangle. Follow the gradient until the level
-     is found, or the peak or an edge of the equilibrium is reached */
-
-  for (i=0;i<len/2;i++) FollowRectCCW(&cx,&cy,cx1,cy1,cx2,cy2);
-
-  while (1) {
-    ocx=cx;
-    ocy=cy;
-
-    if (ocx>1 && (EQL(ocx-1,ocy)-EQL(cx,cy))*s>0) {
-      cx=ocx-1;cy=ocy;
-    }
-    if (ocy>1 && (EQL(ocx,ocy-1)-EQL(cx,cy))*s>0) {
-      cx=ocx;cy=ocy-1;
-    }
-    if (ocx<a->equil->sx-2 && (EQL(ocx+1,ocy)-EQL(cx,cy))*s>0) {
-      cx=ocx+1;cy=ocy;
-    }
-    if (ocy<a->equil->sy-2 && (EQL(ocx,ocy+1)-EQL(cx,cy))*s>0) {
-      cx=ocx;cy=ocy+1;
-    }
-    if (ocx==cx && ocy==cy)
-      if (bPeakSearch) break;
-      else return ERR_LEVELNOTFOUND;
-
-    ol=EQL(ocx,ocy);
-    l=EQL(cx,cy);
-
-    if (min(l,ol)<=level && max(l,ol)>=level) break;
-  }
-
-  Found:
-
-  if (bPeakSearch || l==ol) l=0; else l=(level-ol)/(l-ol);
-  *px=EQX[ocx]+(EQX[cx]-EQX[ocx])*l;
-  *py=EQY[ocy]+(EQY[cy]-EQY[ocy])*l;
-
-  return 0;
-}
-
-#undef EQX
-#undef EQY
-
-int FindLoopPoint(App a) {
-  int cx,cy,cx1,cy1,cx2,cy2,b;
-  Surface s;
-
-  if (a->xpoint==NULL) return ERR_NOXPOINT;
-
-  if (a->xpoint->lpx>=0) return 0;
-
-  if (GetEquilCell(a->equil,a->xpoint->x1,a->xpoint->y1,&cx1,&cy1))
-    return ERR_OUTOFEQUIL;
-  if (GetEquilCell(a->equil,a->xpoint->x2,a->xpoint->y2,&cx2,&cy2))
-    return ERR_OUTOFEQUIL;
-
-  cx=cx1;cy=cy1;
-
-  do {
-    DisableAppUpdate(a,1);
-    s=AddSurface(a,a->equil->x[cx],a->equil->y[cy],NULL);
-    b=s!=NULL && s->closed;
-    if (s!=NULL) {DelSurface(a,s);s=NULL;}
-    DisableAppUpdate(a,-1);
-    if (b) {
-      a->xpoint->lpx=cx;
-      a->xpoint->lpy=cy;
-      return 0;
-    }
-
-    if (cy==cy1) cx==cx2 ? cy++ : cx++; else
-    if (cx==cx2) cy==cy2 ? cx-- : cy++; else
-    if (cy==cy2) cx==cx1 ? cy-- : cx--; else
-    if (cx==cx1) cy==cy1 ? cx++ : cy--; else
-    assert(0);
-  } while (cx!=cx1 || cy!=cy1);
-
-  return ERR_LOOPNOTFOUND;
-}
-
 /***********************************************************************
 **                                                                    //
 **  XPointTest - new stuff for multiple X Points                     ///
@@ -599,7 +192,7 @@ int FindLoopPoint(App a) {
 ***********************************************************************/
 
 extern View w;
-extern App a;
+/*extern App a;*/
 
 static int CheckXPointLevels(Equil eq,int cx1,int cy1,int cx2,int cy2,
     int x0,int y0,int bMinMax);
@@ -618,6 +211,9 @@ static int ActDelXPointSeg(App a,DelRec ar);
 
 static int CalcXPointSegLine(App a,XPointSeg xps);
 static void* FreeXPointSegLine(App a,XPointSeg xps);
+static int NextGridPointSegNumber(App a);
+
+#define GPSEG_STARTNO 1001
 
 static int CheckXPointLevels(Equil eq,int cx1,int cy1,int cx2,int cy2,
     int x0,int y0,int bMinMax) {
@@ -644,16 +240,16 @@ static int CheckXPointLevels(Equil eq,int cx1,int cy1,int cx2,int cy2,
       nx=x;
       ny=y;
       switch(nd & 3) {
-	case 0:ny=y-1;break;
-	case 1:nx=x+1;break;
-	case 2:ny=y+1;break;
-	case 3:nx=x-1;break;
-	default:assert(0);
+        case 0:ny=y-1;break;
+        case 1:nx=x+1;break;
+        case 2:ny=y+1;break;
+        case 3:nx=x-1;break;
+        default:assert(0);
       }
 
       if ((EqCell(eq,x0,y0)-EqCell(eq,nx,ny))*bMinMax<=0) {
-	d=nd;
-	break;
+        d=nd;
+        break;
       }
     }
 
@@ -756,7 +352,7 @@ Index ix;
 
   for (i=0;i<4;i++) {
     if (CheckXPointLevels(eq,xpt->cx1,xpt->cy1,xpt->cx2,xpt->cy2,
-	  p[i].x,p[i].y,p[i].t)) return -1;
+          p[i].x,p[i].y,p[i].t)) return -1;
   }
 
   xpt->lvlMin=max(p[0].lvl,p[2].lvl);
@@ -787,21 +383,21 @@ static Group FindXPointRects(Equil eq) {
   for (s=1;s<6;s++) {
     for (i=1;i<eq->sx-s-1;i++) {
       for (j=1;j<eq->sy-s-1;j++) {
-	xpC->cx1=i;
-	xpC->cy1=j;
-	xpC->cx2=i+s;
-	xpC->cy2=j+s;
+        xpC->cx1=i;
+        xpC->cy1=j;
+        xpC->cx2=i+s;
+        xpC->cy2=j+s;
 
-	for (xp=Group1st(g,&ix);xp!=NULL;xp=Next(&ix))
-	  if (xp->cx2>=xpC->cx1 && xp->cx1<=xpC->cx2 &&
-	      xp->cy2>=xpC->cy1 && xp->cy1<=xpC->cy2) goto skip;
+        for (xp=Group1st(g,&ix);xp!=NULL;xp=Next(&ix))
+          if (xp->cx2>=xpC->cx1 && xp->cx1<=xpC->cx2 &&
+              xp->cy2>=xpC->cy1 && xp->cy1<=xpC->cy2) goto skip;
 
-	if (CheckXPointRect(eq,xpC)) continue;
+        if (CheckXPointRect(eq,xpC)) continue;
 
-	GroupAdd(g,xpC);
-	xpC=Malloc(sizeof(*xpC));
+        GroupAdd(g,xpC);
+        xpC=Malloc(sizeof(*xpC));
 
-	skip:;
+        skip:;
       }
     }
   }
@@ -866,9 +462,11 @@ static Group CalcSeparatrixLine(Equil eq,XPointTest xpt,Group xpg,int idx) {
   int i,n,x,y,ox,oy;
   XPointTest xpi;
   struct _SurfCell sc;
-  Group g;
+  Group g,g_t;
   XY xy,xy1,xy0;
   Index ix,ixpg;
+
+  assert(eq->type==T_EQUIL);
 
   /* Find a cell that contains the proper "surface" */
 
@@ -876,6 +474,9 @@ static Group CalcSeparatrixLine(Equil eq,XPointTest xpt,Group xpg,int idx) {
   assert(xpt->cy1>0);
   assert(xpt->cx2<eq->sx-1);
   assert(xpt->cy2<eq->sy-1);
+
+  assert(xpt->cx1<xpt->cx2);
+  assert(xpt->cy1<xpt->cy2);
 
   n=0;
 
@@ -889,7 +490,7 @@ static Group CalcSeparatrixLine(Equil eq,XPointTest xpt,Group xpg,int idx) {
     assert(0);
 
     if (inrange_s(xpt->level,EqCorrCell(eq,ox,oy,xpt->level),
-	EqCorrCell(eq,x,y,xpt->level)))
+        EqCorrCell(eq,x,y,xpt->level)))
       if (n++==idx) break;
 
 /*    CalcSurfData(eq,x,y,xpt->level,&sc);
@@ -901,7 +502,7 @@ static Group CalcSeparatrixLine(Equil eq,XPointTest xpt,Group xpg,int idx) {
     if (x==xpt->cx1-1) y==xpt->cy1   ? x++,y-- : y--; else
     assert(0);
 */
-    if (x==xpt->cx1 && y==xpt->cy1) {puts("1");return NULL;}
+    if (x==xpt->cx1 && y==xpt->cy1) {/* puts("1"); */return NULL;}
   }
 
   if (x>ox) swap(x,ox);
@@ -914,42 +515,72 @@ static Group CalcSeparatrixLine(Equil eq,XPointTest xpt,Group xpg,int idx) {
   if (y==oy) {if (y==xpt->cy1) y--;} else
   assert(0);
 
-/*  AddChord(a,eq->x[x],eq->y[y],eq->x[x+1],eq->y[y+1]);
-  AddChord(a,eq->x[x+1],eq->y[y],eq->x[x],eq->y[y+1]);
-*/
+ /*  AddChord(w->app,eq->x[x],eq->y[y],eq->x[x+1],eq->y[y+1]); */
+ /*  AddChord(w->app,eq->x[x+1],eq->y[y],eq->x[x],eq->y[y+1]); */
+
   /* Calculate a line */
 
-  i=CalcSurfaceLine(eq,x,y,xpt->level,&g);
-  if (i<0) { puts("F");return NULL;}    /* XPointTest */
+  i=CalcSurfaceLine(eq,x,y,xpt->level,&g,eq->sx,eq->sy);
+  if (i<0) {
+    /*puts("F");*/return NULL;}    /* XPointTest */
 
-  if (GroupCount(g)<3) {FreeGroup(g); puts("2");return NULL;}  /* XPointTest */
+  if (GroupCount(g)<3) {
+    FreeGroup(g); /*puts("2");*/return NULL;}  /* XPointTest$*/
+
+  /* Order the line */
+
+  xy=GroupAt(g,0);
+  xy1=GroupAt(g,GroupCount(g)-1);
+
+  if (xy->x<xy1->x) RevertGroup(g);
+  else if (xy->x==xy1->x && xy->y<xy1->y) RevertGroup(g);
+
+  /* Create a double number of points */
+
+  g_t=CreateGroup();
+  for (xy0=xy1=Group1st(g,&ix);(xy=Next(&ix))!=NULL;xy1=xy) {
+    GroupAdd(g_t,xy1);
+    AddXY(g_t,(xy1->x+xy->x)/2,(xy1->y+xy->y)/2);
+  }
+  GroupAdd(g_t,xy1);
+  if (i) AddXY(g_t,(xy1->x+xy0->x)/2,(xy1->y+xy0->y)/2);
+  FreeGroup(g);
+  g=g_t;
+  g_t=NULL;
+
+  /* --- End create */
 
   /* Detect the direction of the line and cut it if needed */
+
+ /* xy=GroupAt(g,0); */
+ /* if (xy!=NULL) AddViewLabel(w,xy->x,xy->y,"00",0); */
+ /* return g; */
 
   if (i) { /* Closed surface */
 
     for (xy0=xy1=Group1st(g,&ix);;) {
       xy=Next(&ix);
 
+ /* AddSource(w->app,(EqX(eq,x)+EqX(eq,x+1))/2,(EqY(eq,y)+EqY(eq,y+1))/2); */
       if (EqIn(eq,xy1->x,xy1->y,x,y,x+1,y+1) &&
-	  !EqIn(eq,xy->x,xy->y,x,y,x+1,y+1) &&
-	  EqIn(eq,xy->x,xy->y,xpt->cx1,xpt->cy1,xpt->cx2,xpt->cy2)) {
-	RevertGroup(g); /* Cell -> XPointRect - reverse */
-	for (xy=Group1st(g,&ix);xy!=xy1;xy=Next(&ix)); /* Find it again */
+          !EqIn(eq,xy->x,xy->y,x,y,x+1,y+1) &&
+          EqIn(eq,xy->x,xy->y,xpt->cx1,xpt->cy1,xpt->cx2,xpt->cy2)) {
+        RevertGroup(g); /* Cell -> XPointRect - reverse */
+        for (xy=Group1st(g,&ix);xy!=xy1;xy=Next(&ix)); /* Find it again */
 /*printf("a:%d\n",GroupIndex(g,xy)); */
 /*AddSource(a,xy->x,xy->y); */
-	break;
+        break;
       }
 
       GroupDel(g,xy1);GroupAdd(g,xy1); /* Rotate the group */
 
       if (EqIn(eq,xy->x,xy->y,x,y,x+1,y+1) &&
-	  !EqIn(eq,xy1->x,xy1->y,x,y,x+1,y+1) &&
-	  EqIn(eq,xy1->x,xy1->y,xpt->cx1,xpt->cy1,xpt->cx2,xpt->cy2)) {
+          !EqIn(eq,xy1->x,xy1->y,x,y,x+1,y+1) &&
+          EqIn(eq,xy1->x,xy1->y,xpt->cx1,xpt->cy1,xpt->cx2,xpt->cy2)) {
 /*printf("b:%d\n",GroupIndex(g,xy)); */
 /* XPointRec -> Cell - found */
 /*AddSource(a,xy->x,xy->y);*/
-	break;
+        break;
       }
 
 
@@ -958,23 +589,41 @@ static Group CalcSeparatrixLine(Equil eq,XPointTest xpt,Group xpg,int idx) {
 
   } else { /* Non-closed surface */
 
+    /* Kill the part that passes through the X point rectangle and beyond */
+
     for (xy1=Group1st(g,&ix);(xy=Next(&ix))!=NULL;xy1=xy) {
+      /* Trace the surface line */
+
+/*
+if (!EqIn(eq,xy1->x,xy1->y,x,y,x+1,y+1) &&
+    EqIn(eq,xy->x,xy->y,x,y,x+1,y+1))
+AddViewLabel(w,xy->x,xy->y,"Enter",0);
+
+if (EqIn(eq,xy1->x,xy1->y,x,y,x+1,y+1) &&
+    !EqIn(eq,xy->x,xy->y,x,y,x+1,y+1))
+AddViewLabel(w,xy1->x,xy1->y,"Leave",0);
+*/
+
       if (EqIn(eq,xy1->x,xy1->y,x,y,x+1,y+1) &&
-	  !EqIn(eq,xy->x,xy->y,x,y,x+1,y+1) &&
-	  EqIn(eq,xy->x,xy->y,xpt->cx1,xpt->cy1,xpt->cx2,xpt->cy2)) {
+          !EqIn(eq,xy->x,xy->y,x,y,x+1,y+1) &&
+          EqIn(eq,xy->x,xy->y,xpt->cx1,xpt->cy1,xpt->cx2,xpt->cy2)) {
 /*puts("c");*/
-	break; /* Cell -> XPointRect - found */
+ /* if (xy1!=NULL) AddViewLabel(w,xy->x,xy->y,"Direct",0); */
+        break; /* Cell -> XPointRect - found */
       }
 
       if (EqIn(eq,xy->x,xy->y,x,y,x+1,y+1) &&
-	  !EqIn(eq,xy1->x,xy1->y,x,y,x+1,y+1) &&
-	  EqIn(eq,xy1->x,xy1->y,xpt->cx1,xpt->cy1,xpt->cx2,xpt->cy2)) {
-	RevertGroup(g); /* XPointRec -> Cell - reverse */
-	for (xy=Group1st(g,&ix);xy!=xy1;xy=Next(&ix)); /* Find it again */
+          !EqIn(eq,xy1->x,xy1->y,x,y,x+1,y+1) &&
+          EqIn(eq,xy1->x,xy1->y,xpt->cx1,xpt->cy1,xpt->cx2,xpt->cy2)) {
+ /* if (xy!=NULL) AddViewLabel(w,xy1->x,xy1->y,"Reverse",0); */
+        RevertGroup(g); /* XPointRec -> Cell - reverse */
+        for (xy=Group1st(g,&ix);xy!=xy1;xy=Next(&ix)); /* Find it again */
 /*puts("d");*/
-	break; /* found */
+        break; /* found */
       }
     }
+ /* if (xy==NULL) AddViewLabel(w,xy1->x,xy1->y,"NotFound",0); */
+
     for (;xy!=NULL;xy=Next(&ix)) {
       GroupDel(g,xy);
       Free(xy);
@@ -982,14 +631,19 @@ static Group CalcSeparatrixLine(Equil eq,XPointTest xpt,Group xpg,int idx) {
     RevertGroup(g);
   }
 
+ /* xy=GroupAt(g,0); */
+ /* if (xy!=NULL) AddViewLabel(w,xy->x,xy->y,"0",0); */
+ /* xy=GroupAt(g,1); */
+ /* if (xy!=NULL) AddViewLabel(w,xy->x,xy->y,"1",0); */
 
 /* Obsolete
-printf("GC=%d\n",GroupCount(g));   -- XPointTest --
+printf("GC=%d\n",GroupCount(g));   -- XPointTest -- obsolete --
   xy=GroupAt(g,1);
   if (EqIn(eq,xy->x,xy->y,xpt->cx1,xpt->cy1,xpt->cx2,xpt->cy2))
-    puts("!"),RevertGroup(g);      -- XPointTest --
+    puts("!"),RevertGroup(g);      -- XPointTest -- obsolete --
 */
 
+  /* Make sure we are not immediately entering the XptRect again */
 
   xy=GroupAt(g,1);
   if (EqIn(eq,xy->x,xy->y,xpt->cx1,xpt->cy1,xpt->cx2,xpt->cy2)) {
@@ -1001,8 +655,8 @@ AddSource(a,xy->x,xy->y);
 xy=GroupAt(g,2);
 AddSource(a,xy->x,xy->y);
 */
-    FreeGroup(g);
-    puts("3"); /* XPointTest */
+    FreeMallocedGroup(g);
+    /*puts("3");*/ /* XPointTest */
     return NULL;
   }
 
@@ -1011,17 +665,17 @@ AddSource(a,xy->x,xy->y);
   xy=Group1st(g,&ix);
   while ((xy=Next(&ix))!=NULL) {
     for (xpi=Group1st(xpg,&ixpg);xpi!=NULL;xpi=Next(&ixpg))
-      if (EqIn(eq,xy->x,xy->y,xpi->cx1,xpi->cy1,xpi->cx2,xpi->cy2))
-	goto BigBreak;
+      if (EqInS(eq,xy->x,xy->y,xpi->cx1,xpi->cy1,xpi->cx2,xpi->cy2))
+        goto BigBreak;
   }
   BigBreak:;
 
 /*  if (xy!=NULL) printf("GI=%d\n",GroupIndex(g,xy)); */
 
-  if (xy!=NULL) while ((xy=Next(&ix))!=NULL) {
+  if (xy!=NULL) do {
     GroupDel(g,xy);
     Free(xy);
-  }
+  } while ((xy=Next(&ix))!=NULL);
 
 /* Add X point center */
 
@@ -1041,11 +695,18 @@ AddSource(a,xy->x,xy->y);
       xy=xy1;
     }
 
+  /* Make sure loops are in CCW order */
+  if (xpi!=NULL && xpi==xpt) {
+    xy=GroupAt(g,1);
+    xy1=GroupAt(g,GroupCount(g)-2);
+    if ((xy->x-xpt->centerX)*(xy1->y-xpt->centerY)-
+        (xy1->x-xpt->centerX)*(xy->y-xpt->centerY)<0) RevertGroup(g);
+  }
 
   return g;
 }
 
-XPointTest AddXPointTest(App a,int cx1,int cy1,int cx2,int cy2,double level) {
+XPointTest AddXPointTest(App a,int cx1,int cy1,int cx2,int cy2,double level,int id) {
   struct _ActRec ar;
   XPointTest xpt;
   int i;
@@ -1063,6 +724,7 @@ XPointTest AddXPointTest(App a,int cx1,int cy1,int cx2,int cy2,double level) {
   xpt->cy1=cy1;
   xpt->cy2=cy2;
   xpt->level=level;
+  xpt->id=id;
 
   if (CheckXPointRect(a->equil,xpt)) {
     Free(xpt);
@@ -1098,12 +760,22 @@ void* DelXPointTest(App a,XPointTest xpt) {
   return xpt;
 }
 
+XPointTest FindXPointTest(App a,int id) {
+  XPointTest xpt;
+  Index ix;
+
+  for (xpt=AppXPointTest1st(a,&ix);xpt!=NULL;xpt=Next(&ix))
+    if (xpt->id==id) return xpt;
+
+  return NULL;
+}
+
 static int ActAddXPointTest(App a,ActRec ar) {
   DelRec ur;
   XPointTest xpt;
   int i;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   assert(a->equil!=NULL);
 
@@ -1140,7 +812,7 @@ static int ActDelXPointTest(App a,DelRec ar) {
   XPointTest xpt;
   int i;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   xpt=ar->delete;
   assert (!xpt->locks);
@@ -1174,7 +846,7 @@ static int ActAddXPointSeg(App a,ActRec ar) {
   XPointSeg xps;
   int i;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   i=CalcXPointSegLine(a,ar->obj);
   if (i) return i;
@@ -1189,7 +861,6 @@ static int ActAddXPointSeg(App a,ActRec ar) {
   DrawAppHighlight(a,DRAW_OFF);
   DrawAppObject(a,xps->xpt,DRAW_OFF);
 
-  xps->gridPoints=CreateGroup();
   GroupAdd(xps->xpt->segs,xps);
   GroupAdd(a->xPointSegs,xps);
 
@@ -1212,7 +883,7 @@ static int ActDelXPointSeg(App a,DelRec ar) {
   ActRec ur;
   XPointSeg xps;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   xps=ar->delete;
   assert (!xps->locks);
@@ -1232,8 +903,6 @@ static int ActDelXPointSeg(App a,DelRec ar) {
 
   GroupDel(a->xPointSegs,xps);
   GroupDel(xps->xpt->segs,xps);
-  assert(IsEmptyGroup(xps->gridPoints));
-  xps->gridPoints=FreeGroup(xps->gridPoints);
 
   FreeXPointSegLine(a,xps);
 
@@ -1259,12 +928,8 @@ XPointSeg AddXPointSeg(App a,XPointTest xpt,int number,double sp,double ep) {
   xps->number=number;
   xps->startPos=sp;
   xps->endPos=ep;
-  xps->zone=-1;
-  xps->dir=0;
-  xps->zoneName="";
   xps->line=NULL;
   xps->lineLen=0;
-  xps->gridPoints=NULL;
 
   ar.obj=xps;
 
@@ -1275,12 +940,19 @@ XPointSeg AddXPointSeg(App a,XPointTest xpt,int number,double sp,double ep) {
     return NULL;
   }
 
+  AddGridPointSeg(a,xps,NextGridPointSegNumber(a));
+
   return xps;
 }
 
 void* DelXPointSeg(App a,XPointSeg xps) {
+  GridPointSeg gps;
   struct _DelRec ar;
+  Index ix;
   int i;
+
+  for (gps=AppGridPointSeg1st(a,&ix);gps!=NULL;gps=Next(&ix))
+    if (gps->xps==xps) DelGridPointSeg(gps);
 
   ar.delete=xps;
   i=ActDelXPointSeg(a,&ar);
@@ -1292,6 +964,8 @@ void* DelXPointSeg(App a,XPointSeg xps) {
 
 static int CalcXPointSegLine(App a,XPointSeg xps) {
   Group g;
+  XY xy,xy0;
+  Index ix;
 
   /* Calculate the full line */
 
@@ -1313,6 +987,76 @@ static int CalcXPointSegLine(App a,XPointSeg xps) {
   return 0;
 }
 
+double CalcXPointSegAngle(App a,XPointSeg xps,XPointTest xpt) {
+  Equil eq=a->equil;
+  Group g;
+  double minD,dx,dy,angle;
+  int b2dHalf;
+  XY xy0,xy,xy1;
+  Index ix;
+
+  assert(eq!=NULL);
+
+  g=CalcSeparatrixLine(a->equil,xps->xpt,a->xpointTests,xps->number);
+  if (g==NULL) return XPS_ANGLE_BAD;
+
+  xy=GroupAt(g,0);
+  xy1=GroupAt(g,GroupCount(g)-1);
+
+  /* Make the line point away from xpt */
+
+  if (hypot(xy1->x-xpt->centerX,xy1->y-xpt->centerY)<
+      hypot(xy->x-xpt->centerX,xy->y-xpt->centerY)) RevertGroup(g);
+
+  minD=fabs(EqY(eq,0)-EqY(eq,EqSY(eq)-1))*XPS_ANGLE_FRACTION;
+  minD=max(minD,(EqAverageCellWidth(eq)+EqAverageCellHeight(eq))/2*
+      XPS_ANGLE_CELLS_MIN);
+
+  xy0=Group1st(g,&ix);
+  while ((xy=Next(&ix))!=NULL) {
+    if (hypot(dx=xy->x-xy0->x,dy=xy->y-xy0->y)>minD) break;
+  }
+
+  if (xy==NULL) {
+    FreeMallocedGroup(g);
+    return XPS_ANGLE_BAD;
+  }
+
+  if (dx==0) angle=dy<0? -M_PI_2 : M_PI_2;
+  else angle=atan(dy/dx);
+
+  if (dx<0) angle+=M_PI;
+
+  FreeMallocedGroup(g);
+
+  return angle/M_PI*180;
+}
+
+int CalcXPointSegNumber(App a,XPointSeg xps,XPointTest xpt) {
+  Group g;
+  XPointSeg xps1;
+  double minD,dx,dy,angle;
+  int b2dHalf;
+  XY xy0,xy,xy1;
+  Index ix;
+  int nTotal,nBefore;
+
+  nTotal=nBefore=0;
+
+  for (xps1=AppXPointSeg1st(a,&ix);xps1!=NULL;xps1=Next(&ix)) {
+    if (xps1->xpt==xps->xpt && xps1->number==xps->number) {
+      nTotal++;
+      if (xps1->startPos<xps->startPos) nBefore++;
+    }
+  }
+
+  /* Invert the number if the opposite xpoint */
+  if (xpt!=xps->xpt) nBefore=nTotal-nBefore-1;
+
+  return nBefore;
+}
+
+
 static void* FreeXPointSegLine(App a,XPointSeg xps) {
   if (xps->line==NULL) return NULL;
 
@@ -1333,9 +1077,10 @@ static void DelDuplicateXPointSegs(App a) {
     for (xps2=AppXPointSeg1st(a,&ix2);xps2!=xps1;xps2=Next(&ix2)) {
       if (xps2->line==NULL) continue;
 k++;
-      if (!CompPolyLines(xps1->line,xps2->line)) {
+      if (!CompPolyLinesEx(xps1->line,xps2->line,
+          EqAverageCellWidth(a->equil)*DEL_DUP_MAX_ERROR)) {
 /*puts("Deleted!"); */
-	DelXPointSeg(a,xps2);
+        DelXPointSeg(a,xps2);
 /*        break; */
       }
     }
@@ -1387,17 +1132,17 @@ static Group CalcGradientLine(Equil eq,int x0,int y0,int steps,int bMinMax) {
       assert(0);
 
       for (d=0;d<steps;d++) {
-	lvl=EqCell(eq,ocx,ocy)+(EqCell(eq,cx,cy)-EqCell(eq,ocx,ocy))*d/steps;
-	dist=hypot(eq->x[ocx]+(eq->x[cx]-eq->x[ocx])*d/steps-fx,
-	    eq->y[ocy]+(eq->y[cy]-eq->y[ocy])*d/steps-fy);
-	if (dist==0) continue;
-	angle=(lvl-xyLvl)/dist*bMinMax;
+        lvl=EqCell(eq,ocx,ocy)+(EqCell(eq,cx,cy)-EqCell(eq,ocx,ocy))*d/steps;
+        dist=hypot(eq->x[ocx]+(eq->x[cx]-eq->x[ocx])*d/steps-fx,
+            eq->y[ocy]+(eq->y[cy]-eq->y[ocy])*d/steps-fy);
+        if (dist==0) continue;
+        angle=(lvl-xyLvl)/dist*bMinMax;
 
-	if (angleMax<0 || angle>angleMax) {
-	  angleMax=angle;
-	  nx=ocx*steps+(cx-ocx)*d;
-	  ny=ocy*steps+(cy-ocy)*d;
-	}
+        if (angleMax<0 || angle>angleMax) {
+          angleMax=angle;
+          nx=ocx*steps+(cx-ocx)*d;
+          ny=ocy*steps+(cy-ocy)*d;
+        }
       }
     } while (cx!=cx1 || cy!=cy1);
 
@@ -1437,8 +1182,8 @@ int DetectXPoints(App a) {
 
   /* Add all xpoints */
 
-  for (xp=Group1st(g,&ix);xp!=NULL;xp=Next(&ix)) {
-    xpt=AddXPointTest(a,xp->cx1,xp->cy1,xp->cx2,xp->cy2,xp->level);
+  for (i=0,xp=Group1st(g,&ix);xp!=NULL;xp=Next(&ix),i++) {
+    xpt=AddXPointTest(a,xp->cx1,xp->cy1,xp->cx2,xp->cy2,xp->level,i);
   }
 
   FreeMallocedGroup(g);
@@ -1460,6 +1205,7 @@ int DetectXPointSegs(App a) {
   Index ix,ix1;
   XPointTest xpt;
   XPointSeg xps;
+  GridPointSeg gps;
   int i,j,n;
   double pos[MAX_INS_N];
 
@@ -1487,9 +1233,9 @@ int DetectXPointSegs(App a) {
 
     for (xpt=AppXPointTest1st(a,&ix);xpt!=NULL;xpt=Next(&ix)) {
       for (i=0;i<4;i++) {
-	if (PolyLinesIntersect(xps->line,xpt->gradients[i],&pos[n],NULL))
-	  continue;
-	if (++n>=MAX_INS_N) goto BigBreak1; /* should never happen */
+        if (PolyLinesIntersect(xps->line,xpt->gradients[i],&pos[n],NULL))
+          continue;
+        if (++n>=MAX_INS_N) goto BigBreak1; /* should never happen */
       }
     }
 
@@ -1504,13 +1250,13 @@ int DetectXPointSegs(App a) {
 
     /* Add segments between intersections */
 
-    if (pos[0]>0) AddXPointSeg(a,xps->xpt,xps->number,-1,pos[0]),puts("a");
+    if (pos[0]>0) AddXPointSeg(a,xps->xpt,xps->number,-1,pos[0]);
 
     for (i=0;i<n-1;i++) if (pos[i+1]>pos[i])
-      AddXPointSeg(a,xps->xpt,xps->number,pos[i],pos[i+1]),puts("b");
+      AddXPointSeg(a,xps->xpt,xps->number,pos[i],pos[i+1]);
 
     if (pos[n-1]<xps->lineLen)
-      AddXPointSeg(a,xps->xpt,xps->number,pos[n-1],-1),puts("c");
+      AddXPointSeg(a,xps->xpt,xps->number,pos[n-1],-1);
 
     /* Delete the original segment */
 
@@ -1522,4 +1268,1691 @@ int DetectXPointSegs(App a) {
   return 0;
 }
 
+/* GridPointSeg ///////////////////////////////////////////////////// */
 
+static int ActAddGridPointSeg(App a,ActRec ar);
+static int ActDelGridPointSeg(App a,DelRec ar);
+
+static int ActAddGridPointSeg(App a,ActRec ar) {
+  GridPointSeg gps;
+  DelRec ur;
+
+  if (AppLocked(a)) return 0;
+
+  gps=ar->obj;
+  ar->obj=NULL;
+
+  assert(gps->type==T_GRIDPOINTSEG);
+  assert(gps->line==NULL);
+
+  ur=CreateActRec(sizeof(*ur),(ActProc)ActDelGridPointSeg);
+  ur->delete=gps;
+
+  gps->line=gps->xps->line;
+
+  NotifyAdd(a,gps);
+  DrawAppHighlight(a,DRAW_OFF);
+
+  GroupAdd(a->gridPointSegs,gps);
+
+  DrawAppObject(a,gps,DRAW_ON);
+
+  DrawAppHighlight(a,DRAW_ON);
+  NotifyAdded(a,gps);
+
+  AddAppUpdate(a);
+  AddUndoRec(a,(ActRec)ur);
+
+  return 0;
+}
+
+static int ActDelGridPointSeg(App a,DelRec ar) {
+  ActRec ur;
+  GridPointSeg gps;
+
+  if (AppLocked(a)) return 0;
+
+  gps=ar->delete;
+
+  assert(gps->type==T_GRIDPOINTSEG);
+  assert(!gps->locks);
+  assert(gps->line!=NULL);
+
+  ur=CreateActRec(sizeof(*ur),(ActProc)ActAddGridPointSeg);
+  ur->obj=gps;
+
+  NotifyDel(a,ar->delete);
+  DrawAppHighlight(a,DRAW_OFF);
+
+  DrawAppObject(a,gps,DRAW_ERASE);
+
+  GroupDel(a->gridPointSegs,gps);
+
+  DrawAppHighlight(a,DRAW_ON);
+  NotifyDeleted(a,ar->delete);
+
+  gps->line=NULL;
+
+  AddAppUpdate(a);
+  AddUndoRec(a,ur);
+  return 0;
+}
+
+GridPointSeg AddGridPointSeg(App a,XPointSeg xps,int zone) { /* $ */
+  GridPointSeg gps;
+  struct _ActRec ar;
+
+  gps=Malloc(sizeof(*gps));
+
+  gps->type=T_GRIDPOINTSEG;
+  gps->locks=0;
+  gps->app=a;
+
+  gps->zone=zone;
+  gps->xps=xps;
+  gps->line=NULL;
+  gps->lineLength=CalcLineLength(gps->xps->line);
+  gps->level=gps->xps->xpt->level;
+  gps->flags=0L;
+
+  gps->shortName=NULL;
+  gps->longName=NULL;
+  gps->dir=1;
+  gps->targetDir=1;
+
+  ar.obj=gps;
+  ActAddGridPointSeg(a,&ar);
+
+  return gps;
+}
+
+void* DelGridPointSeg(GridPointSeg gps) {
+  struct _DelRec ar;
+
+  SetGridPointSegShortName(gps,NULL);
+  SetGridPointSegLongName(gps,NULL);
+
+  ar.delete=gps;
+  ActDelGridPointSeg(gps->app,&ar);
+
+  return NULL;
+}
+
+
+
+GridPointSeg FindGridPointSeg(App a,int zone) {
+  GridPointSeg gps;
+  Index ix;
+
+  for (gps=Group1st(a->gridPointSegs,&ix);gps!=NULL;gps=Next(&ix))
+    if (gps->zone==zone) return gps;
+
+  return NULL;
+}
+
+GridPointSeg FindGridPointSegBySegment(App a,XPointSeg xps) {
+  GridPointSeg gps;
+  Index ix;
+
+  for (gps=Group1st(a->gridPointSegs,&ix);gps!=NULL;gps=Next(&ix))
+    if (gps->xps==xps) return gps;
+
+  return NULL;
+}
+
+void SetGridPointSegZone(GridPointSeg gps,int zone) {
+  SetObjInt(gps->app,gps,GetOffset(GridPointSeg,zone),sizeof(int),zone,
+    1);
+}
+
+char* GetGridPointSegDescription(GridPointSeg gps) {
+  static char buf[2048];
+
+  if (*GetGridPointSegLongName(gps)) return GetGridPointSegLongName(gps);
+
+  sprintf(buf,"Untitled (%d)",gps->zone);
+  return buf;
+}
+
+void SetGridPointSegFlags(GridPointSeg gps,long flags) {
+  SetObjInt(gps->app,gps,
+      GetOffset(GridPointSeg,flags),sizeof(gps->flags),flags,0);
+}
+
+void DrawGridPointSeg(View w,GridPointSeg gps,int mode) {
+  XY xy,xy1;
+  double dx,dy,h;
+  int i;
+  char s[4096];
+
+/*   if (~w->showFlags & SHW_GRIDPOINTS) return; */
+  if (!w->bEditTopology) return;
+
+  switch(mode) {
+    case DRAW_ON:
+      SetViewMode(w,IsHighlighted(w->app,gps) ? VMX_ELEMNORMAL : VM1_AXES);
+      break;
+    case DRAW_OFF:
+      if (IsHighlighted(w->app,gps)) {SetViewMode(w,VMX_ELEMNORMAL);break;}
+    case DRAW_ERASE:
+      SetViewMode(w,VM0_ELEMMARK); /*$*/
+      break;
+  }
+
+  /* Find the central point */
+  i=GroupCount(gps->xps->line);
+  if (i<4) i=0; else i/=2;
+
+  xy=GroupAt(gps->xps->line,i);
+  xy1=GroupAt(gps->xps->line,i+1);
+  dx=-(xy1->x-xy->x)*gps->dir;
+  dy=-(xy1->y-xy->y)*gps->dir;
+
+#define DGPS_ANGLE (20.0/180.0*M_PI)
+
+  h=hypot(dx,dy);
+  if (h<=0) return;
+  dx*=w->arrowLength/w->zoomX/h;
+  dy*=w->arrowLength/w->zoomX/h;
+
+  DrawViewLine(w,xy1->x,xy1->y,
+    xy1->x+dx*cos(DGPS_ANGLE)-dy*sin(DGPS_ANGLE),
+    xy1->y+dx*sin(DGPS_ANGLE)+dy*cos(DGPS_ANGLE));
+
+  DrawViewLine(w,xy1->x,xy1->y,
+    xy1->x+dx*cos(-DGPS_ANGLE)-dy*sin(-DGPS_ANGLE),
+    xy1->y+dx*sin(-DGPS_ANGLE)+dy*cos(-DGPS_ANGLE));
+
+  if (w->bEditTopology) {
+    switch(mode) {
+      case DRAW_ON:
+        SetViewMode(w,VM1_ELEMNUMBER);
+        break;
+      case DRAW_OFF:
+      case DRAW_ERASE:
+        SetViewMode(w,VM0_ELEMNUMBER);
+        break;
+    }
+    DrawViewLine(w,
+        xy1->x+w->arrowLength/w->zoomX,xy1->y+w->arrowLength/w->zoomX,
+        xy1->x,xy1->y);
+    sprintf(s,"%d (%s)",gps->zone,GetGridPointSegShortName(gps));
+    DrawViewText(w,xy1->x+w->arrowLength/w->zoomX,xy1->y+w->arrowLength/w->zoomX,s);
+  }
+
+}
+
+/* GridPointEx ////////////////////////////////////////////////////// */
+
+/* Procedures */
+
+GridPointEx AddGridPointEx(App a,int zone,double value) {
+  GridPointEx gpx;
+  struct _ActRec ar;
+
+  if (value<0 || value>1)
+    FatalError("AddGridPointEx()-value%f: fatal error 1",value); /* relcheck_ignore_line */
+
+  gpx=Malloc(sizeof(*gpx));
+  gpx->type=T_GRIDPOINTEX;
+  gpx->locks=0;
+  gpx->app=a;
+
+  gpx->zone=zone;
+  gpx->value=value;
+  gpx->creatorId=NULL;
+
+  gpx->bDrawn=1;
+  gpx->bCoordsOk=0;
+  gpx->x=gpx->y=gpx->dx=gpx->dy=0;
+
+  ar.obj=gpx;
+  ActAddGridPointEx(a,&ar);
+
+  return gpx;
+}
+
+int ChangeGridPointEx(GridPointEx gpx,int zone,double value) {
+  struct _ChangeGridPointExRec ar;
+
+  if (value<0 || value>1)
+    FatalError("ChangeGridPointEx()-value%f: fatal error 1",value); /* relcheck_ignore_line */
+
+  ar.gpx=gpx;
+  ar.zone=zone;
+  ar.value=value;
+  ActChangeGridPointEx(gpx->app,&ar);
+
+  if (*GetGridPointExCreatorId(gpx)==CID_UNCHANGEDFLAG)
+    ChangeGridPointExCreatorId(gpx,GetGridPointExCreatorId(gpx)+1);
+
+  return 0;
+}
+
+void* DelGridPointEx(GridPointEx gpx) {
+  struct _DelRec ar;
+
+  ChangeGridPointExCreatorId(gpx,NULL);
+
+  ar.delete=gpx;
+  ActDelGridPointEx(gpx->app,&ar);
+
+  return NULL;
+}
+
+int ChangeGridPointExCreatorId(GridPointEx gpx,char* id) {
+  if (id!=NULL && !strcmp(id,GetGridPointExCreatorId(gpx))) return 0;
+
+  SetObjString(gpx->app,gpx,GetOffset(GridPointEx,creatorId),id,0);
+
+  return 0;
+}
+
+char* GetGridPointExCreatorId(GridPointEx gpx) {
+  return gpx->creatorId==NULL? "*" : gpx->creatorId;
+}
+
+/* Computations */
+
+int RecalcGridPointExPos(GridPointEx gpx) {
+  GridPointSeg gps;
+  double s,l,value/*,x,y*/;
+  XY xy,xy1;
+  Index ix;
+
+  gpx->bCoordsOk=0;
+  gps=FindGridPointSeg(gpx->app,gpx->zone);
+  if (gps==NULL) return -1;
+
+  value=gpx->value;
+  if (gps->dir<0) value=1-value;
+
+  xy=Group1st(gps->line,&ix);
+  if (xy==NULL)
+    FatalError("RecalcGridPointExPos()-empty: fatal error 1");
+  for (s=0;(xy1=Next(&ix))!=NULL;xy=xy1) {
+    l=hypot(xy->x-xy1->x,xy->y-xy1->y)/gps->lineLength;
+    if (l+s>=value) {
+      gpx->x=xy->x+(xy1->x-xy->x)*(value-s)/l;
+      gpx->y=xy->y+(xy1->y-xy->y)*(value-s)/l;
+      gpx->dx=(xy1->x-xy->x)/l/gps->lineLength;
+      gpx->dy=(xy1->y-xy->y)/l/gps->lineLength;
+      gpx->bCoordsOk=1;
+      return 0;
+    }
+    s+=l;
+  }
+  gpx->x=xy->x;gpx->y=xy->y;gpx->dx=1;gpx->dy=0;
+  gpx->bCoordsOk=1;
+
+  return 0;
+}
+
+void DrawGridPointEx(View w,GridPointEx gpx,int mode) {
+  if (~w->showFlags & SHW_GRIDPOINTS) return;
+  if (!gpx->bCoordsOk) return;
+  switch(mode) {
+    case DRAW_ON:
+      SetViewMode(w,IsHighlighted(w->app,gpx) ? VMX_GPOINT : VM1_GPOINT);
+      break;
+    case DRAW_OFF:
+      if (IsHighlighted(w->app,gpx)) {SetViewMode(w,VMX_GPOINT);break;}
+    case DRAW_ERASE:
+      SetViewMode(w,VM0_GPOINT);
+      break;
+  }
+  DrawViewLine(w,gpx->x-gpx->dy/w->zoomX*w->gridPointLen/2,
+    gpx->y+gpx->dx/w->zoomY*w->gridPointLen/2,
+    gpx->x+gpx->dy/w->zoomX*w->gridPointLen/2,
+    gpx->y-gpx->dx/w->zoomY*w->gridPointLen/2);
+}
+
+
+
+/* Actions */
+
+int ActAddGridPointEx(App a,ActRec ar) {
+  GridPointEx gpx;
+  DelRec ur;
+  Index ix;
+
+  if (AppLocked(a)) return 0;
+
+  gpx=ar->obj;
+  ar->obj=NULL;
+
+  assert(gpx->type==T_GRIDPOINTEX);
+
+  ur=CreateActRec(sizeof(*ur),(ActProc)ActDelGridPointEx);
+  ur->delete=gpx;
+
+  NotifyAdd(a,gpx);
+  DrawAppHighlight(a,DRAW_OFF);
+
+/*  for (gp1=AppGridPoint1st(a,&ix);gp1!=NULL;gp1=Next(&ix))
+    if (gp1->area>gp->area ||(gp1->area==gp->area && gp1->value>gp->value))
+      break;
+  if (!IsEmptyGroup(a->gridPoints)) gp1=Prev(&ix); -- old
+  GroupAddAt(a->gridPoints,gp1,gp); */
+
+  GroupAdd(a->gridPointsEx,gpx);
+  if (gpx->bDrawn) RecalcGridPointExPos(gpx);
+
+  DrawAppObject(a,gpx,DRAW_ON);
+
+  DrawAppHighlight(a,DRAW_ON);
+  NotifyAdded(a,gpx);
+
+  AddAppUpdate(a);
+  AddUndoRec(a,(ActRec)ur);
+
+  return 0;
+}
+
+int ActChangeGridPointEx(App a,ChangeGridPointExRec ar) {
+  GridPointEx gp1;
+  ChangeGridPointExRec ur;
+  Index ix;
+
+  if (AppLocked(a)) return 0;
+
+  if (ar->gpx->locks)
+    FatalError("ActChangeGridPointEx()-locks: fatal error 1");
+  assert(ar->gpx->type==T_GRIDPOINTEX);
+
+  ur=CreateActRec(sizeof(*ur),(ActProc)ActChangeGridPointEx);
+  ur->gpx=ar->gpx;
+  ur->zone=ar->gpx->zone;
+  ur->value=ar->gpx->value;
+
+  NotifyChange(a,ar->gpx);
+  DrawAppHighlight(a,DRAW_OFF);
+
+  DrawAppObject(a,ar->gpx,DRAW_OFF);
+
+/*   GroupDel(a->gridPointsEx,ar->gpx); -- obsolete */
+  ar->gpx->zone=ar->zone;
+  ar->gpx->value=ar->value;
+
+/*  for (gp1=AppGridPoint1st(a,&ix);gp1!=NULL;gp1=Next(&ix))
+    if (gp1->area>ar->gp->area ||
+        (gp1->area==ar->gp->area && gp1->value>ar->gp->value))
+      break;
+  if (!IsEmptyGroup(a->gridPoints)) gp1=Prev(&ix);
+  GroupAddAt(a->gridPoints,gp1,ar->gp); */
+
+  if (ar->gpx->bDrawn) RecalcGridPointExPos(ar->gpx);
+  DrawAppObject(a,ar->gpx,DRAW_ON);
+
+  DrawAppHighlight(a,DRAW_ON);
+  NotifyChanged(a,ar->gpx);
+
+  AddAppUpdate(a);
+  AddUndoRec(a,(ActRec)ur);
+  return 0;
+}
+
+int ActDelGridPointEx(App a,DelRec ar) {
+  ActRec ur;
+  GridPointEx gpx;
+
+  if (AppLocked(a)) return 0;
+
+  gpx=ar->delete;
+  assert(gpx->type==T_GRIDPOINTEX);
+
+  if (gpx->locks) FatalError("ActDelGridPointEx()-locks: fatal error 1");
+
+  ur=CreateActRec(sizeof(*ur),(ActProc)ActAddGridPointEx);
+  ur->obj=gpx;
+
+  NotifyDel(a,ar->delete);
+  DrawAppHighlight(a,DRAW_OFF);
+
+  DrawAppObject(a,gpx,DRAW_ERASE);
+
+  GroupDel(a->gridPointsEx,gpx);
+
+  DrawAppHighlight(a,DRAW_ON);
+  NotifyDeleted(a,ar->delete);
+
+  AddAppUpdate(a);
+  AddUndoRec(a,ur);
+  return 0;
+}
+
+int GetGridPointExNumber(App a,GridPointEx gpx) {
+  GridPointEx gpx1;
+  Index ix;
+  int n=1;
+
+  for (gpx1=AppGridPointEx1st(a,&ix);gpx1!=NULL;gpx1=Next(&ix))
+    if (gpx1->zone==gpx->zone && gpx1->value<gpx->value) n++;
+
+  return n;
+}
+
+/* SurfaceZone ////////////////////////////////////////////////////// */
+
+static int ActDelSurfaceZone(App a,DelRec ar);
+static void FreeSurfaceZoneBounds(SurfaceZone sz);
+
+static int ActAddSurfaceZone(App a,ActRec ar) {
+  SurfaceZone sz;
+  DelRec ur;
+  Index ix;
+
+  if (AppLocked(a)) return 0;
+
+  sz=ar->obj;
+  ar->obj=NULL;
+
+  assert(sz->type==T_SURFACEZONE);
+
+  ur=CreateActRec(sizeof(*ur),(ActProc)ActDelSurfaceZone);
+  ur->delete=sz;
+
+  NotifyAdd(a,sz);
+  DrawAppHighlight(a,DRAW_OFF);
+
+  GroupAdd(a->surfaceZones,sz);
+
+  DrawAppObject(a,sz,DRAW_ON);
+
+  DrawAppHighlight(a,DRAW_ON);
+  NotifyAdded(a,sz);
+
+  AddAppUpdate(a);
+  AddUndoRec(a,(ActRec)ur);
+
+  return 0;
+}
+
+static int ActDelSurfaceZone(App a,DelRec ar) {
+  ActRec ur;
+  SurfaceZone sz;
+
+  if (AppLocked(a)) return 0;
+
+  sz=ar->delete;
+  assert(sz->type==T_SURFACEZONE);
+  if (sz->bounds!=NULL) FreeSurfaceZoneBounds(sz);
+
+  if (sz->locks) FatalError("ActDelSurfaceZone()-locks: fatal error 1");
+
+  ur=CreateActRec(sizeof(*ur),(ActProc)ActAddSurfaceZone);
+  ur->obj=sz;
+
+  NotifyDel(a,ar->delete);
+  DrawAppHighlight(a,DRAW_OFF);
+
+  DrawAppObject(a,sz,DRAW_ERASE);
+
+  GroupDel(a->surfaceZones,sz);
+
+  DrawAppHighlight(a,DRAW_ON);
+  NotifyDeleted(a,ar->delete);
+
+  AddAppUpdate(a);
+  AddUndoRec(a,ur);
+  return 0;
+}
+
+SurfaceZone AddSurfaceZone(App a,int szNo,int gpsNo1,int gpsNo2,int orient) {
+  SurfaceZone sz;
+  struct _ActRec ar;
+
+  assert(orient==1 || orient==-1);
+
+  sz=Malloc(sizeof(*sz));
+  sz->type=T_SURFACEZONE;
+  sz->locks=0;
+  sz->app=a;
+
+  sz->zone=szNo;
+  sz->gpZone1=gpsNo1;
+  sz->gpZone2=gpsNo2;
+  sz->sign=0;
+  sz->orient=orient;
+  sz->level1=sz->level2=0;
+  sz->flags=0;
+  sz->bounds=NULL;
+
+  sz->shortName=NULL;
+  sz->longName=NULL;
+
+  ar.obj=sz;
+  ActAddSurfaceZone(a,&ar);
+
+  RecalcSurfaceZoneSign(sz);
+
+  return sz;
+}
+
+void* DelSurfaceZone(SurfaceZone sz) {
+  struct _DelRec ar;
+
+  SetSurfaceZoneShortName(sz,NULL);
+  SetSurfaceZoneLongName(sz,NULL);
+
+  ar.delete=sz;
+  ActDelSurfaceZone(sz->app,&ar);
+
+  return NULL;
+}
+
+void SetSurfaceZoneFlags(SurfaceZone sz,long flags) {
+  SetObjInt(sz->app,sz,GetOffset(SurfaceZone,flags),sizeof(sz->flags),flags,0);
+}
+
+int CheckSurfaceZoneData(App a,int szNo,int gpsNo1,int gpsNo2,int sign) {
+  GridPointSeg gps,gps2;
+
+  gps=FindGridPointSeg(a,gpsNo1);
+  if (gps==NULL) return ERR_BADGPZONENUMBER;
+
+  if (gpsNo2>=0) {
+    gps2=FindGridPointSeg(a,gpsNo2);
+    if (gps2==NULL) return ERR_BADGPZONENUMBER;
+    if (sign>0 && gps2->xps->xpt->level<gps->xps->xpt->level)
+      return ERR_BADSURFACEZONE1;
+    if (sign<0 && gps2->xps->xpt->level>gps->xps->xpt->level)
+      return ERR_BADSURFACEZONE1;
+
+  }
+
+  return 0;
+}
+
+
+void DrawSurfaceZone(View w,SurfaceZone sz,int mode) {
+}
+
+SurfaceZone FindSurfaceZone(App a,int zone) {
+  SurfaceZone sz;
+  Index ix;
+
+  for (sz=AppSurfaceZone1st(a,&ix);sz!=NULL;sz=Next(&ix))
+    if (sz->zone==zone) return sz;
+
+  return NULL;
+}
+
+char* GetSurfaceZoneDescription(SurfaceZone sz) {
+  static char buf[2048];
+
+  if (*GetSurfaceZoneLongName(sz)) return GetSurfaceZoneLongName(sz);
+
+  sprintf(buf,"Untitled (%d)",sz->zone);
+  return buf;
+}
+
+#define EQX a->equil->x
+#define EQY a->equil->y
+#define EQL(x,y) EqCell(a->equil,(x),(y))
+
+int FindSurfaceOriginPointEx(App a,int zone,double level,
+    double* px,double* py) {
+  Chord ch;
+  int ocx,ocy,cx,cy,cxe,cye,cx1,cy1,cx2,cy2,b,len;
+  int i,s,s0,bPeakSearch;
+  double ol,l;
+  SurfaceZone sz;
+  GridPointSeg gps,gps2;
+  XY xy;
+
+  if (a->equil==NULL) return ERR_NOEQUIL;
+
+  bPeakSearch= level==MAXDOUBLE;
+
+  sz=FindSurfaceZone(a,zone);
+  if (sz==NULL) return ERR_BADSURFZONENUMBER;
+
+  gps=FindGridPointSeg(a,sz->gpZone1);
+  if (gps==NULL) return ERR_BADGPZONENUMBER;
+
+  l=gps->xps->xpt->level;
+  if (!bPeakSearch && (level-l)*sz->sign<0) return ERR_OUTOFSURFZONE;
+
+  if (sz->gpZone2>=0) {
+    gps2=FindGridPointSeg(a,sz->gpZone2);
+    if (gps2==NULL) return ERR_BADGPZONENUMBER;
+    l=gps2->xps->xpt->level;
+    if (!bPeakSearch && (level-l)*sz->sign>0) return ERR_OUTOFSURFZONE;
+  }
+
+  i=GroupCount(gps->line);
+
+  xy=GroupAt(gps->line,i/2);
+
+  i=GetEquilCell(a->equil,xy->x,xy->y,&cx,&cy);
+
+  if (i) return ERR_FSOPX_1; /* Out of equilibrium */
+
+  /* Direct hit - return immediately */
+  if (EQL(cx,cy)==level) {
+    *px=EqX(a->equil,cx);
+    *py=EqY(a->equil,cy);
+
+    return 0;
+  }
+
+  /* Initialize the peak search flag */
+
+  if (bPeakSearch) {
+    level= (sz->sign<0)? -MAXDOUBLE:MAXDOUBLE;
+  }
+
+
+  /* Determine the needed gradient sign */
+
+  s= EQL(cx,cy)>level? -1 : 1;
+
+  /* s>0: go "upwards"  s<0: go "downwards" */
+
+  while (1) {
+    ocx=cx;
+    ocy=cy;
+
+    if (ocx>1 && (EQL(ocx-1,ocy)-EQL(cx,cy))*s>0) {
+      cx=ocx-1;cy=ocy;
+    }
+    if (ocy>1 && (EQL(ocx,ocy-1)-EQL(cx,cy))*s>0) {
+      cx=ocx;cy=ocy-1;
+    }
+    if (ocx<a->equil->sx-2 && (EQL(ocx+1,ocy)-EQL(cx,cy))*s>0) {
+      cx=ocx+1;cy=ocy;
+    }
+    if (ocy<a->equil->sy-2 && (EQL(ocx,ocy+1)-EQL(cx,cy))*s>0) {
+      cx=ocx;cy=ocy+1;
+    }
+    if (ocx==cx && ocy==cy)
+      if (bPeakSearch) break;
+      else return ERR_LEVELNOTFOUND;
+
+    ol=EQL(ocx,ocy);
+    l=EQL(cx,cy);
+
+    if (min(l,ol)<=level && max(l,ol)>=level) break;
+  }
+
+  Found:
+
+  if (bPeakSearch || l==ol) l=0; else l=(level-ol)/(l-ol);
+  *px=EQX[ocx]+(EQX[cx]-EQX[ocx])*l;
+  *py=EQY[ocy]+(EQY[cy]-EQY[ocy])*l;
+
+  return 0;
+}
+
+int SurfaceZoneLevelOk(SurfaceZone sz,double level) {
+  GridPointSeg gps,gps2;
+  double l;
+
+  gps=FindGridPointSeg(sz->app,sz->gpZone1);
+  if (gps==NULL) return 0; /*ERR_BADGPZONENUMBER; */
+
+  l=gps->xps->xpt->level;
+  if ((level-l)*sz->sign<0) return 0; /* ERR_OUTOFSURFZONE; */
+
+  if (sz->gpZone2>=0) {
+    gps2=FindGridPointSeg(sz->app,sz->gpZone2);
+    if (gps2==NULL) return 0; /* ERR_BADGPZONENUMBER; */
+    l=gps2->xps->xpt->level;
+    if ((level-l)*sz->sign>0) return 0; /* ERR_OUTOFSURFZONE; */
+  }
+
+  return 1;
+}
+
+/*static int GridPointSegInSurfaceZone(GridPointSeg gps,SurfaceZone sz) {
+  GridPointSeg gps1;
+  XY xy,xy1;
+
+  gps1=FindGridPointSeg(sz->app,sz->gpZone1);
+  if (gps1==NULL) return 0;
+
+  xy=
+*/
+
+int GetSurfaceZoneByXY(App a,double x,double y,double* pLevel,int* pErr) {
+  SurfaceZone sz,szMin=NULL;
+  GridPointSeg gps,gpsMin;
+  double level,d,dMin=MAXDOUBLE;
+  int cx,cy,ocx,ocy;
+  Group g,gXY;
+  Index ix,ixy;
+  XY xy;
+  int pErrBackup;
+
+  if (pErr==NULL) pErr=&pErrBackup;
+
+  if (a->equil==NULL) {
+    *pErr=ERR_NOEQUIL;
+    return -1;
+  }
+
+  if (GetEquilLevel(a->equil,x,y,&level,NULL,NULL)) {
+    *pErr=ERR_OUTOFEQUIL;
+    return -1;
+  }
+
+  g=CreateGroup();
+  for (sz=AppSurfaceZone1st(a,&ix);sz!=NULL;sz=Next(&ix))
+    if (SurfaceZoneLevelOk(sz,level)) GroupAdd(g,sz);
+
+  if (GroupCount(g)<1) {
+    FreeGroup(g);
+    *pErr=ERR_NOSURFZONE;
+    return -1;
+  }
+
+  for (sz=Group1st(g,&ix);sz!=NULL;sz=Next(&ix))
+    if(sz->bounds==NULL) break;
+  if (sz!=NULL) RecalcTopologyCache(a);
+
+  for (sz=Group1st(g,&ix);sz!=NULL;sz=Next(&ix)) {
+    if (sz->bounds==NULL) continue;
+/*    gps=FindGridPointSeg(a,sz->gpZone1);
+    if (gps==NULL) continue; -- old */
+
+    d=PointToPolyLineDist(sz->bounds,x,y);
+    if (d<dMin) {
+      dMin=d;
+      szMin=sz;
+    }
+  }
+
+ /* $ */
+/*  if (GroupCount(g)>1) {
+    FreeGroup(g);
+    *pErr=ERR_NOSONNET;
+    return -1;
+  }
+
+  sz=Group1st(g,NULL); */
+
+  FreeGroup(g);
+  sz=szMin;
+
+  if (sz==NULL) {
+    *pErr=ERR_NOSURFZONE;
+    return -1;
+  }
+
+  if (pLevel!=NULL) *pLevel=level;
+
+  *pErr=0;
+  return sz->zone;
+}
+
+#undef EQX
+#undef EQY
+#undef EQL
+
+/* SurfaceEx //////////////////////////////////////////////////////// */
+
+int ActAddSurfaceEx(App a,ActRec ar) {
+  SurfaceEx s;
+  DelRec ur;
+  int i,cx,cy,sx,sy;
+  double level;
+  Group g;
+  Var t1,t2;
+
+  if (AppLocked(a)) return 0;
+
+  assert(a->equil!=NULL);
+
+  s=ar->obj;
+  ar->obj=NULL;
+
+  assert(s->type==T_SURFACEEX);
+  assert(s->line==NULL);
+
+  ur=CreateActRec(sizeof(*ur),(ActProc)ActDelSurfaceEx);
+  ur->delete=s;
+
+  NotifyAdd(a,s);
+  DrawAppHighlight(a,DRAW_OFF);
+
+  if (s->bDrawn) RecalcSurfaceExPos(s);
+
+      /*LockObject(a->equil,1);*/
+
+  GroupAdd(a->surfacesEx,s);
+
+      /*if (!a->equil->signInside && s->closed)
+        a->equil->signInside=sign(s->level);*/
+
+  DrawAppObject(a,s,DRAW_ON);
+
+  DrawAppHighlight(a,DRAW_ON);
+  NotifyAdded(a,s);
+
+  AddAppUpdate(a);
+  AddUndoRec(a,(ActRec)ur);
+  return 0;
+}
+
+int ActDelSurfaceEx(App a,DelRec ar) {
+  ActRec ur;
+  SurfaceEx s;
+
+  if (AppLocked(a)) return 0;
+
+  s=ar->delete;
+  assert(s->type==T_SURFACEEX);
+
+  if (s->locks)
+    FatalError("ActDelSurfaceEx()-locks: fatal error 1");
+
+  ur=CreateActRec(sizeof(*ur),(ActProc) ActAddSurfaceEx);
+  ur->obj=s;
+
+  NotifyDel(a,s);
+  DrawAppHighlight(a,DRAW_OFF);
+  DrawAppObject(a,s,DRAW_ERASE);
+
+  InvalidateSurfaceExPos(s);
+
+  GroupDel(a->surfacesEx,s);
+  /*LockObject(a->equil,-1);*/
+  assert(s->line==NULL);
+
+  DrawAppHighlight(a,DRAW_ON);
+  NotifyDeleted(a,s);
+
+  AddAppUpdate(a);
+  AddUndoRec(a,(ActRec)ur);
+  return 0;
+}
+
+int ActChangeSurfaceEx(App a,ChangeSurfaceExRec ar) {
+  ChangeSurfaceExRec ur;
+  int i,cx,cy,sx,sy;
+  double level;
+  Group g;
+  Var t1,t2;
+  SurfaceEx s=ar->sx;
+
+  if (AppLocked(a)) return 0;
+
+  assert(s->type==T_SURFACEEX);
+
+  if (s->locks)
+    FatalError("ActChangeSurfaceEx()-locks: fatal error 1");
+
+  ur=CreateActRec(sizeof(*ur),(ActProc) ActChangeSurfaceEx);
+  ur->sx=s;
+  ur->x=s->originX;
+  ur->y=s->originY;
+  ur->level=s->level;
+  ur->zone=s->zone;
+
+  NotifyChange(a,s);
+  DrawAppHighlight(a,DRAW_OFF);
+
+  DrawAppObject(a,s,DRAW_OFF);
+
+  s->originX=ar->x;
+  s->originY=ar->y;
+  s->level=ar->level;
+  s->zone=ar->zone;
+
+  RecalcSurfaceExPos(s);
+
+  DrawAppObject(a,s,DRAW_ON);
+
+  DrawAppHighlight(a,DRAW_ON);
+  NotifyChanged(a,s);
+
+  AddAppUpdate(a);
+  AddUndoRec(a,(ActRec)ur);
+  return 0;
+}
+
+/* **** */
+
+int ChangeSurfaceExXY(SurfaceEx sx,double x,double y);
+void* DelSurfaceEx(SurfaceEx sx);
+
+int ChangeSurfaceExCreatorId(SurfaceEx sx,char* id);
+char* GetSurfaceExCreatorId(SurfaceEx sx);
+
+SurfaceEx AddSurfaceEx(App a,int zone,double level,int* pErr) {
+  SurfaceEx sx;
+  struct _ActRec ar;
+
+  if (pErr!=NULL) *pErr=0; /* $ */
+
+  assert(zone>=0);
+
+  sx=Malloc(sizeof(*sx));
+  sx->type=T_SURFACEEX;
+  sx->locks=0;
+  sx->app=a;
+
+  sx->zone=zone;
+  sx->level=level;
+  sx->creatorId=NULL;
+
+  sx->lastError=0;
+  sx->bDrawn=1;
+  sx->bCoordsOk=0;
+  sx->originX=sx->originY=0;
+  sx->line=NULL;
+  sx->closed=-1;
+
+  ar.obj=sx;
+  ActAddSurfaceEx(a,&ar);
+
+  return sx;
+}
+
+SurfaceEx AddSurfaceExXY(App a,double x,double y,int* pErr) {
+  SurfaceEx sx;
+  struct _ActRec ar;
+
+  if (pErr!=NULL) *pErr=0; /* $ */
+
+  sx=Malloc(sizeof(*sx));
+  sx->type=T_SURFACEEX;
+  sx->locks=0;
+  sx->app=a;
+
+  sx->lastError=0;
+  sx->zone=SZN_XY;
+  sx->level=0;
+  sx->creatorId=NULL;
+  sx->originX=x;
+  sx->originY=y;
+
+  sx->bDrawn=1;
+  sx->bCoordsOk=0;
+  sx->line=NULL;
+  sx->closed=-1;
+
+  ar.obj=sx;
+  ActAddSurfaceEx(a,&ar);
+
+  return sx;
+}
+
+int ChangeSurfaceEx(SurfaceEx sx,int zone,double level) {
+  struct _ChangeSurfaceExRec ar;
+
+  ar.sx=sx;
+  ar.zone=zone;
+  ar.level=level;
+  ar.x=ar.y=0;
+
+  ActChangeSurfaceEx(sx->app,&ar);
+
+  if (*GetSurfaceExCreatorId(sx)==CID_UNCHANGEDFLAG)
+    ChangeSurfaceExCreatorId(sx,GetSurfaceExCreatorId(sx)+1);
+
+  return 0;
+}
+
+int ChangeSurfaceExXY(SurfaceEx sx,double x,double y) {
+  struct _ChangeSurfaceExRec ar;
+
+  ar.sx=sx;
+  ar.zone=SZN_XY;
+  ar.level=0;
+  ar.x=x;
+  ar.y=y;
+
+  ActChangeSurfaceEx(sx->app,&ar);
+
+  if (*GetSurfaceExCreatorId(sx)==CID_UNCHANGEDFLAG)
+    ChangeSurfaceExCreatorId(sx,GetSurfaceExCreatorId(sx)+1);
+
+  return 0;
+}
+
+void* DelSurfaceEx(SurfaceEx sx) {
+  struct _DelRec ar;
+
+  ChangeSurfaceExCreatorId(sx,NULL);
+
+  ar.delete=sx;
+  ActDelSurfaceEx(sx->app,&ar);
+
+  return NULL;
+}
+
+int ChangeSurfaceExCreatorId(SurfaceEx sx,char* id) {
+  assert(sx->type==T_SURFACEEX);
+
+  if (id!=NULL && !strcmp(id,GetSurfaceExCreatorId(sx))) return 0;
+
+  SetObjString(sx->app,sx,GetOffset(SurfaceEx,creatorId),id,0);
+
+  return 0;
+}
+
+char* GetSurfaceExCreatorId(SurfaceEx sx) {
+  assert(sx->type==T_SURFACEEX);
+
+  return sx->creatorId==NULL? "*" : sx->creatorId;
+}
+
+int RecalcSurfaceExPos(SurfaceEx sx) {
+  int r,cx,cy;
+  double lvl;
+  Group g;
+
+  assert(sx->type==T_SURFACEEX);
+
+  InvalidateSurfaceExPos(sx);
+
+  if (sx->app->equil==NULL) {
+    sx->lastError=ERR_NOEQUIL;
+    return sx->lastError;
+  }
+
+  if (sx->zone!=SZN_XY) {
+    sx->lastError=FindSurfaceOriginPointEx(sx->app,sx->zone,sx->level,
+        &sx->originX,&sx->originY);
+    if (sx->lastError) return sx->lastError;
+  }
+
+  if (GetEquilCellEx(sx->app->equil,sx->originX,sx->originY,&cx,&cy,
+      EqSX(sx->app->equil),EqSY(sx->app->equil)))
+    return sx->lastError=ERR_OUTOFEQUIL;
+
+  if (GetEquilLevel(sx->app->equil,sx->originX,sx->originY,&lvl,NULL,NULL))
+    FatalError("ActAddSurfaceEx()-level: fatal error 1");
+  r=CalcSurfaceLine(sx->app->equil,cx,cy,lvl,&g,
+      EqSX(sx->app->equil),EqSY(sx->app->equil)); /* $$$ */
+  if (r<0) return ERR_FLAT_EQUIL;
+
+  sx->line=g;
+  sx->closed=r;
+  if (sx->zone==SZN_XY) sx->level=lvl;
+
+  sx->bCoordsOk=1;
+
+  return 0;
+}
+
+int InvalidateSurfaceExPos(SurfaceEx sx) {
+  assert(sx->type==T_SURFACEEX);
+
+  if (sx->bCoordsOk) {
+    sx->line=FreeMallocedGroup(sx->line);
+    sx->bCoordsOk=0;
+  }
+  else assert(sx->line==0);
+
+  return 0;
+}
+
+void DrawSurfaceEx(View w,SurfaceEx sx,int mode) {
+  Index ix;
+  XY xy1,xy2;
+
+  assert(sx->type==T_SURFACEEX);
+
+  if (~w->showFlags & SHW_SURFACES) return;
+  if (!sx->bCoordsOk) return;
+  assert(sx->line!=NULL);
+
+  xy1=Group1st(sx->line,&ix);
+  if (xy1==NULL) return;
+  switch(mode) {
+    case DRAW_ON:
+      SetViewMode(w,IsHighlighted(w->app,sx) ? VMX_SURFACE : VM1_SURFACE);
+      break;
+    case DRAW_OFF:
+      if (IsHighlighted(w->app,sx)) {SetViewMode(w,VMX_SURFACE);break;}
+    case DRAW_ERASE:
+      SetViewMode(w,VM0_SURFACE);
+      break;
+  }
+  while ((xy2=Next(&ix))!=NULL) {
+    DrawViewLine(w,xy1->x,xy1->y,xy2->x,xy2->y);
+    xy1=xy2;
+  }
+}
+
+SurfaceEx AddSurfaceExByXY(App a,double x,double y,int* pErr) {
+  int pErrBackup,zone,r=0;
+  double level;
+  SurfaceEx sx;
+
+  if (pErr==NULL) pErr=&pErrBackup;
+  if (pErr!=NULL) *pErr=0;
+
+  zone=GetSurfaceZoneByXY(a,x,y,&level,pErr);
+  if (zone>=0) {
+    sx=AddSurfaceEx(a,zone,level,&r);
+  } else {
+    sx=AddSurfaceExXY(a,x,y,&r);
+  }
+
+  if (pErr!=NULL && r) *pErr=r;
+
+  return sx;
+}
+
+int ChangeSurfaceExByXY(SurfaceEx sx,double x,double y,int* pErr) {
+  int pErrBackup,zone,r;
+  double level;
+
+  if (pErr==NULL) pErr=&pErrBackup;
+
+  zone=GetSurfaceZoneByXY(sx->app,x,y,&level,pErr);
+  if (zone>=0) {
+    r=ChangeSurfaceEx(sx,zone,level);
+  } else {
+    r=ChangeSurfaceExXY(sx,x,y);
+  }
+  if (r) *pErr=r;
+
+  return r;
+}
+
+void UpdateSurfaceExPos(SurfaceEx s) {
+  App a=s->app;
+
+  DrawAppHighlight(a,DRAW_OFF);
+  DrawAppObject(a,s,DRAW_OFF);
+
+  RecalcSurfaceExPos(s);
+
+  DrawAppObject(a,s,DRAW_ON);
+
+  DrawAppHighlight(a,DRAW_ON);
+
+  AddAppUpdate(a);
+}
+
+void UpdateGridPointExPos(GridPointEx gpx) {
+  App a=gpx->app;
+
+  DrawAppHighlight(a,DRAW_OFF);
+  DrawAppObject(a,gpx,DRAW_OFF);
+
+  RecalcGridPointExPos(gpx);
+
+  DrawAppObject(a,gpx,DRAW_ON);
+
+  DrawAppHighlight(a,DRAW_ON);
+
+  AddAppUpdate(a);
+}
+
+void UpdateAfterTopologyChange(App a) {
+  SurfaceEx sx;
+  GridPointEx gpx;
+  Index ix;
+
+  for (sx=AppSurfaceEx1st(a,&ix);sx!=NULL;sx=Next(&ix))
+    UpdateSurfaceExPos(sx);
+
+  for (gpx=AppGridPointEx1st(a,&ix);gpx!=NULL;gpx=Next(&ix))
+    UpdateGridPointExPos(gpx);
+}
+
+/* Returns angle "from" (dx1,dy1) "to" (dx2,dy2) */
+double AngleBetween(double dx1,double dy1,double dx2,double dy2) {
+  double a,a1,a2;
+
+  a1=acos(dx1/hypot(dx1,dy1));
+  if (dy1<0) a1=M_PI*2-a1;
+  a2=acos(dx2/hypot(dx2,dy2));
+  if (dy2<0) a2=M_PI*2-a2;
+
+  a=a2-a1;
+  if (a<0) a+=M_PI*2;
+
+  return a;
+}
+
+#define ANGLE_0_THRESHOLD 1e-2
+
+/* Y1 -> X2 -> Y2 -> X1 */
+double EqXYToBorder(Equil eq,double x,double y) {
+  double sum=0;
+
+  if (y==eq->y[0])        return fabs(x-eq->x[0]);
+  sum+=fabs(eq->x[eq->sx-1]-eq->x[0]);
+
+  if (x==eq->x[eq->sx-1]) return sum+fabs(y-eq->y[0]);
+  sum+=fabs(eq->y[eq->sy-1]-eq->y[0]);
+
+  if (y==eq->y[eq->sy-1]) return sum+fabs(x-eq->x[eq->sx-1]);
+  sum+=fabs(eq->x[eq->sx-1]-eq->x[0]);
+
+  if (x==eq->x[0])        return sum+fabs(y-eq->y[eq->sy-1]);
+  /* sum+=fabs(eq->y[eq->sy-1]-eq->y[0]); -- Not needed */
+
+  return MAXDOUBLE; /* Not on equilibrium border */
+}
+
+struct _EqBorderSort {
+  double b,x,y;
+};
+
+int EqBorderCompare(const void* b1,const void* b2) {
+  struct _EqBorderSort
+    * pb1=(struct _EqBorderSort*)b1,
+    * pb2=(struct _EqBorderSort*)b2;
+
+  if (pb1->b<pb2->b) return -1;
+  if (pb1->b>pb2->b) return 1;
+
+  return 0;
+}
+
+void RecalcTopologyCache(App a) {
+  SurfaceZone sz;
+  int* pErr;
+  GridPointSeg gpsStart;
+  struct _XPointSeg xpss;
+  XPointTest xpt;
+  int i,j1,j2,r,errBuf,n;
+  XY xy,xy1,xyt;
+  double gx,gy,l,sina,xStart,yStart,dx,dy,angle,angleHit,*eqBorderPts;
+  double x1,y1,x2,y2,tx,ty,xStart2,yStart2;
+  Group gResult,line,lines,ln,g,l1,lnHit;
+  int bReverse;
+  Index ix,ix1,ixsz;
+  struct _EqBorderSort* bdr;
+  Source src;
+
+  /*if (pErr==NULL)*/ pErr=&errBuf;
+  *pErr=0;
+
+  /* Free all existing bounds */
+  for (sz=AppSurfaceZone1st(a,&ix);sz!=NULL;sz=Next(&ix))
+    if (sz->bounds!=NULL) FreeSurfaceZoneBounds(sz);
+
+  if (a->equil==NULL) {*pErr=ERR_OUTOFEQUIL;return;} /* $ noequil! */
+
+  /**** Generate all separatrix lines, store in "lines" */
+
+  n=0;
+  lines=CreateGroup();
+
+  for (xpt=AppXPointTest1st(a,&ix);xpt!=NULL;xpt=Next(&ix)) {
+    for (i=0;i<4;i++) {
+      xpss.xpt=xpt;
+      xpss.number=i;
+      xpss.startPos=xpss.endPos=-1;
+      xpss.line=NULL;
+      r=CalcXPointSegLine(a,&xpss);
+      if (r) {
+        if (xpss.line!=NULL) FreeMallocedGroup(xpss.line);
+        continue;
+      }
+      GroupAdd(lines,xpss.line);
+      n++;
+    }
+  }
+
+  /* Detect and sort all equilibrium edge intersections */
+
+  bdr=Malloc(sizeof(*bdr)*(2*n+1));
+  n=0;
+  g=CreateGroup();
+  for (ln=Group1st(lines,&ix);ln!=NULL;ln=Next(&ix)) {
+
+    /* Is the "other" end of the line at the equilibrium edge? */
+    assert(!IsEmptyGroup(ln));
+    xy=GroupAt(ln,GroupCount(ln)-1);
+    bdr[n].b=EqXYToBorder(a->equil,xy->x,xy->y);
+
+    /* No - if it is not a loop, skip it */
+    if (bdr[n].b==MAXDOUBLE) {
+       xyt=GroupAt(ln,0);
+       if (xyt->x!=xy->x || xyt->y!=xy->y) continue;
+    } else {
+      /* Yes - add to the intersection array */
+      bdr[n].x=xy->x;
+      bdr[n].y=xy->y;
+      n++;
+    }
+
+    /* Add the reversed line to the lines array */
+    l1=CreateStack();
+    for (xy=Group1st(ln,&ix1);xy!=NULL;xy=Next(&ix1))
+      AddXY(l1,xy->x,xy->y);
+
+    GroupAdd(g,l1);
+  }
+  MergeGroup(lines,g);
+  FreeGroup(g);
+
+  /* Sort eq.edge intersections in the CW order */
+  qsort(bdr,n,sizeof(*bdr),EqBorderCompare);
+
+  /* Connect equilibrium edge intersections with addl lines */
+
+  x1=a->equil->x[0];
+  y1=a->equil->y[0];
+  x2=a->equil->x[a->equil->sx-1];
+  y2=a->equil->y[a->equil->sy-1];
+  if (x1>x2) {l=x1;x1=x2;x2=l;}
+  if (y1>y2) {l=y1;y1=y2;y2=l;}
+
+  for (i=0;i<n;i++) {
+    j1=(i+1)%n;
+    ln=CreateGroup(); /* For the logical CCW line: Y1->X2->Y2->X1 */
+
+    tx=bdr[i].x;
+    ty=bdr[i].y;
+    AddXY(ln,tx,ty);
+
+    do {
+      if (ty==y1 && tx<x2) {
+        tx= (ty==bdr[j1].y && tx<bdr[j1].x)? bdr[j1].x : x2;
+      } else if (tx==x2 && ty<y2) {
+        ty= (tx==bdr[j1].x && ty<bdr[j1].y)? bdr[j1].y : y2;
+      } else if (ty==y2 && tx>x1) {
+        tx= (ty==bdr[j1].y && tx>bdr[j1].x)? bdr[j1].x : x1;
+      } else if (tx==x1 && ty>y1) {
+        ty= (tx==bdr[j1].x && ty>bdr[j1].y)? bdr[j1].y : y1;
+      }
+      AddXY(ln,tx,ty);
+    } while (tx!=bdr[j1].x || ty!=bdr[j1].y);
+
+    /* Create a reverse line in CW order */
+    l1=CreateStack();
+    for (xy=Group1st(ln,&ix);xy!=NULL;xy=Next(&ix))
+      AddXY(l1,xy->x,xy->y);
+
+    GroupAdd(lines,ln);
+    GroupAdd(lines,l1);
+  }
+  Free(bdr);
+
+  /**** Now, generate bounds for each SurfaceZoe */
+
+  for (sz=AppSurfaceZone1st(a,&ixsz);sz!=NULL;sz=Next(&ixsz)) {
+
+    gpsStart=FindGridPointSeg(a,sz->gpZone1);
+    if (gpsStart==NULL) {*pErr=ERR_BADGPZONENUMBER;continue;}
+
+    /* Check the level to the "left" side */
+
+    i=GroupCount(gpsStart->line);
+    if (i<3) {*pErr=ERR_BADSURFACEZONE1;continue;} /* $ - change error msg */
+
+    j1=i/2;
+    j2=j1+1;
+    if (j2<i-1) j2++;
+
+    xy=GroupAt(gpsStart->line,j1);
+    if (GetEquilLevel(a->equil,xy->x,xy->y,&l,&gx,&gy)) {
+      *pErr=ERR_BADSURFACEZONE1;  /* $ - change error msg */
+      continue;
+    }
+
+    /* Determine the initial direction */
+
+    xy1=GroupAt(gpsStart->line,j2);
+    sina=sz->sign*((xy1->x-xy->x)*gy-gx*(xy1->y-xy->y));
+    bReverse=(sina<0);
+
+    /* Generate the first line */
+
+    xpss.xpt=gpsStart->xps->xpt;
+    xpss.number=gpsStart->xps->number;
+    xpss.startPos=xpss.endPos=-1;
+    xpss.line=NULL;
+
+    r=CalcXPointSegLine(a,&xpss);
+    if (r) {
+/*  puts("Unable to recreate xps"); */
+      continue;
+    }
+    line=xpss.line;
+    if (bReverse) RevertGroup(line);
+
+    /* Store the "first" point coords - we will return here */
+
+    xy=Group1st(line,&ix);
+    xStart=xy->x;
+    yStart=xy->y;
+    xy=Next(&ix);
+    xStart2=xy->x;
+    yStart2=xy->y;
+
+    /* Start walking from the original line */
+    ln=line;
+    gResult=CreateGroup();
+
+    /* To prevent dead loops, limit the number of steps */
+    for (j2=0;j2<GroupCount(lines);j2++) {
+
+      /* Follow the line, add points except the last one to the result */
+
+      for (xy1=xy=Group1st(ln,&ix);(xyt=Next(&ix))!=NULL;xy1=xy,xy=xyt)
+        AddXY(gResult,xy->x,xy->y);
+
+      /* Figure out where to go next */
+
+      /* Detect the "leftmost" outgoung segment from this point */
+      dx=xy1->x-xy->x;
+      dy=xy1->y-xy->y;
+      xyt=xy;
+
+      lnHit=NULL;angleHit=MAXDOUBLE;
+      for (ln=Group1st(lines,&ix);ln!=NULL;ln=Next(&ix)) {
+        xy=Group1st(ln,&ix1);
+        if (xy->x!=xyt->x || xy->y!=xyt->y) continue;
+        xy1=Next(&ix1);
+        angle=AngleBetween(xy1->x-xy->x,xy1->y-xy->y,dx,dy);
+        if (angle<angleHit && angle>ANGLE_0_THRESHOLD) {
+          lnHit=ln;
+          angleHit=angle;
+        }
+      }
+
+      /* Select the next line to follow */
+      if (lnHit==NULL) break;
+      ln=lnHit;
+
+      /* Back at the beginning? */
+      xy=Group1st(ln,&ix);
+      xy1=Next(&ix);
+/*src=AddSource(a,xy->x,xy->y);*/
+      if (xy->x==xStart && xy->y==yStart && xy1->x==xStart2 && xy1->y==yStart2) {
+/*MarkObject(a,src,1);*/
+        break;
+      }
+      continue;
+    }
+
+    sz->bounds=gResult;
+    line=FreeMallocedGroup(line);
+  }
+
+  /* Free the "lines" group */
+
+  for (ln=Group1st(lines,&ix);ln!=NULL;ln=Next(&ix)) {
+    GroupDel(lines,ln);
+    FreeMallocedGroup(ln);
+  }
+  lines=FreeGroup(lines);
+
+  return;
+}
+
+static void FreeSurfaceZoneBounds(SurfaceZone sz) {
+  if (sz->bounds==NULL) return;
+
+  sz->bounds=FreeMallocedGroup(sz->bounds);
+}
+
+void InvalidateTopologyCache(App a) {
+  SurfaceZone sz;
+  Index ix;
+
+  for (sz=AppSurfaceZone1st(a,&ix);sz!=NULL;sz=Next(&ix))
+    if (sz->bounds!=NULL) FreeSurfaceZoneBounds(sz);
+}
+
+
+/* $ - dirty - redraws the segment too */
+void RecalcGridPointSegLine(GridPointSeg gps,VarDef* pvd,VarSet* pvs) {
+  Elem e;
+  VarDef vd,vdMin=NULL;
+  VarSet vs,vsMin=NULL;
+  GridPointEx gpx;
+  double l,lMin;
+  Index ixvd,ixvs,ixe,ixgp;
+  Group g,g1;
+  int r;
+
+  vdMin=NULL;
+  lMin=MAXDOUBLE;
+
+  if (gps->line==NULL || IsEmptyGroup(gps->line)) return;
+  /* if (!GridPointSegOpen(gps)) return; */ /* Skip non-open segments */
+
+  /* Use all "target" vars in all VarSets */
+
+  for (vs=AppVarSet1st(gps->app,&ixvs);vs!=NULL;vs=Next(&ixvs)) {
+    for (vd=Group1st(vs->def->varDefs,&ixvd);vd!=NULL;vd=Next(&ixvd)) {
+      if (!(vd->varType & VTF_TARGET)) continue;
+      g=GetVar(vs,vd,vs);
+      if (g==NULL) continue;
+      if (g!=NULL) for(e=Group1st(g,&ixe);e!=NULL;e=Next(&ixe)) {
+        g1=CreateGroup();
+        AddXY(g1,e->n[1]->x,e->n[1]->y);
+        AddXY(g1,e->n[2]->x,e->n[2]->y);
+        r=PolyLinesIntersect(gps->line,g1,&l,NULL);
+        FreeMallocedGroup(g1);
+        if (r) continue;
+        if (l<lMin) {
+          lMin=l;
+          vdMin=vd;
+          vsMin=vs;
+        }
+      }
+    }
+  }
+
+  /* Update the position and redraw, if necessary */
+  if (lMin==MAXDOUBLE) lMin=CalcLineLength(gps->line);
+  if (lMin!=gps->lineLength) {
+    for (gpx=AppGridPointEx1st(gps->app,&ixgp);gpx!=NULL;gpx=Next(&ixgp))
+      if (gpx->zone==gps->zone) DrawAppObject(gps->app,gpx,DRAW_OFF);
+    DrawAppObject(gps->app,gps->xps,DRAW_OFF);
+
+    gps->lineLength=lMin;
+
+    DrawAppObject(gps->app,gps->xps,DRAW_ON);
+    for (gpx=AppGridPointEx1st(gps->app,&ixgp);gpx!=NULL;gpx=Next(&ixgp))
+      if (gpx->zone==gps->zone) {
+        RecalcGridPointExPos(gpx);
+        DrawAppObject(gps->app,gpx,DRAW_ON);
+      }
+  }
+  if (pvs!=NULL) *pvs=vsMin;
+  if (pvd!=NULL) *pvd=vdMin;
+}
+
+static int NextGridPointSegNumber(App a) {
+  GridPointSeg gps;
+  int nMax=GPSEG_STARTNO;
+  Index ix;
+
+  for (gps=AppGridPointSeg1st(a,&ix);gps!=NULL;gps=Next(&ix))
+    if (gps->zone+1>nMax) nMax=gps->zone+1;
+
+  return nMax;
+}
+
+int GetCarreSurfaceExCount(App a,int zone,int nSpec) {
+  SurfaceZone sz=FindSurfaceZone(a,zone);
+  if (sz==NULL) return 0;
+
+  return (sz->gpZone2>=0)? nSpec : nSpec+1;
+}
+
+/* Return 1 if the segment crosses the equilibrium edge */
+int GridPointSegOpen(GridPointSeg gps) {
+  XY xy;
+  Equil eq=gps->app->equil;
+
+  assert(eq!=NULL);
+
+  /* Check first point - should never return true */
+  xy=Group1st(gps->line,NULL);
+  if (xy->x==eq->x[0] || xy->y==eq->y[0] ||
+      xy->x==eq->x[eq->sx-1] || xy->y==eq->y[eq->sy-1])
+    return 1;
+
+  /* Then the last point */
+  xy=GroupAt(gps->line,GroupCount(gps->line)-1);
+  if (xy->x==eq->x[0] || xy->y==eq->y[0] ||
+      xy->x==eq->x[eq->sx-1] || xy->y==eq->y[eq->sy-1])
+    return 1;
+
+  return 0;
+}
+
+int SurfaceExClosed(SurfaceEx sx) {
+  XY xy,xy1;
+
+  assert(sx->type==T_SURFACEEX);
+
+  if (!SurfaceExOk(sx)) return 0;
+  if (sx->line==NULL || GroupCount(sx->line)<1) return 0;
+
+  xy=GroupAt(sx->line,0);
+  xy1=GroupAt(sx->line,GroupCount(sx->line)-1);
+
+  return xy->x==xy1->x && xy->y==xy1->y;
+}
+
+int RecalcSurfaceZoneSign(SurfaceZone sz) {
+  GridPointSeg gps;
+  int i,j1,j2;
+  XY xy,xy1;
+  double sina,gx,gy,l;
+
+  if (sz->app->equil==NULL) return ERR_NOEQUIL;
+
+  gps=FindGridPointSeg(sz->app,sz->gpZone1);
+  if (gps==NULL) return ERR_BADGPZONENUMBER;
+
+  /* Check the level to the "left" side */
+
+  i=GroupCount(gps->line);
+  if (i<3) return ERR_BADSURFACEZONE1; /* $ - change error msg */
+
+  j1=i/2;
+  j2=j1+1;
+  if (j2<i-1) j2++;
+
+  xy=GroupAt(gps->line,j1);
+  if (GetEquilLevel(sz->app->equil,xy->x,xy->y,&l,&gx,&gy))
+     return ERR_BADSURFACEZONE1;  /* $ - change error msg */
+
+  /* Angle between the line and the gradient */
+
+  xy1=GroupAt(gps->line,j2);
+  sina=gps->dir*((xy1->x-xy->x)*gy-gx*(xy1->y-xy->y));
+  sz->sign=sz->orient*(sina<0? -1 : 1);
+
+  return 0;
+}
+
+int SurfaceZoneBoundsCached(App a) {
+  SurfaceZone sz;
+  Index ix;
+
+  assert(a->type==T_APP);
+
+  for (sz=AppSurfaceZone1st(a,&ix);sz!=NULL;sz=Next(&ix))
+    if (sz->bounds==NULL) return 0;
+
+  return 1;
+}

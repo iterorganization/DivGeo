@@ -190,6 +190,8 @@ static XtResource viewCfgRes[]={
     XtOffset(View,meshCellCenterLen),XmRImmediate,(XtPointer)3,
   "meshPointRadius","MeshPointRadius",XmRInt,sizeof(int),
     XtOffset(View,meshPointRadius),XmRImmediate,(XtPointer)3,
+  "separatrixSegEndLen","SeparatrixSegEndLen",XmRInt,sizeof(int),
+    XtOffset(View,gridPointSegEndLength),XmRImmediate,(XtPointer)48,
 };
 
 static void GetXViewSize(View w);
@@ -323,19 +325,23 @@ View CreateXmView(XApp xap,App app) {
     "-:",
     "bA:save",CbFileSave,w,
     "s:separ",
-    "bA:output",CbFileOutput,w,
-    "s:separ",
-    "bA:templ",CbTemplate,w,
-    "bA:equil",CbEquil,w,
-    "bA:sonnet",CbSonnet,w,
-    "s:separ",
+    "c:import",
+    "+:importMenu",
+     "bA:importTemplate",CbTemplate,w,
+     "bA:importEquil",CbEquil,w,
+     "bA:importMesh",CbSonnet,w,
+     "bA>:importTopology",CmImportTopology,(XtPointer)w,
+           AddDw2Exists,w,(XtPointer)T_EQUIL,
+    "-:",
     "c:export",
     "+:exportMenu",
       "bA>:exportMesh",CmExportMesh,(XtPointer)w,
-	AddDw2Exists,w,(XtPointer)T_MESH,
+        AddDw2Exists,w,(XtPointer)T_MESH,
       "bA>:exportElemsAsTemplate",CmExportElemsAsTemplate,(XtPointer)w,
-	AddDw2Exists,w,(XtPointer)T_ELEM,
+        AddDw2Exists,w,(XtPointer)T_ELEM,
     "-:",
+    "s:separ",
+    "bA:output",CbFileOutput,w,
     "s:separ",
     "bA:print",CbFilePrint,w,
     "s:separ",
@@ -356,9 +362,9 @@ View CreateXmView(XApp xap,App app) {
     "bA@:source",CbCmCreateAt,w,T_SOURCE,
     "bA@:chord",CbCmCreateAt,w,T_CHORD,
     "b>A@:surface",AddDw2Exists,w,(XtPointer)T_EQUIL,
-      CbCmCreateAt,w,T_SURFACE,
-    "b>A@:gridPoint",AddDw2Exists,w,(XtPointer)T_XPOINT,
-      CbCmCreateAt,w,T_GRIDPOINT,
+      CbCmCreateAt,w,T_SURFACEEX,
+    "bA@:gridPoint",
+      CbCmCreateAt,w,T_GRIDPOINTEX,
 /*    "bA>:separators",CbCmInstallSeparators,w,
       AddDw2Exists,w,(XtPointer)T_SONNET, */
     "-:",
@@ -369,22 +375,25 @@ View CreateXmView(XApp xap,App app) {
     "s:separator",
     "bA@>:emptyNodes",CbCmDelObjects,w,(XtPointer)T_NODE,
       AddDw2Exists,w,(XtPointer)T_EMPTYNODE,
+    "bA@>:vSurfaces",CbCmDelObjects,w,(XtPointer)T_DEL_VSURFACE,
+      AddDw2Exists,w,(XtPointer)T_DEL_VSURFACE,
+    "s:separator",
     "bA@>:elements",CbCmDelObjects,w,(XtPointer)T_ELEM,
       AddDw2Exists,w,(XtPointer)T_ELEM,
     "bA@>:sources",CbCmDelObjects,w,(XtPointer)T_SOURCE,
       AddDw2Exists,w,(XtPointer)T_SOURCE,
     "bA@>:chords",CbCmDelObjects,w,(XtPointer)T_CHORD,
       AddDw2Exists,w,(XtPointer)T_CHORD,
-    "bA@>:surfaces",CbCmDelObjects,w,(XtPointer)T_SURFACE,
-      AddDw2Exists,w,(XtPointer)T_SURFACE,
-    "bA@>:gridPoints",CbCmDelObjects,w,(XtPointer)T_GRIDPOINT,
-      AddDw2Exists,w,(XtPointer)T_GRIDPOINT,
+    "bA@>:surfaces",CbCmDelObjects,w,(XtPointer)T_SURFACEEX,
+      AddDw2Exists,w,(XtPointer)T_SURFACEEX,
+    "bA@>:gridPoints",CbCmDelObjects,w,(XtPointer)T_GRIDPOINTEX,
+      AddDw2Exists,w,(XtPointer)T_GRIDPOINTEX,
     "bA>:separators",CbCmRemoveSeparators,w,
       AddDw2Exists,w,(XtPointer)T_SEPARATOR,
     "s:separ",
-    "bA@>:xpoint",CbCmDelObjects,w,(XtPointer)T_XPOINT,
-      AddDw2Exists,w,(XtPointer)T_XPOINT,
-    "s:separ",
+/*    "bA@>:xpoint",CbCmDelObjects,w,(XtPointer)T_XPOINT_NOLONGERVALID,
+      AddDw2Exists,w,(XtPointer)T_XPOINT_NOTOK,
+    "s:separ", */
     "bA@>:equil",CbCmDelObjects,w,(XtPointer)T_EQUIL,
       AddDw2Exists,w,(XtPointer)T_EQUIL,
     "bA@>:template",CbCmDelObjects,w,(XtPointer)T_TEMPLATE,
@@ -432,44 +441,49 @@ View CreateXmView(XApp xap,App app) {
     "t?T:grid",&w->x->wShGrid,            CbChangeFlags,w,
     "-:",
     "s:separator",
-    "bA:meshHeader",CmViewMeshHeader,(XtPointer)w,
+    "bA>:meshHeader",CmViewMeshHeader,(XtPointer)w,
+      AddDw2Exists,w,(XtPointer)T_MESH,
     "-:",
     "c:commands",
     "+:commandsMenu",
     "c:convert",
     "+:convertMenu",
     "bA>:appendTempl",CbCmAppendTemplate,w,
-	  AddDw2Exists,w,(XtPointer)T_TEMPLATE,
+          AddDw2Exists,w,(XtPointer)T_TEMPLATE,
     /*"bA>:templateToChords",CmConvertTemplateToChords,(XtPointer)w,
-	  AddDw2Exists,w,(XtPointer)T_TEMPLATE, */
+          AddDw2Exists,w,(XtPointer)T_TEMPLATE, */
     "bA>:elemsToChords",CmConvertElemsToChords,(XtPointer)w,
-	  AddDw2Exists,w,(XtPointer)T_ELEM,
+          AddDw2Exists,w,(XtPointer)T_ELEM,
     "bA>:chordsToElems",CmConvertChordsToElems,(XtPointer)w,
-	  AddDw2Exists,w,(XtPointer)T_CHORD,
+          AddDw2Exists,w,(XtPointer)T_CHORD,
     "-:",
     "c:simplify",
     "+:simplifyMenu",
     "bA>:gluePoints",CbGluePoints,(XtPointer)w,
-	  AddDw2Exists,w,(XtPointer)T_ELEM,
+          AddDw2Exists,w,(XtPointer)T_ELEM,
     "c>:glueNormals",AddDw2Exists,w,(XtPointer)T_ELEM,
     "+:glueNormalsMenu",
     "bA@:glueAllNormals",CbGroupNormals,(XtPointer)w,(XtPointer)0,
     "bA@:glueMarkedNormals",CbGroupNormals,(XtPointer)w,(XtPointer)1,
     "-:",
     "bA>:glueElements",CbReduceElements,(XtPointer)w,
-	  AddDw2Exists,w,(XtPointer)T_ELEM,
+          AddDw2Exists,w,(XtPointer)T_ELEM,
     "-:",
     "bA:renumber",CbCmRenumber,w,
     "bA:invalidVars",CbCmShowInvalidVars,w,
     "bA&:rebuildCarre",CmRebuildCarreInfo,(XtPointer)w,
-	(XtPointer)AddDWProc,5,
-	(XtPointer)w,(XtPointer)(N_ALT|N_NEWAPP),
-	NULL,(XtPointer)DwRebuildCarreInfo,NULL,
-/*    "s:separ",
-    "bA>:findXPoints",CbCmFindXPoints,w,
-	  AddDw2Exists,w,(XtPointer)T_EQUIL,
+        (XtPointer)AddDWProc,5,
+        (XtPointer)w,(XtPointer)(N_ALT|N_NEWAPP),
+        NULL,(XtPointer)DwRebuildCarreInfo,NULL,
+    "s:separ",
+/*    "bA>:findXPoints",CbCmFindXPoints,w,
+          AddDw2Exists,w,(XtPointer)T_EQUIL,
     "bA>:findXPointSegs",CbCmFindXPointSegs,w,
-	  AddDw2Exists,w,(XtPointer)T_XPOINTTEST,
+          AddDw2Exists,w,(XtPointer)T_XPOINTTEST, */
+    "bA>:editTopology",CmEditTopology,(XtPointer)w,
+          AddDw2Exists,w,(XtPointer)T_EQUIL,
+/*    "bA>:updateTopology",CmUpdateTopology,(XtPointer)w,
+          AddDw2Exists,w,(XtPointer)T_EQUIL,
     "bA:test",CmTest,(XtPointer)w, */
     "-:",
     "c:vars",
@@ -546,8 +560,8 @@ View CreateXmView(XApp xap,App app) {
       "bA@:addSurf", CbChangeTool,w,TlAddSurface,
       "bA@:addGP",   CbChangeTool,w,TlAddGridPoint,
       "s:separ",
-      "bA@:setXpt",  CbChangeTool,w,TlSetXPoint,
-      "s:separ",
+/*      "bA@:setXpt",  CbChangeTool,w,TlSetXPoint,
+      "s:separ", */
       "bA@:moveMeshPoint",CbChangeTool,w,TlMoveMeshPoint,
       "s:separ",
       "bA@:splitElem",CbChangeTool,w,TlSplitElem,
@@ -815,15 +829,14 @@ static void NotifyXmView(View w,int type,void* obj) {
   }
   FreeGroup(g);
 
-  if (obj!=NULL) switch(GetObjType(obj)) {
+  if (type!=N_EXAMINE && obj!=NULL) switch(GetObjType(obj)) {
     case  T_ELEM:
     case  T_NODE:
-    case  T_SURFACE:
-    case  T_GRIDPOINT:
     case  T_SEPARATOR:
     case  T_SOURCE:
     case  T_CHORD:
-    case  T_XPOINT:
+    case  T_GRIDPOINTEX:
+    case  T_SURFACEEX:
       w->x->changes |= CHF_GEOMETRY;
       break;
     case  T_EQUIL:
@@ -834,7 +847,7 @@ static void NotifyXmView(View w,int type,void* obj) {
     case  T_VAR:
       w->x->changes |= CHF_VARS;
       if (GetObjType(((Var)obj)->origin)==T_VARSETDEF)
-	w->x->changes |= CHF_VARDEFS;
+        w->x->changes |= CHF_VARDEFS;
       break;
     case  T_VARSETDEF:
     case  T_VARDEF:
@@ -847,6 +860,9 @@ static void NotifyXmView(View w,int type,void* obj) {
       break;
     case T_XPOINTTEST:
     case T_XPOINTSEG:
+    case T_GRIDPOINTSEG:
+    case T_SURFACEZONE:
+      w->x->changes |= CHF_TOPOLOGY;
       break;
     case T_MESH:
     case T_MESHCELL:
@@ -859,16 +875,19 @@ static void NotifyXmView(View w,int type,void* obj) {
   }
 
   switch(type) {
+    case N_EXAMINE:
+      TopoDlg_NotifyExamine(w,obj);
+      break;
     case N_NEWAPP:
       w->x->changes |= ~0;
       break;
     case N_ALT:
       if (w->x->changes & CHF_APP) {
-	UpdateXViewTitle(w);
-	UpdateXViewVarsMenu(w);
+        UpdateXViewTitle(w);
+        UpdateXViewVarsMenu(w);
       }
       if (w->x->changes & CHF_VARSMENU) {
-	UpdateXViewVarsMenu(w);
+        UpdateXViewVarsMenu(w);
       }
       w->x->changes=0;
       break;
@@ -878,23 +897,21 @@ static void NotifyXmView(View w,int type,void* obj) {
       switch(GetObjType(obj)) {
         case T_TEMPLATE:
           break;
-        case T_XPOINT:
-          break;
         case T_VARSETDEF:
         case T_VARSET:
-	  /* UpdateXViewVarsMenu(w); */
+          /* UpdateXViewVarsMenu(w); */
           break;
         case T_VARDEF:
           break;
         case T_APP:
           UpdateXViewTitle(w);
-	  /* UpdateXViewVarsMenu(w); */
+          /* UpdateXViewVarsMenu(w); */
           UpdateXViewShowFlags(w);
           break;
         case T_SEPARATOR:
           break;
         case T_VAR:
-	  break;
+          break;
       }
       break;
     case N_CHANGE:
@@ -908,19 +925,19 @@ static void NotifyXmView(View w,int type,void* obj) {
     case N_CHANGED:
       switch(GetObjType(obj)) {
         case T_VIEW:
-	  UpdateXViewShowFlags(w);
-	  UpdateXViewTitle(w);
+          UpdateXViewShowFlags(w);
+          UpdateXViewTitle(w);
           break;
         case T_APP:
-	  w->x->changes |= CHF_APP;
-	  break;
+          w->x->changes |= CHF_APP;
+          break;
         case T_VARSETDEF:
         case T_VARSET:
-	  /* UpdateXViewVarsMenu(w); */
+          /* UpdateXViewVarsMenu(w); */
           break;
         case T_VAR:
-	  v=(Var)obj;
-	  if (v->def->flags & VF_LAYERINDEX) w->x->changes |= CHF_VARSMENU;
+          v=(Var)obj;
+          if (v->def->flags & VF_LAYERINDEX) w->x->changes |= CHF_VARSMENU;
           break;
       }
       break;
@@ -936,24 +953,22 @@ static void NotifyXmView(View w,int type,void* obj) {
       switch(GetObjType(obj)) {
         case T_TEMPLATE:
           break;
-        case T_XPOINT:
-          break;
         case T_VARSETDEF:
         case T_VARSET:
-	  /* UpdateXViewVarsMenu(w); */
+          /* UpdateXViewVarsMenu(w); */
           break;
         case T_SEPARATOR:
           break;
         case T_VAR:
 /*        for (dlg=Group1st(w->x->varsDialogs,&ix);dlg!=NULL;dlg=Next(&ix))
-	    dlg->updateFlag=UPDATE_MAX; */
+            dlg->updateFlag=UPDATE_MAX; */
           break;
       }
       break;
     case N_MARK:
       w->x->changes |= CHF_MARK;
 /*    for (dlg=Group1st(w->x->varsDialogs,&ix);dlg!=NULL;dlg=Next(&ix))
-	dlg->updateFlag=UPDATE_MAX; */
+        dlg->updateFlag=UPDATE_MAX; */
       break;
     case N_NEWTOOL:
     case N_RECENTFILES:
@@ -1008,7 +1023,7 @@ static void SetXmViewMode(View w,int mode) {
     case VMX_HIGHLIGHTRECT:
       v.function=GXxor;
       v.foreground=w->x->pxBackground^(w->app->highlightMode ?
-	w->x->pxHighlightRect : w->x->pxErrorHighlight);
+        w->x->pxHighlightRect : w->x->pxErrorHighlight);
       v.line_width=w->x->whHighlightRect;
       break;
 
@@ -1299,7 +1314,7 @@ static void DwRebuildCarreInfo(Widget wg,View w,int evt,void*obj,void*udt) {
   assert(w->type==T_VIEW);
 
   SetSensitiveEx(wg,w->app->outputMode==OUTPUTMODE_CARRE &&
-      (GroupCount(w->app->surfaces) || GroupCount(w->app->gridPoints)));
+      (GroupCount(w->app->surfacesEx) || GroupCount(w->app->gridPointsEx)));
 }
 
 View GetWidgetXView(Widget wg) {
@@ -1399,13 +1414,13 @@ static void AddXViewVarsMenuItem(View w,VarSetDef vsd,XtCallbackProc cbp,
 
     for (vs=Group1st(vsd->varSets,&ix);vs!=NULL;vs=Next(&ix)) {
       wg=Cmw(XmCreatePushButton,wMenu,wgName,
-	NULL);
+        NULL);
 /*      GroupAdd(w->x->varsMenuWidgets,(void*)wg); -- Will be deleted with RowCol */
       XtAddCallback(wg,XmNactivateCallback,cbp,(XtPointer)vs);
       s=GetIndexVarValue(vs);
       if (s==NULL) {
-	sprintf(buf,"#%d",GroupIndex(vsd->varSets,vs)+1);
-	s=buf;
+        sprintf(buf,"#%d",GroupIndex(vsd->varSets,vs)+1);
+        s=buf;
       }
       SetLabelString(wg,s);
     }
@@ -1468,7 +1483,7 @@ static void UpdateXViewVarsMenu(View w) {
     if (i>vsd->minVarSets) {
       j++;
       AddXViewVarsMenuItem(w,vsd,(XtCallbackProc)CbDelVarSet,
-	w->x->wMnDelVarSet,"delVarSet");
+        w->x->wMnDelVarSet,"delVarSet");
     }
   }
 
@@ -1510,7 +1525,7 @@ void DelDependentWidgetEx(View w,Widget wg,int bWidgetDestroyed) {
       GroupDel(w->x->dependentWidgets,dw);
       dw=Free(dw);
       if (!bWidgetDestroyed) {
-	XtRemoveCallback(wg,XmNdestroyCallback,CbDestroyDependentWidget,w);
+        XtRemoveCallback(wg,XmNdestroyCallback,CbDestroyDependentWidget,w);
       }
     }
   }

@@ -12,28 +12,33 @@
 #define FSTR_SOURCES         "sources\n"
 #define FSTR_PTCOORDS        "  %e, %e, %e\n"   /* relcheck_ignore_line */
 #define FSTR_EQUILFILE       "# equil %s\n"
+#define FSTR_TOPONAME        "# topo %s\n"
 #define FSTR_CHORDS          "chords\n"
 #define FSTR_CHORDCOORDS     "  %e, %e, %e, %e\n" /* relcheck_ignore_line */
 #define FSTR_XPOINTCENTER    "xptcntr %e, %e, %e\n" /* relcheck_ignore_line */
+#define FSTR_NXPOINTCENTER   "xptcntr\n"
 #define FSTR_XLOOPCENTER     "xlpcntr %e, %e, %e\n" /* relcheck_ignore_line */
+#define FSTR_NXLOOPCENTER     "xlpcntr\n"
 #define FSTR_SURFDELTA1      "dltr1\n"
 #define FSTR_SURFDELTA2      "dltrn\n"
 #define FSTR_SURFCOUNT       "npr\n"
 #define FSTR_SURF_PENETRATE  "pntrat %e\n"      /* relcheck_ignore_line */
+#define FSTR_NSURF_PENETRATE  "pntrat\n"
 #define FSTR_GPOINTDELTA1    "dltp1\n"
 #define FSTR_GPOINTDELTA2    "dltpn\n"
 #define FSTR_GPOINTCOUNT     "nptseg\n"
 #define FSTR_CLOSEDSTRUCTPARTS "clstruct %d\n"
+#define FSTR_TARGET_LINE     "target %d\nline\n"
 
 static int VarDefSortProc(void* pvd1,void* pvd2,void* userData) {
   VarDef vd1=(VarDef)pvd1,vd2=(VarDef)pvd2;
-  
+
   if (vd2->col>vd1->col) return -1;
   if (vd2->col<vd1->col) return 1;
-  
+
   if (vd2->row>vd1->row) return -1;
   if (vd2->row<vd1->row) return 1;
-  
+
   return 0;
 }
 
@@ -56,7 +61,7 @@ static int GetObjectId(void* object) {
   int i,vL,vR;
 
   vL=vR=MAXINT;
-  
+
   switch(GetObjType(object)) {
     case T_ELEM:
       return ((Elem)object)->id;
@@ -111,10 +116,10 @@ static void OutputVar(App a,FILE* f,void* obj,VarDef vd,VarSet vs) {
     if (vd->varType & VTF_STRUCTPART) {
       for (i=0,e=Group1st(GetVarPtrByType(a,VT_STRUCTURE)->val,&ix);
           e!=NULL;e=Next(&ix),i++)
-	if (InGroup(g,e)) zfprintf(f,"  %d\n",i+1);
+        if (InGroup(g,e)) zfprintf(f,"  %d\n",i+1);
     } else {
       for (e=Group1st(g,&ix);e!=NULL;e=Next(&ix))
-	zfprintf(f,"  %d\n", e->id);
+        zfprintf(f,"  %d\n", e->id);
     }
   } else if (vd->varType & VTF_HASCHORDS) {
     g=GetVar(obj,vd,vs);
@@ -165,9 +170,12 @@ int WriteOutputFile(App a,char* fName) {
   Chord ch;
   CellsInfo ci;
   Group g;
+  XPointTest xpt;
   void* obj;
   Index ivs,ivsd,ivd,ix;
   int i,b,maxId,r;
+  double x,y,lvl;
+  SurfaceZone sz;
 
   r=GetAppFlags(a);
   if (~r & AF_VALIDVARS) return ERR_EMPTYVARS;
@@ -199,11 +207,11 @@ int WriteOutputFile(App a,char* fName) {
       switch(GetObjType(obj)) {
         case T_ELEM:
           e=obj;
-	  zfprintf(f,FSTR_PTCOORDS,e->n[1]->x,e->n[1]->y,e->n[1]->z);
+          zfprintf(f,FSTR_PTCOORDS,e->n[1]->x,e->n[1]->y,e->n[1]->z);
           break;
         case T_SEPARATOR:
           sep=obj;
-	  zfprintf(f,FSTR_PTCOORDS,sep->x,sep->y,0.0);
+          zfprintf(f,FSTR_PTCOORDS,sep->x,sep->y,0.0);
           break;
         default:
           FatalError("WriteOutputFile()-type%d: fatal error 12",
@@ -218,11 +226,11 @@ int WriteOutputFile(App a,char* fName) {
       switch(GetObjType(obj)) {
         case T_ELEM:
           e=obj;
-	  zfprintf(f,FSTR_PTCOORDS,e->n[2]->x,e->n[2]->y,e->n[2]->z);
+          zfprintf(f,FSTR_PTCOORDS,e->n[2]->x,e->n[2]->y,e->n[2]->z);
           break;
         case T_SEPARATOR:
           sep=obj;
-	  zfprintf(f,FSTR_PTCOORDS,sep->n->x,sep->n->y,sep->n->z);
+          zfprintf(f,FSTR_PTCOORDS,sep->n->x,sep->n->y,sep->n->z);
           break;
         default:
           FatalError("WriteOutputFile()-type%d: fatal error 13",
@@ -256,7 +264,7 @@ int WriteOutputFile(App a,char* fName) {
     for (i=0;ci[i]!=NULL;i++) {
       zfprintf(f,FSTR_CELLS,i+1);
       for (obj=Group1st(ci[i],&ix);obj!=NULL;obj=Next(&ix))
-	zfprintf(f,"  %d\n",GetObjectId(obj));
+        zfprintf(f,"  %d\n",GetObjectId(obj));
     }
     ci=FreeCellsInfo(ci);
   }
@@ -268,15 +276,15 @@ int WriteOutputFile(App a,char* fName) {
       GroupQSort(g,VarDefSortProc,NULL);
       for (vd=Group1st(g,&ivd);vd!=NULL;vd=Next(&ivd)) {
         if (vd->flags & VF_NOEXPORT) continue;
-	if (!b) zfprintf(f,"%s %d\n",vsd->name,i);
+        if (!b) zfprintf(f,"%s %d\n",vsd->name,i);
         b=1;
-	zfprintf(f,"%s%c",vd->name,
-	vd->flags&VFM_MULTIPLE || vd->varType & VTM_HASGROUP ? '\n' : ' ');
+        zfprintf(f,"%s%c",vd->name,
+        vd->flags&VFM_MULTIPLE || vd->varType & VTM_HASGROUP ? '\n' : ' ');
         if (!(vd->flags & VFM_MULTIPLE))
           OutputVar(a,f,vs,vd,NULL);
         else {
           if (vd->flags & (VF_FORELEMS | VF_FORSEPARATORS)) {
-	    for (i=1;i<=maxId;i++) {
+            for (i=1;i<=maxId;i++) {
               obj=FindObjectId(a,i);
               if (obj!=NULL && GetObjType(obj)==T_ELEM &&
                   ~vd->flags & VF_FORELEMS) obj=NULL;
@@ -285,11 +293,11 @@ int WriteOutputFile(App a,char* fName) {
               OutputVar(a,f,obj,vd,vs);
             }
           }
-	  if (vd->flags & VF_FORSOURCES)
-	    for (obj=AppSource1st(a,&ix);obj!=NULL;obj=Next(&ix))
-	      OutputVar(a,f,obj,vd,vs);
-	  if (vd->flags & VF_FORCHORDS)
-	    for (obj=AppChord1st(a,&ix);obj!=NULL;obj=Next(&ix))
+          if (vd->flags & VF_FORSOURCES)
+            for (obj=AppSource1st(a,&ix);obj!=NULL;obj=Next(&ix))
+              OutputVar(a,f,obj,vd,vs);
+          if (vd->flags & VF_FORCHORDS)
+            for (obj=AppChord1st(a,&ix);obj!=NULL;obj=Next(&ix))
               OutputVar(a,f,obj,vd,vs);
         }
       }
@@ -297,41 +305,33 @@ int WriteOutputFile(App a,char* fName) {
     }
   }
 
-  if (a->xpoint!=NULL) {
+/*  if (a->xpoint!=NULL) {
     XY xy;
-    int px,py,nx,ny;
+    int px,py,nx,ny; */
 
-    xy=Group1st(a->xpoint->line[0],NULL);
-    zfprintf(f,FSTR_XPOINTCENTER,xy->x,xy->y,(double)0);
+  /* Output X Points */
 
-    xy=GroupAt(a->xpoint->line[0],GroupCount(a->xpoint->line[0])/2);
-    assert(xy!=NULL);
-    assert(a->equil->signInside!=0);
+  zfprintf(f,FSTR_NXPOINTCENTER);
+  for (xpt=AppXPointTest1st(a,&ix);xpt!=NULL;xpt=Next(&ix))
+    zfprintf(f,"  %e, %e, %e\n",xpt->centerX,xpt->centerY,(double)0);
 
-    assert(!GetEquilCell(a->equil,xy->x,xy->y,&px,&py));
+  /* Output O Points */
 
-    nx=px;ny=py;
-    do {
-      px=nx;py=ny;
-
-      if (px-1>=0 && (EqCell(a->equil,px-1,py)-EqCell(a->equil,nx,ny))*
-	  a->equil->signInside>0) {nx=px-1;ny=py;}
-      if (py-1>=0 && (EqCell(a->equil,px,py-1)-EqCell(a->equil,nx,ny))*
-	  a->equil->signInside>0) {nx=px;ny=py-1;}
-      if (px+1<a->equil->sx && (EqCell(a->equil,px+1,py)-
-	  EqCell(a->equil,nx,ny))*a->equil->signInside>0) {nx=px+1;ny=py;}
-      if (py+1<a->equil->sy && (EqCell(a->equil,px,py+1)-
-	  EqCell(a->equil,nx,ny))*a->equil->signInside>0) {nx=px;ny=py+1;}
-    } while (nx!=px || ny!=py);
-
-    zfprintf(f,FSTR_XLOOPCENTER,a->equil->x[nx],a->equil->y[ny],
-	EqCell(a->equil,nx,ny));
-
+  if (a->equil!=NULL) {
+    zfprintf(f,FSTR_NXLOOPCENTER);
+    for (sz=AppSurfaceZone1st(a,&ix);sz!=NULL;sz=Next(&ix)) {
+      if (!(sz->flags & SZF_LIMITBYSURFACE)) continue;
+      lvl=MAXDOUBLE; /* Workaround for the PC */
+      if (FindSurfaceOriginPointEx(a,sz->zone,lvl,&x,&y)!=0)
+        continue;
+      if (GetEquilLevel(a->equil,x,y,&lvl,NULL,NULL)) continue;
+      zfprintf(f,"  %e, %e, %e\n",x,y,lvl);
+    }
   }
 
   zfprintf(f,FSTR_USEREND);
 
-  fclose(f);
+  if (f!=NULL) fclose(f);
   return 0;
 }
 
@@ -408,7 +408,7 @@ int WriteStructureFile(App a,char* fName) {
 
 /* Write to file */
     zfprintf(f,"%d\n",(j==1 && a->outputMode!=OUTPUTMODE_CARRE) ?
-	i+5:i+bBroken);
+        i+5:i+bBroken);
 
 /* Write nodes */
     for (;e0!=e && e0!=NULL;e00=e0,e0=Next(&ix1))
@@ -439,22 +439,73 @@ int WriteStructureFile(App a,char* fName) {
 
 #define ERROR(s) {r=(s);goto Error;}
 
+int SurfaceZoneSortProc(void* p1,void* p2,void* arg) {
+  SurfaceZone sz1=(SurfaceZone)p1,sz2=(SurfaceZone)p2;
+
+  assert(sz1->type==T_SURFACEZONE && sz2->type==T_SURFACEZONE);
+
+  if (sz1->zone==sz2->zone) return 0;
+  return sz1->zone<sz2->zone? -1 : 1;
+}
+
+int GridPointSegSortProc(void* p1,void* p2,void* arg) {
+  GridPointSeg gps1=(GridPointSeg)p1,gps2=(GridPointSeg)p2;
+
+  assert(gps1->type==T_GRIDPOINTSEG && gps2->type==T_GRIDPOINTSEG);
+
+  if (gps1->zone==gps2->zone) return 0;
+  return gps1->zone<gps2->zone? -1 : 1;
+}
+
+static int SurfaceSortProc(void* p1,void* p2,void* pBaseLevel) {
+  SurfaceEx sx1=(SurfaceEx)p1,sx2=(SurfaceEx)p2;
+  double* pbl=(double*)pBaseLevel;
+  double l1,l2,l0=0;
+
+  if (pbl==NULL) pbl=&l0;
+
+  if (sx1->zone!=sx2->zone) return sx1->zone<sx2->zone? -1 : 1;
+
+  assert(sx1->type==T_SURFACEEX && sx2->type==T_SURFACEEX);
+
+  l1=fabs(sx1->level-*pbl);
+  l2=fabs(sx2->level-*pbl);
+
+  if (l1==l2) return 0;
+  return l1<l2? -1 : 1;
+}
+
+static int GridPointSortProc(void* p1,void* p2,void* foo) {
+  GridPointEx gpx1=(GridPointEx)p1,gpx2=(GridPointEx)p2;
+
+  assert(gpx1->type==T_GRIDPOINTEX && gpx2->type==T_GRIDPOINTEX);
+
+  if (gpx1->value==gpx2->value) return 0;
+  return gpx1->value<gpx2->value? -1 : 1;
+}
+
 int WriteTargetsFile(App a,char* fName) {
   FILE* f;
   Elem e;
-  Index ix;
+  Index ix,ixsz,ix1;
   Var v;
   Group t1,t2,pl,st;
   XY xy;
   int i,j,r;
   int bCheck;
-  Surface s,s0;
-  GridPoint gp;
+/*  Surface s,s0; */
+  SurfaceZone sz;
+  SurfaceEx sx,sx2;
+  GridPointEx gpx,gpx2;
+/*  GridPoint gp; */
+  GridPointSeg gps;
   static char* fmt="  %e , %e\n";       /* relcheck_ignore_line */
-  char* cid[4];   /* Used to store creatorId's */
+  char* cid;
   int area,law,carreFlag,count;
   double delta1,delta2,l1,l2,l,x,y;
-  Group g1,g2,g3;
+  Group g1,g2,g3,gSZ=NULL,gGPS=NULL;
+  VarSet vs;
+  VarDef vd;
 
   /* Do initial checks */
 
@@ -465,6 +516,13 @@ int WriteTargetsFile(App a,char* fName) {
   if (~r & AF_VALIDSURFACES) return ERR_BADSURFACES;
   if (~r & AF_VALIDGRIDPOINTS) return ERR_BADGRIDPOINTS;
   if (~r & AF_VALIDCELLS) return ERR_BADCELLS;
+
+  /* Check for virtual surfaces, if needed */
+
+  if (!(a->outputFlags & OF_NC_SURFACES)) {
+    for (sx=AppSurfaceEx1st(a,&ix);sx!=NULL;sx=Next(&ix))
+      if (SurfaceExVirtual(sx)) return ERR_SURFACE_XY;
+  }
 
   /* Open the output file, if asked to */
 
@@ -478,66 +536,111 @@ int WriteTargetsFile(App a,char* fName) {
 
   if (a->equil!=NULL) zfprintf(f,FSTR_EQUILFILE,a->equil->fName);
 
+  /* Output the topology name */
+
+  zfprintf(f,FSTR_TOPONAME,GetTopologyName(a));
+
   /* Output targets */
 
   bCheck=!(a->outputFlags & OF_NC_TARGETS);
 
-  v=GetVarPtrByType(a,VT_TARGET1);
-  if (CheckValue(a,v->val,VT_TARGET1,NULL)) {
-    if (bCheck) ERROR(ERR_BADTARGETS) else t1=NULL;
-  } else t1=v->val;
-
-  v=GetVarPtrByType(a,VT_TARGET2);
-  if (CheckValue(a,v->val,VT_TARGET2,NULL)) {
-    if (bCheck) ERROR(ERR_BADTARGETS) else t2=NULL;
-  } else t2=v->val;
-
-
-  if (t1!=NULL) {
-    zfprintf(f,"target 1\nline\n");
-    e=Group1st(t1,&ix);
-    zfprintf(f,fmt,e->n[1]->x,e->n[1]->y);
-    for (;e!=NULL;e=Next(&ix))
-      zfprintf(f,fmt,e->n[2]->x,e->n[2]->y);
+  /* Create a group with all target vars */
+  g1=CreateGroup();
+  for (vs=AppVarSet1st(a,&ix1);vs!=NULL;vs=Next(&ix1)) {
+    for (vd=Group1st(vs->def->varDefs,&ix);vd!=NULL;vd=Next(&ix))
+      if (vd->varType & VTF_TARGET) {
+        g2=GetVar(vs,vd,vs);
+        r=CheckValue(a,g2,VT_TARGET1,NULL);
+        if (r) r=r/*ERR_BADTARGETS*/;
+        else if (!IsEmptyGroup(g2)) GroupAdd(g1,g2);
+     }
   }
 
-  if (t2!=NULL) {
-    zfprintf(f,"target 2\nline\n");
-    RevertGroup(t2);
-    e=Group1st(t2,&ix);
-    zfprintf(f,fmt,e->n[2]->x,e->n[2]->y);
-    for (;e!=NULL;e=Next(&ix))
-      zfprintf(f,fmt,e->n[1]->x,e->n[1]->y);
-    RevertGroup(t2);
+  gGPS=CopyGroup(a->gridPointSegs,NULL);
+  GroupQSort(gGPS,GridPointSegSortProc,NULL);
+
+  for (gps=Group1st(gGPS,&ix);gps!=NULL;gps=Next(&ix)) {
+    if (!(gps->flags & GPSF_USED)) continue;
+/*    if (!GridPointSegOpen(gps)) continue; */
+    vd=NULL;
+    vs=NULL;
+
+    RecalcGridPointSegLine(gps,&vd,&vs);
+    if (vd==NULL || vs==NULL) continue;
+
+    g2=GetVar(vs,vd,vs);
+    if (InGroup(g1,g2)) {
+      zfprintf(f,FSTR_TARGET_LINE,gps->zone);
+      if (gps->flags & GPSF_TARGET_CW) {
+        RevertGroup(g2);
+        j=1;
+      } else j=0;
+
+      e=Group1st(g2,&ix1);
+      zfprintf(f,fmt,e->n[1+j]->x,e->n[1+j]->y);
+      for (;e!=NULL;e=Next(&ix1))
+        zfprintf(f,fmt,e->n[2-j]->x,e->n[2-j]->y);
+      if (gps->flags & GPSF_TARGET_CW) RevertGroup(g2); /* RESTORE the var! */
+      GroupDel(g1,g2);
+    } else {
+      r=ERR_TARGET_CROSSED_2X;
+    }
   }
+
+  if (!r && !IsEmptyGroup(g1)) r=ERR_TARGET_NOT_CROSSED;
+  g1=FreeGroup(g1);
+
+  if (bCheck && r) goto Error;
 
   bCheck=0;
 
-  /* Surfaces */
+  /* Surfaces    DO NOT COMMENT OUT because of FreeGroup() at the end */
 
   bCheck=!(a->outputFlags & OF_NC_SURFACES);
 
-  if (!IsEmptyGroup(a->surfaces) && !a->equil->signInside)
-    ERROR(ERR_NOCLOSEDSURFS);
+  gSZ=CopyGroup(a->surfaceZones,NULL);
+  GroupQSort(gSZ,SurfaceZoneSortProc,NULL);
 
-  /* if (a->equil==NULL && bCheck) return ERR_NOEQUIL;
-  if (a->xpoint==NULL && bCheck) return ERR_NOXPOINT; */
+  for (sz=Group1st(gSZ,&ixsz);sz!=NULL;sz=Next(&ixsz)) {
+    gps=FindGridPointSeg(a,sz->gpZone1);
+    l= gps==NULL? 0 : gps->level;
+    g2=CreateGroup();
+    for (sx=AppSurfaceEx1st(a,&ix);sx!=NULL;sx=Next(&ix)) {
+      if (SurfaceExOk(sx) && sx->zone==sz->zone) GroupAdd(g2,sx);
+    }
+    GroupQSort(g2,SurfaceSortProc,(void*)&l);
 
-  for (i=1;i<=3;i++) {
-    zfprintf(f,"region %d\nlevels\n",i);
-    for (s=AppSurface1st(a,&ix);s!=NULL;s=Next(&ix))
-      if (GetSurfaceArea(a,s)==i) zfprintf(f,"  %e\n",s->level);
+    zfprintf(f,"region %d\nlevels\n",sz->zone);
+    for (sx=Group1st(g2,&ix);sx!=NULL;sx=Next(&ix))
+      zfprintf(f,"  %e\n",sx->level);
+
+    g2=FreeGroup(g2);
   }
 
-  /* Grid points */
+  /* Grid points     DO NOT COMMENT OUT because of FreeGroup() at the end*/
 
   bCheck=!(a->outputFlags & OF_NC_GPOINTS);
 
-  if (a->xpoint!=NULL) for (i=0;i<3;i++) {
+  for (gps=Group1st(gGPS,&ixsz);gps!=NULL;gps=Next(&ixsz)) {
+    if (!(gps->flags & GPSF_USED)) continue;
+    g2=CreateGroup();
+    for (gpx=AppGridPointEx1st(a,&ix);gpx!=NULL;gpx=Next(&ix)) {
+      if (GridPointExOk(gpx) && gpx->zone==gps->zone) GroupAdd(g2,gpx);
+    }
+    GroupQSort(g2,GridPointSortProc,NULL);
+
+    zfprintf(f,"zone %d\npoints\n",gps->zone);
+    for (gpx=Group1st(g2,&ix);gpx!=NULL;gpx=Next(&ix))
+      zfprintf(f,"  %e\n",gpx->value);
+
+    g2=FreeGroup(g2);
+  }
+
+/*  if (a->xpoint!=NULL) for (i=0;i<3;i++) {
     zfprintf(f,"zone %d\npoints\n",i);
     for (gp=AppGridPoint1st(a,&ix);gp!=NULL;gp=Next(&ix))
       if (gp->area==i) zfprintf(f,"  %e\n",gp->value);
-  }
+  } */
 
   /* Carre extras */
 
@@ -548,137 +651,192 @@ int WriteTargetsFile(App a,char* fName) {
     bCheck=!(a->outputFlags & OF_NC_SURFACES);
     r=0;
 
-    for (i=0;i<=3;i++) cid[i]=NULL;
+/*    for (i=0;i<=3;i++) cid[i]=NULL; */
+    g1=CreateGroup();
 
-    for (s=AppSurface1st(a,&ix);s!=NULL;s=Next(&ix)) {
-      i=GetSurfaceArea(a,s);
-      assert(i>=1 && i<=3);
-      if (cid[i]==NULL) {
-	cid[i]=GetSurfaceCreatorId(s);
-	if (!SurfaceCreatorIdUnchanged(cid[i])) r=ERR_CARRE_SURFACES;
-	if (!r && ParseSurfaceCreatorId(cid[i],&area,&count,&delta1,&delta2,
-	    &law,&l1,&l2,&carreFlag)) r=ERR_CARRE_SURFACES;
-	if (!r && !carreFlag) r=ERR_CARRE_SURFACES;
-	if (!r && CountSurfaces(a,i)!=count+1) r=ERR_CARRE_SURFACES;
+    for (sx=AppSurfaceEx1st(a,&ix);sx!=NULL;sx=Next(&ix)) {
+      if (!SurfaceExOk(sx)) continue;
+
+      for (sx2=Group1st(g1,&ix1);sx2!=NULL;sx2=Next(&ix1))
+        if (sx2->zone==sx->zone) break;
+
+      if (sx2==NULL) {
+        GroupAdd(g1,sx);
+        cid=GetSurfaceExCreatorId(sx);
+        if (!SurfaceCreatorIdUnchanged(cid)) r=ERR_CARRE_SURFACES;
+        if (!r && ParseSurfaceCreatorId(cid,&area,&count,&delta1,&delta2,
+            &law,&l1,&l2,&carreFlag)) r=ERR_CARRE_SURFACES;
+        if (!r && !carreFlag) r=ERR_CARRE_SURFACES;
+        if (!r && CountSurfaces(a,sx->zone)!=
+            GetCarreSurfaceExCount(a,sx->zone,count))
+          r=ERR_CARRE_SURFACES;
 
 
-	if (!r) j=FindCarreMinMaxSurfaceLevel(a,i,&l1,&l2);
-	if (!r && j) r=ERR_CARRE_TANGENT;
-	if (!r && strcmp(cid[i],ConstructSurfaceCreatorId(area,count,delta1,
-	    delta2,law,l1,l2,carreFlag)))
-	  r=ERR_CARRE_TANGENT;
-      } else if (r && strcmp(cid[i],GetSurfaceCreatorId(s)))
-	r=ERR_CARRE_SURFACES;
+        if (!r) j=FindCarreMinMaxSurfaceLevel(a,sx->zone,&l1,&l2,NULL);
+        if (!r && j) r=ERR_CARRE_TANGENT;
+        if (!r && strcmp(cid,ConstructSurfaceCreatorId(area,count,delta1,
+            delta2,law,l1,l2,carreFlag)))
+          r=ERR_CARRE_TANGENT;
+      } else if (!r && strcmp(cid,GetSurfaceExCreatorId(sx)))
+        r=ERR_CARRE_SURFACES;
     }
 
     /* Output Carre values for surfaces */
 
     if (!r) {
       zfprintf(f,FSTR_SURFDELTA1);
-      for (i=1;i<=3;i++) {
-	if (cid[i]==NULL) {delta1=delta2=1;l2=1;l1=count=0;}
-        else assert(!ParseSurfaceCreatorId(cid[i],&area,&count,&delta1,&delta2,
-	        &law,&l1,&l2,&carreFlag));
+      for (sz=Group1st(gSZ,&ix);sz!=NULL;sz=Next(&ix)) {
+        for (sx=Group1st(g1,&ix1);sx!=NULL;sx=Next(&ix1))
+          if (sx->zone==sz->zone) break;
+        cid= sx!=NULL? GetSurfaceExCreatorId(sx) : NULL;
+        if (cid==NULL) {delta1=delta2=1;l2=1;l1=count=0;}
+        else assert(!ParseSurfaceCreatorId(cid,&area,&count,&delta1,&delta2,
+                &law,&l1,&l2,&carreFlag));
         zfprintf(f,"  %e\n",delta1*(l2-l1));
       }
 
       zfprintf(f,FSTR_SURFDELTA2);
-      for (i=1;i<=3;i++) {
-	if (cid[i]==NULL) {delta1=delta2=1;l2=1;l1=count=0;}
-        else assert(!ParseSurfaceCreatorId(cid[i],&area,&count,&delta1,&delta2,
-	        &law,&l1,&l2,&carreFlag));
+      for (sz=Group1st(gSZ,&ix);sz!=NULL;sz=Next(&ix)) {
+        for (sx=Group1st(g1,&ix1);sx!=NULL;sx=Next(&ix1))
+          if (sx->zone==sz->zone) break;
+        cid= sx!=NULL? GetSurfaceExCreatorId(sx) : NULL;
+        if (cid==NULL) {delta1=delta2=1;l2=1;l1=count=0;}
+        else assert(!ParseSurfaceCreatorId(cid,&area,&count,&delta1,&delta2,
+                &law,&l1,&l2,&carreFlag));
         zfprintf(f,"  %e\n",delta2*(l2-l1));
       }
 
       zfprintf(f,FSTR_SURFCOUNT);
-      for (i=1;i<=3;i++) {
-	if (cid[i]==NULL) {delta1=delta2=1;l2=1;l1=count=0;}
-        else assert(!ParseSurfaceCreatorId(cid[i],&area,&count,&delta1,&delta2,
-	        &law,&l1,&l2,&carreFlag));
+      for (sz=Group1st(gSZ,&ix);sz!=NULL;sz=Next(&ix)) {
+        for (sx=Group1st(g1,&ix1);sx!=NULL;sx=Next(&ix1))
+          if (sx->zone==sz->zone) break;
+        cid= sx!=NULL? GetSurfaceExCreatorId(sx) : NULL;
+        if (cid==NULL) {delta1=delta2=1;l2=1;l1=count=0;}
+        else assert(!ParseSurfaceCreatorId(cid,&area,&count,&delta1,&delta2,
+                &law,&l1,&l2,&carreFlag));
         zfprintf(f,"  %d\n",count+2);
       }
-    } else if (bCheck) goto Error;
+    }
+    FreeGroup(g1);
+
+    if (r && bCheck) goto Error;
+
 
     /* Output the position of the innermost surface */
 
     r=0;
 
-    for (s0=NULL,s=AppSurface1st(a,&ix);s!=NULL;s=Next(&ix))
-      if (GetSurfaceArea(a,s)==1 && (s0==NULL || (s->level-s0->level)*
-	  a->equil->signInside>0)) s0=s;
+    if (!r) zfprintf(f,FSTR_NSURF_PENETRATE);
+    for (sz=Group1st(gSZ,&ix);sz!=NULL;sz=Next(&ix)) {
 
-    if (s0==NULL) r=ERR_BADSURFACES;
-
-    if (!r) {
-      r=FindEquilPeakPoint(a,&x,&y);
-      if (!r) {
-	xy=Group1st(a->xpoint->line[SPA_LOOP],NULL);
-	assert(xy!=NULL);
-	pl=CreateGroup();
-	AddXY(pl,xy->x,xy->y);
-	AddXY(pl,x,y);
-
-	r=PolyLinesIntersect(pl,s0->line,&l,NULL);
-	if (r) r=ERR_CARRE_PEAK;
-	FreeMallocedGroup(pl);
+      if (!(sz->flags & SZF_LIMITBYSURFACE)) continue;
+      gps=FindGridPointSeg(a,sz->gpZone1);
+      if (gps==NULL) {
+        r=ERR_BADGPZONENUMBER;
+        break;
       }
+      l=gps->level;
+
+      for (sx2=NULL,sx=AppSurfaceEx1st(a,&ix1);sx!=NULL;sx=Next(&ix1))
+        if (SurfaceExOk(sx) && sx->zone==sz->zone && (sx2==NULL ||
+            fabs(sx->level-l)>fabs(sx2->level-l))) sx2=sx;
+
+      if (sx2==NULL) r=ERR_BADSURFACES;
+
+      if (!r) {
+        l=MAXDOUBLE; /* Workaround for the PC */
+        r=FindSurfaceOriginPointEx(a,sz->zone,l,&x,&y);
+
+        if (!r) {
+          pl=CreateGroup();
+          AddXY(pl,gps->xps->xpt->centerX,gps->xps->xpt->centerY);
+          AddXY(pl,x,y);
+
+          r=PolyLinesIntersect(pl,sx2->line,&l,NULL);
+          if (r) r=ERR_CARRE_PEAK;
+          FreeMallocedGroup(pl);
+        }
+      }
+      if (!r) zfprintf(f,"  %e\n",l);
     }
 
-    if (!r) zfprintf(f,FSTR_SURF_PENETRATE,l);
-    else if (bCheck) goto Error;
+    if (r && bCheck) goto Error;
+
+    /* Output Carre values for grid points */
 
     /* Make sure grid points are intact */
 
     bCheck=!(a->outputFlags & OF_NC_GPOINTS);
     r=0;
 
-    for (i=0;i<=3;i++) cid[i]=NULL;
+    g1=CreateGroup();
+    for (gpx=AppGridPointEx1st(a,&ix);gpx!=NULL;gpx=Next(&ix)) {
+      if (!GridPointExOk(gpx)) continue;
 
-    for (gp=AppGridPoint1st(a,&ix);gp!=NULL;gp=Next(&ix)) {
-      i=gp->area;
-      assert(i>=0 && i<=2);
-      if (cid[i]==NULL) {
-	cid[i]=GetGridPointCreatorId(gp);
-	if (!GridPointCreatorIdUnchanged(cid[i]))
-	  r=ERR_CARRE_GPOINTS;
-	if (!r && ParseGridPointCreatorId(cid[i],&area,&count,&delta1,
-	    &delta2,&law,&carreFlag)) r=ERR_CARRE_GPOINTS;
-	if (!r && !carreFlag) r=ERR_CARRE_GPOINTS;
-	if (!r && CountGridPoints(a,i)!=count)
-	  r=ERR_CARRE_GPOINTS;
-      } else if (strcmp(cid[i],GetGridPointCreatorId(gp)))
-	r=ERR_CARRE_GPOINTS;
+      for (gpx2=Group1st(g1,&ix1);gpx2!=NULL;gpx2=Next(&ix1))
+        if (gpx2->zone==gpx->zone) break;
+
+      if (gpx2==NULL) {
+        GroupAdd(g1,gpx);
+        cid=GetGridPointExCreatorId(gpx);
+        if (!GridPointCreatorIdUnchanged(cid))
+          r=ERR_CARRE_GPOINTS;
+        if (!r && ParseGridPointCreatorId(cid,&area,&count,&delta1,
+            &delta2,&law,&carreFlag)) r=ERR_CARRE_GPOINTS;
+        if (!r && !carreFlag) r=ERR_CARRE_GPOINTS;
+        if (!r && CountGridPoints(a,gpx->zone)!=count)
+          r=ERR_CARRE_GPOINTS;
+      } else if (strcmp(cid,GetGridPointExCreatorId(gpx)))
+        r=ERR_CARRE_GPOINTS;
     }
 
     if (!r) {
       zfprintf(f,FSTR_GPOINTDELTA1);
-      for (i=0;i<=2;i++) {
-	if (cid[i]==NULL) {delta1=delta2=1;count=0;} else {
-          assert(!ParseGridPointCreatorId(cid[i],&area,&count,&delta1,&delta2,
-	      &law,&carreFlag));
-          delta1*=CalcLineLength(a->xpoint->line[i]);
+      for (gps=Group1st(gGPS,&ix);gps!=NULL;gps=Next(&ix)) {
+        if (!(gps->flags & GPSF_USED)) continue;
+        for (gpx=Group1st(g1,&ix1);gpx!=NULL;gpx=Next(&ix1))
+          if (gpx->zone==gps->zone) break;
+        cid= gpx!=NULL? GetGridPointExCreatorId(gpx) : NULL;
+        if (cid==NULL) {delta1=delta2=1;count=0;} else {
+          assert(!ParseGridPointCreatorId(cid,&area,&count,&delta1,&delta2,
+              &law,&carreFlag));
+          delta1*=gps->lineLength;
         }
-	zfprintf(f,"  %e\n",delta1);
+        zfprintf(f,"  %e\n",delta1);
       }
 
       zfprintf(f,FSTR_GPOINTDELTA2);
-      for (i=0;i<=2;i++) {
-	if (cid[i]==NULL) {delta1=delta2=1;count=0;} else {
-	  assert(!ParseGridPointCreatorId(cid[i],&area,&count,&delta1,&delta2,
-	      &law,&carreFlag));
-          delta2*=CalcLineLength(a->xpoint->line[i]);
+      for (gps=Group1st(gGPS,&ix);gps!=NULL;gps=Next(&ix)) {
+        if (!(gps->flags & GPSF_USED)) continue;
+        for (gpx=Group1st(g1,&ix1);gpx!=NULL;gpx=Next(&ix1))
+          if (gpx->zone==gps->zone) break;
+        cid= gpx!=NULL? GetGridPointExCreatorId(gpx) : NULL;
+        if (cid==NULL) {delta1=delta2=1;count=0;} else {
+          assert(!ParseGridPointCreatorId(cid,&area,&count,&delta1,&delta2,
+              &law,&carreFlag));
+          delta2*=gps->lineLength;
         }
-	zfprintf(f,"  %e\n",delta2);
+        zfprintf(f,"  %e\n",delta2);
       }
 
       zfprintf(f,FSTR_GPOINTCOUNT);
-      for (i=0;i<=2;i++) {
-	if (cid[i]==NULL) {delta1=delta2=1;count=0;} else
-	assert(!ParseGridPointCreatorId(cid[i],&area,&count,&delta1,&delta2,
-	    &law,&carreFlag));
-	zfprintf(f,"  %d\n",count+2);
+      for (gps=Group1st(gGPS,&ix);gps!=NULL;gps=Next(&ix)) {
+        if (!(gps->flags & GPSF_USED)) continue;
+        for (gpx=Group1st(g1,&ix1);gpx!=NULL;gpx=Next(&ix1))
+          if (gpx->zone==gps->zone) break;
+        cid= gpx!=NULL? GetGridPointExCreatorId(gpx) : NULL;
+        if (cid==NULL) {delta1=delta2=1;count=0;} else {
+          assert(!ParseGridPointCreatorId(cid,&area,&count,&delta1,&delta2,
+              &law,&carreFlag));
+          delta1*=gps->lineLength;
+        }
+        zfprintf(f,"  %d\n",count+2);
       }
-    } else if (bCheck) goto Error;
+    }
+
+    FreeGroup(g1);
+
+    if (r && bCheck) goto Error;
 
     /* Output the number of closed structure parts */
 
@@ -692,16 +850,19 @@ int WriteTargetsFile(App a,char* fName) {
     if (st!=NULL) {
       r=OrderStructureElems(a,st,&g1,&g2,&g3,NULL);
       if (!r) {
-	zfprintf(f,FSTR_CLOSEDSTRUCTPARTS,GroupCount(g1)+GroupCount(g2));
-	FreeStructureInfo(&g1,&g2,&g3);
+        zfprintf(f,FSTR_CLOSEDSTRUCTPARTS,GroupCount(g1)+GroupCount(g2));
+        FreeStructureInfo(&g1,&g2,&g3);
       } else if (bCheck) goto Error;
     }
-  }
+  } /* Carre */
 
   r=0;
 
   Error:
   if (f!=NULL) fclose(f);
+
+  if (gSZ!=NULL) gSZ=FreeGroup(gSZ);
+  if (gGPS!=NULL) gGPS=FreeGroup(gGPS);
 
   return r;
 }
@@ -723,8 +884,21 @@ int GetAppFlags(App a) {
 
   ValidatePtr(a,"GetAppFlags");
 
-  r|=AF_VALIDTARGETS;
-  v=GetVarPtrByType(a,VT_TARGET1);
+  r|=(AF_VALIDTARGETS|AF_VALIDSTRUCTURE);
+  for (vs=AppVarSet1st(a,&ix);vs!=NULL;vs=Next(&ix)) {
+    for (vd=Group1st(vs->def->varDefs,&ix1);vd!=NULL;vd=Next(&ix1)) {
+      if (vd->varType & VTF_TARGET) {
+        if (CheckValue(a,GetVar(vs,vd,NULL),vd->varType,NULL))
+          r&=~AF_VALIDTARGETS;
+      } else if (vd->varType == VT_STRUCTURE) {
+        if (CheckValue(a,GetVar(vs,vd,NULL),vd->varType,NULL))
+          r&=~AF_VALIDSTRUCTURE;
+      }
+    }
+  }
+  if (GetVarPtrByType(a,VT_STRUCTURE)==NULL) r&=~AF_VALIDSTRUCTURE;
+
+/*  v=GetVarPtrByType(a,VT_TARGET1);
   if (CheckValue(a,v->val,VT_TARGET1,NULL))
     r&=~AF_VALIDTARGETS;
   v=GetVarPtrByType(a,VT_TARGET2);
@@ -734,13 +908,13 @@ int GetAppFlags(App a) {
   r|=AF_VALIDSTRUCTURE;
   v=GetVarPtrByType(a,VT_STRUCTURE);
   if (CheckValue(a,v->val,VT_STRUCTURE,NULL))
-    r&=~AF_VALIDSTRUCTURE;
+    r&=~AF_VALIDSTRUCTURE; -- old */
 
-  if (a->equil!=NULL && a->equil->signInside &&
-      CountSurfaces(a,2) && CountSurfaces(a,1)==CountSurfaces(a,3))
+/*  if (a->equil!=NULL && a->equil->signInside &&
+      CountSurfaces(a,2) && CountSurfaces(a,1)==CountSurfaces(a,3)) */
     r|=AF_VALIDSURFACES;
 
-  if (a->xpoint!=NULL)
+/*  if (a->xpoint!=NULL)   */
     r|=AF_VALIDGRIDPOINTS;
 
   if (!CheckAllVars(a,NULL)) r|= AF_VALIDVARS;
@@ -768,7 +942,7 @@ int GetAppFlags(App a) {
 /* Check all values of a variable
    Returns     The number of encountered errors
    *pgObjects  Offending object if VTF_HASGROUP; else objects with
-	       offending values
+               offending values
    *pErr       Error value or ERR_MULTIPLEERRORS if it is the case */
 
 int CheckVar(App a,Group* pgObjects,VarDef vd,VarSet vs,int* pErr) {
@@ -791,10 +965,10 @@ int CheckVar(App a,Group* pgObjects,VarDef vd,VarSet vs,int* pErr) {
   if (vd->flags & VF_FORELEMS) {
     for (obj=AppElem1st(a,&ix);obj!=NULL;obj=Next(&ix)) {
       if (e=CheckValue(a,GetVar(obj,vd,vs),vd->varType,NULL)) {
-	if (!err) err=e;
-	if (err!=e) err=ERR_MULTIPLEERRORS;
-	if (pgObjects!=NULL) GroupAdd(*pgObjects,obj);
-	r++;
+        if (!err) err=e;
+        if (err!=e) err=ERR_MULTIPLEERRORS;
+        if (pgObjects!=NULL) GroupAdd(*pgObjects,obj);
+        r++;
       }
     }
   }
@@ -802,10 +976,10 @@ int CheckVar(App a,Group* pgObjects,VarDef vd,VarSet vs,int* pErr) {
   if (vd->flags & VF_FORSEPARATORS) {
     for (obj=AppSeparator1st(a,&ix);obj!=NULL;obj=Next(&ix)) {
       if (e=CheckValue(a,GetVar(obj,vd,vs),vd->varType,NULL)) {
-	if (!err) err=e;
-	if (err!=e) err=ERR_MULTIPLEERRORS;
-	if (pgObjects!=NULL) GroupAdd(*pgObjects,obj);
-	r++;
+        if (!err) err=e;
+        if (err!=e) err=ERR_MULTIPLEERRORS;
+        if (pgObjects!=NULL) GroupAdd(*pgObjects,obj);
+        r++;
       }
     }
   }
@@ -813,10 +987,10 @@ int CheckVar(App a,Group* pgObjects,VarDef vd,VarSet vs,int* pErr) {
   if (vd->flags & VF_FORSOURCES) {
     for (obj=AppSource1st(a,&ix);obj!=NULL;obj=Next(&ix)) {
       if (e=CheckValue(a,GetVar(obj,vd,vs),vd->varType,NULL)) {
-	if (!err) err=e;
-	if (err!=e) err=ERR_MULTIPLEERRORS;
-	if (pgObjects!=NULL) GroupAdd(*pgObjects,obj);
-	r++;
+        if (!err) err=e;
+        if (err!=e) err=ERR_MULTIPLEERRORS;
+        if (pgObjects!=NULL) GroupAdd(*pgObjects,obj);
+        r++;
       }
     }
   }
@@ -840,9 +1014,9 @@ int CheckAllVars(App a,Group* pgErrorPairs) {
   for (vd=AppVarDef1st(a,&ivd);vd!=NULL;vd=Next(&ivd)) {
     for (vs=Group1st(vd->varSetDef->varSets,&ivs);vs!=NULL;vs=Next(&ivs)) {
       if (CheckVar(a,NULL,vd,vs,NULL)) {
-	  r++;
-	  if (pgErrorPairs!=NULL) GroupAdd(*pgErrorPairs,vd);
-	  if (pgErrorPairs!=NULL) GroupAdd(*pgErrorPairs,vs);
+          r++;
+          if (pgErrorPairs!=NULL) GroupAdd(*pgErrorPairs,vd);
+          if (pgErrorPairs!=NULL) GroupAdd(*pgErrorPairs,vs);
       }
     }
   }

@@ -62,7 +62,6 @@ int ReadOldDgFile(App a,char* fName,int* errFlags) {
   Stack g;
   Node n,n1;
   Elem e;
-  Surface surf;
   VarSetDef vsd;
   VarSet vs;
   VarDef vd;
@@ -203,17 +202,15 @@ int ReadOldDgFile(App a,char* fName,int* errFlags) {
         f01=EqCorrCell(a->equil,i+1,i1,f1);
         f10=EqCorrCell(a->equil,i,i1+1,f1);
         f11=EqCorrCell(a->equil,i+1,i1+1,f1);
-        surf=NULL;
-        if (inrange_s(f1,f00,f01)) surf=AddSurface(a,
+        if (inrange_s(f1,f00,f01)) AddSurfaceExXY(a,
           a->equil->x[i]+(a->equil->x[i+1]-a->equil->x[i])*
             (f1-f00)/(f01-f00),a->equil->y[i1],NULL); else
-        if (inrange_s(f1,f10,f11)) surf=AddSurface(a,
+        if (inrange_s(f1,f10,f11)) AddSurfaceExXY(a,
           a->equil->x[i]+(a->equil->x[i+1]-a->equil->x[i])*
             (f1-f10)/(f11-f10),a->equil->y[i1+1],NULL); else
-        if (inrange_s(f1,f00,f10)) surf=AddSurface(a,a->equil->x[i],
+        if (inrange_s(f1,f00,f10)) AddSurfaceExXY(a,a->equil->x[i],
           a->equil->y[i1]+(a->equil->y[i1+1]-a->equil->y[i1])*
             (f1-f00)/(f10-f00),NULL);
-        if (surf!=NULL) {}
       }
     } else
 
@@ -225,7 +222,8 @@ int ReadOldDgFile(App a,char* fName,int* errFlags) {
     } else
 
     if (sscanf(s,"  AddSeparPoint%d"SCANFLT,&i,&f1)==2) {
-      AddGridPoint(a,i,f1);
+      AddGridPointEx(a,i,f1);
+      *errFlags|=DGFE_OLDTOPO;
     } else
 
     if (sscanf(s,"  SetMaxNumber %d",&i)==1) {
@@ -244,14 +242,13 @@ int ReadOldDgFile(App a,char* fName,int* errFlags) {
   vd=AddVarDef(a,vsd,"target2","Target 2",VT_TARGET2,VF_NOEXPORT,0,2);
   if (SetVar(a,vs,vd,NULL,gT2)) *errFlags |= DGFE_BADTARG2;
 
-  if (xpX2!=0 || xpX1!=0)
-    if (AddXPoint(a,xpX1,xpY1,xpX2,xpY2)) *errFlags |= DGFE_BADXPT;
-
   fclose(f);
   FreeMallocedGroup(g);
   FreeGroup(gS);
   FreeGroup(gT1);
   FreeGroup(gT2);
+
+  if (*errFlags & DGFE_OLDTOPO) ConvertOldDgSurfaces(a,errFlags);
 
   return 0;
   err:

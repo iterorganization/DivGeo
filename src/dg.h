@@ -16,7 +16,7 @@
 #include <values.h>
 
 #define DG_FNAME_LEN 256
-#define DG_VERSION 14200
+#define DG_VERSION 20000
 
 #ifdef PC_VERSION
 
@@ -46,15 +46,12 @@ typedef struct _View* View;
 typedef struct _Node* Node;
 typedef struct _Elem* Elem;
 typedef struct _Equil* Equil;
-typedef struct _Surface* Surface;
 typedef struct _Template* Template;
 typedef struct _VarSetDef* VarSetDef;
 typedef struct _VarDef* VarDef;
 typedef struct _VarSet* VarSet;
 typedef struct _Var* Var;
-typedef struct _XPoint* XPoint;
 typedef struct _XApp* XApp;
-typedef struct _GridPoint* GridPoint;
 typedef struct _SonnetData* SonnetData;
 typedef struct _Separator* Separator;
 typedef struct _Source* Source;
@@ -68,6 +65,10 @@ typedef struct _MeshCell* MeshCell;
 typedef struct _MeshElement* MeshElement;
 typedef struct _MeshPoint* MeshPoint;
 typedef struct _StringSource* StringSource;
+typedef struct _GridPointSeg* GridPointSeg;
+typedef struct _GridPointEx* GridPointEx;
+typedef struct _SurfaceZone* SurfaceZone;
+typedef struct _SurfaceEx* SurfaceEx;
 
 struct _ViewExt;
 struct _XAppExt;
@@ -94,6 +95,7 @@ typedef void (*ActProc)(App,ActRec);
 #include "sources.h"
 #include "chords.h"
 #include "mesh.h"
+#include "nequil.h"
 
 #endif
 

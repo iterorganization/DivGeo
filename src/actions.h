@@ -174,21 +174,6 @@ typedef struct _DelEquilRec {
   Equil eq;
 }* DelEquilRec;
 
-typedef ActRec AddSurfaceRec;
-
-typedef struct _DelSurfaceRec {
-  ActProc actProc;
-  void* obj;
-  Surface s;
-}* DelSurfaceRec;
-
-typedef struct _ChangeSurfaceRec {
-  ActProc actProc;
-  void* obj;
-  Surface s;
-  double x,y;
-}* ChangeSurfaceRec;
-
 typedef ActRec AddTemplateRec;
 
 typedef struct _DelTemplateRec {
@@ -230,19 +215,6 @@ typedef DelRec DelVarSetRec;
 
 typedef ActRec AddVarRec;
 typedef DelRec DelVarRec;
-
-typedef ActRec AddXPointRec;
-typedef DelRec DelXPointRec;
-
-typedef ActRec AddGridPointRec;
-typedef DelRec DelGridPointRec;
-typedef struct _ChangeGridPointRec {
-  ActProc actProc;
-  void* obj;
-  GridPoint gp;
-  int area;
-  double value;
-}* ChangeGridPointRec;
 
 typedef ActRec AddSonnetDataRec;
 typedef DelRec DelSonnetDataRec;
@@ -297,13 +269,6 @@ int ActChangeElem(App a,ChangeElemRec ar);
 int ActAddEquil(App a,AddEquilRec ar);
 int ActDelEquil(App a,DelEquilRec ar);
 
-/* Surfaces. Each surface increases the lock count of the equilibrium by 1.
-   Without equilibrium, these actions cause fatal errors.
-*/
-int ActAddSurface(App a,AddSurfaceRec ar);
-int ActDelSurface(App a,DelSurfaceRec ar);
-int ActChangeSurface(App a,ChangeSurfaceRec ar);
-
 /* Template. ChangeTemplate change only template position, not filename.
    ActAddTemplate returns error when problems with file I/O occur.
 */
@@ -342,13 +307,6 @@ int ActDelVarSet(App a,DelVarSetRec ar);
 */
 int ActAddVar(App a,AddVarRec ar);
 int ActDelVar(App a,DelVarRec ar);
-
-int ActAddXPoint(App a,AddXPointRec ar);
-int ActDelXPoint(App a,DelXPointRec ar);
-
-int ActAddGridPoint(App a,AddGridPointRec ar);
-int ActDelGridPoint(App a,DelGridPointRec ar);
-int ActChangeGridPoint(App a,ChangeGridPointRec ar);
 
 int ActChangeAppView(App a,ChangeAppViewRec ar);
 

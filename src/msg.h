@@ -4,6 +4,8 @@
 #ifndef _msg_h
 #define _msg_h
 
+#define MSG_OK               0
+
 #define ERR_FILENOTFOUND     1
 #define ERR_BADFILE          2
 #define ERR_BADFILETYPE      3
@@ -107,6 +109,30 @@
 #define ERR_MESH_HDR_NO_LF 104    /* Used in                 */
 #define ERR_MESH_HDR_NO_ID 105    /* CheckMeshHeaderString() */
 
+#define ERR_EQUIL_SPLINE   106    /* In LoadEquil() */
+
+/* in FindSurfaceOriginPointEx() */
+#define ERR_BADSURFZONENUMBER 107
+#define ERR_BADGPZONENUMBER   108
+#define ERR_FSOPX_1           109 /* Out of equilibrium on a separatrix point */
+#define ERR_OUTOFSURFZONE     110
+#define ERR_BADSURFACEZONE1   111
+
+/* In GetSurfaceZoneByXY */
+
+#define ERR_NOSURFZONE        112 /* No surface zone at this location */
+
+/* In LoadTopology() */
+
+#define ERR_OLD_FILE_NO_TOPOLOGY 113
+
+/* In WriteTargetsFile() */
+#define ERR_TARGET_CROSSED_2X 114 /* A target crossed by several GridPointSegs */
+#define ERR_TARGET_NOT_CROSSED 115 /* A target not crossed by any segment */
+#define ERR_SURFACE_XY        116 /* Cannot output XY-defined surfaces*/
+
+/* Messages ///////////////////////////////////////////////////////// */
+
 #define MSG_EXAMNODE         1000
 #define MSG_EXAMELEM         1001
 #define MSG_EXAMSURFACE      1002
@@ -150,6 +176,10 @@
 #define MSG_EXAM_MESH_CELL   1040
 #define MSG_EXAM_MESH_ELEMENT 1041
 #define MSG_EXAM_MESH_POINT  1042
+#define MSG_EXAM_XPOINTTEST  1043
+#define MSG_EXAM_XPOINTSEG   1044
+#define MSG_EXAM_SURFACE_XY  1045
+#define MSG_CALCULATING_SZ_BOUNDS 1046 /* For use in Add/MoveSurface tool */
 
 #define STR_LOCKED           2000
 #define STR_UNLOCKED         2001
@@ -233,6 +263,8 @@
 #define WRN_BADSTRUC         5008
 #define WRN_BADXPT           5009
 #define WRN_MESH_FP          5010
+#define WRN_OLDTOPO          5011
+#define WRN_OLD_SURFACES_LOST 5012
 
 #define ENV_CFGFILE          6000
 #define ENV_LOADMASK         6001

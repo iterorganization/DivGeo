@@ -1,3 +1,5 @@
+#ifndef RESOURCE_IDS_ONLY
+
 #include "x_dg.h"
 
 #define ENV_DG_NO_PREFS "DG_NO_PREFS_FILE"
@@ -62,7 +64,7 @@ void ConfigureXApp(XApp xap) {
   xap->x=Malloc(sizeof(*xap->x));
   xap->x->xViewShellsCount=0;
   xap->x->bPrefsLocked=0;
-  
+
   xap->x->wShell=XtAppInitialize(&xap->x->appContext,"DivGeo",
     commandLineOptions,XtNumber(commandLineOptions),
     xap->pargc,xap->argv,dgResources,NULL,0);
@@ -115,10 +117,10 @@ void ConfigureXApp(XApp xap) {
       FatalError("DivGeo: no resources"); else
     if (xap->x->resourceFileVersion!=DG_VERSION)
       FatalError("DivGeo: invalid resource file version\n"
-	"DivGeo version:        %s\n"
-	"Resource file version: %s\n",
-	GetVersionStr(DG_VERSION),
-	GetVersionStr(xap->x->resourceFileVersion));
+        "DivGeo version:        %s\n"
+        "Resource file version: %s\n",
+        GetVersionStr(DG_VERSION),
+        GetVersionStr(xap->x->resourceFileVersion));
 
 
   xap->x->helpFile=NULL;
@@ -188,7 +190,11 @@ static int LoadHelp(XApp xap,char* fileName) {
 /* Private part
 */
 
+#endif /* RESOURCE_IDS_ONLY */
+
 static struct _PtrTable viewMsgs[]={
+  MSG_OK,"msgOk",
+
   ERR_FILENOTFOUND,"errNotFound",
   ERR_BADFILE,"errBadFile",
   ERR_BADFILETYPE,"errBadFileType",
@@ -290,7 +296,18 @@ static struct _PtrTable viewMsgs[]={
   ERR_BAD_OBJECT_TYPE,"errBadObjectType",
   ERR_MESH_HDR_NO_LF,"errMeshHeaderNoLF",
   ERR_MESH_HDR_NO_ID,"errMeshHeaderNoID",
-  
+  ERR_EQUIL_SPLINE,"errEquilSpline",
+  ERR_BADSURFZONENUMBER,"errBadSurfaceZoneNumber",
+  ERR_BADGPZONENUMBER,"errBadGridPointZoneNumber",
+  ERR_FSOPX_1,"errFSOPX_i1",
+  ERR_OUTOFSURFZONE,"errOutOfSurfaceZone",
+  ERR_BADSURFACEZONE1,"errBadSurfaceZone1",
+  ERR_NOSURFZONE,"errNoSurfaceZoneAtXY",
+  ERR_OLD_FILE_NO_TOPOLOGY,"errOldFileNoTopology",
+  ERR_TARGET_CROSSED_2X,"errTargetCrossed2x",
+  ERR_TARGET_NOT_CROSSED,"errTargetNotCrossed",
+  ERR_SURFACE_XY,"errOutputSurfaceXY",
+
   WRN_NOEQUIL,"wrnNoEquil",
   WRN_NOTEMPL,"wrnNoTemplate",
   WRN_BADTYPE,"wrnBadType",
@@ -301,6 +318,8 @@ static struct _PtrTable viewMsgs[]={
   WRN_BADSTRUC,"wrnBadStructure",
   WRN_BADXPT,"wrnBadXpoint",
   WRN_MESH_FP,"wrnMeshFingerprint",
+  WRN_OLDTOPO,"wrnOldTopo",
+  WRN_OLD_SURFACES_LOST,"wrnOldSurfacesLost",
 
   MSG_EXAMNODE,"msgExamNode",
   MSG_EXAMELEM,"msgExamElem",
@@ -311,6 +330,10 @@ static struct _PtrTable viewMsgs[]={
   MSG_EXAM_MESH_CELL,"msgExamMeshCell",
   MSG_EXAM_MESH_ELEMENT,"msgExamMeshElement",
   MSG_EXAM_MESH_POINT,"msgExamMeshPoint",
+  MSG_EXAM_XPOINTTEST,"msgExamXPointEx",
+  MSG_EXAM_XPOINTSEG,"msgExamXPointSeg",
+  MSG_EXAM_SURFACE_XY,"msgExamSurfaceXY",
+
 
   MSG_TEMPLATELOADED,"msgTemplateLoaded",
   MSG_TEMPLATEREMOVED,"msgTemplateRemoved",
@@ -343,6 +366,7 @@ static struct _PtrTable viewMsgs[]={
   MSG_REPOS_HANDLE_1,"msgReposHandle1",
   MSG_REPOS_HANDLE_2,"msgReposHandle2",
   MSG_MARKED_REMOVED,"msgMarkedObjectsRemoved",
+  MSG_CALCULATING_SZ_BOUNDS,"msgCalculatingSurfaceZoneBounds",
 
   STR_LOCKED,"strLocked",
   STR_UNLOCKED,"strUnlocked",
@@ -426,6 +450,8 @@ static struct _PtrTable viewMsgs[]={
 
   0,NULL
 };
+
+#ifndef RESOURCE_IDS_ONLY
 
 static char* XAppResName(XApp xap,int id) {
   return TranslateId(viewMsgs,id);
@@ -536,8 +562,8 @@ int SetUserPrefsString(XApp xa,char* str,char* value) {
     osCur=strtok(oldStrings,"\n");
     if (osCur!=NULL) do {
       if (strncmp(osCur,strEx,l)) {
-	fputs(osCur,f);
-	fputs("\n",f);
+        fputs(osCur,f);
+        fputs("\n",f);
       }
       osCur=strtok(NULL,"\n");
     } while (osCur!=NULL);
@@ -666,8 +692,11 @@ View FindViewByFilename(XApp xap,char* fileName) {
 
   for (w=Group1st(xap->views,&ix);w!=NULL;w=Next(&ix))
     if (w->app!=NULL && w->app->fName!=NULL &&
-	!strcmp(w->app->fName,fileName))
+        !strcmp(w->app->fName,fileName))
       return w;
 
   return NULL;
 }
+
+#endif /* RESOURCE_IDS_ONLY */
+

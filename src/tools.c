@@ -63,7 +63,6 @@ void TlExamine(View w,int event,double x,double y) {
   }* d;
   void* p;
   Group g;
-  Surface s,s0;
   MeshPoint mpt;
   MeshCell mc;
   Index ix;
@@ -77,6 +76,8 @@ void TlExamine(View w,int event,double x,double y) {
       break;
     case TL_DBLCLK:
       if (d!=NULL) break;
+      break;
+/*       
       d=Malloc(sizeof(*d));
       d->bEnh=1;
       d->hm=1;
@@ -85,12 +86,12 @@ void TlExamine(View w,int event,double x,double y) {
       p=HitViewObject(w,x,y,SHW_SURFACES);
 
       if (p==NULL) {
-	d=Free(d);
-	break;
+        d=Free(d);
+        break;
       }
       d->g=CreateGroup();
       goto Motion;
-
+ */
     case TL_PRESS:
       if (d!=NULL) break;
       d=Malloc(sizeof(*d));
@@ -98,8 +99,9 @@ void TlExamine(View w,int event,double x,double y) {
       d->hm=1;
       d->obj=NULL;
       p=HitViewObject(w,x,y,SHW_NODES|SHW_ELEMS|SHW_SURFACES|SHW_GRIDPOINTS|
-	  SHW_SEPARATORS|SHW_SOURCES|SHW_CHORDS|
-	  SHWX_MESHCELLS|SHWX_MESHELEMENTS|SHWX_MESHPOINTS);
+          SHW_SEPARATORS|SHW_SOURCES|SHW_CHORDS|
+          SHW_XPOINTTESTS|
+          SHWX_MESHCELLS|SHWX_MESHELEMENTS|SHWX_MESHPOINTS);
       if (p==NULL) {
         d=Free(d);
         break;
@@ -109,85 +111,93 @@ void TlExamine(View w,int event,double x,double y) {
     Motion:
       if (d==NULL) break;
       if (d->bEnh) {
-	if (d->obj!=NULL) p=HitViewObject(w,x,y,SHW_SURFACES);
-	if (p==NULL || p==d->obj) break;
-	g=NULL;
-	switch (GetObjType(p)) {
-	  case T_SURFACE:
-	    s0=(Surface)p;
-	    if (!strcmp(GetSurfaceCreatorId(s0),"*")) {
-	      g=CreateGroup();
-	      d->hm=0;
-	      GroupAdd(g,s0);
-	    } else {
-	      if (d->obj!=NULL && GetObjType(d->obj)==T_SURFACE) {
-		if (!strcmp(GetSurfaceCreatorId(s0),
-		    GetSurfaceCreatorId((Surface)d->obj))) break;
-	      }
-	      g=CreateGroup();
-	      d->hm=1;
-	      for (s=AppSurface1st(w->app,&ix);s!=NULL;s=Next(&ix))
-	      if (!strcmp(GetSurfaceCreatorId(s),GetSurfaceCreatorId(s0)))
-		GroupAdd(g,s);
-	    }
-	    d->obj=p;
-	    break;
-	  default:
-	    assert(0);
-	}
-	if (g==NULL) break;
-	if (d->g!=NULL) d->g=FreeGroup(d->g);
-	d->g=g;g=NULL;
+/*
+        if (d->obj!=NULL) p=HitViewObject(w,x,y,SHW_SURFACES);
+        if (p==NULL || p==d->obj) break;
+        g=NULL;
 
-	UnhighlightAll(w);
-	SetHighlightMode(w->app,d->hm);
-	for (p=Group1st(d->g,&ix);p!=NULL;p=Next(&ix))
-	  Highlight(w,p,1);
-	SetExamineMsg(w,d->obj);
-	SetViewMsg(w,"");
+        switch (GetObjType(p)) {
+          case T_SURFACE:
+            s0=(Surface)p;
+            if (!strcmp(GetSurfaceCreatorId(s0),"*")) {
+              g=CreateGroup();
+              d->hm=0;
+              GroupAdd(g,s0);
+            } else {
+              if (d->obj!=NULL && GetObjType(d->obj)==T_SURFACE) {
+                if (!strcmp(GetSurfaceCreatorId(s0),
+                    GetSurfaceCreatorId((Surface)d->obj))) break;
+              }
+              g=CreateGroup();
+              d->hm=1;
+              for (s=AppSurface1st(w->app,&ix);s!=NULL;s=Next(&ix))
+              if (!strcmp(GetSurfaceCreatorId(s),GetSurfaceCreatorId(s0)))
+                GroupAdd(g,s);
+            }
+            d->obj=p;
+            break;
+          default:
+            assert(0);
+        }
+        if (g==NULL) break;
+        if (d->g!=NULL) d->g=FreeGroup(d->g);
+        d->g=g;g=NULL;
+
+        UnhighlightAll(w);
+        SetHighlightMode(w->app,d->hm);
+        for (p=Group1st(d->g,&ix);p!=NULL;p=Next(&ix))
+          Highlight(w,p,1);
+        SetExamineMsg(w,d->obj);
+        SetViewMsg(w,"");
+*/
       } else {
-	if (d->obj!=NULL) p=HitViewObject(w,x,y,SHW_NODES|SHW_ELEMS|
-	SHW_SURFACES|SHW_GRIDPOINTS|SHW_SEPARATORS|SHW_SOURCES|SHW_CHORDS|
-	SHWX_MESHCELLS|SHWX_MESHELEMENTS|SHWX_MESHPOINTS);
+        if (d->obj!=NULL) p=HitViewObject(w,x,y,SHW_NODES|SHW_ELEMS|
+        SHW_SURFACES|SHW_GRIDPOINTS|SHW_SEPARATORS|SHW_SOURCES|SHW_CHORDS|
+        SHW_XPOINTTESTS|
+        SHWX_MESHCELLS|SHWX_MESHELEMENTS|SHWX_MESHPOINTS);
 
-	if (p==NULL || p==d->obj) break;
-	d->obj=p;
+        if (p==NULL || p==d->obj) break;
+        d->obj=p;
 
-	UnhighlightAll(w);
-	SetHighlightMode(w->app,1);
-	switch(GetObjType(p)) {
-	  case T_NODE:
-	  case T_ELEM:
-	  case T_SURFACE:
-	  case T_GRIDPOINT:
-	  case T_SEPARATOR:
-	  case T_SOURCE:
-	  case T_CHORD:
-	  case T_MESHELEMENT:
-	    Highlight(w,p,1);
-	    SetExamineMsg(w,p);
-	    break;
-	  case T_MESHPOINT:
-	    mpt=p;
-	    for (i=MCN_START;i<MCN_END;i++) if (mpt->elements[i]!=NULL)
-	      Highlight(w,mpt->elements[i],1);
-	    SetExamineMsg(w,p);
-	    break;
-	  case T_MESHCELL:
-	    mc=p;
-	    for (i=MCN_START;i<MCN_END;i++) Highlight(w,mc->elements[i],1);
-	    Highlight(w,mc,1);
-	    SetExamineMsg(w,p);
-	    break;
-	    
-	}
+        UnhighlightAll(w);
+        SetHighlightMode(w->app,1);
+        switch(GetObjType(p)) {
+          case T_NODE:
+          case T_ELEM:
+          case T_SEPARATOR:
+          case T_SOURCE:
+          case T_CHORD:
+          case T_MESHELEMENT:
+          case T_XPOINTTEST:
+          case T_XPOINTSEG:
+          case T_SURFACEEX:
+          case T_GRIDPOINTEX:
+            Highlight(w,p,1);
+            SetExamineMsg(w,p);
+            break;
+          case T_MESHPOINT:
+            mpt=p;
+            for (i=MCN_START;i<MCN_END;i++) if (mpt->elements[i]!=NULL)
+              Highlight(w,mpt->elements[i],1);
+            SetExamineMsg(w,p);
+            break;
+          case T_MESHCELL:
+            mc=p;
+            for (i=MCN_START;i<MCN_END;i++) Highlight(w,mc->elements[i],1);
+            Highlight(w,mc,1);
+            SetExamineMsg(w,p);
+            break;
+
+        }
       }
       break;
 
     case TL_RELEASE:
       if (d==NULL) break;
       if (d->bEnh) {
-	if (d->g!=NULL) d->g=FreeGroup(d->g);
+/*        if (d->g!=NULL) d->g=FreeGroup(d->g); */
+      } else {
+        if (d->obj!=NULL) NotifyExamine(w->app,d->obj);
       }
       UnhighlightAll(w);
       UndoMark(w->app);
@@ -201,7 +211,7 @@ void TlExamine(View w,int event,double x,double y) {
     case TL_CANCEL:
       if (d==NULL) break;
       if (d->bEnh) {
-	if (d->g!=NULL) d->g=FreeGroup(d->g);
+/*        if (d->g!=NULL) d->g=FreeGroup(d->g); */
       }
       d=Free(d);
       ViewMsgEx(w,MSG_CANCELED,NULL);
@@ -258,7 +268,7 @@ void TlMark(View w,int event,double x,double y) {
     case TL_PRESS:
       if (d!=NULL) break;
       obj=HitViewObject(w,x,y,SHW_ELEMS|SHW_SEPARATORS|SHW_SOURCES|
-	  SHW_CHORDS|SHWX_MESHCELLS|SHWX_MESHELEMENTS);
+          SHW_CHORDS|SHWX_MESHCELLS|SHWX_MESHELEMENTS);
       if (obj==NULL) {
         SetViewMsg(w,GetStr(w,ERR_NOELEMS));
         break;
@@ -272,7 +282,7 @@ void TlMark(View w,int event,double x,double y) {
       switch(GetObjType(obj)) {
         case T_SEPARATOR:
         case T_SOURCE:
-	case T_CHORD:
+        case T_CHORD:
         case T_MESHELEMENT:
         case T_MESHCELL:
           MarkObject(w->app,obj,!IsMarked(w->app,obj));
@@ -289,58 +299,58 @@ void TlMark(View w,int event,double x,double y) {
     case TL_MOTION:
       if (d==NULL) break;
       if (d->bEnh) {
-	if (!d->bMoved) {
-	  d->bMoved=1;
-	  CancelNonDestructive(w->app);
-	  d->g=CreateGroup();
+        if (!d->bMoved) {
+          d->bMoved=1;
+          CancelNonDestructive(w->app);
+          d->g=CreateGroup();
 
-	  d->flags=0L;
-	  for (p=AppMark1st(w->app,&ix);p!=NULL;p=Next(&ix)) {
-	    switch (GetObjType(p)) {
-	      case T_ELEM:       d->flags |= SHW_ELEMS;        break;
-	      case T_SEPARATOR:  d->flags |= SHW_SEPARATORS;   break;
-	      case T_SOURCE:     d->flags |= SHW_SOURCES;      break;
-	      case T_CHORD:      d->flags |= SHW_CHORDS;       break;
-	      case T_MESHELEMENT:d->flags |= SHWX_MESHELEMENTS;break;
-	      case T_MESHCELL:   d->flags |= SHWX_MESHCELLS;   break;
-	      default: break;
-	    }
-	  }
-	  if (d->flags==0L) d->flags=
-	      SHW_ELEMS|SHW_SEPARATORS|SHW_SOURCES|SHW_CHORDS|SHWX_MESHCELLS|
+          d->flags=0L;
+          for (p=AppMark1st(w->app,&ix);p!=NULL;p=Next(&ix)) {
+            switch (GetObjType(p)) {
+              case T_ELEM:       d->flags |= SHW_ELEMS;        break;
+              case T_SEPARATOR:  d->flags |= SHW_SEPARATORS;   break;
+              case T_SOURCE:     d->flags |= SHW_SOURCES;      break;
+              case T_CHORD:      d->flags |= SHW_CHORDS;       break;
+              case T_MESHELEMENT:d->flags |= SHWX_MESHELEMENTS;break;
+              case T_MESHCELL:   d->flags |= SHWX_MESHCELLS;   break;
+              default: break;
+            }
+          }
+          if (d->flags==0L) d->flags=
+              SHW_ELEMS|SHW_SEPARATORS|SHW_SOURCES|SHW_CHORDS|SHWX_MESHCELLS|
               SHWX_MESHELEMENTS;
-	  SetHighlightMode(w->app,1);
-	}
+          SetHighlightMode(w->app,1);
+        }
 
-	SetHighlightRect(w,d->x1,d->y1,x,y);
-	FlushView(w);
+        SetHighlightRect(w,d->x1,d->y1,x,y);
+        FlushView(w);
 
-	for (p=Group1st(d->g,&ix);p!=NULL;p=Next(&ix)) {
-	  if (!ObjectInRectangle(p,d->x1,d->y1,x,y)) {
-	    GroupDel(d->g,p);
-	    MarkObject(w->app,p,0);
-	  }
-	}
+        for (p=Group1st(d->g,&ix);p!=NULL;p=Next(&ix)) {
+          if (!ObjectInRectangle(p,d->x1,d->y1,x,y)) {
+            GroupDel(d->g,p);
+            MarkObject(w->app,p,0);
+          }
+        }
 
-	g=CoveredViewObjects(w,d->x1,d->y1,x,y,d->flags);
+        g=CoveredViewObjects(w,d->x1,d->y1,x,y,d->flags);
 
-	g1=CreateGroup();
-	for (p=Group1st(g,&ix);p!=NULL;p=Next(&ix)) {
-	  if (InGroup(d->g,p)) continue;
-	  if (IsMarked(w->app,p)) continue;
-	  GroupAdd(g1,p);
-	  GroupAdd(d->g,p);
-	}
+        g1=CreateGroup();
+        for (p=Group1st(g,&ix);p!=NULL;p=Next(&ix)) {
+          if (InGroup(d->g,p)) continue;
+          if (IsMarked(w->app,p)) continue;
+          GroupAdd(g1,p);
+          GroupAdd(d->g,p);
+        }
 
-	MarkGroup(w->app,g1,1);
-	g1=FreeGroup(g1);
-	g=FreeGroup(g);
+        MarkGroup(w->app,g1,1);
+        g1=FreeGroup(g1);
+        g=FreeGroup(g);
 
       } else if (d->e!=NULL) {
-	e1=HitElem(w->app,x,y,NULL,NULL);
-	if (e1==d->e || e1==NULL || !ElemsConnected(e1,d->e)) break;
-	d->e=e1;
-	MarkObject(w->app,d->e,d->status);
+        e1=HitElem(w->app,x,y,NULL,NULL);
+        if (e1==d->e || e1==NULL || !ElemsConnected(e1,d->e)) break;
+        d->e=e1;
+        MarkObject(w->app,d->e,d->status);
       }
       break;
     case TL_RELEASE:
@@ -389,7 +399,7 @@ void TlZoom(View w,int event,double x,double y) {
       d->cx=x;
       d->cy=y;
       SetHighlightRect(w,2*w->minX-w->maxX,2*w->minY-w->maxY,
-	2*w->maxX-w->minX,2*w->maxY-w->minY);
+        2*w->maxX-w->minX,2*w->maxY-w->minY);
       break;
     case TL_PRESS:
       if (d!=NULL) break;
@@ -405,28 +415,28 @@ void TlZoom(View w,int event,double x,double y) {
       if (d==NULL) break;
       d->bMoved=1;
       if (d->bEnh) {
-	SetHighlightRect(w,w->minX+x-d->cx,w->minY+y-d->cy,
-	  w->maxX+x-d->cx,w->maxY+y-d->cy);
+        SetHighlightRect(w,w->minX+x-d->cx,w->minY+y-d->cy,
+          w->maxX+x-d->cx,w->maxY+y-d->cy);
 
       } else {
-	SetHighlightRect(w,d->cx,d->cy,
-	  fabs(x-d->cx)<w->minZoomX/w->zoomX? d->cx : x,
-	  fabs(y-d->cy)<w->minZoomY/w->zoomY? d->cy : y);
+        SetHighlightRect(w,d->cx,d->cy,
+          fabs(x-d->cx)<w->minZoomX/w->zoomX? d->cx : x,
+          fabs(y-d->cy)<w->minZoomY/w->zoomY? d->cy : y);
       }
       break;
     case TL_RELEASE:
       if (d==NULL) break;
 
       if (d->bEnh) {
-	if (!d->bMoved) SetViewFactor(w,w->centerX,w->centerY,
-	  w->zoomX/2,w->zoomY/2);
-	else SetViewFactor(w,w->centerX+d->cx-x,w->centerY+d->cy-y,
-	  w->zoomX,w->zoomY);
+        if (!d->bMoved) SetViewFactor(w,w->centerX,w->centerY,
+          w->zoomX/2,w->zoomY/2);
+        else SetViewFactor(w,w->centerX+d->cx-x,w->centerY+d->cy-y,
+          w->zoomX,w->zoomY);
       } else {
-	if (w->hrMaxX==w->hrMinX || w->hrMaxY==w->hrMinY)
-	  SetViewFactor(w,d->cx,d->cy,w->zoomX,w->zoomY);
-	else
-	  SetViewRect(w,w->hrMinX,w->hrMinY,w->hrMaxX,w->hrMaxY);
+        if (w->hrMaxX==w->hrMinX || w->hrMaxY==w->hrMinY)
+          SetViewFactor(w,d->cx,d->cy,w->zoomX,w->zoomY);
+        else
+          SetViewRect(w,w->hrMinX,w->hrMinY,w->hrMaxX,w->hrMaxY);
       }
 
       UnhighlightAll(w);
@@ -461,13 +471,15 @@ void TlMoveObject(View w,int event,double x,double y) {
     double* values;
     double x0;
     int ptNum;
+    int bSurfaceExVirtual;
   }* d;
-  int i;
+  int i,r;
   int area;
   double value;
   Index ix;
-  Surface s,s0;
-  GridPoint gp;
+  GridPointEx gpx;
+  SurfaceEx sx,s0x;
+  SurfaceZone sz;
   Chord ch;
 
   d=w->toolData;
@@ -484,35 +496,8 @@ void TlMoveObject(View w,int event,double x,double y) {
       d->grp=NULL;
       d->values=NULL;
       d->obj=HitViewObject(w,x,y,SHW_NODES|SHW_SURFACES|
-	  SHW_GRIDPOINTS|SHW_SOURCES|SHW_CHORDS);
+          SHW_GRIDPOINTS|SHW_SOURCES|SHW_CHORDS);
       switch(GetObjType(d->obj)) {
-        case T_GRIDPOINT:
-          d->x0=((GridPoint)d->obj)->value;
-          d->grp=CreateGroup();
-          for (gp=AppGridPoint1st(w->app,&ix);gp!=NULL;gp=Next(&ix)) {
-            if (gp->area!=((GridPoint)d->obj)->area) continue;
-	    if (IsLocked(gp)) {
-              SetHighlightMode(w->app,d->hm=0);
-              Highlight(w,gp,1);
-              SetViewMsg(w,WhyLocked(w,gp));
-              break;
-            }
-	    if (w->app->outputMode==OUTPUTMODE_CARRE) {
-	      SetHighlightMode(w->app,d->hm=0);
-	      Highlight(w,d->obj,1);
-	      SetViewMsg(w,GetStr(w,ERR_CARRE_INHIBITS));
-	      break;
-	    }
-            GroupAdd(d->grp,gp);
-          }
-          if (!d->hm) break;
-          SetHighlightMode(w->app,d->hm);
-          d->values=Malloc(sizeof(*d->values)*GroupCount(d->grp));
-          for (i=0,gp=Group1st(d->grp,&ix);gp!=NULL;i++,gp=Next(&ix)) {
-            d->values[i]=gp->value;
-            Highlight(w,gp,1);
-          }
-          break;
         default:
           SetHighlightMode(w->app,d->hm=0);
           ViewMsgEx(w,ERR_BADSTRETCHTYPE,"");
@@ -524,7 +509,7 @@ void TlMoveObject(View w,int event,double x,double y) {
       d=Malloc(sizeof(*d));
       d->bEnh=0;
       d->obj=HitViewObject(w,x,y,SHW_NODES|SHW_IRRNODES|SHW_SURFACES|
-	  SHW_GRIDPOINTS|SHW_SOURCES|SHW_CHORDS);
+          SHW_GRIDPOINTS|SHW_SOURCES|SHW_CHORDS);
       if (d->obj==NULL) {
         d=Free(d);
         break;
@@ -532,31 +517,39 @@ void TlMoveObject(View w,int event,double x,double y) {
       SetHighlightMode(w->app,d->hm=!IsLocked(d->obj));
       Highlight(w,d->obj,1);
 
-      /* Prohibit most movements of surfaces/grid points in Carre mode */
+      /* Store the "virtual" flag of SurfaceEx */
 
-      if (GetObjType(d->obj)==T_GRIDPOINT &&
-	  w->app->outputMode==OUTPUTMODE_CARRE) {
-	SetHighlightMode(w->app,d->hm=0);
-	SetViewMsg(w,GetStr(w,ERR_CARRE_INHIBITS));
+      if (GetObjType(d->obj)==T_SURFACEEX) {
+        sx=d->obj;
+        d->bSurfaceExVirtual=SurfaceExVirtual(sx);
       }
 
-      if (GetObjType(d->obj)==T_SURFACE &&
-	  w->app->outputMode==OUTPUTMODE_CARRE) {
-	s0=d->obj;
-	if (GetSurfaceArea(w->app,s0)==1) {
-	  for (s=AppSurface1st(w->app,&ix);s!=NULL;s=Next(&ix))
-	    if (s!=s0 &&
-		GetSurfaceArea(w->app,s)==GetSurfaceArea(w->app,s0))
-	      DelSurface(w->app,s);
-	} else {
-	  SetHighlightMode(w->app,d->hm=0);
-	  SetViewMsg(w,GetStr(w,ERR_CARRE_INHIBITS));
-	}
+      /* Prohibit most movements of surfaces/grid points in Carre mode */
+
+      if (IsCarreLocked(d->obj)) {
+        if (GetObjType(d->obj)==T_GRIDPOINTEX &&
+            w->app->outputMode==OUTPUTMODE_CARRE) {
+          SetHighlightMode(w->app,d->hm=0);
+          SetViewMsg(w,GetStr(w,ERR_CARRE_INHIBITS));
+        }
+
+        if (GetObjType(d->obj)==T_SURFACEEX && !d->bSurfaceExVirtual &&
+            w->app->outputMode==OUTPUTMODE_CARRE) {
+          s0x=d->obj;
+          sz=FindSurfaceZone(s0x->app,s0x->zone);
+          if (sz!=NULL && (sz->flags & SZF_LIMITBYSURFACE)) {
+            for (sx=AppSurfaceEx1st(w->app,&ix);sx!=NULL;sx=Next(&ix))
+              if (sx!=s0x && sx->zone==s0x->zone) DelSurfaceEx(sx);
+          } else {
+            SetHighlightMode(w->app,d->hm=0);
+            SetViewMsg(w,GetStr(w,ERR_CARRE_INHIBITS));
+          }
+        }
       }
 
       if (GetObjType(d->obj)==T_NODE) HighlightDragNode(w,d->obj,1);
       if (GetObjType(d->obj)==T_CHORD) {
-	HitChord(w->app,x,y,&d->ptNum,NULL);
+        HitChord(w->app,x,y,&d->ptNum,NULL);
       }
 
       if (d->hm) SetExamineMsg(w,d->obj);
@@ -564,30 +557,42 @@ void TlMoveObject(View w,int event,double x,double y) {
     case TL_MOTION:
       if (d==NULL) break;
       if (!d->bEnh) {
-        if (!w->app->highlightMode) break;
         i=0;
         switch(GetObjType(d->obj)) {
           case T_NODE:
+            if (!w->app->highlightMode) break;
             ChangeNode(w->app,d->obj,x,y);
             break;
-          case T_SURFACE:
-            i=ChangeSurface(w->app,d->obj,x,y);
+          case T_SURFACEEX:
+            if (!w->app->highlightMode) break;
+            sx=d->obj;
+            if (SurfaceExVirtual(sx)) {
+              ChangeSurfaceExXY(sx,x,y);
+            } else {
+              i=ChangeSurfaceExByXY(sx,x,y,&r);
+              d->hm=sx->bCoordsOk && sx->zone!=SZN_XY;
+              if (!d->hm) SetViewMsg(w,GetStr(w,r));
+              SetHighlightMode(w->app,d->hm);
+              i=r;
+            }
+            break;
+          case T_GRIDPOINTEX:
+            if (!w->app->highlightMode) break;
+            if (HitGridPointExPos(w->app,x,y,&area,&value)) break;
+            if (area!=((GridPointEx)d->obj)->zone) break;
+            ChangeGridPointEx(d->obj,area,value);
+            break;
+          case T_SOURCE:
+            if (!w->app->highlightMode) break;
+            i=ChangeSource(w->app,d->obj,x,y);
             if (i) SetViewMsg(w,GetStr(w,i));
             break;
-          case T_GRIDPOINT:
-            if (HitGridPointPos(w->app,x,y,&area,&value)) break;
-            if (area!=((GridPoint)d->obj)->area) break;
-            ChangeGridPoint(w->app,d->obj,area,value);
-            break;
-	  case T_SOURCE:
-	    i=ChangeSource(w->app,d->obj,x,y);
-	    if (i) SetViewMsg(w,GetStr(w,i));
-	    break;
-	  case T_CHORD:
-	    ch=d->obj;
-	    i=(abs(d->ptNum)==1) ?
-	      ChangeChord(w->app,ch,x,y,ch->x2,ch->y2) :
-	      ChangeChord(w->app,ch,ch->x1,ch->y1,x,y);
+          case T_CHORD:
+            if (!w->app->highlightMode) break;
+            ch=d->obj;
+            i=(abs(d->ptNum)==1) ?
+              ChangeChord(w->app,ch,x,y,ch->x2,ch->y2) :
+              ChangeChord(w->app,ch,ch->x1,ch->y1,x,y);
             if (i) SetViewMsg(w,GetStr(w,i));
             break;
           default:
@@ -597,14 +602,6 @@ void TlMoveObject(View w,int event,double x,double y) {
      } else {
         if (!d->hm) break;
         switch(GetObjType(d->obj)) {
-          case T_GRIDPOINT:
-            if (HitGridPointPos(w->app,x,y,&area,&value)) break;
-            if (area!=((GridPoint)d->obj)->area) break;
-            if (value<=0 || value>=1) break;
-            for (i=0,gp=Group1st(d->grp,&ix);gp!=NULL;gp=Next(&ix),i++)
-              ChangeGridPoint(w->app,gp,gp->area,
-                StretchValue(d->values[i],0,1,d->x0,value,w->stretchPower));
-            break;
         }
       }
       break;
@@ -674,7 +671,7 @@ void TlRemoveObject(View w,int event,double x,double y) {
       d=Malloc(sizeof(*d));
       d->bEnh=0;
       d->obj=HitViewObject(w,x,y,SHW_NODES|SHW_ELEMS|SHW_XPOINTTESTS|
-	  SHW_SURFACES|SHW_GRIDPOINTS|SHW_SOURCES|SHW_CHORDS);
+          SHW_SURFACES|SHW_GRIDPOINTS|SHW_SOURCES|SHW_CHORDS);
       if (d->obj==NULL) {
         d=Free(d);
         break;
@@ -687,10 +684,9 @@ void TlRemoveObject(View w,int event,double x,double y) {
 
       /* Inhibit delete surfaces/grid points in Carre mode */
 
-      if (w->app->outputMode==OUTPUTMODE_CARRE && (GetObjType(d->obj)==
-	   T_SURFACE || GetObjType(d->obj)==T_GRIDPOINT)) {
-	d->hm=0;
-	ViewMsgEx(w,ERR_CARRE_INHIBITS,NULL);
+      if (IsCarreLocked(d->obj)) {
+        d->hm=0;
+        ViewMsgEx(w,ERR_CARRE_INHIBITS,NULL);
       }
 
       SetHighlightMode(w->app,d->hm);
@@ -700,11 +696,11 @@ void TlRemoveObject(View w,int event,double x,double y) {
     case TL_MOTION:
       if (d==NULL) break;
       if (!d->bEnh) {
-	p=HitViewObject(w,x,y,SHW_NODES|SHW_ELEMS|SHW_XPOINTTESTS|
-	    SHW_SURFACES|SHW_GRIDPOINTS|SHW_SOURCES|SHW_CHORDS);
+        p=HitViewObject(w,x,y,SHW_NODES|SHW_ELEMS|SHW_XPOINTTESTS|
+            SHW_SURFACES|SHW_GRIDPOINTS|SHW_SOURCES|SHW_CHORDS);
         if (p!=d->obj) {
-	  UnhighlightAll(w);
-	  /*Highlight(w,d->obj,0);*/
+          UnhighlightAll(w);
+          /*Highlight(w,d->obj,0);*/
           d->obj=p;
           d->hm=!IsLocked(d->obj);
           if (GetObjType(d->obj)==T_NODE && !IsEmptyNode(d->obj)) {
@@ -712,15 +708,14 @@ void TlRemoveObject(View w,int event,double x,double y) {
             ViewMsgEx(w,ERR_NONEMPTYNODE,NULL);
           }
 
-	  /* Inhibit delete surfaces/grid points in Carre mode */
+          /* Inhibit delete surfaces/grid points in Carre mode */
 
-	  if (w->app->outputMode==OUTPUTMODE_CARRE && (GetObjType(d->obj)==
-	       T_SURFACE || GetObjType(d->obj)==T_GRIDPOINT)) {
-	    d->hm=0;
-	    ViewMsgEx(w,ERR_CARRE_INHIBITS,NULL);
-	  }
+          if (IsCarreLocked(d->obj)) {
+            d->hm=0;
+            ViewMsgEx(w,ERR_CARRE_INHIBITS,NULL);
+          }
 
-	  SetHighlightMode(w->app,d->hm);
+          SetHighlightMode(w->app,d->hm);
           if (d->hm) SetExamineMsg(w,d->obj);
           Highlight(w,d->obj,1);
         }
@@ -741,24 +736,24 @@ void TlRemoveObject(View w,int event,double x,double y) {
             case T_ELEM:
               DelElem(w->app,d->obj);
               break;
-            case T_SURFACE:
-              DelSurface(w->app,d->obj);
+            case T_SURFACEEX:
+              DelSurfaceEx(d->obj);
               break;
-            case T_GRIDPOINT:
-              DelGridPoint(w->app,d->obj);
+            case T_GRIDPOINTEX:
+              DelGridPointEx(d->obj);
               break;
-	    case T_SOURCE:
-	      DelSource(w->app,d->obj);
-	      break;
-	    case T_CHORD:
-	      DelChord(w->app,d->obj);
+            case T_SOURCE:
+              DelSource(w->app,d->obj);
               break;
-	    case T_XPOINTTEST:
-	      DelXPointTest(w->app,d->obj);
-	      break;
-	    case T_XPOINTSEG:
-	      DelXPointSeg(w->app,d->obj);
-	      break;
+            case T_CHORD:
+              DelChord(w->app,d->obj);
+              break;
+            case T_XPOINTTEST:
+              DelXPointTest(w->app,d->obj);
+              break;
+            case T_XPOINTSEG:
+              DelXPointSeg(w->app,d->obj);
+              break;
             default:
               FatalError("TlRemove()-type%d:fatal error1",GetObjType(d->obj));
           }
@@ -1082,8 +1077,8 @@ void TlRepositionElem(View w,int event,double x,double y) {
       if (d!=NULL) break;
 
       if (w->app->template==NULL) {
-	ViewMsgEx(w,ERR_NOTEMPLATE,NULL);
-	break;
+        ViewMsgEx(w,ERR_NOTEMPLATE,NULL);
+        break;
       }
 
       d=Malloc(sizeof(*d));
@@ -1092,33 +1087,33 @@ void TlRepositionElem(View w,int event,double x,double y) {
       d->vl=NULL;
 
       if (GetNearestTemplatePoint(w->app->template,x,y,&d->tx,&d->ty,
-	  &d->x0,&d->y0)) {
-	ViewMsgEx(w,ERR_EMPTY_TEMPLATE,NULL);
-	d=Free(d);
-	break;
+          &d->x0,&d->y0)) {
+        ViewMsgEx(w,ERR_EMPTY_TEMPLATE,NULL);
+        d=Free(d);
+        break;
       }
 
       if (w->app->template->dragStatus && d->tx==w->app->template->dragX &&
-	  d->ty==w->app->template->dragY) {
-	ViewMsgEx(w,ERR_REPOS_TEMPLATE_1,NULL);
-	d=Free(d);
-	break;
+          d->ty==w->app->template->dragY) {
+        ViewMsgEx(w,ERR_REPOS_TEMPLATE_1,NULL);
+        d=Free(d);
+        break;
       }
 
       AddViewShapeLine(w,d->x0-w->nodeR/w->zoomX,d->y0,
-	  d->x0,d->y0-w->nodeR/w->zoomY);
+          d->x0,d->y0-w->nodeR/w->zoomY);
       AddViewShapeLine(w,d->x0-w->nodeR/w->zoomX,d->y0,
-	  d->x0,d->y0+w->nodeR/w->zoomY);
+          d->x0,d->y0+w->nodeR/w->zoomY);
       AddViewShapeLine(w,d->x0+w->nodeR/w->zoomX,d->y0,
-	  d->x0,d->y0-w->nodeR/w->zoomY);
+          d->x0,d->y0-w->nodeR/w->zoomY);
       AddViewShapeLine(w,d->x0+w->nodeR/w->zoomX,d->y0,
-	  d->x0,d->y0+w->nodeR/w->zoomY);
+          d->x0,d->y0+w->nodeR/w->zoomY);
 
       SetViewFlags(w,w->showFlags|SHW_CHORDS|SHW_TEMPLATE);
       SetHighlightMode(w->app,d->hm);
 
       ViewMsgEx(w,w->app->template->dragStatus?
-	  MSG_REPOS_HANDLE_2 : MSG_REPOS_HANDLE_1,NULL);
+          MSG_REPOS_HANDLE_2 : MSG_REPOS_HANDLE_1,NULL);
 
       break;
     case TL_PRESS:
@@ -1138,12 +1133,12 @@ void TlRepositionElem(View w,int event,double x,double y) {
 
       SetViewFlags(w,w->showFlags|SHW_ELEMS|SHW_SEPARATORS);
       if (d->e!=NULL) {
-	d->hm=!IsLocked(d->e);
+        d->hm=!IsLocked(d->e);
         d->i=abs(d->i);
         Highlight(w,d->e,1);
         Highlight(w,d->e->n[d->i],1);
       } else {
-	d->hm=!IsLocked(d->sep);
+        d->hm=!IsLocked(d->sep);
         Highlight(w,d->sep,1);
         Highlight(w,d->sep->n,1);
       }
@@ -1152,84 +1147,84 @@ void TlRepositionElem(View w,int event,double x,double y) {
     case TL_MOTION:
       if (d==NULL) break;
       if (d->bEnh) {
-	if (!d->bMoved) {
-	  d->bMoved=1;
-	}
+        if (!d->bMoved) {
+          d->bMoved=1;
+        }
 
-	n=HitNode(w->app,x,y,NULL);
-	if (n!=d->n) {
-	  if (d->n!=0) Highlight(w,d->n,0);
-	  d->n=n;
-	  Highlight(w,d->n,1);
-	  if (d->vl!=NULL) DelViewShape(w,d->vl);
-	  d->vl=AddViewShapeLine(w,d->x0,d->y0,d->n->x,d->n->y);
-	}
+        n=HitNode(w->app,x,y,NULL);
+        if (n!=d->n) {
+          if (d->n!=0) Highlight(w,d->n,0);
+          d->n=n;
+          Highlight(w,d->n,1);
+          if (d->vl!=NULL) DelViewShape(w,d->vl);
+          d->vl=AddViewShapeLine(w,d->x0,d->y0,d->n->x,d->n->y);
+        }
       } else {
-	n=HitNode(w->app,x,y,NULL);
-	if (d->e!=NULL) {
-	  if (n==NULL||n==d->e->n[3-d->i]||
-	      NodesConnected(n,d->e->n[3-d->i]))
-	    break;
-	  if (!w->app->highlightMode) {
-	    UnhighlightAll(w);
-	    if (d->e!=NULL) SetViewMsg(w,WhyLocked(w,d->e)); else
-	    if (d->sep!=NULL) SetViewMsg(w,WhyLocked(w,d->sep));
-	    d=Free(d);
-	    break;
-	  }
-	  Highlight(w,d->e->n[d->i],0);
-	  ChangeElem(w->app,d->e,d->i,n);
-	  Highlight(w,d->e->n[d->i],1);
-	} else {
-	  if (n==NULL || n==d->sep->n) break;
-	  Highlight(w,d->sep->n,0);
-	  ChangeSeparator(w->app,d->sep,n);
-	  Highlight(w,d->sep->n,1);
-	}
+        n=HitNode(w->app,x,y,NULL);
+        if (d->e!=NULL) {
+          if (n==NULL||n==d->e->n[3-d->i]||
+              NodesConnected(n,d->e->n[3-d->i]))
+            break;
+          if (!w->app->highlightMode) {
+            UnhighlightAll(w);
+            if (d->e!=NULL) SetViewMsg(w,WhyLocked(w,d->e)); else
+            if (d->sep!=NULL) SetViewMsg(w,WhyLocked(w,d->sep));
+            d=Free(d);
+            break;
+          }
+          Highlight(w,d->e->n[d->i],0);
+          ChangeElem(w->app,d->e,d->i,n);
+          Highlight(w,d->e->n[d->i],1);
+        } else {
+          if (n==NULL || n==d->sep->n) break;
+          Highlight(w,d->sep->n,0);
+          ChangeSeparator(w->app,d->sep,n);
+          Highlight(w,d->sep->n,1);
+        }
       }
       break;
     case TL_RELEASE:
       if (d==NULL) break;
       UnhighlightAll(w);
       if (d->bEnh) {
-	if (d->bMoved && d->n!=NULL) {
-	  d->x0=d->n->x-d->x0;
-	  d->y0=d->n->y-d->y0;
-	  if (w->app->template->dragStatus) {
+        if (d->bMoved && d->n!=NULL) {
+          d->x0=d->n->x-d->x0;
+          d->y0=d->n->y-d->y0;
+          if (w->app->template->dragStatus) {
 
-	    /* Apply formulas */
+            /* Apply formulas */
 
-	    xa=w->app->template->dragX;
-	    ya=w->app->template->dragY;
-	    xy.x=xa;xy.y=ya;
-	    x1=TemplateXY2X(w->app->template,&xy);
-	    y1=TemplateXY2Y(w->app->template,&xy);
-	    xb=d->tx;
-	    yb=d->ty;
-	    x2=d->n->x;
-	    y2=d->n->y;
+            xa=w->app->template->dragX;
+            ya=w->app->template->dragY;
+            xy.x=xa;xy.y=ya;
+            x1=TemplateXY2X(w->app->template,&xy);
+            y1=TemplateXY2Y(w->app->template,&xy);
+            xb=d->tx;
+            yb=d->ty;
+            x2=d->n->x;
+            y2=d->n->y;
 
-	    i=PlaceTemplateByHandles(w->app,xa,ya,x1,y1,xb,yb,x2,y2);
-	    if (!i) SetTemplateDragStatus(w->app,0,0,0);
-	  } else {
-	    i=PlaceTemplateByHandles(w->app,d->tx,d->ty,d->n->x,d->n->y,
-		d->tx,d->ty,d->n->x,d->n->y);
-	    if (!i) SetTemplateDragStatus(w->app,1,d->tx,d->ty);
-	  }
+            i=PlaceTemplateByHandles(w->app,xa,ya,x1,y1,xb,yb,x2,y2);
+            if (!i) SetTemplateDragStatus(w->app,0,0,0);
+          } else {
+            i=PlaceTemplateByHandles(w->app,d->tx,d->ty,d->n->x,d->n->y,
+                d->tx,d->ty,d->n->x,d->n->y);
+            if (!i) SetTemplateDragStatus(w->app,1,d->tx,d->ty);
+          }
 
-	  if (i) Cancel(w->app);
-	  else UndoMark(w->app);
+          if (i) Cancel(w->app);
+          else UndoMark(w->app);
 
-	  ViewMsgEx(w,i,NULL);
-	} else {
-	  Cancel(w->app);
-	  ViewMsgEx(w,MSG_CANCELED,NULL);
-	}
-	d=Free(d);
+          ViewMsgEx(w,i,NULL);
+        } else {
+          Cancel(w->app);
+          ViewMsgEx(w,MSG_CANCELED,NULL);
+        }
+        d=Free(d);
       } else {
-	UndoMark(w->app);
-	d=Free(d);
-	if (w->app->highlightMode) ViewMsgEx(w,0,NULL);
+        UndoMark(w->app);
+        d=Free(d);
+        if (w->app->highlightMode) ViewMsgEx(w,0,NULL);
       }
       break;
     case TL_ENTER:
@@ -1250,9 +1245,12 @@ void TlRepositionElem(View w,int event,double x,double y) {
 }
 
 void TlAddSurface(View w,int event,double x,double y) {
-  Surface d;
-  int i;
-double gx,gy;
+  struct {
+    int bEnh,hm;
+    SurfaceEx s;
+  }* d;
+  int i,r;
+  SurfaceZone sz;
 
   d=w->toolData;
   switch(event) {
@@ -1260,108 +1258,126 @@ double gx,gy;
       if (d!=NULL) FatalError("Tool()-disable0: fatal error 2");
     case TL_ENABLE:
       break;
-    case TL_PRESS:
+    case TL_DBLCLK:
       if (d!=NULL) break;
       if (w->app->equil==NULL) {
         SetViewMsg(w,GetStr(w,ERR_NOEQUIL));
         break;
       }
-      if (w->app->outputMode==OUTPUTMODE_CARRE &&
-	  CountSurfaces(w->app,1)>0) {
-	SetViewMsg(w,GetStr(w,ERR_CARRE_INHIBITS));
-	break;
-      }
+
       SetViewFlags(w,w->showFlags|SHW_SURFACES);
-      d=AddSurface(w->app,x,y,&i);
-      if (d==NULL) {
+
+      d=Malloc(sizeof(*d));
+      d->bEnh=1;
+      d->s=AddSurfaceExXY(w->app,x,y,&i);
+
+      if (d->s==NULL) {
         SetViewMsg(w,GetStr(w,i));
+        d=Free(d);
         break;
       }
-      SetHighlightMode(w->app,1);
-      Highlight(w,d,1);
-      SetExamineMsg(w,d);
-      break;
-    case TL_MOTION:
-      if (d==NULL) break;
 
-      ChangeSurface(w->app,d,x,y);
-      SetExamineMsg(w,d);
-      break;
-    case TL_RELEASE:
-      if (d==NULL) break;
-      UnhighlightAll(w);
-      d=NULL;
-      UndoMark(w->app);
-      if (w->app->highlightMode) ViewMsgEx(w,0,NULL);
-      break;
-    case TL_ENTER:
-    case TL_LEAVE:
-      if (d==NULL) break;
-      Highlight(w,d,event==TL_ENTER);
-      break;
-    case TL_CANCEL:
-      if (d==NULL) break;
-      d=NULL;
-      Cancel(w->app);
-      ViewMsgEx(w,MSG_CANCELED,NULL);
-      break;
-  }
-  FlushView(w);
-  w->toolData=d;
-}
+      d->hm=1;
 
-void TlSetXPoint(View w,int event,double x,double y) {
-  struct {int x1,y1,x2,y2;}* d;
-  int i;
-
-  d=w->toolData;
-  switch(event) {
-    case TL_DISABLE:
-      if (d!=NULL) FatalError("Tool()-disable0: fatal error 2");
-    case TL_ENABLE:
-      break;
+      SetHighlightMode(w->app,d->hm);
+      Highlight(w,d->s,1);
+      if (d->hm) SetExamineMsg(w,d->s);
+      else SetViewMsg(w,GetStr(w,i));   /* Should never happen */
+     break;
     case TL_PRESS:
       if (d!=NULL) break;
       if (w->app->equil==NULL) {
         SetViewMsg(w,GetStr(w,ERR_NOEQUIL));
         break;
       }
-      SetViewFlags(w,w->showFlags|SHW_GRIDPOINTS);
+
+      SetViewFlags(w,w->showFlags|SHW_SURFACES);
+
       d=Malloc(sizeof(*d));
-      d->x1=d->x2=x;
-      d->y1=d->y2=y;
-      SetHighlightMode(w->app,1);
-      SetHighlightRect(w,d->x1,d->y1,d->x2,d->y2);
+      d->bEnh=0;
+      d->s=AddSurfaceExByXY(w->app,x,y,&i);
+
+      if (d->s==NULL) {
+        SetViewMsg(w,GetStr(w,i));
+        d=Free(d);
+        break;
+      }
+
+      d->hm=d->s->zone!=SZN_XY && d->s->bCoordsOk;
+      if (SurfaceZoneBoundsCached(w->app)) {
+        ViewMsgEx(w,MSG_CALCULATING_SZ_BOUNDS,"");
+        FlushView(w);
+       }
+
+      sz=FindSurfaceZone(w->app,d->s->zone);
+      if (d->hm && w->app->outputMode==OUTPUTMODE_CARRE &&
+          sz!=NULL && CountSurfaces(w->app,d->s->zone)>
+          !!(sz->flags & SZF_LIMITBYSURFACE)) {
+        d->hm=0;
+        i=ERR_CARRE_INHIBITS;
+      }
+
+      SetHighlightMode(w->app,d->hm);
+      Highlight(w,d->s,1);
+      if (d->hm) SetExamineMsg(w,d->s);
+      else SetViewMsg(w,GetStr(w,i));
       break;
     case TL_MOTION:
       if (d==NULL) break;
-      d->x2= fabs(x-d->x1)<w->minZoomX/w->zoomX ? d->x1 : x;
-      d->y2= fabs(y-d->y1)<w->minZoomY/w->zoomY ? d->y1 : y;
-      SetHighlightRect(w,d->x1,d->y1,d->x2,d->y2);
+
+      if (d->bEnh) {
+        r=ChangeSurfaceExXY(d->s,x,y);
+        SetExamineMsg(w,d->s);
+      } else {
+
+        if (d->s==NULL) break;
+        r=ChangeSurfaceExByXY(d->s,x,y,&i);
+
+        d->hm=d->s->zone!=SZN_XY && d->s->bCoordsOk;
+        sz=FindSurfaceZone(w->app,d->s->zone);
+        if (d->hm && w->app->outputMode==OUTPUTMODE_CARRE &&
+            sz!=NULL && CountSurfaces(w->app,d->s->zone)>
+            !!(sz->flags & SZF_LIMITBYSURFACE)) {
+          d->hm=0;
+          i=ERR_CARRE_INHIBITS;
+        }
+
+
+        SetHighlightMode(w->app,d->hm);
+
+        if (!d->hm) SetViewMsg(w,GetStr(w,i));
+        else SetExamineMsg(w,d->s);
+      }
+
       break;
     case TL_RELEASE:
       if (d==NULL) break;
       UnhighlightAll(w);
-      i=AddXPoint(w->app,d->x1,d->y1,d->x2,d->y2);
-      if (i) {
-        SetViewMsg(w,GetStr(w,i));
-        Cancel(w->app);
-      } else {
+      /*if (d->bEnh) {
+        assert(0);
+      } else { */
+
+      if (d->hm) {
         UndoMark(w->app);
         ViewMsgEx(w,0,NULL);
+      } else {
+        Cancel(w->app);
       }
       d=Free(d);
       break;
     case TL_ENTER:
     case TL_LEAVE:
       if (d==NULL) break;
-      SetHighlightMode(w->app,event==TL_ENTER);
+      SetHighlightMode(w->app,d->hm && event==TL_ENTER);
       break;
     case TL_CANCEL:
       if (d==NULL) break;
-      UnhighlightAll(w);
-      d=Free(d);
+      /*if (d->bEnh) {
+        assert(0);
+      } else { */
+
       Cancel(w->app);
+      d=Free(d);
       ViewMsgEx(w,MSG_CANCELED,NULL);
       break;
   }
@@ -1370,8 +1386,8 @@ void TlSetXPoint(View w,int event,double x,double y) {
 }
 
 void TlAddGridPoint(View w,int event,double x,double y) {
-  GridPoint d;
-  int area;
+  GridPointEx d;
+  int zone;
   double value;
 
   d=w->toolData;
@@ -1382,26 +1398,26 @@ void TlAddGridPoint(View w,int event,double x,double y) {
       break;
     case TL_PRESS:
       if (d!=NULL) break;
-      if (w->app->xpoint==NULL) {
+/*      if (w->app->xpoint==NULL) { -- $
         SetViewMsg(w,GetStr(w,ERR_NOXPOINT));
         break;
-      }
+      } */
       if (w->app->outputMode==OUTPUTMODE_CARRE) {
-	SetViewMsg(w,GetStr(w,ERR_CARRE_INHIBITS));
-	break;
+        SetViewMsg(w,GetStr(w,ERR_CARRE_INHIBITS));
+        break;
       }
 
-      if (HitGridPointPos(w->app,x,y,&area,&value)) break;
+      if (HitGridPointExPos(w->app,x,y,&zone,&value)) break; /* $ - error msg needed */
       SetViewFlags(w,w->showFlags|SHW_GRIDPOINTS);
-      d=AddGridPoint(w->app,area,value);
+      d=AddGridPointEx(w->app,zone,value);
       SetHighlightMode(w->app,1);
       Highlight(w,d,1);
       SetExamineMsg(w,d);
       break;
     case TL_MOTION:
       if (d==NULL) break;
-      if (HitGridPointPos(w->app,x,y,&area,&value)) break;
-      ChangeGridPoint(w->app,d,area,value);
+      if (HitGridPointExPos(w->app,x,y,&zone,&value)) break;
+      ChangeGridPointEx(d,zone,value);
       SetExamineMsg(w,d);
       break;
     case TL_RELEASE:
@@ -1451,20 +1467,20 @@ void TlMirrorNormals(View w,int event,double x,double y) {
       d->e=NULL;
       e1=HitElem(w->app,x,y,NULL,NULL);
       if (e1==NULL) {
-	d=Free(d);
-	break;
+        d=Free(d);
+        break;
       }
       d->g=GetElemChain(e1,NULL,NULL);
 
       for (e1=Group1st(d->g,&ix);e1!=NULL;e1=Next(&ix)) {
-	Highlight(w,e1,1);
-	if (IsLocked(e1)) {
-	  d->hm=0;
-	  d->e=e1;
-	}
+        Highlight(w,e1,1);
+        if (IsLocked(e1)) {
+          d->hm=0;
+          d->e=e1;
+        }
       }
       if (d->hm) for (e1=Group1st(d->g,&ix);e1!=NULL;e1=Next(&ix))
-	RevertElem(w->app,e1);
+        RevertElem(w->app,e1);
 
       SetViewFlags(w,w->showFlags | SHW_ELEMS|SHW_NORMALS);
       SetHighlightMode(w->app,d->hm);
@@ -1492,18 +1508,18 @@ void TlMirrorNormals(View w,int event,double x,double y) {
       if (d==NULL) break;
       if (d->bEnh) {
       } else {
-	if (!w->app->highlightMode) break;
-	e1=HitElem(w->app,x,y,NULL,NULL);
-	if (e1==NULL || e1==d->e || IsLocked(e1)) break;
-	i=ElemsConnected(d->e,e1);
-	if (!i) break;
-	if (IsRegularNode(e1->n[1],d->g)) break;
-	if (IsRegularNode(e1->n[2],d->g)) break;
-	d->e=e1;
-	if (InGroup(d->g,d->e)) break;
-	Highlight(w,d->e,1);
-	GroupAdd(d->g,d->e);
-	if (i==2) RevertElem(w->app,d->e);
+        if (!w->app->highlightMode) break;
+        e1=HitElem(w->app,x,y,NULL,NULL);
+        if (e1==NULL || e1==d->e || IsLocked(e1)) break;
+        i=ElemsConnected(d->e,e1);
+        if (!i) break;
+        if (IsRegularNode(e1->n[1],d->g)) break;
+        if (IsRegularNode(e1->n[2],d->g)) break;
+        d->e=e1;
+        if (InGroup(d->g,d->e)) break;
+        Highlight(w,d->e,1);
+        GroupAdd(d->g,d->e);
+        if (i==2) RevertElem(w->app,d->e);
       }
       break;
     case TL_RELEASE:
@@ -1511,11 +1527,11 @@ void TlMirrorNormals(View w,int event,double x,double y) {
       UnhighlightAll(w);
       d->g=FreeGroup(d->g);
       if (!d->hm) {
-	Cancel(w->app);
-	SetViewMsg(w,WhyLocked(w,d->e));
+        Cancel(w->app);
+        SetViewMsg(w,WhyLocked(w,d->e));
       } else {
-	UndoMark(w->app);
-	ViewMsgEx(w,0,NULL);
+        UndoMark(w->app);
+        ViewMsgEx(w,0,NULL);
       }
       d=Free(d);
       break;

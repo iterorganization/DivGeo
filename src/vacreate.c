@@ -3,6 +3,10 @@
  *
  * Changes:
  *
+ * 1998/09/30 IsXmTextEmpty() added
+ * 1998/09/23 GetXmListSelPos() added
+ *            SetOptionMenuItems() added
+ * 1998/04/20 GetResourceString[Ex]: "\rXXX" now returns "XXX".
  * 1997/12/09 CbDebugPrint() added
  * 1997/11/02 SetUserData() macro added to vacreate.h
  * 1997/10/22 CreateFormTable() made public
@@ -123,7 +127,7 @@ static ArgList MakeVaArgList(va_list* pvl,int* pN) {
 }
 
 Widget Cw(Widget (*CreateFn)(Widget,String,ArgList,Cardinal),Widget parent,
-	  void* name,...) {
+          void* name,...) {
   Widget wg;
   va_list vl;
   ArgList args;
@@ -139,7 +143,7 @@ Widget Cw(Widget (*CreateFn)(Widget,String,ArgList,Cardinal),Widget parent,
 }
 
 Widget Cmw(Widget (*CreateFn)(Widget,String,ArgList,Cardinal),Widget parent,
-	  void* name,...) {
+          void* name,...) {
   Widget wg;
   va_list vl;
   ArgList args;
@@ -210,96 +214,99 @@ static int CreateVaWidgetSystem(Widget parent,int nest,va_list* pvl) {
 
     for (j=0;s[j] !=':';j++)
       if (!s[j])
-	FatalError("CreateWidgetSystem()-missing\':\': fatal error1");
+        FatalError("CreateWidgetSystem()-missing\':\': fatal error1");
     strName=s+j+1;
 
     i=0;
     switch(s[i]) {
       case 'x':
-	w=Cmw(XmCreateText,parent,strName,NULL);
+        w=Cmw(XmCreateText,parent,strName,NULL);
         break;
       case 't':
-	w=Cmw(XmCreateToggleButton,parent,strName,NULL);
+        w=Cmw(XmCreateToggleButton,parent,strName,NULL);
         break;
       case 'b':
-	w=Cmw(XmCreatePushButton,parent,strName,NULL);
+        w=Cmw(XmCreatePushButton,parent,strName,NULL);
         break;
       case 'c':
-	w=Cmw(XmCreateCascadeButton,parent,strName,NULL);
+        w=Cmw(XmCreateCascadeButton,parent,strName,NULL);
         break;
       case 'l':
-	w=Cmw(XmCreateLabel,parent,strName,NULL);
+        w=Cmw(XmCreateLabel,parent,strName,NULL);
         break;
       case 's':
         w=Cmw(XmCreateSeparator,parent,s+j+1,NULL);
-	if (s[i+1]=='-') {
-	  SetValues(w,XmNorientation,XmHORIZONTAL,NULL);i++;
-	} else if (s[i+1]=='|') {
-	  SetValues(w,XmNorientation,XmVERTICAL,NULL);i++;
-	}
+        if (s[i+1]=='-') {
+          SetValues(w,XmNorientation,XmHORIZONTAL,NULL);i++;
+        } else if (s[i+1]=='|') {
+          SetValues(w,XmNorientation,XmVERTICAL,NULL);i++;
+        }
         break;
 
       case '$':
-	createFn=va_arg(*pvl,CreateWidgetFn);
-	args=MakeVaArgList(pvl,&argn);
-	w=createFn(parent,strName,args,argn);
-	XtManageChild(w);
-	if (s[i+1]=='+') {
-	  i++;
-	  bGotoChild=True;
-	}
-	break;
+#ifdef DEBUG_CWS
+printf("creating: %s\n",strName);               /* relcheck_ignore_line */
+#endif
+        createFn=va_arg(*pvl,CreateWidgetFn);
+        args=MakeVaArgList(pvl,&argn);
+        w=createFn(parent,strName,args,argn);
+        XtManageChild(w);
+        if (s[i+1]=='+') {
+          i++;
+          bGotoChild=True;
+        }
+        break;
 
       case 'f':
-	w=Cmw(XmCreateFrame,parent,strName,NULL);
-	bGotoChild=True;
-	break;
+        w=Cmw(XmCreateFrame,parent,strName,NULL);
+        bGotoChild=True;
+        break;
       case '#':
-	w=Cmw(XmCreateForm,parent,strName,NULL);
-	bGotoChild=True;
-	break;
+        w=Cmw(XmCreateForm,parent,strName,NULL);
+        bGotoChild=True;
+        break;
       case '+':
-	wg1=Cw(XmCreatePulldownMenu,parent,strName,NULL);
-	assert(XmIsCascadeButton(w));
-	SetValues(w,XmNsubMenuId,wg1,NULL);
-	w=wg1;
-	bGotoChild=True;
+        wg1=Cw(XmCreatePulldownMenu,parent,strName,NULL);
+        assert(XmIsCascadeButton(w));
+        SetValues(w,XmNsubMenuId,wg1,NULL);
+        w=wg1;
+        bGotoChild=True;
         break;
       case '-':
-	if (nest<=0)
-	  FatalError("CreateMenuSystem()-!parent: fatal error 2");
-	if (s[i+1]=='#') {
-	  i++;
-	  if (s[i+1]=='!') FatalError(
-	    "Fatal error - CreateWidgetSystem() - '-#!' is obsolete");
-	  CreateFormTable(parent,pos,posCount);
-	}
+        if (nest<=0)
+          FatalError("CreateMenuSystem()-!parent: fatal error 2");
+        if (s[i+1]=='#') {
+          i++;
+          if (s[i+1]=='!') FatalError(
+            "Fatal error - CreateWidgetSystem() - '-#!' is obsolete");
+          CreateFormTable(parent,pos,posCount);
+        }
 
-	return False;
+        return False;
         break;
       case '*':
-	wg1=Cw(XmCreatePulldownMenu,parent,strName,NULL);
-	w=wg1;
-	bGotoChild=True;
+        wg1=Cw(XmCreatePulldownMenu,parent,strName,NULL);
+        w=wg1;
+        bGotoChild=True;
         break;
       case 'O':
-	fprintf(stderr,
-	    "Warning - CreateWidgetSystem() - 'O:' is obsolete\n");
-	w=Cmw(XmCreateOptionMenu,XtParent(XtParent(parent)),strName,
+        fprintf(stderr,
+            "Warning - CreateWidgetSystem() - 'O:' is obsolete\n");
+        w=Cmw(XmCreateOptionMenu,XtParent(XtParent(parent)),strName,
           XmNsubMenuId,parent,
           NULL);
         break;
       case 'o':
-	w=Cmw(XmCreateOptionMenu,parent,strName,
-	  XmNsubMenuId,w,
-	  NULL);
-	break;
+        w=Cmw(XmCreateOptionMenu,parent,strName,
+          XmNsubMenuId,w,
+          NULL);
+        break;
 
       default:
-	fprintf(stderr,
-	    "Fatal error: - CreateVaWidgetSystem - Bad type:%s\n",
-	    s);
-	assert(0);
+        fprintf(stderr,
+            "Fatal error: - CreateVaWidgetSystem - Bad type:%s\n",
+            s);
+        assert(0);
     }
 
     while (++i<j) switch(s[i]) {
@@ -309,89 +316,89 @@ static int CreateVaWidgetSystem(Widget parent,int nest,va_list* pvl) {
       case '8':
       case '5':
 
-	if (wL!=NULL && wL==wR) {
-	  fprintf(stderr,"Fatal error - CreateVaWidgetSystem - impossible"
-	      " attachment for widget %s\n",strName);
-	  assert(0);
-	}
+        if (wL!=NULL && wL==wR) {
+          fprintf(stderr,"Fatal error - CreateVaWidgetSystem - impossible"
+              " attachment for widget %s\n",strName);
+          assert(0);
+        }
 
-	if (s[i]!='6')
-	  SetValues(w,
-	    XmNleftAttachment,/*wL==NULL? XmATTACH_FORM :*/ XmATTACH_WIDGET,
-	    XmNleftWidget,wL,
-	    NULL);
+        if (s[i]!='6')
+          SetValues(w,
+            XmNleftAttachment,/*wL==NULL? XmATTACH_FORM :*/ XmATTACH_WIDGET,
+            XmNleftWidget,wL,
+            NULL);
 
-	if (s[i]!='4')
-	  SetValues(w,
-	    XmNrightAttachment,/*wR==NULL? XmATTACH_FORM :*/ XmATTACH_WIDGET,
-	    XmNrightWidget,wR,
-	    NULL);
+        if (s[i]!='4')
+          SetValues(w,
+            XmNrightAttachment,/*wR==NULL? XmATTACH_FORM :*/ XmATTACH_WIDGET,
+            XmNrightWidget,wR,
+            NULL);
 
-	if (s[i]!='2')
-	  SetValues(w,
-	    XmNtopAttachment,/*wT==NULL? XmATTACH_FORM :*/ XmATTACH_WIDGET,
-	    XmNtopWidget,wT,
-	    NULL);
+        if (s[i]!='2')
+          SetValues(w,
+            XmNtopAttachment,/*wT==NULL? XmATTACH_FORM :*/ XmATTACH_WIDGET,
+            XmNtopWidget,wT,
+            NULL);
 
-	if (s[i]!='8')
-	  SetValues(w,
-	    XmNbottomAttachment,/*wB==NULL? XmATTACH_FORM :*/ XmATTACH_WIDGET,
-	    XmNbottomWidget,wB,
-	    NULL);
+        if (s[i]!='8')
+          SetValues(w,
+            XmNbottomAttachment,/*wB==NULL? XmATTACH_FORM :*/ XmATTACH_WIDGET,
+            XmNbottomWidget,wB,
+            NULL);
 
-	switch (s[i]) {
-	  case '2':wB=w;break;
-	  case '4':wL=w;break;
-	  case '6':wR=w;break;
-	  case '8':wT=w;break;
-	  case '5':/*wL=wR=wT=wB=w;*/break;
-	  default: assert(0);
-	}
-	break;
+        switch (s[i]) {
+          case '2':wB=w;break;
+          case '4':wL=w;break;
+          case '6':wR=w;break;
+          case '8':wT=w;break;
+          case '5':/*wL=wR=wT=wB=w;*/break;
+          default: assert(0);
+        }
+        break;
       case '#':
-	pos[posCount].wg=w;
-	pos[posCount].x=va_arg(*pvl,int);
-	pos[posCount].y=va_arg(*pvl,int);
-	if (posCount++>=CWS_MAX) assert(0);
-	break;
+        pos[posCount].wg=w;
+        pos[posCount].x=va_arg(*pvl,int);
+        pos[posCount].y=va_arg(*pvl,int);
+        if (posCount++>=CWS_MAX) assert(0);
+        break;
       case 'A':
-	pcb=va_arg(*pvl,XtCallbackProc);
-	pt1=va_arg(*pvl,XtPointer);
-	XtAddCallback(w,XmNactivateCallback,pcb,pt1);
+        pcb=va_arg(*pvl,XtCallbackProc);
+        pt1=va_arg(*pvl,XtPointer);
+        XtAddCallback(w,XmNactivateCallback,pcb,pt1);
         break;
       case 'T':
-	pcb=va_arg(*pvl,XtCallbackProc);
-	pt1=va_arg(*pvl,XtPointer);
-	XtAddCallback(w,XmNvalueChangedCallback,pcb,pt1);
-	break;
+        pcb=va_arg(*pvl,XtCallbackProc);
+        pt1=va_arg(*pvl,XtPointer);
+        XtAddCallback(w,XmNvalueChangedCallback,pcb,pt1);
+        break;
       case 'C':
-	pcb=va_arg(*pvl,XtCallbackProc);
-	pt1=va_arg(*pvl,XtPointer);
-	XtAddCallback(w,XmNcascadingCallback,pcb,pt1);
+        pcb=va_arg(*pvl,XtCallbackProc);
+        pt1=va_arg(*pvl,XtPointer);
+        XtAddCallback(w,XmNcascadingCallback,pcb,pt1);
         break;
       case '0':
-	pcb=va_arg(*pvl,XtCallbackProc);
-	pt1=va_arg(*pvl,XtPointer);
-	XtAddCallback(w,XmNdisarmCallback,pcb,pt1);
+        pcb=va_arg(*pvl,XtCallbackProc);
+        pt1=va_arg(*pvl,XtPointer);
+        XtAddCallback(w,XmNdisarmCallback,pcb,pt1);
         break;
       case '1':
-	pcb=va_arg(*pvl,XtCallbackProc);
-	pt1=va_arg(*pvl,XtPointer);
-	XtAddCallback(w,XmNarmCallback,pcb,pt1);
+        pcb=va_arg(*pvl,XtCallbackProc);
+        pt1=va_arg(*pvl,XtPointer);
+        XtAddCallback(w,XmNarmCallback,pcb,pt1);
         break;
       case '!':
-	peh=va_arg(*pvl,XtEventHandler);
-	pt1=va_arg(*pvl,XtPointer);
+        peh=va_arg(*pvl,XtEventHandler);
+        pt1=va_arg(*pvl,XtPointer);
         XtAddEventHandler(w,ButtonPressMask|
                             ButtonReleaseMask|
                             EnterWindowMask|
                             LeaveWindowMask|
                             PointerMotionMask,
-	  False,peh,pt1);
+          False,peh,pt1);
         break;
       case '@':
-	pt1=va_arg(*pvl,XtPointer);
-	SetValues(w,XmNuserData,pt1,NULL);
+        pt1=va_arg(*pvl,XtPointer);
+        SetValues(w,XmNuserData,pt1,NULL);
         break;
       case '\n':
         SetValues(parent,XmNdefaultButton,w,NULL);
@@ -401,65 +408,65 @@ static int CreateVaWidgetSystem(Widget parent,int nest,va_list* pvl) {
         */
         break;
       case '?':
-	pt1=va_arg(*pvl,XtPointer);
-	*(Widget*)pt1=w;
+        pt1=va_arg(*pvl,XtPointer);
+        *(Widget*)pt1=w;
         break;
       case '>':
-	callFn=(void*)va_arg(*pvl,vmsFunc0);
-	pt1=va_arg(*pvl,XtPointer);
-	pt2=va_arg(*pvl,XtPointer);
-	((vmsFunc2)callFn)(w,pt1,pt2);
+        callFn=(void*)va_arg(*pvl,vmsFunc0);
+        pt1=va_arg(*pvl,XtPointer);
+        pt2=va_arg(*pvl,XtPointer);
+        ((vmsFunc2)callFn)(w,pt1,pt2);
         break;
       case '&':
-	callFn=(void*)va_arg(*pvl,vmsFunc0);
-	callArgCount=va_arg(*pvl,int);
-	if (callArgCount>XTPA_MAX) {
-	  fprintf(stderr,"fatal error: vacreate - CreateWidgetSystem()"
-	      " - too many args in '&'\n");
-	  exit(1);
-	}
-	for (i=0;i<callArgCount;i++) xtpa[i]=va_arg(*pvl,XtPointer);
-	switch(callArgCount) {
-	  case 0:
-	    ((vmsFunc0)callFn)(w);
-	    break;
-	  case 1:
-	    ((vmsFunc1)callFn)(w,xtpa[0]);
-	    break;
-	  case 2:
-	    ((vmsFunc2)callFn)(w,xtpa[0],xtpa[1]);
-	    break;
-	  case 3:
-	    ((vmsFunc3)callFn)(w,xtpa[0],xtpa[1],xtpa[2]);
-	    break;
-	  case 4:
-	    ((vmsFunc4)callFn)(w,xtpa[0],xtpa[1],xtpa[2],xtpa[3]);
-	    break;
-	  case 5:
-	    ((vmsFunc5)callFn)(w,xtpa[0],xtpa[1],xtpa[2],xtpa[3],xtpa[4]);
-	    break;
-	  default:
-	    assert(0);
-	}
-	break;
+        callFn=(void*)va_arg(*pvl,vmsFunc0);
+        callArgCount=va_arg(*pvl,int);
+        if (callArgCount>XTPA_MAX) {
+          fprintf(stderr,"fatal error: vacreate - CreateWidgetSystem()"
+              " - too many args in '&'\n");
+          exit(1);
+        }
+        for (i=0;i<callArgCount;i++) xtpa[i]=va_arg(*pvl,XtPointer);
+        switch(callArgCount) {
+          case 0:
+            ((vmsFunc0)callFn)(w);
+            break;
+          case 1:
+            ((vmsFunc1)callFn)(w,xtpa[0]);
+            break;
+          case 2:
+            ((vmsFunc2)callFn)(w,xtpa[0],xtpa[1]);
+            break;
+          case 3:
+            ((vmsFunc3)callFn)(w,xtpa[0],xtpa[1],xtpa[2]);
+            break;
+          case 4:
+            ((vmsFunc4)callFn)(w,xtpa[0],xtpa[1],xtpa[2],xtpa[3]);
+            break;
+          case 5:
+            ((vmsFunc5)callFn)(w,xtpa[0],xtpa[1],xtpa[2],xtpa[3],xtpa[4]);
+            break;
+          default:
+            assert(0);
+        }
+        break;
       case '=':
-	pt1=va_arg(*pvl,XtPointer);
-	if (XmIsToggleButton(w))
-	  XmToggleButtonSetState(w,(int)pt1,True);
-	else if (XmIsText(w))
-	  XmTextSetString(w,pt1);
-	else if (XmIsTextField(w))
-	  XmTextFieldSetString(w,pt1);
-	else FatalError("CreateMenuSystem()-unknown widget type for =");
-	break;
+        pt1=va_arg(*pvl,XtPointer);
+        if (XmIsToggleButton(w))
+          XmToggleButtonSetState(w,(int)pt1,True);
+        else if (XmIsText(w))
+          XmTextSetString(w,pt1);
+        else if (XmIsTextField(w))
+          XmTextFieldSetString(w,pt1);
+        else FatalError("CreateMenuSystem()-unknown widget type for =");
+        break;
       case '_':
-	XtUnmanageChild(w);
-	break;
+        XtUnmanageChild(w);
+        break;
       case ' ':
         break;
       default:
-	fprintf(stderr,"%s\n",s);
-	FatalError("CreateMenuSystem()-syntax %s: fatal error 1");
+        fprintf(stderr,"%s\n",s);
+        FatalError("CreateMenuSystem()-syntax %s: fatal error 1");
     }
 
     if (bGotoChild) if (CreateVaWidgetSystem(w,nest+1,pvl)) return True;
@@ -553,7 +560,7 @@ int AddCallbackToTree(Widget root,WidgetClass class,String callbackType,
   if (cp->core.popup_list!=NULL) for (i=0;i<cp->core.num_popups;i++)
     if (cp->core.popup_list[i]!=NULL)
       AddCallbackToTree(cp->core.popup_list[i],class,callbackType,
-	callback,userData);
+        callback,userData);
 
   if (XtIsComposite(root)) {
     GetValues(root,
@@ -571,6 +578,8 @@ String GetResourceString(Widget wg,char* name,char* class,String def) {
     XmRImmediate,NULL};
   char* resourceName;
   String str;
+
+  if (name[0]=='\r') return name+1;
 
   if (class==NULL) class=name;
   if (def==NULL) def=name;
@@ -712,7 +721,7 @@ char* GetResourceStringEx(Widget wg,char* name,char* class,
   va_start(vl,fmt);
   s=MakeStrVaEx(s,fmt==NULL ? "" : fmt,vl);
   va_end(vl);
-  return s==NULL ? "(BadString)" : s;
+  return s==NULL ? "(BadString1)" : s;
 }
 
 void ErrorBox(Widget w,char* name) {
@@ -788,6 +797,52 @@ int SetOptionMenuValue(Widget wOptionMenu,XtPointer value) {
  return False;
 }
 
+void SetOptionMenuItems(Widget wOptionMenu,int count,
+    XmString* items,XtPointer* values) {
+  Widget wg,wg1;
+  WidgetList wl;
+  Cardinal wlCount,i;
+  XtPointer xtp;
+
+  /* Check arguments */
+  assert(items!=NULL);
+  assert(values!=NULL);
+
+  /* Get MenuPane */
+  GetValues(wOptionMenu,XmNsubMenuId,&wg,NULL);
+  assert(wg!=NULL);
+
+  /* Ensure at least count children, add PushPuttons as necessary */
+  GetValues(wg,XmNnumChildren,&wlCount,NULL);
+  for (;wlCount<count;wlCount++)
+    Cw(XmCreatePushButton,wg,"item",NULL);
+
+  /* Get the list of children */
+  GetValues(wg,
+    XmNchildren,&wl,
+    XmNnumChildren,&wlCount,
+    NULL);
+  assert(wlCount>=count);
+
+  /* Assign strings and values and manage the first <count> children */
+  for (i=0;i<count;i++) {
+    SetValues(wl[i],
+      XmNlabelString,(XtPointer)items[i],
+      XmNuserData,values[i],
+      NULL);
+    if (!XtIsManaged(wl[i])) XtManageChild(wl[i]);
+  }
+
+  /* Unmanage any remaining children */
+  for (;i<wlCount;i++)
+    if (XtIsManaged(wl[i])) XtUnmanageChild(wl[i]);
+
+  /* Change XmNmenuHistory */
+  SetValues(wOptionMenu,XmNmenuHistory,wlCount? wl[0] : (Widget)NULL,NULL);
+
+  /* Done - no need to free XmNchildren */
+}
+
 /* Returns XmNuserData of the active widget in an OptionMenu
 */
 XtPointer GetOptionMenuValue(Widget wOptionMenu) {
@@ -799,6 +854,20 @@ XtPointer GetOptionMenuValue(Widget wOptionMenu) {
   GetValues(wg,XmNuserData,&value,NULL);
 
   return value;
+}
+
+/* Returns the selected position, counting from 0, or -1 if none or >1 selected
+*/
+
+int GetXmListSelPos(Widget wList) {
+  int* posList,posCount,r;
+
+  if (!XmListGetSelectedPos(wList,&posList,&posCount)) return -1;
+
+  r= posCount==1? posList[0]-1 : -1;
+  XtFree((XtPointer)posList);
+
+  return r;
 }
 
 void CbSensitiveIfListSel(Widget wList,XtPointer pWg,XtPointer pcbs) {
@@ -837,6 +906,20 @@ static char* TruncStr(char* s) {
   while (s1>s && isspace(*s1)) *(s1--)=0;
 
   return s;
+}
+
+int IsXmTextEmpty(Widget wText) {
+  char* s,*s1,*s2;
+  double r;
+
+  s=XmTextGetString(wText);
+  s1=TruncStr(s);
+
+  r=!*s1;
+
+  XtFree(s);
+
+  return r;
 }
 
 double GetXmTextDouble(Widget wText) {

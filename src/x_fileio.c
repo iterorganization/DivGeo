@@ -44,7 +44,7 @@ Widget OpenEquilDlg(View w) {
       SetValues(wg,XmNdirMask,xms,NULL);
       GetValues(wg,XmNdirMask,&xms2,NULL);
       if (!XmStringCompare(xms,xms2))
-	ErrorBox(w->x->wMain,GetStr(w,ERR_BADMASK));
+        ErrorBox(w->x->wMain,GetStr(w,ERR_BADMASK));
       XmStringFree(xms);
       XmStringFree(xms2);
     }
@@ -85,7 +85,7 @@ Widget OpenTemplateDlg(View w) {
       SetValues(wg,XmNdirMask,xms,NULL);
       GetValues(wg,XmNdirMask,&xms2,NULL);
       if (!XmStringCompare(xms,xms2))
-	ErrorBox(w->x->wMain,GetStr(w,ERR_BADMASK));
+        ErrorBox(w->x->wMain,GetStr(w,ERR_BADMASK));
       XmStringFree(xms);
       XmStringFree(xms2);
     }
@@ -128,7 +128,7 @@ Widget OpenSonnetDlg(View w) {
       SetValues(wg,XmNdirMask,xms,NULL);
       GetValues(wg,XmNdirMask,&xms2,NULL);
       if (!XmStringCompare(xms,xms2))
-	ErrorBox(w->x->wMain,GetStr(w,ERR_BADMASK));
+        ErrorBox(w->x->wMain,GetStr(w,ERR_BADMASK));
       XmStringFree(xms);
       XmStringFree(xms2);
     }
@@ -154,7 +154,7 @@ Widget OpenExportMeshDlg(View w,int bAtExit) {
   Widget wg;
   String s;
   XmString xms,xms2;
-  
+
   if (w->app->mesh==NULL) {
     ErrorBox(w->x->wMain,GetStr(w,ERR_NOSONNET));
     return NULL;
@@ -175,7 +175,7 @@ Widget OpenExportMeshDlg(View w,int bAtExit) {
       SetValues(wg,XmNdirMask,xms,NULL);
       GetValues(wg,XmNdirMask,&xms2,NULL);
       if (!XmStringCompare(xms,xms2))
-	ErrorBox(w->x->wMain,GetStr(w,ERR_BADMASK));
+        ErrorBox(w->x->wMain,GetStr(w,ERR_BADMASK));
       XmStringFree(xms);
       XmStringFree(xms2);
     }
@@ -205,7 +205,7 @@ Widget OpenExportMeshDlg(View w,int bAtExit) {
   return wg;
 }
 
-  
+
 
 
 Widget OpenFileOpenDlg(View w) {
@@ -229,7 +229,7 @@ Widget OpenFileOpenDlg(View w) {
       SetValues(wg,XmNdirMask,xms,NULL);
       GetValues(wg,XmNdirMask,&xms2,NULL);
       if (!XmStringCompare(xms,xms2))
-	ErrorBox(w->x->wMain,GetStr(w,ERR_BADMASK));
+        ErrorBox(w->x->wMain,GetStr(w,ERR_BADMASK));
       XmStringFree(xms);
       XmStringFree(xms2);
     }
@@ -265,7 +265,7 @@ Widget OpenFileSaveDlg(View w,int bAtExit) {
       SetValues(wg,XmNdirMask,xms,NULL);
       GetValues(wg,XmNdirMask,&xms2,NULL);
       if (!XmStringCompare(xms,xms2))
-	ErrorBox(w->x->wMain,GetStr(w,ERR_BADMASK));
+        ErrorBox(w->x->wMain,GetStr(w,ERR_BADMASK));
       XmStringFree(xms);
       XmStringFree(xms2);
     }
@@ -372,7 +372,7 @@ static void CbExportMesh(Widget wg,XtPointer xtpV,XtPointer pcbs) {
     if ((int)GetUserData(wg)) CloseXmView(w,-1);
   }
   XtFree(s);
-   
+
 }
 
 static void CbFile_Open(Widget wg,View w,void* xtp) {
@@ -396,7 +396,7 @@ static void CbFile_Open(Widget wg,View w,void* xtp) {
     XtPopup(w2->x->wShell,XtGrabNone);
     XMapWindow(XtDisplay(w2->x->wShell),XtWindow(w2->x->wShell));
     SetViewMsg(w2,GetResourceString(w2->x->wMain,"msgFileAlreadyLoaded",
-	NULL,NULL));
+        NULL,NULL));
     return;
   }
 
@@ -405,9 +405,9 @@ static void CbFile_Open(Widget wg,View w,void* xtp) {
     ErrorBox(wg,GetStr(w,err));
   } else {
     if (XmIsFileSelectionBox(wg)) XtPopdown(XtParent(wg));
-    
+
     if (w->app!=NULL && w->app->fName==NULL &&
-	!IsAppUnsaved(w->app)) {
+        !IsAppUnsaved(w->app)) {
       a2=w->app;
       SetViewApp(w,a);
       if (IsEmptyGroup(a2->views)) FreeApp(a2);
@@ -572,7 +572,7 @@ void CloseXmView(View w,int bAsk) {
       OpenAppUnsavedDlg(w);
       return;
     }
-  }  
+  }
 
   SetViewApp(w,NULL);
   FreeView(w);
@@ -686,6 +686,7 @@ static void CbFilePrintOk(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
     ErrorBox(dlg->w->x->wMain,GetStr(dlg->w,ERR_PSVIEWSIZE));
     return;
   }
+  psW->bEditTopology=w->bEditTopology;
 
   if (XmToggleButtonGetState(dlg->wSwFit)) ShowPicture(psW);
 
@@ -699,23 +700,23 @@ static void CbFilePrintOk(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
       break;
     case CMT_CMD:
       if (pipe(fd)) {
-	r=ERR_PIPECREATE;
-	break;
+        r=ERR_PIPECREATE;
+        break;
       }
 
       switch(fork()) { /* Create a child process to receive PS data */
-	case -1:       /* fork failed - error */
-	  close(fd[0]);
-	  close(fd[1]);
-	  r=ERR_FORK;
-	  goto break_outer;
+        case -1:       /* fork failed - error */
+          close(fd[0]);
+          close(fd[1]);
+          r=ERR_FORK;
+          goto break_outer;
 
-	case 0:        /* We are child process now - run command */
-	  close(fd[1]);
-	  dup2(fd[0],0);
-	  system(s);
-	  while (getchar()!=EOF); /* Avoid 'broken pipe' errors */
-	  exit(0);     /* Exit when the command finishes */
+        case 0:        /* We are child process now - run command */
+          close(fd[1]);
+          dup2(fd[0],0);
+          system(s);
+          while (getchar()!=EOF); /* Avoid 'broken pipe' errors */
+          exit(0);     /* Exit when the command finishes */
       }
 
       close(fd[0]);    /* We are still the parent process */
@@ -763,9 +764,9 @@ void DwNotifyRecentFiles(Widget wg,View w,int evt,void* obj,void* d){
     ls=GetShortFName(s);
     if (FindViewByFilename(w->xapp,s)!=NULL)
       ls=GetResourceStringEx(wgC,"labelStringRaise",NULL,
-	"$(SHORTNAME)%s",ls);
+        "$(SHORTNAME)%s",ls);
     else ls=GetResourceStringEx(wgC,"labelStringOpen",NULL,
-	"$(SHORTNAME)%s",ls);
+        "$(SHORTNAME)%s",ls);
 
     SetLabelString(wgC,ls);
 
@@ -775,7 +776,7 @@ void DwNotifyRecentFiles(Widget wg,View w,int evt,void* obj,void* d){
       (XtCallbackProc)CbClearHelpLine,(XtPointer)w->x->wMsg);
 
     XtAddCallback(wgC,XmNactivateCallback,
-	(XtCallbackProc)CbFile_Open,(XtPointer)w);
+        (XtCallbackProc)CbFile_Open,(XtPointer)w);
 
     AddDependentWidget(w,wgC,N_RECENTFILES,NULL,DwDestroy,(void*)wgC);
   }
@@ -805,7 +806,7 @@ Widget OpenExportElemsAsTemplateDlg(View w) {
   String s;
   XmString xms,xms2;
   EEAT_Dlg dlg;
-  
+
   wg=XtNameToWidget(w->x->wMain,"*"DLG_EXPORT_ELEMS_TEMPLATE);
   if (wg==NULL) {
     dlg=Malloc(sizeof(*dlg));
@@ -826,7 +827,7 @@ Widget OpenExportElemsAsTemplateDlg(View w) {
       SetValues(wg,XmNdirMask,xms,NULL);
       GetValues(wg,XmNdirMask,&xms2,NULL);
       if (!XmStringCompare(xms,xms2))
-	ErrorBox(w->x->wMain,GetStr(w,ERR_BADMASK));
+        ErrorBox(w->x->wMain,GetStr(w,ERR_BADMASK));
       XmStringFree(xms);
       XmStringFree(xms2);
     }
@@ -880,12 +881,12 @@ static int EEAT_OkCheck(EEAT_Dlg dlg) {
   void* p;
   Index ix;
   Group g;
-  
+
   if (IsEmptyGroup(EEAT_GetGroup(dlg))) {
     ErrorBox(dlg->wDlg,GetStr(dlg->w,ERR_NO_MARKED_ELEMS));
     return -1;
   }
-  
+
   for (p=Group1st(EEAT_GetGroup(dlg),&ix);p!=NULL;p=Next(&ix))
     if (GetObjType(p)!=T_ELEM) {
       LabelObject(dlg->w,p,GetStr(dlg->w,STR_ERRLABEL),1);

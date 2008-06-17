@@ -32,6 +32,7 @@ App CreateApp() {
     SHW_EQUIL|SHW_SURFACES|SHW_GRIDPOINTS|SHW_GRID|SHW_LABELS|SHW_MESH|
     SHW_XPOINTTESTS;
   a->outputFlags=0;
+  a->chFlags=0;
 
   a->meshSlidingMode=MSM_SURFACE;
   a->meshSlidingThreshold=1;
@@ -42,20 +43,21 @@ App CreateApp() {
 
   a->nodes=CreateGroup();
   a->elems=CreateGroup();
-  a->surfaces=CreateGroup();
-  a->gridPoints=CreateGroup();
   a->separators=CreateGroup();
   a->sources=CreateGroup();
   a->chords=CreateGroup();
   a->xpointTests=CreateGroup();
   a->xPointSegs=CreateGroup();
+  a->gridPointSegs=CreateGroup();
+  a->gridPointsEx=CreateGroup();
+  a->surfaceZones=CreateGroup();
+  a->surfacesEx=CreateGroup();
 
   a->varSetDefs=CreateGroup();
   a->varSets=CreateGroup();
   a->varDefs=CreateGroup();
   a->equil=NULL;
   a->template=NULL;
-  a->xpoint=NULL;
   a->sonnetData=NULL;
   a->mesh=NULL;
 
@@ -63,6 +65,7 @@ App CreateApp() {
   a->outputMode=OUTPUTMODE_SONNET;
   a->fName=NULL;
   a->creationTime=NULL;
+  a->topologyName=NULL;
 
   return a;
 }
@@ -70,14 +73,16 @@ App CreateApp() {
 void* FreeApp(App a) {
   Node n;
   Elem e;
-  Surface s;
   VarSetDef vsd;
   VarSet vs;
-  GridPoint gp;
   Separator sep;
   Source src;
   Chord ch;
   XPointTest xpt;
+  GridPointSeg gps;
+  GridPointEx gpx;
+  SurfaceZone sz;
+  SurfaceEx sx;
   Index ix;
 
   ValidatePtr(a,"FreeApp");
@@ -87,12 +92,12 @@ void* FreeApp(App a) {
 
   SetAppFName(a,NULL);
   SetAppCreationTime(a,NULL);
+  SetTopologyName(a,NULL);
 
   if (!IsEmptyGroup(a->views))
     FatalError("FreeApp()-views: fatal error 1");
 
   if (a->sonnetData!=NULL) DelSonnetData(a);
-  if (a->xpoint!=NULL) DelXPoint(a);
   for (vsd=AppVarSetDef1st(a,&ix);vsd!=NULL;vsd=Next(&ix))
     ChangeVarSetDef(a,vsd,vsd->name,vsd->descr,0,vsd->maxVarSets,NULL);
   for (vs=AppVarSet1st(a,&ix);vs!=NULL;vs=Next(&ix))
@@ -100,6 +105,10 @@ void* FreeApp(App a) {
   for (vsd=AppVarSetDef1st(a,&ix);vsd!=NULL;vsd=Next(&ix))
     DelVarSetDef(a,vsd);
 
+  for (gpx=AppGridPointEx1st(a,&ix);gpx!=NULL;gpx=Next(&ix))
+    DelGridPointEx(gpx);
+  for (gps=Group1st(a->gridPointSegs,&ix);gps!=NULL;gps=Next(&ix))
+    DelGridPointSeg(gps);
   for (xpt=AppXPointTest1st(a,&ix);xpt!=NULL;xpt=Next(&ix))
     DelXPointTest(a,xpt);
   for (ch=AppChord1st(a,&ix);ch!=NULL;ch=Next(&ix))
@@ -108,8 +117,9 @@ void* FreeApp(App a) {
     DelSource(a,src);
   for (sep=AppSeparator1st(a,&ix);sep!=NULL;sep=Next(&ix))
     DelSeparator(a,sep);
-  for (gp=AppGridPoint1st(a,&ix);gp!=NULL;gp=Next(&ix)) DelGridPoint(a,gp);
-  for (s=AppSurface1st(a,&ix);s!=NULL;s=Next(&ix)) DelSurface(a,s);
+  for (sx=AppSurfaceEx1st(a,&ix);sx!=NULL;sx=Next(&ix)) DelSurfaceEx(sx);
+  for (sz=AppSurfaceZone1st(a,&ix);sz!=NULL;sz=Next(&ix)) DelSurfaceZone(sz);
+
   for (e=AppElem1st(a,&ix);e!=NULL;e=Next(&ix)) DelElem(a,e);
   for (n=AppNode1st(a,&ix);n!=NULL;n=Next(&ix)) DelNode(a,n);
   if (a->equil!=NULL) DelEquil(a);
@@ -117,15 +127,21 @@ void* FreeApp(App a) {
   if (a->mesh!=NULL) DelMesh(a->mesh);
 
   assert(IsEmptyGroup(a->xPointSegs));
+  assert(IsEmptyGroup(a->gridPointSegs));
+
+  FreeUndoInfo(a);
+
+  FreeGroup(a->gridPointSegs);
   FreeGroup(a->xPointSegs);
   FreeGroup(a->xpointTests);
   FreeGroup(a->nodes);
   FreeGroup(a->elems);
-  FreeGroup(a->surfaces);
-  FreeGroup(a->gridPoints);
+  FreeGroup(a->surfacesEx);
+  FreeGroup(a->gridPointsEx);
   FreeGroup(a->separators);
   FreeGroup(a->sources);
   FreeGroup(a->chords);
+  FreeGroup(a->surfaceZones);
 
   FreeGroup(a->varSets);
   FreeGroup(a->varDefs);
@@ -134,7 +150,6 @@ void* FreeApp(App a) {
   FreeGroup(a->highlight);
   FreeGroup(a->mark);
 
-  FreeUndoInfo(a);
   FreeGroup(a->undoStack);
   FreeGroup(a->redoStack);
   FreeGroup(a->views);
@@ -161,6 +176,7 @@ App AddApp(XApp xap) {
     if (*s && s[strlen(s)-1]=='\n') s[strlen(s)-1]=0;
     SetAppFName(a,NULL);
     SetAppCreationTime(a,s);
+    SetTopologyName(a,NULL);
     FreeUndoInfo(a);
   }
   return a;
@@ -216,11 +232,11 @@ void AddUndoRec(App a,ActRec rec) {
   ChangeObjDoubleRec codr;
   ChangeObjIntRec coir;
   ChangeElemRec cer;
-  ChangeSurfaceRec csr;
-  ChangeGridPointRec cgr;
   ChangeSeparatorRec csepr;
   ChangeSourceRec csrcr;
   ChangeMeshPointRec cmptr;
+  ChangeSurfaceExRec cser,cser1;
+  ChangeGridPointExRec cgxr;
   UndoMarkRec umr;
 
   ValidatePtr(a,"AddUndoRec");
@@ -240,38 +256,38 @@ void AddUndoRec(App a,ActRec rec) {
 
 /* Discard redundand ChangeObjIntRec's
 */
-  if (!IsEmptyGroup(a->highlight) && 
+  if (!IsEmptyGroup(a->highlight) &&
       rec->actProc==(ActProc)ActChangeObjInt)
     for (coir=Group1st(g,&ix);!IsUndoMark(coir);coir=Next(&ix))
       if (coir->actProc==rec->actProc &&
-	  coir->objChange==((ChangeObjIntRec)rec)->objChange &&
-	  coir->fieldOffset==((ChangeObjIntRec)rec)->fieldOffset &&
-	  coir->length==((ChangeObjIntRec)rec)->length &&
-	  coir->bRedraw==((ChangeObjIntRec)rec)->bRedraw)
-	{FreeActRec(rec);return;}
+          coir->objChange==((ChangeObjIntRec)rec)->objChange &&
+          coir->fieldOffset==((ChangeObjIntRec)rec)->fieldOffset &&
+          coir->length==((ChangeObjIntRec)rec)->length &&
+          coir->bRedraw==((ChangeObjIntRec)rec)->bRedraw)
+        {FreeActRec(rec);return;}
 
 /* Discard redundand ChangeObjDoubleRec's
 */
-  if (!IsEmptyGroup(a->highlight) && 
+  if (!IsEmptyGroup(a->highlight) &&
       rec->actProc==(ActProc)ActChangeObjDouble)
     for (codr=Group1st(g,&ix);!IsUndoMark(codr);codr=Next(&ix))
       if (codr->actProc==rec->actProc &&
-	  codr->objChange==((ChangeObjDoubleRec)rec)->objChange &&
-	  codr->fieldOffset==((ChangeObjDoubleRec)rec)->fieldOffset &&
-	  codr->length==((ChangeObjDoubleRec)rec)->length &&
-	  codr->bRedraw==((ChangeObjDoubleRec)rec)->bRedraw)
-	{FreeActRec(rec);return;}
+          codr->objChange==((ChangeObjDoubleRec)rec)->objChange &&
+          codr->fieldOffset==((ChangeObjDoubleRec)rec)->fieldOffset &&
+          codr->length==((ChangeObjDoubleRec)rec)->length &&
+          codr->bRedraw==((ChangeObjDoubleRec)rec)->bRedraw)
+        {FreeActRec(rec);return;}
 
 /* Discard redundand ChangeObjGroup's
 */
   if (rec->actProc==(ActProc)ActChangeObjGroup)
     for (cogr=Group1st(g,&ix);!IsUndoMark(cogr);cogr=Next(&ix))
       if (cogr->actProc==rec->actProc &&
-	  cogr->objChange==((ChangeObjGroupRec)rec)->objChange &&
-	  cogr->member==((ChangeObjGroupRec)rec)->member &&
-	  cogr->fieldOffset==((ChangeObjGroupRec)rec)->fieldOffset &&
-	  !!cogr->status==!((ChangeObjGroupRec)rec)->status)
-	{FreeActRec(rec);GroupDel(g,cogr);FreeActRec(cogr);return;} 
+          cogr->objChange==((ChangeObjGroupRec)rec)->objChange &&
+          cogr->member==((ChangeObjGroupRec)rec)->member &&
+          cogr->fieldOffset==((ChangeObjGroupRec)rec)->fieldOffset &&
+          !!cogr->status==!((ChangeObjGroupRec)rec)->status)
+        {FreeActRec(rec);GroupDel(g,cogr);FreeActRec(cogr);return;}
 
 /* Discard redundand ChangeNode's
 */
@@ -287,19 +303,12 @@ void AddUndoRec(App a,ActRec rec) {
         cer=Next(&ix))
       if (cer->e==((ChangeElemRec)rec)->e) {FreeActRec(rec);return;}
 
-/* Discard redundand ChangeSurface's
+/* Discard redundand ChangeGridPointEx's
 */
-  if (rec->actProc==(ActProc)ActChangeSurface)
-    for (csr=Group1st(g,&ix);csr!=NULL && csr->actProc==rec->actProc;
-        csr=Next(&ix))
-      if (csr->s==((ChangeSurfaceRec)rec)->s) {FreeActRec(rec);return;}
-
-/* Discard redundand ChangeGridPoint's
-*/
-  if (rec->actProc==(ActProc)ActChangeGridPoint)
-    for (cgr=Group1st(g,&ix);cgr!=NULL && cgr->actProc==rec->actProc;
-        cgr=Next(&ix))
-      if (cgr->gp==((ChangeGridPointRec)rec)->gp) {FreeActRec(rec);return;}
+  if (rec->actProc==(ActProc)ActChangeGridPointEx)
+    for (cgxr=Group1st(g,&ix);cgxr!=NULL && cgxr->actProc==rec->actProc;
+        cgxr=Next(&ix))
+      if (cgxr->gpx==((ChangeGridPointExRec)rec)->gpx) {FreeActRec(rec);return;}
 
 /* Discard redundand ChangeSeparators's
 */
@@ -315,13 +324,20 @@ void AddUndoRec(App a,ActRec rec) {
         csrcr=Next(&ix))
       if (csrcr->src==((ChangeSourceRec)rec)->src) {FreeActRec(rec);return;}
 
+/* Discard redundand ChangeSurfaceEx's
+*/
+  if (rec->actProc==(ActProc)ActChangeSurfaceEx)
+    for (cser=Group1st(g,&ix);cser!=NULL && cser->actProc==rec->actProc;
+        cser=Next(&ix))
+      if (cser->sx==((ChangeSurfaceExRec)rec)->sx) {FreeActRec(rec);return;}
+
 /* Discard redundand ChangeMeshPoint's
 */
   if (rec->actProc==(ActProc)ActChangeMeshPoint)
     for (cmptr=Group1st(g,&ix);cmptr!=NULL && !IsUndoMark(cmptr);
-	cmptr=Next(&ix))
+        cmptr=Next(&ix))
       if (cmptr->mpt==((ChangeMeshPointRec)rec)->mpt) {
-	FreeActRec(rec);return;
+        FreeActRec(rec);return;
       }
 
   if (a->undoMode==UM_NORM) FreeUndoList(a->redoStack);
@@ -331,15 +347,15 @@ void AddUndoRec(App a,ActRec rec) {
   if (rec->actProc==(ActProc)ActUndoMark) {
     switch(a->undoMode) {
       case UM_NORM:
-	if (a->alt<0) a->alt=GroupCount(a->undoStack);
-	a->alt++;
-	break;
+        if (a->alt<0) a->alt=GroupCount(a->undoStack);
+        a->alt++;
+        break;
       case UM_REDO:
-	a->alt++;
-	break;
+        a->alt++;
+        break;
       case UM_UNDO:
-	a->alt--;
-	break;
+        a->alt--;
+        break;
     }
     NotifyAlt(a);
   }
@@ -357,9 +373,9 @@ static void ProcessUndo(App a) {
   if (!a->bNonDestructiveCancel) {
     if (a->activeAppView!=NULL && a->activeAppView->activeTool!=NULL) {
       CallToolProc(a->activeAppView,a->activeAppView->activeTool,
-	TL_CANCEL,0,0);
+        TL_CANCEL,0,0);
       if (a->activeAppView!=NULL && a->activeAppView->activeTool!=NULL)
-	FatalError("ProcessUndo()-cancelTool: fatal error 2");
+        FatalError("ProcessUndo()-cancelTool: fatal error 2");
     }
   }
   a->cancelToolFlag--;
@@ -484,8 +500,8 @@ void DrawAppHighlight(App a,int mode) {
              DrawAppObject(a,p,mode);
        }
        for (w=AppView1st(a,&ix);w!=NULL;w=Next(&ix)) {
-	 DrawHighlightRect(w,DRAW_ON);
-	 DrawAllViewShapes(w,DRAW_ON);
+         DrawHighlightRect(w,DRAW_ON);
+         DrawAllViewShapes(w,DRAW_ON);
        }
        break;
     case DRAWHI_UNLOCK:
@@ -502,12 +518,12 @@ void DrawAppHighlight(App a,int mode) {
       break;
     case DRAW_OFF:
       if (a->highlightLocks<=0) {
-	for (w=AppView1st(a,&ix);w!=NULL;w=Next(&ix)) {
-	  DrawHighlightRect(w,DRAW_OFF);
-	  DrawAllViewShapes(w,DRAW_OFF);
-	}
-	for (p=AppHighlight1st(a,&ix);p!=NULL;p=Next(&ix))
-	  DrawAppObject(a,p,mode);
+        for (w=AppView1st(a,&ix);w!=NULL;w=Next(&ix)) {
+          DrawHighlightRect(w,DRAW_OFF);
+          DrawAllViewShapes(w,DRAW_OFF);
+        }
+        for (p=AppHighlight1st(a,&ix);p!=NULL;p=Next(&ix))
+          DrawAppObject(a,p,mode);
         a->highlightLocks=-a->highlightLocks;
       }
       a->highlightLocks++;
@@ -562,7 +578,7 @@ void SetAppFName(App a,char* fName) {
   ar.objChange=a;
   ar.fieldOffset=GetOffset(App,fName);
   ar.bRedraw=0;
-  
+
   ActChangeObjString(a,&ar);
 }
 
@@ -576,7 +592,7 @@ void SetAppCreationTime(App a,char* creaTime) {
   ar.objChange=a;
   ar.fieldOffset=GetOffset(App,creationTime);
   ar.bRedraw=0;
-  
+
   ActChangeObjString(a,&ar);
 }
 
@@ -589,10 +605,10 @@ void* DelObject(App a,void* obj) {
       return DelNode(a,obj);
     case T_ELEM:
       return DelElem(a,obj);
-    case T_SURFACE:
-      return DelSurface(a,obj);
-    case T_GRIDPOINT:
-      return DelGridPoint(a,obj);
+    case T_SURFACEEX:
+      return DelSurfaceEx(obj);
+    case T_GRIDPOINTEX:
+      return DelGridPointEx(obj);
     case T_SEPARATOR:
       RemoveAllSeparators(a);
       return NULL;
@@ -606,12 +622,14 @@ void* DelObject(App a,void* obj) {
       DelTemplate(a);return NULL;
     case T_EQUIL:
       DelEquil(a);return NULL;
-    case T_XPOINT:
-      DelXPoint(a);return NULL;
     case T_XPOINTTEST:
       DelXPointTest(a,obj);return NULL;
     case T_XPOINTSEG:
       DelXPointSeg(a,obj);return NULL;
+    case T_GRIDPOINTSEG:
+      return DelGridPointSeg(obj);
+    case T_SURFACEZONE:
+      return DelSurfaceZone(obj);
     case T_SONNET:
       DelSonnetData(a);return NULL;
     case T_MESH:
@@ -633,9 +651,98 @@ void* DelObject(App a,void* obj) {
 
 void NotifyAppViews(App a,unsigned type,void* object) {
   View w;
+  GridPointSeg gps;
+  SurfaceZone sz;
   Index ix;
+  Var v;
+
+  /* Pre-processing of certain events */
+
+  /* Update chFlags */
+  if (type!=N_EXAMINE && object!=NULL) {
+    switch(GetObjType(object)) {
+      case  T_ELEM:
+        a->chFlags |= CHF_GEOMETRY;
+        if ((type==N_ADDED || type==N_CHANGED || type==N_DEL) &&
+            ElementInTarget((Elem)object))
+          a->chFlags |= CHF_TARGETS;
+        break;
+      case  T_NODE:
+        a->chFlags |= CHF_GEOMETRY;
+        if (type==N_CHANGED && PointInTarget((Node)object))
+          a->chFlags |= CHF_TARGETS;
+        break;
+      case  T_SEPARATOR:
+      case  T_SOURCE:
+      case  T_CHORD:
+      case  T_GRIDPOINTEX:
+      case  T_SURFACEEX:
+        a->chFlags |= CHF_GEOMETRY;
+        break;
+      case  T_EQUIL:
+      case  T_TEMPLATE:
+      case  T_SONNET:
+        a->chFlags |= CHF_FILES;
+        break;
+      case  T_VAR:
+        a->chFlags |= CHF_VARS;
+        v=(Var)object;
+        if (type==N_CHANGED &&
+            GetObjType(((Var)object)->origin)==T_VARSETDEF)
+          a->chFlags |= CHF_VARDEFS;
+        if (v->def->varType & VTF_TARGET) a->chFlags |= CHF_TARGETS;
+        break;
+      case  T_VARSETDEF:
+      case  T_VARDEF:
+      case  T_VARSET:
+        a->chFlags |= CHF_VARDEFS/*|CHF_VARSMENU*//*CHF_TARGETS*/;
+        break;
+      case  T_APP:
+      case  T_VIEW:
+        /* a->chFlags |= CHF_APPVIEW; */
+        break;
+      case T_XPOINTTEST:
+      case T_XPOINTSEG:
+      case T_GRIDPOINTSEG:
+      case T_SURFACEZONE:
+        a->chFlags |= CHF_TOPOLOGY;
+        InvalidateTopologyCache(a);
+        break;
+      case T_MESH:
+      case T_MESHCELL:
+      case T_MESHELEMENT:
+      case T_MESHPOINT:
+        a->chFlags |= CHF_MESH;
+        break;
+      default:
+        assert(0);
+    }
+  }
+
+  /* Special processing before notifying views */
+
+  if (type==N_ALT) {
+    if (a->chFlags & (CHF_TARGETS|CHF_TOPOLOGY)) {
+      for (gps=AppGridPointSeg1st(a,&ix);gps!=NULL;gps=Next(&ix))
+        RecalcGridPointSegLine(gps,NULL,NULL);
+    }
+    if (a->chFlags & CHF_TOPOLOGY) {
+      for (sz=AppSurfaceZone1st(a,&ix);sz!=NULL;sz=Next(&ix))
+        RecalcSurfaceZoneSign(sz);
+      GroupQSort(a->surfaceZones,SurfaceZoneSortProc,NULL);
+      GroupQSort(a->gridPointSegs,GridPointSegSortProc,NULL);
+      UpdateAfterTopologyChange(a);
+    }
+  }
+  /* Pass the message to views */
 
   for (w=AppView1st(a,&ix);w!=NULL;w=Next(&ix)) NotifyView(w,type,object);
+
+  /* Zero out chFlags after N_ALT */
+
+  if (type==N_ALT) {
+    a->chFlags=0;
+  }
 }
 
 int IsAppUnsaved(App a) {
@@ -756,7 +863,7 @@ void SetMeshSlidingMode(App a,int mode) {
   SetObjInt(a,a,GetOffset(App,meshSlidingMode),sizeof(a->meshSlidingMode),
       mode,0);
 }
-   
+
 void SetMeshSlidingThreshold(App a,double value) {
   SetObjDouble(a,a,GetOffset(App,meshSlidingThreshold),value,0);
 }
@@ -764,4 +871,12 @@ void SetMeshSlidingThreshold(App a,double value) {
 void SetDoubleMeshBorderFlag(App a,int flag) {
   SetObjInt(a,a,GetOffset(App,bDoubleMeshBorder),sizeof(a->bDoubleMeshBorder),
       flag,0);
+}
+
+void SetTopologyName(App a,char* name) {
+  SetObjString(a,a,GetOffset(App,topologyName),name,0);
+}
+
+char* GetTopologyName(App a) {
+  return a->topologyName!=NULL ? a->topologyName : "*";
 }

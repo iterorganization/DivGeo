@@ -94,6 +94,7 @@ View CreatePsView(App a,double width,double height,double margin) {
   w->shpIncr=5;
   w->meshCellCenterLen=3;
   w->meshPointRadius=3;
+  w->gridPointSegEndLength=20;
 
   SetViewApp(w,a);
 

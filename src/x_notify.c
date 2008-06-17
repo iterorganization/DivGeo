@@ -20,6 +20,7 @@ void DwNotifyUndoButton(Widget wg,View w,int evt,void* obj,void* d) {
 
 void DwNotifyIfExists(Widget wg,View w,int evt,void* obj,void* d) {
   Node n;
+  SurfaceEx sx;
   Index ix;
 
   if (w->app==NULL) return;
@@ -34,11 +35,16 @@ void DwNotifyIfExists(Widget wg,View w,int evt,void* obj,void* d) {
     case T_ELEM:
       SetSensitiveEx(wg,!IsEmptyGroup(w->app->elems));
       break;
-    case T_SURFACE:
-      SetSensitiveEx(wg,!IsEmptyGroup(w->app->surfaces));
+    case T_SURFACEEX:
+      SetSensitiveEx(wg,!IsEmptyGroup(w->app->surfacesEx));
       break;
-    case T_GRIDPOINT:
-      SetSensitiveEx(wg,!IsEmptyGroup(w->app->gridPoints));
+    case T_DEL_VSURFACE:
+      for (sx=AppSurfaceEx1st(w->app,&ix);sx!=NULL;sx=Next(&ix))
+        if (SurfaceExVirtual(sx)) {SetSensitiveEx(wg,True);return;}
+      SetSensitiveEx(wg,False);
+      break;
+    case T_GRIDPOINTEX:
+      SetSensitiveEx(wg,!IsEmptyGroup(w->app->gridPointsEx));
       break;
     case T_SEPARATOR:
       SetSensitiveEx(wg,!IsEmptyGroup(w->app->separators));
@@ -58,21 +64,24 @@ void DwNotifyIfExists(Widget wg,View w,int evt,void* obj,void* d) {
     case T_SONNET:
       SetSensitiveEx(wg,w->app->sonnetData!=NULL);
       break;
-    case T_XPOINT:
-      SetSensitiveEx(wg,w->app->xpoint!=NULL);
-      break;
     case T_XPOINTTEST:
       SetSensitiveEx(wg,!IsEmptyGroup(w->app->xpointTests));
       break;
     case T_XPOINTSEG:
       SetSensitiveEx(wg,!IsEmptyGroup(w->app->xPointSegs));
       break;
+    case T_GRIDPOINTSEG:
+      SetSensitiveEx(wg,!IsEmptyGroup(w->app->gridPointSegs));
+      break;
+    case T_SURFACEZONE:
+      SetSensitiveEx(wg,!IsEmptyGroup(w->app->surfaceZones));
+      break;
     case T_MESH:
       SetSensitiveEx(wg,w->app->mesh!=NULL);
       break;
     case T_EMPTYNODE:
       for (n=AppNode1st(w->app,&ix);n!=NULL;n=Next(&ix))
-	if (IsEmptyNode(n)) {SetSensitiveEx(wg,True);return;}
+        if (IsEmptyNode(n)) {SetSensitiveEx(wg,True);return;}
       SetSensitiveEx(wg,False);
       break;
     default:
@@ -82,6 +91,7 @@ void DwNotifyIfExists(Widget wg,View w,int evt,void* obj,void* d) {
 
 void DwNotifyIfNotExists(Widget wg,View w,int evt,void* obj,void* d) {
   Node n;
+  SurfaceEx sx;
   Index ix;
 
   if (w->app==NULL) return;
@@ -96,11 +106,16 @@ void DwNotifyIfNotExists(Widget wg,View w,int evt,void* obj,void* d) {
     case T_ELEM:
       SetSensitiveEx(wg,IsEmptyGroup(w->app->elems));
       break;
-    case T_SURFACE:
-      SetSensitiveEx(wg,IsEmptyGroup(w->app->surfaces));
+    case T_SURFACEEX:
+      SetSensitiveEx(wg,IsEmptyGroup(w->app->surfacesEx));
       break;
-    case T_GRIDPOINT:
-      SetSensitiveEx(wg,IsEmptyGroup(w->app->gridPoints));
+    case T_DEL_VSURFACE:
+      for (sx=AppSurfaceEx1st(w->app,&ix);sx!=NULL;sx=Next(&ix))
+        if (SurfaceExVirtual(sx)) {SetSensitiveEx(wg,False);return;}
+      SetSensitiveEx(wg,True);
+      break;
+    case T_GRIDPOINTEX:
+      SetSensitiveEx(wg,IsEmptyGroup(w->app->gridPointsEx));
       break;
     case T_SEPARATOR:
       SetSensitiveEx(wg,IsEmptyGroup(w->app->separators));
@@ -120,9 +135,6 @@ void DwNotifyIfNotExists(Widget wg,View w,int evt,void* obj,void* d) {
     case T_SONNET:
       SetSensitiveEx(wg,w->app->sonnetData==NULL);
       break;
-    case T_XPOINT:
-      SetSensitiveEx(wg,w->app->xpoint==NULL);
-      break;
     case T_XPOINTTEST:
       SetSensitiveEx(wg,IsEmptyGroup(w->app->xpointTests));
       break;
@@ -134,8 +146,14 @@ void DwNotifyIfNotExists(Widget wg,View w,int evt,void* obj,void* d) {
       break;
     case T_EMPTYNODE:
       for (n=AppNode1st(w->app,&ix);n!=NULL;n=Next(&ix))
-	if (IsEmptyNode(n)) {SetSensitiveEx(wg,False);return;}
+        if (IsEmptyNode(n)) {SetSensitiveEx(wg,False);return;}
       SetSensitiveEx(wg,True);
+      break;
+    case T_GRIDPOINTSEG:
+      SetSensitiveEx(wg,IsEmptyGroup(w->app->gridPointSegs));
+      break;
+    case T_SURFACEZONE:
+      SetSensitiveEx(wg,IsEmptyGroup(w->app->surfaceZones));
       break;
     default:
       assert(0);

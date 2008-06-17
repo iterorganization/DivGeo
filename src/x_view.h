@@ -88,18 +88,6 @@ void CbDisplayHelpLine(Widget wg,XtPointer pWidget,XtPointer pcbs);
 void CbDisplayDataLine(Widget wg,XtPointer pWidget,XtPointer pcbs);
 void CbClearHelpLine(Widget wg,XtPointer pWidget,XtPointer pcbs);
 
-/* Advanced notification flags */
-
-#define CHF_APPVIEW     0x0001
-#define CHF_GEOMETRY    0x0002
-#define CHF_FILES       0x0004
-#define CHF_VARS        0x0008
-#define CHF_VARDEFS     0x0010
-#define CHF_MARK        0x0020
-#define CHF_APP         0x0040
-#define CHF_VARSMENU    0x0080
-#define CHF_MESH        0x0100
-
 #define DISCARD_MESH    0x0001
 #define DISCARD_DOC     0x0002
 

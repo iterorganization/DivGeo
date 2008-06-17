@@ -52,7 +52,7 @@ Widget OpenEditMeshHeaderDlg(View w,Mesh m) {
         (XtPointer)dlg);
 
     AddDependentWidget(w,wDlg,N_NOW|N_ALT|N_DEL|N_NEWAPP,NULL,
-	DwMeshEdit,dlg);
+        DwMeshEdit,dlg);
 
     ResetMeshHeaderDlg(wDlg);
     XtManageChild(wDlg);

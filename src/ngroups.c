@@ -3,6 +3,11 @@
  *
  *  Changes:
  *
+ *  1998/09/30  Memory leak in GroupQSort fixed
+ *              Difference between Malloc/Free count now shown in stats
+ *              GetEmptyStaticGroup() added
+ *  ????/??/??  GroupQSort added
+ *
  *  970430  MergeGroup(), ClearGroup() added
  *
  *  970410  Malloc() fingerprint feature added
@@ -87,6 +92,12 @@ static void PrintGroupStatistics(void) {
       ,mallocStats,reallocStats,freeStats,findCacheHits,findCacheMisses,
       findNotFound,
       groupCreates,groupFrees,group1stOps,groupNextOps,groupPrevOps);
+  if (mallocStats-freeStats || groupCreates-groupFrees)
+    fprintf(stderr,
+      "\n*** MEMORY LEAK ***\n"
+      "#Malloc's-#Free's:           %d\n"
+      "#GroupCreate's-#GroupFree's: %d\n",
+      mallocStats-freeStats,groupCreates-groupFrees);
 }
 
 static void InitGroupStatistics(void) {
@@ -217,15 +228,15 @@ char* ReallocString(char* s,char* s1) {
   return s;
 }
 
-unsigned GetSafeAlignment() {
+unsigned GetSafeAlignment(void) {
   struct {
     char c;
     double d;
   } s;
-  
+
   assert(sizeof(double)>=sizeof(long));
   assert(sizeof(double)>=sizeof(void*));
-  
+
   return ((char*)&s.d)-((char*)&s.c);
 }
 
@@ -626,6 +637,8 @@ void GroupQSort(Group g,GroupSortProc proc,void* userData) {
   groupQSort_locks--;
 
   for (i=0;i<n;i++) GroupAdd(g,array[i]);
+
+  Free(array);
 }
 
 void MergeGroup(Group dest,Group src) {
@@ -648,4 +661,19 @@ void MergeGroupOfGroups(Group dest,Group src) {
 
 void ClearGroup(Group g) {
    while (!IsEmptyGroup(g)) GroupDel(g,Group1st(g,NULL));
+}
+
+static Group _emptyStaticGroup=NULL;
+
+static void atexit_FreeEmptyStaticGroup(void) {
+  FreeGroup(_emptyStaticGroup);
+}
+
+Group GetEmptyStaticGroup(void) {
+  if (_emptyStaticGroup==NULL) {
+    _emptyStaticGroup=CreateGroup();
+    atexit(atexit_FreeEmptyStaticGroup);
+  }
+
+  return _emptyStaticGroup;
 }

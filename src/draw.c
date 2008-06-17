@@ -108,7 +108,7 @@ void DrawEquil(View w,Equil eq,int mode) {
     if (i<eq->sy-1) DrawViewLine(w,eq->x[j],eq->y[i],eq->x[j],eq->y[i+1]);
 
 /*    l=(EqCell(eq,j,i+1)+EqCell(eq,j+1,i)-2*EqCell(eq,j,i))/
-	(eq->y[i+1]-eq->y[i]+eq->x[j+1]-eq->x[j])/p0;
+        (eq->y[i+1]-eq->y[i]+eq->x[j+1]-eq->x[j])/p0;
 
     l=max(l,-1);
     l=min(l,1);
@@ -137,29 +137,6 @@ void DrawEquil(View w,Equil eq,int mode) {
   }
 }
 
-void DrawSurface(View w,Surface s,int mode) {
-  Index ix;
-  XY xy1,xy2;
-
-  if (~w->showFlags & SHW_SURFACES) return;
-  xy1=SurfaceLine1st(s,&ix);
-  if (xy1==NULL) FatalError("DrawSurface()-empty: fatal error 1");
-  switch(mode) {
-    case DRAW_ON:
-      SetViewMode(w,IsHighlighted(w->app,s) ? VMX_SURFACE : VM1_SURFACE);
-      break;
-    case DRAW_OFF:
-      if (IsHighlighted(w->app,s)) {SetViewMode(w,VMX_SURFACE);break;}
-    case DRAW_ERASE:
-      SetViewMode(w,VM0_SURFACE);
-      break;
-  }
-  while ((xy2=Next(&ix))!=NULL) {
-    DrawViewLine(w,xy1->x,xy1->y,xy2->x,xy2->y);
-    xy1=xy2;
-  }
-}
-
 void DrawTemplate(View w,Template t,int mode) {
   XY xy1,xy2;
   Index ix;
@@ -183,30 +160,6 @@ void DrawTemplate(View w,Template t,int mode) {
   }
 }
 
-void DrawXPoint(View w,XPoint xpt,int mode) {
-  int i;
-  XY xy,xy1;
-  Index ix;
-
-  if (!(w->showFlags & SHWM_XPOINT)) return;
-  switch(mode) {
-    case DRAW_ON:
-      SetViewMode(w,IsHighlighted(w->app,xpt) ? VMX_XPOINT : VM1_XPOINT);
-      break;
-    case DRAW_OFF:
-      if (IsHighlighted(w->app,xpt)) {SetViewMode(w,VMX_XPOINT);break;}
-    case DRAW_ERASE:
-      SetViewMode(w,VM0_XPOINT);
-      break;
-  }
-  for (i=0;i<3;i++)
-    for (xy=Group1st(xpt->line[i],&ix);xy!=NULL && (xy1=Next(&ix))!=NULL;
-	xy=xy1) {
-      DrawViewLine(w,xy->x,xy->y,xy1->x,xy1->y);
-/*DrawViewLine(w,xy->x,xy->y,xy->x+(xy1->y-xy->y),xy->y-(xy1->x-xy->x));*/
-    }
-}
-
 void DrawXPointTest(View w,XPointTest xpt,int mode) {
   int i;
   XY xy,xy1;
@@ -214,61 +167,76 @@ void DrawXPointTest(View w,XPointTest xpt,int mode) {
 
   assert(w->app->equil!=NULL);
 
-  if (!(w->showFlags & SHW_XPOINTTESTS)) return;
+  if (!ViewShowTopology(w))
+    return;
 
-  switch(mode) {
-    case DRAW_ON:
-      SetViewMode(w,IsHighlighted(w->app,xpt)? VMX_XPOINTTEST:VM2_XPOINTTEST);
-      break;
-    case DRAW_OFF:
-      if (IsHighlighted(w->app,xpt)) {SetViewMode(w,VMX_XPOINTTEST);break;}
-    case DRAW_ERASE:
-      SetViewMode(w,VM0_XPOINTTEST);
-      break;
-  }
-  for (i=0;i<4;i++) if (xpt->gradients[i]!=NULL) {
-    xy1=Group1st(xpt->gradients[i],&ix);
-    if (xy1==NULL) continue;
-    for (;(xy=Next(&ix))!=NULL;xy1=xy)
-      DrawViewLine(w,xy1->x,xy1->y,xy->x,xy->y);
-  }
+  /* Draw gradients */
 
-  switch(mode) {
-    case DRAW_ON:
-      SetViewMode(w,IsHighlighted(w->app,xpt)? VMX_XPOINTTEST:VM1_XPOINTTEST);
-      break;
-    case DRAW_OFF:
-      if (IsHighlighted(w->app,xpt)) {SetViewMode(w,VMX_XPOINTTEST);break;}
-    case DRAW_ERASE:
-      SetViewMode(w,VM0_XPOINTTEST);
-      break;
+  if (w->bEditTopology) {
+    switch(mode) {
+      case DRAW_ON:
+        SetViewMode(w,IsHighlighted(w->app,xpt)? VMX_XPOINTTEST:VM2_XPOINTTEST);
+        break;
+      case DRAW_OFF:
+        if (IsHighlighted(w->app,xpt)) {SetViewMode(w,VMX_XPOINTTEST);break;}
+      case DRAW_ERASE:
+        SetViewMode(w,VM0_XPOINTTEST);
+        break;
+    }
+    for (i=0;i<4;i++) if (xpt->gradients[i]!=NULL) {
+      xy1=Group1st(xpt->gradients[i],&ix);
+      if (xy1==NULL) continue;
+      for (;(xy=Next(&ix))!=NULL;xy1=xy)
+        DrawViewLine(w,xy1->x,xy1->y,xy->x,xy->y);
+    }
   }
 
-  DrawViewLine(w,w->app->equil->x[xpt->cx1],w->app->equil->y[xpt->cy1],
-    w->app->equil->x[xpt->cx2],w->app->equil->y[xpt->cy1]);
+  /* Draw bounding rectangle */
+  if (w->bEditTopology) {
+    switch(mode) {
+      case DRAW_ON:
+        SetViewMode(w,IsHighlighted(w->app,xpt)? VMX_XPOINTTEST:VM1_XPOINTTEST);
+        break;
+      case DRAW_OFF:
+        if (IsHighlighted(w->app,xpt)) {SetViewMode(w,VMX_XPOINTTEST);break;}
+      case DRAW_ERASE:
+        SetViewMode(w,VM0_XPOINTTEST);
+        break;
+    }
 
-  DrawViewLine(w,w->app->equil->x[xpt->cx1],w->app->equil->y[xpt->cy1],
-    w->app->equil->x[xpt->cx1],w->app->equil->y[xpt->cy2]);
+    DrawViewLine(w,w->app->equil->x[xpt->cx1],w->app->equil->y[xpt->cy1],
+      w->app->equil->x[xpt->cx2],w->app->equil->y[xpt->cy1]);
 
-  DrawViewLine(w,w->app->equil->x[xpt->cx2],w->app->equil->y[xpt->cy2],
-    w->app->equil->x[xpt->cx2],w->app->equil->y[xpt->cy1]);
+    DrawViewLine(w,w->app->equil->x[xpt->cx1],w->app->equil->y[xpt->cy1],
+      w->app->equil->x[xpt->cx1],w->app->equil->y[xpt->cy2]);
 
-  DrawViewLine(w,w->app->equil->x[xpt->cx2],w->app->equil->y[xpt->cy2],
-    w->app->equil->x[xpt->cx1],w->app->equil->y[xpt->cy2]);
+    DrawViewLine(w,w->app->equil->x[xpt->cx2],w->app->equil->y[xpt->cy2],
+      w->app->equil->x[xpt->cx2],w->app->equil->y[xpt->cy1]);
+
+    DrawViewLine(w,w->app->equil->x[xpt->cx2],w->app->equil->y[xpt->cy2],
+      w->app->equil->x[xpt->cx1],w->app->equil->y[xpt->cy2]);
+  }
 }
 
 void DrawXPointSeg(View w,XPointSeg xps,int mode) {
   XY xy,xy1;
   Index ix;
+  double ll=MAXDOUBLE;
+  GridPointSeg gps;
+  int bHighlighted;
+  double dx,dy;
 
-  if (!(w->showFlags & (SHW_GRIDPOINTS|SHW_SURFACES|SHW_XPOINTTESTS))) return;
+  if (!w->bEditTopology &&
+      !(w->showFlags & (SHW_GRIDPOINTS|SHW_SURFACES))) return;
+
+  bHighlighted=IsHighlighted(w->app,xps);
 
   switch(mode) {
     case DRAW_ON:
-      SetViewMode(w,IsHighlighted(w->app,xps)? VMX_XPOINTSEG:VM1_XPOINTSEG);
+      SetViewMode(w,bHighlighted? VMX_XPOINT:VM1_XPOINT);
       break;
     case DRAW_OFF:
-      if (IsHighlighted(w->app,xps)) {SetViewMode(w,VMX_XPOINTSEG);break;}
+      if (bHighlighted) {SetViewMode(w,VMX_XPOINT);break;}
     case DRAW_ERASE:
       SetViewMode(w,VM0_XPOINTSEG);
       break;
@@ -276,27 +244,47 @@ void DrawXPointSeg(View w,XPointSeg xps,int mode) {
 
   if (xps->line==NULL) return;
 
-  for (xy1=Group1st(xps->line,&ix);(xy=Next(&ix))!=NULL;xy1=xy)
-    DrawViewLine(w,xy1->x,xy1->y,xy->x,xy->y);
-}
+  for (gps=AppGridPointSeg1st(w->app,&ix);gps!=NULL;gps=Next(&ix))
+    if (gps->xps==xps) {ll=gps->lineLength;break;}
 
-void DrawGridPoint(View w,GridPoint gp,int mode) {
-  if (~w->showFlags & SHW_GRIDPOINTS) return;
-  if (w->app->xpoint==NULL) return;
-  switch(mode) {
-    case DRAW_ON:
-      SetViewMode(w,IsHighlighted(w->app,gp) ? VMX_GPOINT : VM1_GPOINT);
-      break;
-    case DRAW_OFF:
-      if (IsHighlighted(w->app,gp)) {SetViewMode(w,VMX_GPOINT);break;}
-    case DRAW_ERASE:
-      SetViewMode(w,VM0_GPOINT);
-      break;
+  DrawPolyLine(w,xps->line,0,ll);
+
+  /* Draw the "beginning" if the segment was split by a gradient line */
+  /* at the beginning/end */
+  
+  if (((w->showFlags & SHW_GRIDPOINTS) || w->bEditTopology) &&
+      (gps!=NULL && GridPointSegIsUsed(gps)) &&
+      !bHighlighted && GroupCount(xps->line)>2) {
+    SetViewMode(w,mode==DRAW_ON? VM1_GPOINT:VM0_GPOINT);
+
+    if (xps->startPos>0) {
+      xy1=GroupAt(xps->line,0);
+      xy=GroupAt(xps->line,2);
+      ll=hypot(xy->x-xy1->x,xy->y-xy1->y);
+      dx=(xy1->x-xy->x)/ll;
+      dy=(xy1->y-xy->y)/ll;
+
+      DrawViewLine(w,
+        xy1->x-dy/w->zoomX*w->gridPointSegEndLength/2,
+        xy1->y+dx/w->zoomY*w->gridPointSegEndLength/2,
+        xy1->x+dy/w->zoomX*w->gridPointSegEndLength/2,
+        xy1->y-dx/w->zoomY*w->gridPointSegEndLength/2);
+    }
+
+    if (xps->endPos>0) {
+      xy1=GroupAt(xps->line,GroupCount(xps->line)-1);
+      xy=GroupAt(xps->line,GroupCount(xps->line)-3);
+      ll=hypot(xy->x-xy1->x,xy->y-xy1->y);
+      dx=(xy1->x-xy->x)/ll;
+      dy=(xy1->y-xy->y)/ll;
+
+      DrawViewLine(w,
+        xy1->x-dy/w->zoomX*w->gridPointSegEndLength/2,
+        xy1->y+dx/w->zoomY*w->gridPointSegEndLength/2,
+        xy1->x+dy/w->zoomX*w->gridPointSegEndLength/2,
+        xy1->y-dx/w->zoomY*w->gridPointSegEndLength/2);
+    }
   }
-  DrawViewLine(w,gp->x-gp->dy/w->zoomX*w->gridPointLen/2,
-    gp->y+gp->dx/w->zoomY*w->gridPointLen/2,
-    gp->x+gp->dy/w->zoomX*w->gridPointLen/2,
-    gp->y-gp->dx/w->zoomY*w->gridPointLen/2);
 }
 
 void DrawAxes(View w) {

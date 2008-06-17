@@ -19,6 +19,20 @@
 #define OF_NC_GPOINTS     0x0010
 #define OF_NC_CELLS       0x0020
 
+/* Advanced notification flags */
+
+#define CHF_APPVIEW     0x0001
+#define CHF_GEOMETRY    0x0002
+#define CHF_FILES       0x0004
+#define CHF_VARS        0x0008
+#define CHF_VARDEFS     0x0010
+#define CHF_MARK        0x0020
+#define CHF_APP         0x0040
+#define CHF_VARSMENU    0x0080
+#define CHF_MESH        0x0100
+#define CHF_TOPOLOGY    0x0200
+#define CHF_TARGETS     0x0400
+
 struct _App {
   int type;
   Stack undoStack,redoStack;
@@ -34,10 +48,12 @@ struct _App {
   int cancelToolFlag,alt,updateLocks;
   int highlightMode,highlightLocks;
   double minX,minY,maxX,maxY;
-  unsigned long showFlags,outputFlags;
+  unsigned long showFlags,outputFlags,chFlags;
 
-  Group nodes,elems,surfaces,gridPoints,separators,sources,chords;
-  Group varSetDefs,varSets,varDefs,xpointTests,xPointSegs;
+  Group nodes,elems,separators,sources,chords;
+  Group varSetDefs,varSets,varDefs,
+      xpointTests,xPointSegs,gridPointSegs,gridPointsEx,surfaceZones,
+      surfacesEx;
 
   Equil equil;
 #ifndef __cplusplus
@@ -45,12 +61,12 @@ struct _App {
 #else
   Template templ;
 #endif
-  XPoint xpoint;
   SonnetData sonnetData;
   Mesh mesh;
 
   char* fName;
   char* creationTime;
+  char* topologyName;
   int maxElemId,outputMode;
   int meshSlidingMode;
   double meshSlidingThreshold;
@@ -64,16 +80,18 @@ struct _App {
 #define AppView1st(app,ix) Group1st((app)->views,(ix))
 #define AppHighlight1st(app,ix) Group1st((app)->highlight,(ix))
 #define AppMark1st(app,ix) Group1st((app)->mark,(ix))
-#define AppSurface1st(app,ix) Group1st((app)->surfaces,(ix))
 #define AppVarDef1st(app,ix) Group1st((app)->varDefs,(ix))
 #define AppVarSet1st(app,ix) Group1st((app)->varSets,(ix))
 #define AppVarSetDef1st(app,ix) Group1st((app)->varSetDefs,(ix))
-#define AppGridPoint1st(app,ix) Group1st((app)->gridPoints,(ix))
+#define AppGridPointEx1st(app,ix) ((GridPointEx)Group1st((app)->gridPointsEx,(ix)))
 #define AppSeparator1st(app,ix) Group1st((app)->separators,(ix))
 #define AppSource1st(app,ix) Group1st((app)->sources,(ix))
 #define AppChord1st(app,ix) Group1st((app)->chords,(ix))
 #define AppXPointTest1st(app,ix) Group1st((app)->xpointTests,(ix))
 #define AppXPointSeg1st(app,ix) Group1st((app)->xPointSegs,(ix))
+#define AppGridPointSeg1st(app,ix) ((GridPointSeg)Group1st((app)->gridPointSegs,(ix)))
+#define AppSurfaceZone1st(app,ix) ((SurfaceZone)Group1st((app)->surfaceZones,(ix)))
+#define AppSurfaceEx1st(app,ix) ((SurfaceEx)Group1st((app)->surfacesEx,(ix)))
 
 #define IsUndoMark(ar) ((ar)==NULL || (ar)->actProc==(ActProc)ActUndoMark)
 #define IsHighlighted(app,obj) InGroup((app)->highlight,(obj))
@@ -87,6 +105,8 @@ void SetAppOutputMode(App a,int newMode);
 void* CreateActRec(size_t size,ActProc ap);
 void* FreeActRec(void* ar);
 void SetOutputFlags(App a,long outputFlags);
+void SetTopologyName(App a,char* name);
+char* GetTopologyName(App a);
 
 void AddUndoRec(App a,ActRec rec);
 void FreeUndoInfo(App a);

@@ -9,6 +9,19 @@ XApp xap;
 App a;
 View w=NULL;
 
+int AAmain(int argc,char** argv);
+
+AAmain(int argc,char** argv) {
+if (getchar()!='\n') {
+  a=CreateApp();
+  assert(AddEquil(a,"i.eq")==0);
+  assert(WriteSplineEquil(a->equil,"o.eq",650,650)==0);
+  puts("Done!");
+  FreeApp(a);
+}
+  AAmain(argc,argv);
+}
+
 main(int argc,char** argv) {
   int i,err;
   char* s;
@@ -30,12 +43,12 @@ main(int argc,char** argv) {
     for (i=1;i<argc;i++) {
       a=LoadNormalApp(xap,argv[i],&s,&err);
       if (err!=0) {
-	fprintf(stderr,"%s:\n",argv[i]);
-	fprintf(stderr,"%s\n",XAppStr(xap,err));
-	exit(1);
+        fprintf(stderr,"%s:\n",argv[i]);
+        fprintf(stderr,"%s\n",XAppStr(xap,err));
+        exit(1);
       }
       if (s!=NULL) {
-	puts(s);                        /* relcheck_ignore_line */
+        puts(s);                        /* relcheck_ignore_line */
         s=Free(s);
       }
       w=CreateXmView(xap,a);

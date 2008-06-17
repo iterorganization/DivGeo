@@ -50,6 +50,7 @@
 #include "x_creobj.h"
 #include "x_verdlg.h"
 #include "x_mesh.h"
+#include "x_topo.h"
 
 #include "ps_view.h"
 

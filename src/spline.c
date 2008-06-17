@@ -2,8 +2,9 @@
 
 #include "dg.h"
 
-#define ID_PARAMSPLINEINFO  0x25486324
-#define ID_SIMPLESPLINEINFO 0x56488145
+#define ID_PARAMSPLINEINFO   0x25486324
+#define ID_SIMPLESPLINEINFO  0x56488145
+#define ID_SURFACESPLINEINFO 0x34278923
 
 static void spline(int n,double* x,double* y,double* b,double* c,double* d);
 
@@ -217,6 +218,248 @@ void* FreeParamSplineInfo(ParamSplineInfo si) {
   return Free(si);
 }
 
+/* Surface spline /////////////////////////////////////////////////// */
+
+#define IDX(si,ptx,pty) ((pty)*(si)->pointCount[0]+(ptx))
+
+SurfaceSplineInfo CreateSurfaceSplineInfo(
+    int pointsX,int pointsY,double* ptx,double *pty,double* ptz) {
+  SurfaceSplineInfo si;
+  int i,j,k,n;
+  double c;
+  Group g;
+  SimpleSplineInfo* pssi;
+  SimpleSplineInfo ssi;
+  double* ptzOld;
+
+  assert(pointsX>1 && pointsY>=1);
+  /* Allocate & init structures */
+
+  si=Malloc(sizeof(*si));
+  si->id=ID_SURFACESPLINEINFO;
+
+  si->pointCount[0]=pointsX;
+  si->pointCount[1]=pointsY;
+
+  for (n=0;n<2;n++)
+    si->t[n]=Malloc(sizeof(*si->t[n])*si->pointCount[n]);
+
+  for (i=0;i<si->pointCount[0];i++) si->t[0][i]=ptx[i];
+  for (i=0;i<si->pointCount[1];i++) si->t[1][i]=pty[i];
+
+  /* Allocate  a read/write duplicate of ptz */
+
+  ptzOld=ptz;
+  ptz=Malloc(sizeof(*ptz)*pointsX*pointsY);
+  memcpy(ptz,ptzOld,sizeof(*ptz)*pointsX*pointsY);
+
+  /* Rearrange x/y in ascending order, if needed */
+
+  k=si->pointCount[0];
+  if (si->t[0][0]>si->t[0][1]) {
+    for (j=0;j<k/2;j++) {
+      swap(si->t[0][j],si->t[0][k-1-j]);
+      for (i=0;i<si->pointCount[1];i++)
+        swap(ptz[IDX(si,j,i)],ptz[IDX(si,k-1-j,i)]);
+    }
+  }
+
+  k=si->pointCount[1];
+  if (si->t[1][0]>si->t[1][1]) {
+    for (i=0;i<k/2;i++) {
+      swap(si->t[1][i],si->t[1][k-1-i]);
+      for (j=0;j<si->pointCount[0];i++)
+        swap(ptz[IDX(si,j,i)],ptz[IDX(si,j,k-1-i)]);
+    }
+  }
+
+  for (i=0;i<2;i++) for (j=1;j<si->pointCount[i];j++) {
+    if (si->t[i][j]<si->t[i][j-1]) {
+      ptz=Free(ptz);
+      for (k=0;k<2;k++) si->t[k]=Free(si->t[k]);
+      si=Free(si);
+      return NULL;
+    }
+  }
+
+  /* Find out minimum, maximum "t" values */
+
+  for (n=0;n<2;n++) {
+    si->tMin[n]=MAXDOUBLE;
+    si->tMax[n]=-MAXDOUBLE;
+    for (i=0;i<si->pointCount[n];i++) {
+      si->tMin[n]=min(si->tMin[n],si->t[n][i]);
+      si->tMax[n]=max(si->tMax[n],si->t[n][i]);
+    }
+  }
+
+  si->coeff=Malloc(sizeof(*si->coeff)*si->pointCount[0]*si->pointCount[1]);
+
+  /* Calculate coefficients */
+
+  pssi=Malloc(sizeof(*pssi)*si->pointCount[1]);
+
+   /* Calculate 1-D spline coefficients for each "row" */
+
+  for (i=0;i<si->pointCount[1];i++) {
+    g=CreateGroup();
+    for (j=0;j<si->pointCount[0];j++)
+      AddXY(g,si->t[0][j],ptz[IDX(si,j,i)]);
+
+    pssi[i]=CreateSimpleSplineInfo(g);
+    g=FreeMallocedGroup(g);
+  }
+
+  /* Calculate sets of 2D coefficients for each cell */
+
+  for (j=0;j<si->pointCount[0];j++) {
+    for (k=0;k<4;k++) {
+
+      /* For each "column" and for each "horizontal" coefficient,
+         build a "vertical" spline */
+
+      g=CreateGroup();
+      for (i=0;i<si->pointCount[1];i++) {
+        switch (k) {
+          case 0:
+            c=pssi[i]->y[j];break;
+          case 1:
+            c=pssi[i]->b[j];break;
+          case 2:
+            c=pssi[i]->c[j];break;
+          case 3:
+            c=pssi[i]->d[j];break;
+          default:
+            assert(0);
+        }
+        AddXY(g,si->t[1][i],c);
+      }
+      ssi=CreateSimpleSplineInfo(g);
+      FreeMallocedGroup(g);
+
+      /* Store coefficients */
+
+      for (i=0;i<si->pointCount[1];i++) {
+        si->coeff[IDX(si,j,i)][0][k]=ssi->y[i];
+        si->coeff[IDX(si,j,i)][1][k]=ssi->b[i];
+        si->coeff[IDX(si,j,i)][2][k]=ssi->c[i];
+        si->coeff[IDX(si,j,i)][3][k]=ssi->d[i];
+      }
+
+      ssi=FreeSimpleSplineInfo(ssi);
+    }
+  }
+
+  /* Free "horizontal" splines and ptz double */
+
+  for (i=0;i<si->pointCount[1];i++) pssi[i]=FreeSimpleSplineInfo(pssi[i]);
+  pssi=Free(pssi);
+  ptz=Free(ptz);
+
+  return si;
+}
+
+
+int CalcSurfaceSplineValue(SurfaceSplineInfo si,double tx,double ty,
+    double* pZ,double* pdX,double* pdY) {
+  int i,j,k,nx,ny;
+  double px,py;
+
+  /* Check for valid args */
+
+  assert(si->id==ID_SURFACESPLINEINFO);
+  assert(tx>=si->tMin[0] && tx<=si->tMax[0] &&
+      ty>=si->tMin[1] && ty<=si->tMax[1]);
+
+  /* Find the cell */
+
+  nx=ny=-1;
+/*  for (i=0;i<si->pointCount[0]-1;i++)
+    if (inrange(tx,si->t[0][i],si->t[0][i+1])) {nx=i;break;}
+
+  for (i=0;i<si->pointCount[1]-1;i++)
+    if (inrange(ty,si->t[1][i],si->t[1][i+1])) {ny=i;break;} */
+
+  i=0;
+  j=si->pointCount[0]-1;assert(j>0);
+  while (i+1<j) {
+    k=(i+j)/2;
+    if (si->t[0][k]<tx) i=k; else j=k;
+/* printf("x i j %d %d\n",i,j); */
+  }
+  if (inrange(tx,si->t[0][i],si->t[0][i+1])) {nx=i;}
+
+  i=0;
+  j=si->pointCount[1]-1;assert(j>0);
+  while (i+1<j) {
+    k=(i+j)/2;
+    if (si->t[1][k]<ty) i=k; else j=k;
+/* printf("y i j %d %d\n",i,j); */
+  }
+  if (inrange(ty,si->t[1][i],si->t[1][i+1])) {ny=i;}
+
+  assert(nx>=0 && ny>=0);
+/* printf("%d %d\n",nx,ny); */
+  /* Calculate the value */
+
+  if (pZ!=NULL) {
+    *pZ=0;
+    py=1;
+    for (i=0;i<4;i++) {
+      px=1;
+      for (j=0;j<4;j++) {
+        *pZ+=si->coeff[IDX(si,nx,ny)][i][j]*px*py;
+        px*=(tx-si->t[0][nx]);
+      }
+      py*=(ty-si->t[1][ny]);
+    }
+  }
+/* printf("%e %e\n",tx-si->t[0][nx],ty-si->t[1][ny]); */
+
+  /* Calculate derivatives, if needed */
+
+  if (pdX!=NULL) {
+    *pdX=0;
+    py=1;
+    for (i=0;i<4;i++) {
+      px=1;
+      for (j=1;j<4;j++) {
+        *pdX+=j*si->coeff[IDX(si,nx,ny)][i][j]*px*py;
+        px*=(tx-si->t[0][nx]);
+      }
+      py*=(ty-si->t[1][ny]);
+    }
+  }
+/* printf("%g\n",*pdX);
+ */
+  if (pdY!=NULL) {
+    *pdY=0;
+    py=1;
+    for (i=1;i<4;i++) {
+      px=1;
+      for (j=0;j<4;j++) {
+        *pdY+=i*si->coeff[IDX(si,nx,ny)][i][j]*px*py;
+        px*=(tx-si->t[0][nx]);
+      }
+      py*=(ty-si->t[1][ny]);
+    }
+  }
+
+  return 0;
+}
+
+void* FreeSurfaceSplineInfo(SurfaceSplineInfo si) {
+  int i;
+
+  assert(si->id==ID_SURFACESPLINEINFO);
+
+  si->coeff=Free(si->coeff);
+  for (i=0;i<2;i++) si->t[i]=Free(si->t[i]);
+
+  si=Free(si);
+
+  return si;
+}
 
 /* Spline routine /////////////////////////////////////////////////// */
 

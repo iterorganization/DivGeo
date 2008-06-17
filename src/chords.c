@@ -40,14 +40,14 @@ void TlAddChord(View w,int event,double x,double y) {
     case TL_MOTION:
       if (d==NULL) break;
       if (!d->bEnh) {
-	if (d->ch==NULL) {
-	  d->ch=AddChord(w->app,d->x,d->y,x,y);
-	  if (d->ch==NULL) break;
-	  SetHighlightMode(w->app,1);
-	  Highlight(w,d->ch,1);
-	} else {
-	  ChangeChord(w->app,d->ch,d->ch->x1,d->ch->y1,x,y);
-	}
+        if (d->ch==NULL) {
+          d->ch=AddChord(w->app,d->x,d->y,x,y);
+          if (d->ch==NULL) break;
+          SetHighlightMode(w->app,1);
+          Highlight(w,d->ch,1);
+        } else {
+          ChangeChord(w->app,d->ch,d->ch->x1,d->ch->y1,x,y);
+        }
       SetExamineMsg(w,d->ch);
       }
       break;
@@ -55,7 +55,7 @@ void TlAddChord(View w,int event,double x,double y) {
       if (d==NULL) break;
       UnhighlightAll(w);
       if (!d->bEnh) {
-	UndoMark(w->app);
+        UndoMark(w->app);
       }
       if (w->app->highlightMode) ViewMsgEx(w,0,NULL);
       d=Free(d);
@@ -64,7 +64,7 @@ void TlAddChord(View w,int event,double x,double y) {
     case TL_LEAVE:
       if (d==NULL) break;
       if (!d->bEnh) {
-	Highlight(w,d->ch,event==TL_ENTER);
+        Highlight(w,d->ch,event==TL_ENTER);
       }
       break;
     case TL_CANCEL:
@@ -145,31 +145,31 @@ void DrawChord(View w,Chord ch,int mode) {
     l=Point2PointDist(ch->x1,ch->y1,ch->x2,ch->y2);
     if (l>(double)w->normalLen/1e6) {
       switch(mode) {
-	case DRAW_ON:
-	  SetViewMode(w,
-	    IsHighlighted(w->app,ch) ? VMX_ELEMNORMAL : VM1_ELEMNORMAL);
-	  break;
-	case DRAW_OFF:
-	  if (IsHighlighted(w->app,ch)) {SetViewMode(w,VMX_ELEMNORMAL);break;}
-	case DRAW_ERASE:
-	  SetViewMode(w,VM0_ELEMNORMAL);
-	  break;
+        case DRAW_ON:
+          SetViewMode(w,
+            IsHighlighted(w->app,ch) ? VMX_ELEMNORMAL : VM1_ELEMNORMAL);
+          break;
+        case DRAW_OFF:
+          if (IsHighlighted(w->app,ch)) {SetViewMode(w,VMX_ELEMNORMAL);break;}
+        case DRAW_ERASE:
+          SetViewMode(w,VM0_ELEMNORMAL);
+          break;
       }
       x=(ch->x1+ch->x2)/2;
       y=(ch->y1+ch->y2)/2;
       DrawViewLine(w,x,y,x+(ch->y2-ch->y1)*w->normalLen/l/w->zoomX,
-	y-(ch->x2-ch->x1)*w->normalLen/l/w->zoomY);
+        y-(ch->x2-ch->x1)*w->normalLen/l/w->zoomY);
     }
   }
   if (IsMarked(w->app,ch) && !IsHighlighted(w->app,ch)) {
     switch(mode) {
       case DRAW_ON:
-	SetViewMode(w,VM1_ELEMMARK);
-	break;
+        SetViewMode(w,VM1_ELEMMARK);
+        break;
       case DRAW_OFF:
       case DRAW_ERASE:
-	SetViewMode(w,VM0_ELEMMARK);
-	break;
+        SetViewMode(w,VM0_ELEMMARK);
+        break;
     }
     DrawViewLine(w,ch->x1,ch->y1,ch->x2,ch->y2);
   }
@@ -190,7 +190,7 @@ static int ActAddChord(App a,ActRec ar) {
   DelRec ur;
   Chord ch;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   ur=CreateActRec(sizeof(*ur),(ActProc)ActDelChord);
   ur->delete=ar->obj;
@@ -219,7 +219,7 @@ static int ActDelChord(App a,DelRec ar) {
   ActRec ur;
   Chord ch;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   ch=ar->delete;
   assert (!ch->locks);
@@ -249,7 +249,7 @@ static int ActDelChord(App a,DelRec ar) {
 static int ActChangeChord(App a,ChangeChordRec ar) {
   ChangeChordRec ur;
 
-  if (AppLocked(a)) return;
+  if (AppLocked(a)) return 0;
 
   assert(!ar->ch->locks);
 
@@ -310,6 +310,8 @@ int ConvertElemsToChords(App a,Group elems,void** pErrObj) {
     if (ch==NULL) continue;
     if (i) MarkObject(a,ch,1);
   }
+
+  return 0;
 }
 
 Chord FindChord(App a,double x1,double y1,double x2,double y2) {
@@ -318,7 +320,7 @@ Chord FindChord(App a,double x1,double y1,double x2,double y2) {
 
   for (ch=AppChord1st(a,&ix);ch!=NULL;ch=Next(&ix)) {
     if (ch->x1==x1 && ch->y1==y1 && ch->x2==x2 && ch->y2==y2 ||
-	ch->x1==x2 && ch->y1==y2 && ch->x2==x1 && ch->y2==y1)
+        ch->x1==x2 && ch->y1==y2 && ch->x2==x1 && ch->y2==y1)
       return ch;
   }
 

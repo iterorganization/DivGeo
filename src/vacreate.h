@@ -62,6 +62,7 @@ XtPointer GetUserData(Widget wg);
 
 int SetOptionMenuValue(Widget wOptionMenu,XtPointer value);
 XtPointer GetOptionMenuValue(Widget wOptionMenu);
+void SetOptionMenuItems(Widget wMenu,int count,XmString* items,XtPointer* vals);
 
 void SetXmStringValue(Widget wg,String resource,String value);
 #define SetMessageString(wg,value)\
@@ -69,8 +70,11 @@ SetXmStringValue((wg),XmNmessageString,(value))
 #define SetLabelString(wg,value)\
 SetXmStringValue((wg),XmNlabelString,(value))
 
+int IsXmTextEmpty(Widget wText);
 int GetXmTextInt(Widget wText);       /* Returns MAXINT on error */
 double GetXmTextDouble(Widget wText); /* Returns MAXDOUBLE on error */
+
+int GetXmListSelPos(Widget wList);
 
 /* Formatting *********************************************************/
 

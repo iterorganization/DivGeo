@@ -23,7 +23,7 @@ Widget OpenNewPrefsFileDlg(View w,int bUsePrefsFile) {
     s=GetUserPrefsString(w->xapp,PSTR_PREFSPRESENT);
     if (strcmp(s,PVAL_PREFSPRESENT)) {
       fprintf(stderr,"Failure to initialize the preferences file '%s'\n",
-	  GetUserPrefsFileName(w->xapp));
+          GetUserPrefsFileName(w->xapp));
       exit(1);
     }
   }
@@ -75,8 +75,8 @@ Widget OpenNewVersionDlg(View w,int bOnlyIfNeeded) {
     XtAddCallback(wDlg,XmNokCallback,CbNewVersionOk,(XtPointer)w);
     XtAddCallback(wDlg,XmNhelpCallback,CbHelp,(XtPointer)w);
     SetMessageString(wDlg,GetResourceStringEx(wDlg,"messageStringEx",
-	NULL,"$(OLDVERSION)%s$(VERSION)%s",
-	GetVersionStr(lastVersion),GetVersionStr(newVersion)));
+        NULL,"$(OLDVERSION)%s$(VERSION)%s",
+        GetVersionStr(lastVersion),GetVersionStr(newVersion)));
     XtManageChild(wDlg);
   } else XtPopup(XtParent(wDlg),XtGrabNone);
 

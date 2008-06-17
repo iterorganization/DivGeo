@@ -47,7 +47,7 @@ void* FreeXApp(XApp xap) {
 
 
 char* XAppStr(XApp xap,int id) {
-  return xap->stringSource==NULL? 
+  return xap->stringSource==NULL?
       "(null)" : xap->stringSource->GetStringProc(xap->stringSource,id);
 }
 

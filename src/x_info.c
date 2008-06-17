@@ -36,8 +36,14 @@ Widget OpenAboutDlg(View w) {
 }
 
 static void UpdateInfoDlg(InfoDlg dlg) {
-  char s[DG_FNAME_LEN*2];
+  char s[DG_FNAME_LEN*2],buf[1024];
   XmString xms;
+  SurfaceEx sx;
+  SurfaceZone sz;
+  GridPointSeg gps;
+  GridPointEx gpx;
+  Index ixsz,ixsx;
+  int n;
 
   if (dlg->w->app==NULL) return;
 
@@ -55,19 +61,9 @@ static void UpdateInfoDlg(InfoDlg dlg) {
   sprintf(s,"%d",GetUnusedNumberCount(dlg->w->app));
   SetLabelString(dlg->wUnusedNumbers,s);
 
-  if (dlg->w->app->equil!=NULL && dlg->w->app->equil->signInside) {
-    sprintf(s,"%d%s %d%s %d%s",
-      CountSurfaces(dlg->w->app,1),GetStr(dlg->w,STR_SURFAREA0),
-      CountSurfaces(dlg->w->app,2),GetStr(dlg->w,STR_SURFAREA1),
-      CountSurfaces(dlg->w->app,3),GetStr(dlg->w,STR_SURFAREA2));
-  } else sprintf(s,"%d",GroupCount(dlg->w->app->surfaces));
-  SetLabelString(dlg->wSurfaces,s);
+  SetLabelString(dlg->wSurfaces,GetSurfacesStatsStr(dlg->w->app));
 
-  sprintf(s,"%d%s %d%s %d%s",
-    CountGridPoints(dlg->w->app,0),GetStr(dlg->w,STR_GRPOINTAREA0),
-    CountGridPoints(dlg->w->app,1),GetStr(dlg->w,STR_GRPOINTAREA1),
-    CountGridPoints(dlg->w->app,2),GetStr(dlg->w,STR_GRPOINTAREA2));
-  SetLabelString(dlg->wGridPoints,s);
+  SetLabelString(dlg->wGridPoints,GetGridPointStatsStr(dlg->w->app));
 
   sprintf(s,"%d",GroupCount(dlg->w->app->separators));
   SetLabelString(dlg->wSeparators,s);
