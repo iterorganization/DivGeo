@@ -3,7 +3,6 @@
 SHELL=/bin/sh
 DG=$(OBJECTCODE)/dg
 VPATH=src
-MASTER=kk
 
 include LISTOBJ
 
@@ -46,11 +45,9 @@ listobj:
 	@P=`pwd`; cd src ; rm -f $${P}/LISTOBJ; touch $${P}/LISTOBJ; \
 	echo "OBJS =" *.c | sed -e 's/ [^ /]*\// /g' -e 's/\.c/.o/g' -e 's/res2fbr\.o//g' > $${P}/LISTOBJ
 
-files:
-	@rm src/*; cp $(MASTER)/*.c $(MASTER)/*.h $(MASTER)/dg.dgh $(MASTER)/divgeo.res src; cd src; rm pc_* bgi_* 1.c; true
-
 ${OBJECTCODE}/dependencies:
 	-mkdir ${OBJECTCODE}
+	-cd ${OBJECTCODE} ; ln -s ../src/dg.dgh ../dg.dgc .
 	touch ${OBJECTCODE}/dependencies
 	${MAKE} depend
 
