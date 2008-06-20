@@ -1,84 +1,0 @@
-
-src/cropequ.f,31
-      subroutine crop(81,2499
-
-src/culham.f,33
-      subroutine double(66,1932
-
-src/dg2dg.f,33
-      subroutine double(84,2802
-
-src/pt2dg.f,140
-      SUBROUTINE TRINWT 428,19629
-      SUBROUTINE BPOLRZ 509,23955
-      SUBROUTINE WBPOLRZ599,28230
-      subroutine wreqdg(633,29729
-
-src/rdefit.f,29
-      subroutine rdefit(1,0
-
-src/rdeqdg.f,29
-      subroutine rdeqdg(1,0
-
-src/rdeqjh.f,29
-      subroutine rdeqjh(1,0
-
-src/rdeqjt.f,29
-      subroutine rdeqdg(1,0
-
-src/rdeqlh.f,29
-      subroutine rdeqlh(1,0
-
-src/rdeqnk2.f,30
-      subroutine rdeqnk2(1,0
-
-src/rdeqnk.f,29
-      subroutine rdeqnk(1,0
-
-src/rdeqpb.f,29
-      subroutine rdeqpb(1,0
-
-src/rdeqvr.f,29
-      subroutine rdeqvr(1,0
-
-src/shotfile2dg.f,40
-      integer function lnblnk(111,3106
-
-src/wrefit.f,29
-      subroutine wrefit(1,0
-
-src/wreqdg.f,29
-      subroutine wreqdg(1,0
-
-src/wreqvr.f,29
-      subroutine wreqvr(1,0
-
-src/vr2dg.f,0
-
-src/sst2dg.f,0
-
-src/risepsi.f,0
-
-src/prinequ.f,0
-
-src/pb2dg.f,0
-
-src/nkn2dg.f,0
-
-src/nk2dg.f,0
-
-src/jt2dg.f,0
-
-src/ef2dg.f,0
-
-src/diva2dg.f,0
-
-src/dg_proc_dg.f,0
-
-src/dg_minuspsi_dg.f,0
-
-src/dg_arith_dg.f,0
-
-src/dg2vr.f,0
-
-src/dg2ef.f,0
