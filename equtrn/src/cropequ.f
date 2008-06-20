@@ -1,3 +1,13 @@
+!> Crop the equilibrium
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> reads data from standard input
+!>
+!> \version 21.07.2000 16:44
+
       program cropequ
 c
 c  version : 21.07.2000 16:44
@@ -7,23 +17,15 @@ c
       parameter (ngpr=257, ngpz=257)
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real*8 rcntc,psimin,psilim,btorc,rmin,rmax,zmin,zmax
-      integer i,j,nr,nz,nrn,nzn,iret,iargc
+      integer i,j,nr,nz,nrn,nzn,iret
       logical err
-      character*256 filename
 c      character tab    !###
 c----------------------------------------------------------------------
 
 c      tab=char(9)      !###
 
-      if(iargc().ne.2) then
-        write(*,*) '1st arg == input dg equilibrium file'
-        write(*,*) '2nd arg == output dg equilibrium file'
-        write(*,*) 'Input   == nr, Rmin, Rmax, nz, Zmin, Zmax'
-        stop
-      endif
+      call open_files('Input   == nr, Rmin, Rmax, nz, Zmin, Zmax')
 
-      call getarg(1,filename)
-      open(1,file=filename)
       call rdeqdg(1,ngpr,ngpz,iret, nr,nz,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== dg2dg: error in rdeqdg. iret =',iret
@@ -68,8 +70,7 @@ c      tab=char(9)      !###
       call crop(pfm,ngpr,ngpz,rgr,nr,zgr,nz,nrn,rmin,rmax,nzn,zmin,zmax)
 
       psilim=0
-      call getarg(2,filename)
-      open(2,file=filename)
+
       call wreqdg(2,ngpr,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== dg2dg: error in wreqdg. iret = ',iret

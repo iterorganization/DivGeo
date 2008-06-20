@@ -1,18 +1,27 @@
+!> Shift of the magnetic flux by a specified increment
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> shift is read in from standard input
+!>
+!> \version  30.01.96 21:58
+
       program risepsi
 c
 c  version : 30.01.96 21:58
 c
 c=====================================================
 c*** Shift of the magnetic flux by a specified increment
-c***
-c*** The input and output files must be pre-connected to the units
-c*** fort.1 and fort.2; the increment is taken from the standard input.
 c=====================================================
       parameter (ngpr=257, ngpz=257)
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real*8 rcntc,psilim,btorc,shift
 c=====================================================
 c
+      call open_files('the increment is taken from the standard input')
+
       call rdeqdg(1,ngpr,ngpz,iret,nr,nz,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== risepsi: error in rdeqdg. iret =',iret

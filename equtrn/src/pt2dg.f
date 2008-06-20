@@ -1,3 +1,7 @@
+!> Conversion of equilibrium file produced with PROTEUS into DG format
+!> (courtesy Prof. O. de Barbieri)
+!> \version 02.11.2000 23:25
+
       program pt2dg
 
 c  version : 02.11.2000 23:25
@@ -629,7 +633,8 @@ c
 c                                                        
       END                                                               
 
-
+!> Write the equilibrium data in the dg-compatible format.
+!> \version 23.06.97 17:23
       subroutine wreqdg(lun,ngpr,ngpz,iret, nr,nz, psib,
      ,                                             btf,rtf,rgr,zgr,pfm)
 c=====================================================

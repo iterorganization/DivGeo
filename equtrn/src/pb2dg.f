@@ -1,3 +1,11 @@
+!> Translation of equilibrium data from P. Barabasci into dg-compatible format
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> \version  02.09.99 19:37
+
       program pb2dg
 c
 c  version : 02.09.99 19:37
@@ -5,9 +13,6 @@ c
 c======================================================================
 c*** Translation of equilibrium data from P. Barabasci
 c*** into dg-compatible format
-c***
-c*** The input and output files must be pre-connected to the units
-c*** fort.1 and fort.2
 c======================================================================
       parameter (ngpr=257, ngpz=513)
       real*8 fg(ngpr),pg(ngpr),ffg(ngpr),ppg(ngpr)
@@ -16,6 +21,8 @@ c======================================================================
       parameter (pi=3.1415926535898)
 c======================================================================
 c
+      call open_files('')
+
       call rdeqpb(1,ngpr,ngpz, iret,nr,nz,btorc,psilim,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== pb2dg: error in rdeqpb. iret =',iret

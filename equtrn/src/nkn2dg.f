@@ -1,18 +1,25 @@
-      program nk2dg
+!> Translation of equilibrium data from Naka to dg-compatible format
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> \version  2006-09-19
+
+      program nkn2dg
 c
 c  version : 2006-09-19 
 c
 c=====================================================
 c*** Translation of equilibrium data from Naka to dg-compatible format
-c***
-c*** The input and output files must be pre-connected to the units
-c*** fort.1 and fort.2
 c=====================================================
       parameter (ngpr=257, ngpz=257)
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real*8 rmin,zmin,rmax,zmax,delr,delz,psilim,btorc,rcntc,fg
 c=====================================================
 c
+      call open_files('')
+
       call rdeqnk2(1,ngpr,ngpz,iret, nr,nz,
      ,           rmin,zmin,rmax,zmax,delr,delz,psilim,
      ,           btorc,rcntc,fg,pfm,rgr,zgr)

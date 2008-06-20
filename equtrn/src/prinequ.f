@@ -1,3 +1,10 @@
+!> Printout of dg-compatible equilibrium data in a table
+!>
+!> The file is read from standard input and the result sent to the
+!> standard output
+!>
+!> \version 02.09.99 14:21
+
       program prinequ
 c
 c  version : 02.09.99 14:21
@@ -18,7 +25,7 @@ c
       page=char(12)
 c      call date2(date)
       call date_and_time(date)
-      call rdeqdg(1,ngpr,ngpz,iret, nr,nz,btorc,rcntc,rgr,zgr,pfm)
+      call rdeqdg(5,ngpr,ngpz,iret, nr,nz,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== dg2ef: error in rdeqdg. iret =',iret
           stop

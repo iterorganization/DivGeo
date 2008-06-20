@@ -1,12 +1,17 @@
+!> Translation of efit equilibrium data into dg-compatible format
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> \version  09.07.97 17:14
+
       program jt2dg
 c
 c  version : 09.07.97 17:14
 c
 c=====================================================
 c*** Translation of efit equilibrium data into dg-compatible format
-c***
-c*** The input and output files must be pre-connected to the units
-c*** fort.1 and fort.2, and the field data to the fort.3
 c=====================================================
       parameter (ngpr=257, ngpz=257)
       real*8 fg(ngpr),pg(ngpr),ffg(ngpr),ppg(ngpr)
@@ -15,6 +20,8 @@ c=====================================================
       character title*40, date*8
 c=====================================================
 c
+      call open_files('')
+
       call rdeqdg(1,ngpr,ngpz,iret, nr,nz,
      ,                                  psilim,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then

@@ -1,12 +1,20 @@
+!> Translation of efit equilibrium data into dg-compatible format
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> This is a special variant of the standard efit-to-dg converter for
+!> SST where some information is hard-coded!
+!>
+!> \version 16.11.95 20:04
+
       program sst2dg
 c
 c  version : 16.11.95 20:04
 c
 c=====================================================
 c*** Translation of efit equilibrium data into dg-compatible format
-c***
-c*** The input and output files must be pre-connected to the units
-c*** fort.1 and fort.2, and the field data to the fort.3
 c=====================================================
       parameter (pi=3.14159 26535 89793)
       parameter (ngpr=257, ngpz=257, ngpf=257)
@@ -16,16 +24,10 @@ c=====================================================
       real*8 pfm(ngpr,ngpz)
       real*8 rcntc,btorc
       real*8 Bt,derivative(6)
-      character*256 filename
 c=====================================================
 c
-      if(iargc().ne.2) then
-	write(*,*) '1st arg == sst eq file'
-	write(*,*) '2nd arg == output dg equilibrium file'
-	stop
-      endif
-      call getarg(1,filename)
-      open(1,file=filename)
+      call open_files('')
+
       ngr=65
       ngz=65
       zfac=-0.005
@@ -41,8 +43,7 @@ c
       rcntc=1.1
 c
       print *,'psilim = ',psilim
-      call getarg(2,filename)
-      open(2,file=filename)
+
       call wreqdg(2,ngpr,iret,ngr,ngz,psilim,
      1 btorc,rcntc,gpr,gpz,pfm)
       if(iret.ne.0) then

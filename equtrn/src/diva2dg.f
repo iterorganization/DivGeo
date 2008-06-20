@@ -1,12 +1,17 @@
-      program ef2dg
+!> Translation of Diva equilibrium data into dg-compatible format
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> \version  16.11.95 20:04
+
+      program diva2dg
 c
 c  version : 16.11.95 20:04
 c
 c=====================================================
 c*** Translation of efit equilibrium data into dg-compatible format
-c***
-c*** The input and output files must be pre-connected to the units
-c*** fort.1 and fort.2, and the field data to the fort.3
 c=====================================================
       parameter (pi=3.14159 26535 89793)
       parameter (ngpr=257, ngpz=257, ngpf=257)

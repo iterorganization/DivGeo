@@ -1,12 +1,17 @@
+!> Translation of dg-compatible equilibrium data into efit format
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> \version  02.09.99 14:19
+
       program dg2ef
 c
 c  version : 02.09.99 14:19
 c
 c=====================================================
 c*** Translation of dg-compatible equilibrium data into efit format
-c***
-c*** The input and output files must be pre-connected to the units
-c*** fort.1 and fort.2, and the field data to the fort.3
 c=====================================================
       parameter (ngpr=129, ngpz=257)
       real*8 fg(ngpr),pg(ngpr),ffg(ngpr),ppg(ngpr)
@@ -18,6 +23,9 @@ c=====================================================
 c
 c      call date2(date)
       call date_and_time(date)
+
+      call open_files('')
+
       call rdeqdg(1,ngpr,ngpz,iret, nr,nz,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== dg2ef: error in rdeqdg. iret =',iret

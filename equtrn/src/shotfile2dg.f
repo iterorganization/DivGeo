@@ -1,3 +1,21 @@
+!> Translation of the AUG shotfile equilibrium data into dg-compatible format
+!>
+!> 1st arg == shot number
+!>
+!> 2nd arg == time
+!>
+!> [3rd arg == diagnostic (EQI)]
+!>
+!> [4th arg == experiment (AUGD)]
+!>
+!> [5th arg == edition (0)]
+!>
+!> The output filename is derived from the shot, time, experiment, diagnostic and edition
+!>
+!> Specific AUG library routines are used to access the data
+!>
+!> \version 16.11.95 20:04
+
       program shotfile2dg
 c
 c  version : 16.11.95 20:04

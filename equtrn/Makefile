@@ -5,21 +5,22 @@ INCLUDE =
 
 ALL = cropequ dg2dg dg2ef ef2dg vr2dg nk2dg dg2vr risepsi prinequ jt2dg pb2dg pt2dg
 
-creq =  cropequ.o rdeqdg.o wreqdg.o rdeqlh.o
-dgdg =	dg2dg.o rdeqdg.o wreqdg.o rdeqlh.o
+creq =  cropequ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
+dgdg =	dg2dg.o rdeqdg.o wreqdg.o rdeqlh.o double.o open_files.o
 dgminuspsidg =	dg_minuspsi_dg.o rdeqdg.o wreqdg.o rdeqlh.o
-dgef =	dg2ef.o rdeqdg.o wrefit.o rdeqlh.o
-efdg =	ef2dg.o wreqdg.o rdefit.o
-vrdg =	vr2dg.o wreqdg.o rdeqvr.o
-nkdg =	nk2dg.o wreqdg.o rdeqnk.o
+dgef =	dg2ef.o rdeqdg.o wrefit.o rdeqlh.o open_files.o
+efdg =	ef2dg.o wreqdg.o rdefit.o open_files.o
+vrdg =	vr2dg.o wreqdg.o rdeqvr.o open_files.o
+nkdg =	nk2dg.o wreqdg.o rdeqnk.o open_files.o
 nkndg =  nkn2dg.o wreqdg.o rdeqnk2.o
-jtdg =	jt2dg.o rdeqjt.o wreqdg.o rdeqjh.o
-dgvr =	dg2vr.o rdeqdg.o wreqvr.o rdeqlh.o
-rsps =	risepsi.o rdeqdg.o wreqdg.o rdeqlh.o
+jtdg =	jt2dg.o rdeqjt.o wreqdg.o rdeqjh.o open_files.o
+dgvr =	dg2vr.o rdeqdg.o wreqvr.o rdeqlh.o open_files.o
+rsps =	risepsi.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
 preq =	prinequ.o rdeqdg.o rdeqlh.o
-pbdg =	pb2dg.o rdeqpb.o wreqdg.o
+pbdg =	pb2dg.o rdeqpb.o wreqdg.o open_files.o
 ptdg =	pt2dg.o
-culham = culham.o rdefit.o wreqdg.o
+culham = culham.o rdefit.o wreqdg.o open_files.o double.o
+sstdg = sst2dg.o wreqdg.o open_files.o
 shotfile2dg = shotfile2dg.o wreqdg.o
 
 include config/compiler.${OBJECTCODE}
@@ -41,6 +42,7 @@ JTDG = $(jtdg:%.o=$(OBJECTCODE)/%.o)
 PBDG = $(pbdg:%.o=$(OBJECTCODE)/%.o)
 PTDG = $(ptdg:%.o=$(OBJECTCODE)/%.o)
 CULHAM = $(culham:%.o=$(OBJECTCODE)/%.o)
+SSTDG = $(sstdg:%.o=$(OBJECTCODE)/%.o)
 SHOTFILE2DG = $(shotfile2dg:%.o=$(OBJECTCODE)/%.o)
 
 $(OBJECTCODE)/%.o : %.f
@@ -61,6 +63,9 @@ ${OBJECTCODE}/dg2dg: $(DGDG)
 	if [ -d ${SOLPSTOP}/src/bin/${OBJECTCODE} ]; then ln -sf ${PWD}/${OBJECTCODE}/dg2dg ${SOLPSTOP}/src/bin/${OBJECTCODE}; fi
 
 ${OBJECTCODE}/culham: $(CULHAM)
+	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+
+${OBJECTCODE}/sst2dg: $(SSTDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJECTCODE}/dg2ef: $(DGEF)
@@ -115,6 +120,8 @@ depend: ${OBJS:.o=.f}
 	mv ${OBJECTCODE}/dependencies ${OBJECTCODE}/dependencies.bak
 	sed -e '3,$$s/^/${OBJECTCODE}\//' ${OBJECTCODE}/dependencies.bak > ${OBJECTCODE}/dependencies
 
+LISTOBJ: listobj
+
 listobj:
 	@cd src ; echo "OBJS =" *.f | sed -e 's/ [^ /]*\// /g' -e 's/\.f/.o/g' > ../LISTOBJ
 
@@ -124,4 +131,8 @@ ${OBJECTCODE}/dependencies:
 	${MAKE} depend
 
 include ${OBJECTCODE}/dependencies
+
+DOC:
+	doxygen
+
 

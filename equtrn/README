@@ -1,0 +1,336 @@
+2008.06.20: DPC
+
+1/ modified the src for doxygen
+2/ switched to reading in the filenames as arguments to the programs 
+   --- might not have every case working properly!
+3/ separated out some utility routines
+
+=========================================================================================
+
+src/cropequ.f:
+
+!> Crop the equilibrium
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> reads data from standard input
+!>
+!> \version 21.07.2000 16:44
+
+      program cropequ
+
+--
+
+src/culham.f:
+
+!> Translation of efit equilibrium data into dg-compatible format
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> This is a special variant of the standard efit-to-dg converter for
+!> Culham.  A number of columns of the flux matrix are removed, and
+!> the resolution is quadrupled in each direction using splines.
+!>
+!> \version  16.11.95 20:04
+
+      program culham
+
+--
+
+src/dg2dg.f:
+
+!> Refine the equilibrium a factor of 2 in both directions using splines
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> \version  16.01.2001 16:55
+
+      program dg2dg
+
+--
+
+src/dg2ef.f:
+
+!> Translation of dg-compatible equilibrium data into efit format
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> \version  02.09.99 14:19
+
+      program dg2ef
+
+--
+
+src/dg2vr.f:
+
+!> Translation of TdeV equilibrium data into dg-compatible format
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> \version  30.01.96 21:59
+
+      program dg2vr
+
+--
+
+src/dg_arith_dg.f:
+
+!> Shift of the magnetic flux by a specified increment
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> In this case, the values of alpha and beta are read in and the flux is transformed as
+!>
+!> pfm(i,j)=pfm(i,j)+alpha*zgr(j)+beta
+!>
+!> \version  30.01.96 21:58
+
+      program dg_arith_dg
+
+--
+
+src/dg_minuspsi_dg.f:
+
+!> Change the sign of the flux
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> \version  30.01.96 21:58
+
+      program dg_minuspsi_dg
+
+--
+
+src/dg_proc_dg.f:
+
+!> do arbitrary re-processing of the equilibrium --- in this case chop off the first few columns
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> \version  30.01.96 21:58
+
+      program dg_proc_dg
+
+--
+
+src/diva2dg.f:
+
+!> Translation of Diva equilibrium data into dg-compatible format
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> \version  16.11.95 20:04
+
+      program diva2dg
+
+--
+
+src/double.f:
+
+!> use splines to refine the equilibrium
+      subroutine double(pfm,ngpr,ngpz,rgr,nr,zgr,nz)
+
+
+--
+
+src/ef2dg.f:
+
+!> Translation of efit equilibrium data into dg-compatible format
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> \version  16.11.95 20:04
+
+      program ef2dg
+
+--
+
+src/jt2dg.f:
+
+!> Translation of efit equilibrium data into dg-compatible format
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> \version  09.07.97 17:14
+
+      program jt2dg
+
+--
+
+src/nk2dg.f:
+
+!> Translation of equilibrium data from Naka to dg-compatible format
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> \version  16.01.96 19:48
+
+      program nk2dg
+
+--
+
+src/nkn2dg.f:
+
+!> Translation of equilibrium data from Naka to dg-compatible format
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> \version  2006-09-19
+
+      program nkn2dg
+
+--
+
+src/open_files.f:
+
+!> utility routine for opening files
+!>
+!> argument 1 to the program (via getarg) is attached to file unit 1
+!> argument 2 to the program (via getarg) is attached to file unit 2
+      subroutine open_files(outstring)
+
+
+--
+
+src/pb2dg.f:
+
+!> Translation of equilibrium data from P. Barabasci into dg-compatible format
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> \version  02.09.99 19:37
+
+      program pb2dg
+
+--
+
+src/prinequ.f:
+
+!> Printout of dg-compatible equilibrium data in a table
+!>
+!> The file is read from standard input and the result sent to the
+!> standard output
+!>
+!> \version 02.09.99 14:21
+
+      program prinequ
+
+--
+
+src/pt2dg.f:
+
+!> Conversion of equilibrium file produced with PROTEUS into DG format
+!> (courtesy Prof. O. de Barbieri)
+!> \version 02.11.2000 23:25
+
+      program pt2dg
+
+--
+
+src/pt2dg.f:
+
+!> Write the equilibrium data in the dg-compatible format.
+!> \version 23.06.97 17:23
+      subroutine wreqdg(lun,ngpr,ngpz,iret, nr,nz, psib,
+     ,                                             btf,rtf,rgr,zgr,pfm)
+
+--
+
+src/risepsi.f:
+
+!> Shift of the magnetic flux by a specified increment
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> shift is read in from standard input
+!>
+!> \version  30.01.96 21:58
+
+      program risepsi
+
+--
+
+src/shotfile2dg.f:
+
+!> Translation of the AUG shotfile equilibrium data into dg-compatible format
+
+!>
+!> 1st arg == shot number
+!>
+!> 2nd arg == time
+!>
+!> [3rd arg == diagnostic (EQI)]
+!>
+!> [4th arg == experiment (AUGD)]
+!>
+!> [5th arg == edition (0)]
+!>
+!> The output filename is derived from the shot, time, experiment,
+ition
+!>
+!> Specific AUG library routines are used to access the data
+!>
+!> \version 16.11.95 20:04
+
+      program shotfile2dg
+
+--
+
+src/sst2dg.f:
+
+!> Translation of efit equilibrium data into dg-compatible format
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> This is a special variant of the standard efit-to-dg converter for
+!> SST where some information is hard-coded!
+!>
+!> \version 16.11.95 20:04
+
+      program sst2dg
+
+--
+
+src/vr2dg.f:
+
+!> Translation of TdeV equilibrium data into dg-compatible format
+!>
+!> arg1: input equilibrium file name
+!>
+!> arg2: output equilibrium file name
+!>
+!> \version 16.11.95 20:04
+
+      program vr2dg
