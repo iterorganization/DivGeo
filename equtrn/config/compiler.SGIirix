@@ -1,0 +1,14 @@
+#  VERSION : 29.05.95 20:00
+
+# File compiler.macro for SGI f77
+
+FC       = f77
+FFLAGS   = -static -r8 -O2 -nocpp
+COMPILE  = ${FC} -c ${FFLAGS}
+CPP	 = /lib/cpp
+
+LDLIBS    = -L${SOLPSTOP}/src/lib/${OBJECTCODE} -L/afs/ipp-garching.mpg.de/@sys/lib -L/usr/local/lib -L/usr/lpp/xlC/lib
+LDFLAGS   =-lnag -lslap -lmach -lblas -lxersla -lmscl -lsonnet -lnagblas -lC -ldumsgi ${SOLPS_LIBS}
+LDEXTRA	 =
+
+# LDUMLIB = -lnagblas -lC

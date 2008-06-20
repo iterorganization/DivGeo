@@ -1,0 +1,13 @@
+#  VERSION : 19.07.2000 00:40
+
+# File compiler.macro for Fujitsu f95f
+
+FC       = f95f
+FFLAGS   = -Am -X9 -fw -Kfast,eval -x- -O
+COMPILE  = ${FC} -c ${FFLAGS}
+CPP	 = /lib/cpp -C -traditional
+
+#LDLIBS    = -L${SOLPSTOP}/src/lib/${OBJECTCODE} -L/usr/local/lib -L/usr/lpp/xlC/lib
+LDLIBS    = -L${SOLPSTOP}/src/lib/${OBJECTCODE} -L/usr/local/lib
+LDFLAGS   = -lmscl -lnag
+LDEXTRA	 =

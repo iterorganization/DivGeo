@@ -1,0 +1,2 @@
+#! /bin/tcsh
+`dirname $0`/$OBJECTCODE/dg2dg $1 $2

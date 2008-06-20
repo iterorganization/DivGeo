@@ -1,0 +1,13 @@
+#  VERSION : 28.08.98 10:15
+
+# File compiler.macro for HPUX FORTRAN compiler
+
+FC       = f77
+FFLAGS 	 = -g -C +FPOZV
+FFLAGS   = +O3 -R8 
+COMPILE  = ${FC} -c ${FFLAGS}
+CPP	 = /lib/cpp
+
+LDLIBS    = -Wl,-L${SOLPSTOP}/src/lib/${OBJECTCODE} -Wl,-L/usr/local/lib
+LDFLAGS   = -lmscl ${SOLPS_LIBS}
+LDEXTRA	 =

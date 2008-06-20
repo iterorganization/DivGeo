@@ -1,0 +1,11 @@
+
+# File compiler.macro for IBM xlf
+
+FC	= f77
+CPP	= /usr/ucb/cpp -DNOB2GXDR
+FFLAGS	= -r8 -i4 -fast
+COMPILE	= ${FC} -c ${FFLAGS}
+
+LDLIBS	= -L${SOLPSTOP}/src/lib/${OBJECTCODE} -L${SOLPSMASTER}/@sys/lib -L/usr/local/lib -L${SOLPSMASTER}/@sys/lib
+LDFLAGS   =-lblas -lnag -lslap -lmmach -lxersla -lsonnet3.1 -lnetcdf
+

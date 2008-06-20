@@ -1,0 +1,14 @@
+#! /bin/ksh
+
+#  VERSION : 30.01.96 21:48
+
+Name=`basename $0`
+Usage="$Name: increase of the psi values by an increment (DG format)
+Usage: $Name in-file out-file increment
+"
+
+[ $# -lt 3 ] && { echo "$Usage"; exit; }
+[ -r $1 ] || { echo "File $1 is absent\n"; echo "$Usage"; exit; }
+rm -f fort.2 > /dev/null
+ln -sf $1 fort.1
+echo "$3" | $OBJECTCODE/risepsi && { mv fort.2 $2; rm -f fort.1; }

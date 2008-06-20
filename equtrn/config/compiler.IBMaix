@@ -1,0 +1,16 @@
+#  VERSION : 16.01.96 19:05
+
+# File compiler.macro for IBM xlf
+
+FC       = xlf
+FFLAGS 	 = -g -C -qflttrap=enable:overflow:zerodivide:invalid -qsigtrap -qfloat=nofold:nohssngl
+FFLAGS   = -O -qMAXMEM=-1 -qST_SIZE=5000 -qTKQ_SIZE=30000 -qAUX_SIZE=50000 -qrealsize=8 -qextchk -qfloat=rsqrt:hssngl:fltint # -Q -qipa -qattr=full -qhot
+FFLAGS   = -O
+COMPILE  = ${FC} -c ${FFLAGS}
+CPP	 = /lib/cpp
+
+LDLIBS    = -L${SOLPSTOP}/src/lib/${OBJECTCODE} -L/usr/local/lib -L/usr/lpp/xlC/lib
+LDFLAGS   =-lmscl ${SOLPS_LIBS}
+LDEXTRA	 =
+
+LDWOS =  -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt

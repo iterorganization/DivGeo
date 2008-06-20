@@ -1,0 +1,9 @@
+FC = f95f
+FFLAGS = -g
+COMPILE  = ${FC} -c ${FFLAGS}
+CPP	 = /lib/cpp -traditional
+
+LDLIBS    = -L${SOLPSTOP}/src/lib/${OBJECTCODE}
+LDFLAGS   =-lmscl ${SOLPS_LIBS}
+
+LDWOS =  -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
