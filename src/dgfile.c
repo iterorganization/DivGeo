@@ -822,7 +822,7 @@ static int ReadApp_File(App a,FILE* f,int* ef) {
     if (sscanf(s,"SurfacesEx114 %u",&n)==1) for (k=0;k<n;k++) {
        fgets(s,sizeof(s)-1,f);
        if (sscanf(s,"%d"SCANFLT""SCANFLT""SCANFLT"%s",
-           &i1,&f1,&f2,&f3,s1)==5) {
+           &i1,&f1,&f2,&f3,s1)==5 && a->equil!=NULL) {
          if (i1!=SZN_XY) sx=AddSurfaceEx(a,i1,f1,NULL);
          else sx=AddSurfaceExXY(a,f2,f3,NULL);
          if (sx==NULL) {*ef|=DGFE_NEQUIL;goto badSX;}

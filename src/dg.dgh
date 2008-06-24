@@ -1,6 +1,6 @@
 0123456789012345678901234567890123456789
 
-DivGeo help file v200 BETA
+DivGeo help file v211 BETA
 ----------------------------
 
 Main window
@@ -2498,6 +2498,12 @@ Version 2.1, December 14, 2007 (work by Alan Chin)
   - For visualizing chords with toroidal extent.
 
 - Added a "filename" variable field.
+
+Version 2.01, March 04, 2004 BETA
+------------------------------------
+
+- New: the mesh filename is added to the *.trg output file
+
 
 Version 2.0, October 12, 1998 BETA
 ------------------------------------

@@ -17,7 +17,7 @@
 #include <pthread.h>
 
 #define DG_FNAME_LEN 256
-#define DG_VERSION 21000
+#define DG_VERSION 21100
 
 #ifdef PC_VERSION
 
