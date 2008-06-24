@@ -2619,16 +2619,16 @@ Vars110 3
 Press ? for Help
 0
 trirect
-Mesh Refinment Zone
+Mesh Refinement Zone
 text101 0
 0 100
 VarDefs102 3
 Help
 Help
 text101 4
-Zone defintion to set up refinment parameter for the TRIA mesh.
+Zone definition to set up refinement parameter for the TRIA mesh.
 In fact only the min and max coordinates of the ends of the 
-specifed elemets are used. 
+specified elements are used. 
 Elements should belong to the set of 'Elements not for Eirene'!
 Text +n-m-S-s-h-i 0 0
 EnumText102
@@ -2643,9 +2643,9 @@ text101 0
 trirflis
 Region identification
 text101 5
-Elements to define the refinment zone which is a rectangle. 
+Elements to define the refinement zone which is a rectangle. 
 Only the min and max coordinates of the ends of the 
-specifed elemets are used. 
+specified elements are used. 
 
 Elements should belong to the 'Elements not for Eirene'!
 Elems -n-m-S-s-h-i 0 2
