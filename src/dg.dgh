@@ -39,7 +39,7 @@ window by moving the scroll bars. You
 can also resize the help window using
 the window manager.
 
-To close the help window, choose it's
+To close the help window, choose its
 Window|Close menu command or simply
 press Escape with the help window
 active. Also, you can use the window
@@ -63,7 +63,7 @@ manual, issue the Help|Manual menu
 command from the main window.
 
 To display help on a dialog box, press
-it's Help button. If there is no Help
+its Help button. If there is no Help
 button, press F1 with the mouse inside
 the dialog.
 
@@ -109,7 +109,7 @@ preferences file is
 
 New version dialog box
 
-DG writes it's version into the
+DG writes its version into the
 preferences file. On startup, the
 current version of DG is compared to the
 version last written to the preferences.
@@ -151,7 +151,7 @@ Save... dialog box
 Use this dialog box to save the file in
 the current window.
 
-To save the file, specify it's name in
+To save the file, specify its name in
 the Selection text field and press Save.
 
 To overwrite an existing file, select it
@@ -231,7 +231,7 @@ mesh as a mesh file, normally after
 modifying it in DG.
 
 In order to export the mesh as a new
-file, specify it's name in the Selection
+file, specify its name in the Selection
 text field and press Export.
 
 In order to overwrite an existing file,
@@ -261,7 +261,7 @@ all or only marked elements should be
 exported.
 
 In order to create a new template file,
-specify it's name in the Selection text
+specify its name in the Selection text
 field and press Export.
 
 In order to overwrite an existing file,
@@ -372,8 +372,8 @@ Create point at... dialog box
 Use this dialog box to create a point at
 a specific location.
 
-To create a point, specify it's X
-coordinate in the X: field, it's Y
+To create a point, specify its X
+coordinate in the X: field, its Y
 coordinate in the Y: field. Then press
 Create.
 
@@ -386,8 +386,8 @@ Create source at... dialog box
 Use this dialog box to create a source
 at a specific location.
 
-To create a source, specify it's X
-coordinate in the X: field, it's Y
+To create a source, specify its X
+coordinate in the X: field, its Y
 coordinate in the Y: field. Then press
 Create.
 
@@ -401,7 +401,7 @@ Use this dialog box to create a chord at
 a specific location.
 
 To create a chord, specify coordinates
-for it's both ends. Then press Create.
+for both its ends. Then press Create.
 
 To cancel the operation, press Cancel.
 
@@ -410,7 +410,7 @@ To cancel the operation, press Cancel.
 Create surface(s)... dialog box
 
 Use this dialog box to create a surface
-by specifying it's area and level, to
+by specifying its area and level, to
 create a surface that passes through a
 specific point, and to create multiple
 surfaces at once by specifying a range
@@ -421,7 +421,7 @@ the ONLY way to create surfaces in Carre
 mode.
 
 In order to create a surface by
-specifying it's area and level, click on
+specifying its area and level, click on
 the 'Single' toggle button at the top of
 the dialog box, then on the 'By level'
 toggle button. Select the desired area
@@ -483,7 +483,7 @@ Highlight the desired surface with the
 corresponding text field will now
 contain the level of the selected
 surface, and the 'Area:' option menu
-will contain it's area. Instead of
+will contain its area. Instead of
 highlighting an existing surface, you
 can create a surface using the 'Add
 surface' tool, and immediately press the
@@ -809,7 +809,7 @@ that have invalid or no values. It also
 lets you correct these values in a very
 convenient way.
 
-To correct a variable, select it's name
+To correct a variable, select its name
 in the list box and press Show!. The
 Variables... dialog box containing this
 variable will appear and the message
@@ -954,7 +954,7 @@ separatrix section" should be the number
 of an adjacent section. "Orientation"
 specifies whether the zone is to the
 left or to the right of the base
-section, when looking into it's
+section, when looking into its
 direction. "Limiting section" can be
 used to specify the number of a limiting
 separatrix section for zones confined
@@ -993,7 +993,7 @@ Finally, there is a status line.
 
 The "^" button on top of the dialog box
 allows to "roll it up". In order to
-restore the dialog box to it's full
+restore the dialog box to its full
 size, press this button again.
 
 The dialog box can be resized using the
@@ -1006,7 +1006,7 @@ particular, the "Set all" button also
 affects variables that are invisible.
 
 For each variable, the dialog box
-contains it's name, a "?" button, a
+contains its name, a "?" button, a
 text field for entering the new value
 (for text variables) or a "Mark" button
 (for "set of objects" variables), and a
@@ -1147,7 +1147,7 @@ New layer type... dialog box
 This dialog box allows you to create a
 new layer type.
 
-To create a new layer type, type it's
+To create a new layer type, type its
 name in the text field and press Create.
 
 To cancel the operation, press Cancel.
@@ -1177,7 +1177,7 @@ will be supported, so it is advised to
 use only the first column.
 
 To modify or remove a variable, press a
-button that displays it's name. A
+button that displays its name. A
 "Variable options..." dialog box will
 appear.
 
@@ -1194,7 +1194,7 @@ New variable... dialog box
 This dialog box allows you to create a
 new variable in a specific layer type.
 
-To create a new variable, type it's
+To create a new variable, type its
 name in the text field and press Create.
 
 To cancel the operation, press Cancel.
@@ -1289,7 +1289,7 @@ The Carre output mode results in an
 output file compatible with Carre. In
 this mode, surfaces are created using a
 special distribution law, and the output
-file contains it's coefficients. This
+file contains its coefficients. This
 imposes much tougher restrictions on
 editing operations.
 
@@ -1381,7 +1381,7 @@ commands.
 
 All other buttons are used to assign
 tools to mouse buttons. To assign a
-tool, press it's button using the mouse
+tool, press its button using the mouse
 button the tool should be assigned to.
 The tools assigned to mouse buttons are
 highlighted.
@@ -1560,7 +1560,7 @@ Add Source tool
 The Add Source tool lets you create
 sources.
 
-To create a source, point to it's desired
+To create a source, point to its desired
 location and press the mouse button the
 tool is assigned to. By moving the mouse,
 you can adjust the position of the
@@ -1575,7 +1575,7 @@ The Add Chord tool allows you to create
 chords.
 
 To create a chord, move the mouse pointer
-to the desired location of it's beginning
+to the desired location of its beginning
 and press the mouse button the tool is
 assigned to. Without releasing the mouse
 button, move the mouse pointer to the
@@ -1626,7 +1626,7 @@ An equilibrium must be imported and the X
 point defined before creating grid
 points.
 
-To create a grid point, point to it's
+To create a grid point, point to its
 desired location on the separatrix and
 press the mouse button the tool is
 assigned to. By moving the mouse, you can
@@ -1719,7 +1719,7 @@ reposition the template by attaching it
 to existing points.
 
 In order to re-attach an element, point
-to one of it's ends and press the mouse
+to one of its ends and press the mouse
 button the tool is assigned to. Move the
 mouse pointer to the desired point and
 release the mouse button.
