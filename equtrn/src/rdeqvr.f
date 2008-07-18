@@ -22,11 +22,12 @@ c======================================================================
 c
 c  version : 06.02.99 20:52
 c
+      implicit none
+      integer lun, ngpr, ngpz, iret, nr,nz
       real*8 rgr(*), zgr(*), pfm(ngpr, *)
 c... toroidal field in tesla, radius in m
       real*8 btf, rtf
-      real ubtf, urtf
-      integer i
+      integer i, j
       character ul*72,uch*4
 c-----------------------------------------------------
 c

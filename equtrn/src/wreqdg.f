@@ -20,9 +20,12 @@ c=====================================================
 c
 c  version : 23.06.97 17:23
 c
+      implicit none
+      integer lun, ngpr, ngpz, iret, nr, nz
       real*8 rgr(*), zgr(*), pfm(ngpr, *)
 c... toroidal field in tesla, radius in m
       real*8 btf, rtf, psib
+      integer i, j
 c
 c***  Write the toroidal field and the corresponding radius...
 c*** -- now obsolette!

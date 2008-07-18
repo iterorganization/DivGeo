@@ -1,7 +1,8 @@
 #  VERSION : 21.10.2000 00:50
 
 VPATH = src
-INCLUDE =
+INCLUDE = 
+FINCLUDE = -I${FLUSH}/source/default/commons
 
 ALL = cropequ dg2dg dg2ef ef2dg vr2dg nk2dg dg2vr risepsi prinequ jt2dg pb2dg pt2dg
 
@@ -22,6 +23,7 @@ ptdg =	pt2dg.o
 culham = culham.o rdefit.o wreqdg.o open_files.o double.o
 sstdg = sst2dg.o wreqdg.o open_files.o
 shotfile2dg = shotfile2dg.o wreqdg.o
+jetppf2dg = jetppf2dg.o wreqdg.o
 
 include config/compiler.${OBJECTCODE}
 
@@ -44,11 +46,12 @@ PTDG = $(ptdg:%.o=$(OBJECTCODE)/%.o)
 CULHAM = $(culham:%.o=$(OBJECTCODE)/%.o)
 SSTDG = $(sstdg:%.o=$(OBJECTCODE)/%.o)
 SHOTFILE2DG = $(shotfile2dg:%.o=$(OBJECTCODE)/%.o)
+JETPPF2DG = $(jetppf2dg:%.o=$(OBJECTCODE)/%.o)
 
 $(OBJECTCODE)/%.o : %.f
 	${CPP} -P -C ${INCLUDE} $< >${OBJECTCODE}/$*.f
 #	$(COMPILE) -o ${OBJECTCODE}/$*.o $<
-	$(COMPILE) -o ${OBJECTCODE}/$*.o ${OBJECTCODE}/$*.f
+	$(COMPILE) -o ${OBJECTCODE}/$*.o ${OBJECTCODE}/$*.f ${FINCLUDE}
 #	/bin/rm ${OBJECTCODE}/$*.f
 	if [ -f $*.o ]; then /bin/mv $*.o ${OBJECTCODE}; fi
 
@@ -104,8 +107,11 @@ ${OBJECTCODE}/pt2dg: $(PTDG)
 ${OBJECTCODE}/dg_minuspsi_dg: $(DGMINUSPSIDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJECTCODE}/shotfile2dg: $(shotfile2dg)
+${OBJECTCODE}/shotfile2dg: $(SHOTFILE2DG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDWOS)
+
+${OBJECTCODE}/jetppf2dg: $(JETPPF2DG)
+	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDFLUSH)
 
 clean:
 	cd ${OBJECTCODE}; rm -rf *.o $(ALL)

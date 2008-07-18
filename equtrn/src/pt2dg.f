@@ -657,7 +657,11 @@ c=====================================================
 c
 c  version : 23.06.97 17:23
 c
-      dimension rgr(ngpr), zgr(ngpz), pfm(ngpr,ngpz)
+      implicit none
+      integer lun, ngpr, ngpz, iret, nr, nz
+      real*8 rgr(ngpr), zgr(ngpz), pfm(ngpr,ngpz),
+     &     btf, rtf, psib
+      integer i, j
 c... toroidal field in tesla, radius in m
 c         btf, rtf, psib
 c
