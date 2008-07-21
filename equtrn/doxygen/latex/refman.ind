@@ -1,0 +1,1042 @@
+\begin{theindex}
+
+  \item {apf}
+    \subitem {diva2dg}, \hyperpage{24}
+    \subitem {sst2dg}, \hyperpage{57}
+  \item {arg}
+    \subitem {JETPPF2DG}, \hyperpage{31}
+    \subitem {shotfile2dg}, \hyperpage{53}
+
+  \indexspace
+
+  \item {BPOLRZ}
+    \subitem {pt2dg.f}, \hyperpage{83}
+  \item {BR}
+    \subitem {JETPPF2DG}, \hyperpage{31}
+  \item {br}
+    \subitem {shotfile2dg}, \hyperpage{53}
+  \item {BT}
+    \subitem {JETPPF2DG}, \hyperpage{31}
+  \item {Bt}
+    \subitem {diva2dg}, \hyperpage{24}
+    \subitem {sst2dg}, \hyperpage{57}
+  \item {bt}
+    \subitem {shotfile2dg}, \hyperpage{53}
+  \item {btorc}
+    \subitem {cropequ}, \hyperpage{6}
+    \subitem {culham}, \hyperpage{8}
+    \subitem {dg2dg}, \hyperpage{11}
+    \subitem {dg2ef}, \hyperpage{13}
+    \subitem {dg2vr}, \hyperpage{16}
+    \subitem {dg\_\discretionary {-}{}{}arith\_\discretionary {-}{}{}dg}, 
+		\hyperpage{18}
+    \subitem {dg\_\discretionary {-}{}{}minuspsi\_\discretionary {-}{}{}dg}, 
+		\hyperpage{20}
+    \subitem {dg\_\discretionary {-}{}{}proc\_\discretionary {-}{}{}dg}, 
+		\hyperpage{22}
+    \subitem {diva2dg}, \hyperpage{24}
+    \subitem {ef2dg}, \hyperpage{27}
+    \subitem {JETPPF2DG}, \hyperpage{31}
+    \subitem {jt2dg}, \hyperpage{37}
+    \subitem {nk2dg}, \hyperpage{40}
+    \subitem {nkn2dg}, \hyperpage{42}
+    \subitem {pb2dg}, \hyperpage{44}
+    \subitem {prinequ}, \hyperpage{46}
+    \subitem {risepsi}, \hyperpage{50}
+    \subitem {shotfile2dg}, \hyperpage{53}
+    \subitem {sst2dg}, \hyperpage{57}
+    \subitem {vr2dg}, \hyperpage{60}
+  \item {BZ}
+    \subitem {JETPPF2DG}, \hyperpage{31}
+  \item {bz}
+    \subitem {shotfile2dg}, \hyperpage{53}
+
+  \indexspace
+
+  \item {chop}
+    \subitem {culham}, \hyperpage{8}
+    \subitem {dg\_\discretionary {-}{}{}proc\_\discretionary {-}{}{}dg}, 
+		\hyperpage{22}
+  \item {CONV}
+    \subitem {JETPPF2DG}, \hyperpage{32}
+  \item {crop}
+    \subitem {cropequ.f}, \hyperpage{64}
+  \item {cropequ}, \hyperpage{5}
+    \subitem {btorc}, \hyperpage{6}
+    \subitem {err}, \hyperpage{6}
+    \subitem {i}, \hyperpage{6}
+    \subitem {iret}, \hyperpage{6}
+    \subitem {j}, \hyperpage{6}
+    \subitem {ngpr}, \hyperpage{6}
+    \subitem {ngpz}, \hyperpage{6}
+    \subitem {nr}, \hyperpage{6}
+    \subitem {nrn}, \hyperpage{6}
+    \subitem {nz}, \hyperpage{6}
+    \subitem {nzn}, \hyperpage{6}
+    \subitem {pfm}, \hyperpage{7}
+    \subitem {psilim}, \hyperpage{7}
+    \subitem {psimin}, \hyperpage{7}
+    \subitem {rcntc}, \hyperpage{7}
+    \subitem {rgr}, \hyperpage{7}
+    \subitem {rmax}, \hyperpage{7}
+    \subitem {rmin}, \hyperpage{7}
+    \subitem {zgr}, \hyperpage{7}
+    \subitem {zmax}, \hyperpage{7}
+    \subitem {zmin}, \hyperpage{7}
+  \item {cropequ.f}
+    \subitem {crop}, \hyperpage{64}
+  \item {culham}, \hyperpage{8}
+    \subitem {btorc}, \hyperpage{8}
+    \subitem {chop}, \hyperpage{8}
+    \subitem {date}, \hyperpage{8}
+    \subitem {ffg}, \hyperpage{9}
+    \subitem {fg}, \hyperpage{9}
+    \subitem {pfm}, \hyperpage{9}
+    \subitem {pg}, \hyperpage{9}
+    \subitem {ppg}, \hyperpage{9}
+    \subitem {psilim}, \hyperpage{9}
+    \subitem {psimin}, \hyperpage{9}
+    \subitem {rcntc}, \hyperpage{9}
+    \subitem {rdim}, \hyperpage{9}
+    \subitem {redge}, \hyperpage{9}
+    \subitem {rgr}, \hyperpage{9}
+    \subitem {rma}, \hyperpage{10}
+    \subitem {title}, \hyperpage{10}
+    \subitem {zdim}, \hyperpage{10}
+    \subitem {zgr}, \hyperpage{10}
+    \subitem {zma}, \hyperpage{10}
+    \subitem {zmsmid}, \hyperpage{10}
+
+  \indexspace
+
+  \item {date}
+    \subitem {culham}, \hyperpage{8}
+    \subitem {dg2ef}, \hyperpage{13}
+    \subitem {ef2dg}, \hyperpage{27}
+    \subitem {jt2dg}, \hyperpage{37}
+    \subitem {prinequ}, \hyperpage{46}
+  \item {DDA}
+    \subitem {JETPPF2DG}, \hyperpage{32}
+  \item {delr}
+    \subitem {nk2dg}, \hyperpage{40}
+    \subitem {nkn2dg}, \hyperpage{42}
+  \item {delz}
+    \subitem {nk2dg}, \hyperpage{40}
+    \subitem {nkn2dg}, \hyperpage{42}
+  \item {derivative}
+    \subitem {diva2dg}, \hyperpage{24}
+    \subitem {sst2dg}, \hyperpage{57}
+  \item {dg2dg}, \hyperpage{11}
+    \subitem {btorc}, \hyperpage{11}
+    \subitem {i}, \hyperpage{11}
+    \subitem {iret}, \hyperpage{11}
+    \subitem {j}, \hyperpage{11}
+    \subitem {ngpr}, \hyperpage{11}
+    \subitem {ngpz}, \hyperpage{12}
+    \subitem {nr}, \hyperpage{12}
+    \subitem {nz}, \hyperpage{12}
+    \subitem {pfm}, \hyperpage{12}
+    \subitem {psilim}, \hyperpage{12}
+    \subitem {psimin}, \hyperpage{12}
+    \subitem {rcntc}, \hyperpage{12}
+    \subitem {rgr}, \hyperpage{12}
+    \subitem {zgr}, \hyperpage{12}
+  \item {dg2ef}, \hyperpage{13}
+    \subitem {btorc}, \hyperpage{13}
+    \subitem {date}, \hyperpage{13}
+    \subitem {ffg}, \hyperpage{13}
+    \subitem {fg}, \hyperpage{14}
+    \subitem {pfm}, \hyperpage{14}
+    \subitem {pg}, \hyperpage{14}
+    \subitem {ppg}, \hyperpage{14}
+    \subitem {psilim}, \hyperpage{14}
+    \subitem {psimin}, \hyperpage{14}
+    \subitem {rcntc}, \hyperpage{14}
+    \subitem {rdim}, \hyperpage{14}
+    \subitem {redge}, \hyperpage{14}
+    \subitem {rgr}, \hyperpage{14}
+    \subitem {rma}, \hyperpage{14}
+    \subitem {title}, \hyperpage{15}
+    \subitem {zdim}, \hyperpage{15}
+    \subitem {zgr}, \hyperpage{15}
+    \subitem {zma}, \hyperpage{15}
+    \subitem {zmsmid}, \hyperpage{15}
+  \item {dg2vr}, \hyperpage{16}
+    \subitem {btorc}, \hyperpage{16}
+    \subitem {pfm}, \hyperpage{16}
+    \subitem {psilim}, \hyperpage{16}
+    \subitem {rcntc}, \hyperpage{16}
+    \subitem {rgr}, \hyperpage{16}
+    \subitem {zgr}, \hyperpage{16}
+  \item {dg\_\discretionary {-}{}{}arith\_\discretionary {-}{}{}dg}, 
+		\hyperpage{18}
+    \subitem {btorc}, \hyperpage{18}
+    \subitem {filename}, \hyperpage{18}
+    \subitem {pfm}, \hyperpage{18}
+    \subitem {psilim}, \hyperpage{18}
+    \subitem {rcntc}, \hyperpage{18}
+    \subitem {rgr}, \hyperpage{19}
+    \subitem {shift}, \hyperpage{19}
+    \subitem {zgr}, \hyperpage{19}
+  \item {dg\_\discretionary {-}{}{}minuspsi\_\discretionary {-}{}{}dg}, 
+		\hyperpage{20}
+    \subitem {btorc}, \hyperpage{20}
+    \subitem {filename}, \hyperpage{20}
+    \subitem {pfm}, \hyperpage{20}
+    \subitem {psilim}, \hyperpage{20}
+    \subitem {rcntc}, \hyperpage{20}
+    \subitem {rgr}, \hyperpage{20}
+    \subitem {shift}, \hyperpage{21}
+    \subitem {zgr}, \hyperpage{21}
+  \item {dg\_\discretionary {-}{}{}proc\_\discretionary {-}{}{}dg}, 
+		\hyperpage{22}
+    \subitem {btorc}, \hyperpage{22}
+    \subitem {chop}, \hyperpage{22}
+    \subitem {filename}, \hyperpage{22}
+    \subitem {pfm}, \hyperpage{22}
+    \subitem {psilim}, \hyperpage{22}
+    \subitem {rcntc}, \hyperpage{22}
+    \subitem {rgr}, \hyperpage{23}
+    \subitem {shift}, \hyperpage{23}
+    \subitem {zgr}, \hyperpage{23}
+  \item {dianam}
+    \subitem {shotfile2dg}, \hyperpage{53}
+  \item {diva2dg}, \hyperpage{24}
+    \subitem {apf}, \hyperpage{24}
+    \subitem {Bt}, \hyperpage{24}
+    \subitem {btorc}, \hyperpage{24}
+    \subitem {derivative}, \hyperpage{24}
+    \subitem {filename}, \hyperpage{25}
+    \subitem {gpr}, \hyperpage{25}
+    \subitem {gpz}, \hyperpage{25}
+    \subitem {pc}, \hyperpage{25}
+    \subitem {pcd}, \hyperpage{25}
+    \subitem {pfl}, \hyperpage{25}
+    \subitem {pfm}, \hyperpage{25}
+    \subitem {pr}, \hyperpage{25}
+    \subitem {prd}, \hyperpage{25}
+    \subitem {q}, \hyperpage{25}
+    \subitem {rcntc}, \hyperpage{25}
+    \subitem {xpf}, \hyperpage{26}
+  \item {double}
+    \subitem {double.f}, \hyperpage{73}
+  \item {double.f}
+    \subitem {double}, \hyperpage{73}
+  \item {DPSI}
+    \subitem {JETPPF2DG}, \hyperpage{32}
+
+  \indexspace
+
+  \item {ef2dg}, \hyperpage{27}
+    \subitem {btorc}, \hyperpage{27}
+    \subitem {date}, \hyperpage{27}
+    \subitem {ffg}, \hyperpage{27}
+    \subitem {fg}, \hyperpage{28}
+    \subitem {pfm}, \hyperpage{28}
+    \subitem {pg}, \hyperpage{28}
+    \subitem {ppg}, \hyperpage{28}
+    \subitem {psilim}, \hyperpage{28}
+    \subitem {psimin}, \hyperpage{28}
+    \subitem {rcntc}, \hyperpage{28}
+    \subitem {rdim}, \hyperpage{28}
+    \subitem {redge}, \hyperpage{28}
+    \subitem {rgr}, \hyperpage{28}
+    \subitem {rma}, \hyperpage{28}
+    \subitem {title}, \hyperpage{29}
+    \subitem {zdim}, \hyperpage{29}
+    \subitem {zgr}, \hyperpage{29}
+    \subitem {zma}, \hyperpage{29}
+    \subitem {zmsmid}, \hyperpage{29}
+  \item {EPS}
+    \subitem {JETPPF2DG}, \hyperpage{32}
+  \item {err}
+    \subitem {cropequ}, \hyperpage{6}
+  \item {ERRMSS}
+    \subitem {jetppf2dg.f}, \hyperpage{76}
+  \item {ex}
+    \subitem {pt2dg}, \hyperpage{49}
+  \item {exi}
+    \subitem {pt2dg}, \hyperpage{49}
+  \item {expnam}
+    \subitem {shotfile2dg}, \hyperpage{53}
+
+  \indexspace
+
+  \item {ffg}
+    \subitem {culham}, \hyperpage{9}
+    \subitem {dg2ef}, \hyperpage{13}
+    \subitem {ef2dg}, \hyperpage{27}
+    \subitem {jt2dg}, \hyperpage{37}
+    \subitem {pb2dg}, \hyperpage{44}
+    \subitem {prinequ}, \hyperpage{46}
+  \item {fg}
+    \subitem {culham}, \hyperpage{9}
+    \subitem {dg2ef}, \hyperpage{14}
+    \subitem {ef2dg}, \hyperpage{28}
+    \subitem {jt2dg}, \hyperpage{38}
+    \subitem {nk2dg}, \hyperpage{40}
+    \subitem {nkn2dg}, \hyperpage{42}
+    \subitem {pb2dg}, \hyperpage{44}
+    \subitem {prinequ}, \hyperpage{46}
+  \item {filename}
+    \subitem {dg\_\discretionary {-}{}{}arith\_\discretionary {-}{}{}dg}, 
+		\hyperpage{18}
+    \subitem {dg\_\discretionary {-}{}{}minuspsi\_\discretionary {-}{}{}dg}, 
+		\hyperpage{20}
+    \subitem {dg\_\discretionary {-}{}{}proc\_\discretionary {-}{}{}dg}, 
+		\hyperpage{22}
+    \subitem {diva2dg}, \hyperpage{25}
+    \subitem {JETPPF2DG}, \hyperpage{32}
+    \subitem {shotfile2dg}, \hyperpage{53}
+  \item {fjp}
+    \subitem {shotfile2dg}, \hyperpage{53}
+  \item {FP}
+    \subitem {JETPPF2DG}, \hyperpage{32}
+  \item {fpf}
+    \subitem {shotfile2dg}, \hyperpage{53}
+  \item {FPT}
+    \subitem {JETPPF2DG}, \hyperpage{32}
+
+  \indexspace
+
+  \item {gpr}
+    \subitem {diva2dg}, \hyperpage{25}
+    \subitem {shotfile2dg}, \hyperpage{54}
+    \subitem {sst2dg}, \hyperpage{58}
+  \item {gpz}
+    \subitem {diva2dg}, \hyperpage{25}
+    \subitem {shotfile2dg}, \hyperpage{54}
+    \subitem {sst2dg}, \hyperpage{58}
+
+  \indexspace
+
+  \item {hlp\_\discretionary {-}{}{}txt}
+    \subitem {pt2dg}, \hyperpage{49}
+
+  \indexspace
+
+  \item {i}
+    \subitem {cropequ}, \hyperpage{6}
+    \subitem {dg2dg}, \hyperpage{11}
+    \subitem {JETPPF2DG}, \hyperpage{32}
+  \item {iarg}
+    \subitem {JETPPF2DG}, \hyperpage{32}
+    \subitem {shotfile2dg}, \hyperpage{54}
+  \item {iargc}
+    \subitem {JETPPF2DG}, \hyperpage{32}
+    \subitem {shotfile2dg}, \hyperpage{54}
+  \item {IDUM}
+    \subitem {JETPPF2DG}, \hyperpage{32}
+  \item {IER}
+    \subitem {JETPPF2DG}, \hyperpage{33}
+  \item {IERRA}
+    \subitem {JETPPF2DG}, \hyperpage{33}
+  \item {IERROR}
+    \subitem {JETPPF2DG}, \hyperpage{33}
+  \item {IGO}
+    \subitem {JETPPF2DG}, \hyperpage{33}
+  \item {in\_\discretionary {-}{}{}mesh}
+    \subitem {pt2dg}, \hyperpage{49}
+  \item {in\_\discretionary {-}{}{}psi}
+    \subitem {pt2dg}, \hyperpage{49}
+  \item {IREAD}
+    \subitem {JETPPF2DG}, \hyperpage{33}
+  \item {iret}
+    \subitem {cropequ}, \hyperpage{6}
+    \subitem {dg2dg}, \hyperpage{11}
+    \subitem {JETPPF2DG}, \hyperpage{33}
+  \item {IWRITE}
+    \subitem {JETPPF2DG}, \hyperpage{33}
+
+  \indexspace
+
+  \item {j}
+    \subitem {cropequ}, \hyperpage{6}
+    \subitem {dg2dg}, \hyperpage{11}
+    \subitem {JETPPF2DG}, \hyperpage{33}
+  \item {JETPPF2DG}, \hyperpage{30}
+    \subitem {arg}, \hyperpage{31}
+    \subitem {BR}, \hyperpage{31}
+    \subitem {BT}, \hyperpage{31}
+    \subitem {btorc}, \hyperpage{31}
+    \subitem {BZ}, \hyperpage{31}
+    \subitem {CONV}, \hyperpage{32}
+    \subitem {DDA}, \hyperpage{32}
+    \subitem {DPSI}, \hyperpage{32}
+    \subitem {EPS}, \hyperpage{32}
+    \subitem {filename}, \hyperpage{32}
+    \subitem {FP}, \hyperpage{32}
+    \subitem {FPT}, \hyperpage{32}
+    \subitem {i}, \hyperpage{32}
+    \subitem {iarg}, \hyperpage{32}
+    \subitem {iargc}, \hyperpage{32}
+    \subitem {IDUM}, \hyperpage{32}
+    \subitem {IER}, \hyperpage{33}
+    \subitem {IERRA}, \hyperpage{33}
+    \subitem {IERROR}, \hyperpage{33}
+    \subitem {IGO}, \hyperpage{33}
+    \subitem {IREAD}, \hyperpage{33}
+    \subitem {iret}, \hyperpage{33}
+    \subitem {IWRITE}, \hyperpage{33}
+    \subitem {j}, \hyperpage{33}
+    \subitem {LFLUSH}, \hyperpage{33}
+    \subitem {lnblnk}, \hyperpage{33}
+    \subitem {LUNMSG}, \hyperpage{33}
+    \subitem {MR}, \hyperpage{34}
+    \subitem {MSG}, \hyperpage{34}
+    \subitem {MZ}, \hyperpage{34}
+    \subitem {NP}, \hyperpage{34}
+    \subitem {NR}, \hyperpage{34}
+    \subitem {NSEQ}, \hyperpage{34}
+    \subitem {NSHOT}, \hyperpage{34}
+    \subitem {NX}, \hyperpage{34}
+    \subitem {NY}, \hyperpage{34}
+    \subitem {NZ}, \hyperpage{34}
+    \subitem {PPFUID}, \hyperpage{34}
+    \subitem {PSI}, \hyperpage{35}
+    \subitem {PSI0}, \hyperpage{35}
+    \subitem {PSIB}, \hyperpage{35}
+    \subitem {psilim}, \hyperpage{35}
+    \subitem {R}, \hyperpage{35}
+    \subitem {R1}, \hyperpage{35}
+    \subitem {R2}, \hyperpage{35}
+    \subitem {RATIOX}, \hyperpage{35}
+    \subitem {RATIOY}, \hyperpage{35}
+    \subitem {RBTOR}, \hyperpage{35}
+    \subitem {rcntc}, \hyperpage{35}
+    \subitem {TIME}, \hyperpage{36}
+    \subitem {TSHOT}, \hyperpage{36}
+    \subitem {TWOPI}, \hyperpage{36}
+    \subitem {WIDTH}, \hyperpage{36}
+    \subitem {Z}, \hyperpage{36}
+    \subitem {Z1}, \hyperpage{36}
+    \subitem {Z2}, \hyperpage{36}
+  \item {jetppf2dg.f}
+    \subitem {ERRMSS}, \hyperpage{76}
+    \subitem {LENSTR}, \hyperpage{76}
+  \item {jt2dg}, \hyperpage{37}
+    \subitem {btorc}, \hyperpage{37}
+    \subitem {date}, \hyperpage{37}
+    \subitem {ffg}, \hyperpage{37}
+    \subitem {fg}, \hyperpage{38}
+    \subitem {pfm}, \hyperpage{38}
+    \subitem {pg}, \hyperpage{38}
+    \subitem {ppg}, \hyperpage{38}
+    \subitem {psilim}, \hyperpage{38}
+    \subitem {psimin}, \hyperpage{38}
+    \subitem {rcntc}, \hyperpage{38}
+    \subitem {rdim}, \hyperpage{38}
+    \subitem {redge}, \hyperpage{38}
+    \subitem {rgr}, \hyperpage{38}
+    \subitem {rma}, \hyperpage{38}
+    \subitem {title}, \hyperpage{39}
+    \subitem {zdim}, \hyperpage{39}
+    \subitem {zgr}, \hyperpage{39}
+    \subitem {zma}, \hyperpage{39}
+    \subitem {zmsmid}, \hyperpage{39}
+
+  \indexspace
+
+  \item {LENSTR}
+    \subitem {jetppf2dg.f}, \hyperpage{76}
+  \item {LFLUSH}
+    \subitem {JETPPF2DG}, \hyperpage{33}
+  \item {lin}
+    \subitem {shotfile2dg}, \hyperpage{54}
+  \item {lnblnk}
+    \subitem {JETPPF2DG}, \hyperpage{33}
+    \subitem {shotfile2dg}, \hyperpage{54}
+    \subitem {shotfile2dg.f}, \hyperpage{95}
+  \item {lpfxdim}
+    \subitem {shotfile2dg}, \hyperpage{54}
+  \item {LUNMSG}
+    \subitem {JETPPF2DG}, \hyperpage{33}
+
+  \indexspace
+
+  \item {mdim}
+    \subitem {shotfile2dg}, \hyperpage{54}
+  \item {MR}
+    \subitem {JETPPF2DG}, \hyperpage{34}
+  \item {MSG}
+    \subitem {JETPPF2DG}, \hyperpage{34}
+  \item {MZ}
+    \subitem {JETPPF2DG}, \hyperpage{34}
+
+  \indexspace
+
+  \item {nedit}
+    \subitem {shotfile2dg}, \hyperpage{54}
+  \item {ngpr}
+    \subitem {cropequ}, \hyperpage{6}
+    \subitem {dg2dg}, \hyperpage{11}
+  \item {ngpz}
+    \subitem {cropequ}, \hyperpage{6}
+    \subitem {dg2dg}, \hyperpage{12}
+  \item {nk2dg}, \hyperpage{40}
+    \subitem {btorc}, \hyperpage{40}
+    \subitem {delr}, \hyperpage{40}
+    \subitem {delz}, \hyperpage{40}
+    \subitem {fg}, \hyperpage{40}
+    \subitem {pfm}, \hyperpage{40}
+    \subitem {psilim}, \hyperpage{41}
+    \subitem {rcntc}, \hyperpage{41}
+    \subitem {rgr}, \hyperpage{41}
+    \subitem {rmax}, \hyperpage{41}
+    \subitem {rmin}, \hyperpage{41}
+    \subitem {zgr}, \hyperpage{41}
+    \subitem {zmax}, \hyperpage{41}
+    \subitem {zmin}, \hyperpage{41}
+  \item {nkn2dg}, \hyperpage{42}
+    \subitem {btorc}, \hyperpage{42}
+    \subitem {delr}, \hyperpage{42}
+    \subitem {delz}, \hyperpage{42}
+    \subitem {fg}, \hyperpage{42}
+    \subitem {pfm}, \hyperpage{42}
+    \subitem {psilim}, \hyperpage{43}
+    \subitem {rcntc}, \hyperpage{43}
+    \subitem {rgr}, \hyperpage{43}
+    \subitem {rmax}, \hyperpage{43}
+    \subitem {rmin}, \hyperpage{43}
+    \subitem {zgr}, \hyperpage{43}
+    \subitem {zmax}, \hyperpage{43}
+    \subitem {zmin}, \hyperpage{43}
+  \item {NP}
+    \subitem {JETPPF2DG}, \hyperpage{34}
+  \item {NR}
+    \subitem {JETPPF2DG}, \hyperpage{34}
+  \item {nr}
+    \subitem {cropequ}, \hyperpage{6}
+    \subitem {dg2dg}, \hyperpage{12}
+  \item {nrn}
+    \subitem {cropequ}, \hyperpage{6}
+  \item {NSEQ}
+    \subitem {JETPPF2DG}, \hyperpage{34}
+  \item {NSHOT}
+    \subitem {JETPPF2DG}, \hyperpage{34}
+  \item {nshot}
+    \subitem {shotfile2dg}, \hyperpage{54}
+  \item {NX}
+    \subitem {JETPPF2DG}, \hyperpage{34}
+  \item {NY}
+    \subitem {JETPPF2DG}, \hyperpage{34}
+  \item {NZ}
+    \subitem {JETPPF2DG}, \hyperpage{34}
+  \item {nz}
+    \subitem {cropequ}, \hyperpage{6}
+    \subitem {dg2dg}, \hyperpage{12}
+  \item {nzn}
+    \subitem {cropequ}, \hyperpage{6}
+
+  \indexspace
+
+  \item {open\_\discretionary {-}{}{}files}
+    \subitem {open\_\discretionary {-}{}{}files.f}, \hyperpage{80}
+  \item {open\_\discretionary {-}{}{}files.f}
+    \subitem {open\_\discretionary {-}{}{}files}, \hyperpage{80}
+  \item {out\_\discretionary {-}{}{}file}
+    \subitem {pt2dg}, \hyperpage{49}
+
+  \indexspace
+
+  \item {page}
+    \subitem {prinequ}, \hyperpage{47}
+  \item {pb2dg}, \hyperpage{44}
+    \subitem {btorc}, \hyperpage{44}
+    \subitem {ffg}, \hyperpage{44}
+    \subitem {fg}, \hyperpage{44}
+    \subitem {pfm}, \hyperpage{44}
+    \subitem {pg}, \hyperpage{44}
+    \subitem {pi}, \hyperpage{45}
+    \subitem {ppg}, \hyperpage{45}
+    \subitem {psilim}, \hyperpage{45}
+    \subitem {rcntc}, \hyperpage{45}
+    \subitem {rgr}, \hyperpage{45}
+    \subitem {zgr}, \hyperpage{45}
+  \item {pc}
+    \subitem {diva2dg}, \hyperpage{25}
+    \subitem {sst2dg}, \hyperpage{58}
+  \item {pcd}
+    \subitem {diva2dg}, \hyperpage{25}
+    \subitem {sst2dg}, \hyperpage{58}
+  \item {pfl}
+    \subitem {diva2dg}, \hyperpage{25}
+    \subitem {sst2dg}, \hyperpage{58}
+  \item {pfm}
+    \subitem {cropequ}, \hyperpage{7}
+    \subitem {culham}, \hyperpage{9}
+    \subitem {dg2dg}, \hyperpage{12}
+    \subitem {dg2ef}, \hyperpage{14}
+    \subitem {dg2vr}, \hyperpage{16}
+    \subitem {dg\_\discretionary {-}{}{}arith\_\discretionary {-}{}{}dg}, 
+		\hyperpage{18}
+    \subitem {dg\_\discretionary {-}{}{}minuspsi\_\discretionary {-}{}{}dg}, 
+		\hyperpage{20}
+    \subitem {dg\_\discretionary {-}{}{}proc\_\discretionary {-}{}{}dg}, 
+		\hyperpage{22}
+    \subitem {diva2dg}, \hyperpage{25}
+    \subitem {ef2dg}, \hyperpage{28}
+    \subitem {jt2dg}, \hyperpage{38}
+    \subitem {nk2dg}, \hyperpage{40}
+    \subitem {nkn2dg}, \hyperpage{42}
+    \subitem {pb2dg}, \hyperpage{44}
+    \subitem {prinequ}, \hyperpage{47}
+    \subitem {risepsi}, \hyperpage{50}
+    \subitem {shotfile2dg}, \hyperpage{54}
+    \subitem {sst2dg}, \hyperpage{58}
+    \subitem {vr2dg}, \hyperpage{60}
+  \item {pfmd}
+    \subitem {shotfile2dg}, \hyperpage{55}
+  \item {pfxx}
+    \subitem {shotfile2dg}, \hyperpage{55}
+  \item {pg}
+    \subitem {culham}, \hyperpage{9}
+    \subitem {dg2ef}, \hyperpage{14}
+    \subitem {ef2dg}, \hyperpage{28}
+    \subitem {jt2dg}, \hyperpage{38}
+    \subitem {pb2dg}, \hyperpage{44}
+    \subitem {prinequ}, \hyperpage{47}
+  \item {pi}
+    \subitem {pb2dg}, \hyperpage{45}
+  \item {PPFUID}
+    \subitem {JETPPF2DG}, \hyperpage{34}
+  \item {ppg}
+    \subitem {culham}, \hyperpage{9}
+    \subitem {dg2ef}, \hyperpage{14}
+    \subitem {ef2dg}, \hyperpage{28}
+    \subitem {jt2dg}, \hyperpage{38}
+    \subitem {pb2dg}, \hyperpage{45}
+    \subitem {prinequ}, \hyperpage{47}
+  \item {pr}
+    \subitem {diva2dg}, \hyperpage{25}
+    \subitem {sst2dg}, \hyperpage{58}
+  \item {prd}
+    \subitem {diva2dg}, \hyperpage{25}
+    \subitem {sst2dg}, \hyperpage{58}
+  \item {prinequ}, \hyperpage{46}
+    \subitem {btorc}, \hyperpage{46}
+    \subitem {date}, \hyperpage{46}
+    \subitem {ffg}, \hyperpage{46}
+    \subitem {fg}, \hyperpage{46}
+    \subitem {page}, \hyperpage{47}
+    \subitem {pfm}, \hyperpage{47}
+    \subitem {pg}, \hyperpage{47}
+    \subitem {ppg}, \hyperpage{47}
+    \subitem {psilim}, \hyperpage{47}
+    \subitem {psimin}, \hyperpage{47}
+    \subitem {rcntc}, \hyperpage{47}
+    \subitem {rdim}, \hyperpage{47}
+    \subitem {redge}, \hyperpage{47}
+    \subitem {rgr}, \hyperpage{47}
+    \subitem {rma}, \hyperpage{47}
+    \subitem {title}, \hyperpage{48}
+    \subitem {zdim}, \hyperpage{48}
+    \subitem {zgr}, \hyperpage{48}
+    \subitem {zma}, \hyperpage{48}
+    \subitem {zmsmid}, \hyperpage{48}
+  \item {PSI}
+    \subitem {JETPPF2DG}, \hyperpage{35}
+  \item {PSI0}
+    \subitem {JETPPF2DG}, \hyperpage{35}
+  \item {PSIB}
+    \subitem {JETPPF2DG}, \hyperpage{35}
+  \item {psilim}
+    \subitem {cropequ}, \hyperpage{7}
+    \subitem {culham}, \hyperpage{9}
+    \subitem {dg2dg}, \hyperpage{12}
+    \subitem {dg2ef}, \hyperpage{14}
+    \subitem {dg2vr}, \hyperpage{16}
+    \subitem {dg\_\discretionary {-}{}{}arith\_\discretionary {-}{}{}dg}, 
+		\hyperpage{18}
+    \subitem {dg\_\discretionary {-}{}{}minuspsi\_\discretionary {-}{}{}dg}, 
+		\hyperpage{20}
+    \subitem {dg\_\discretionary {-}{}{}proc\_\discretionary {-}{}{}dg}, 
+		\hyperpage{22}
+    \subitem {ef2dg}, \hyperpage{28}
+    \subitem {JETPPF2DG}, \hyperpage{35}
+    \subitem {jt2dg}, \hyperpage{38}
+    \subitem {nk2dg}, \hyperpage{41}
+    \subitem {nkn2dg}, \hyperpage{43}
+    \subitem {pb2dg}, \hyperpage{45}
+    \subitem {prinequ}, \hyperpage{47}
+    \subitem {risepsi}, \hyperpage{50}
+    \subitem {shotfile2dg}, \hyperpage{55}
+    \subitem {vr2dg}, \hyperpage{60}
+  \item {psimin}
+    \subitem {cropequ}, \hyperpage{7}
+    \subitem {culham}, \hyperpage{9}
+    \subitem {dg2dg}, \hyperpage{12}
+    \subitem {dg2ef}, \hyperpage{14}
+    \subitem {ef2dg}, \hyperpage{28}
+    \subitem {jt2dg}, \hyperpage{38}
+    \subitem {prinequ}, \hyperpage{47}
+  \item {pt2dg}, \hyperpage{49}
+    \subitem {ex}, \hyperpage{49}
+    \subitem {exi}, \hyperpage{49}
+    \subitem {hlp\_\discretionary {-}{}{}txt}, \hyperpage{49}
+    \subitem {in\_\discretionary {-}{}{}mesh}, \hyperpage{49}
+    \subitem {in\_\discretionary {-}{}{}psi}, \hyperpage{49}
+    \subitem {out\_\discretionary {-}{}{}file}, \hyperpage{49}
+  \item {pt2dg.f}
+    \subitem {BPOLRZ}, \hyperpage{83}
+    \subitem {TRINWT}, \hyperpage{83}
+    \subitem {WBPOLRZ}, \hyperpage{83}
+    \subitem {wreqdg}, \hyperpage{83}
+
+  \indexspace
+
+  \item {q}
+    \subitem {diva2dg}, \hyperpage{25}
+    \subitem {sst2dg}, \hyperpage{58}
+
+  \indexspace
+
+  \item {R}
+    \subitem {JETPPF2DG}, \hyperpage{35}
+  \item {R1}
+    \subitem {JETPPF2DG}, \hyperpage{35}
+  \item {R2}
+    \subitem {JETPPF2DG}, \hyperpage{35}
+  \item {RATIOX}
+    \subitem {JETPPF2DG}, \hyperpage{35}
+  \item {RATIOY}
+    \subitem {JETPPF2DG}, \hyperpage{35}
+  \item {RBTOR}
+    \subitem {JETPPF2DG}, \hyperpage{35}
+  \item {rcntc}
+    \subitem {cropequ}, \hyperpage{7}
+    \subitem {culham}, \hyperpage{9}
+    \subitem {dg2dg}, \hyperpage{12}
+    \subitem {dg2ef}, \hyperpage{14}
+    \subitem {dg2vr}, \hyperpage{16}
+    \subitem {dg\_\discretionary {-}{}{}arith\_\discretionary {-}{}{}dg}, 
+		\hyperpage{18}
+    \subitem {dg\_\discretionary {-}{}{}minuspsi\_\discretionary {-}{}{}dg}, 
+		\hyperpage{20}
+    \subitem {dg\_\discretionary {-}{}{}proc\_\discretionary {-}{}{}dg}, 
+		\hyperpage{22}
+    \subitem {diva2dg}, \hyperpage{25}
+    \subitem {ef2dg}, \hyperpage{28}
+    \subitem {JETPPF2DG}, \hyperpage{35}
+    \subitem {jt2dg}, \hyperpage{38}
+    \subitem {nk2dg}, \hyperpage{41}
+    \subitem {nkn2dg}, \hyperpage{43}
+    \subitem {pb2dg}, \hyperpage{45}
+    \subitem {prinequ}, \hyperpage{47}
+    \subitem {risepsi}, \hyperpage{50}
+    \subitem {shotfile2dg}, \hyperpage{55}
+    \subitem {sst2dg}, \hyperpage{58}
+    \subitem {vr2dg}, \hyperpage{60}
+  \item {rdefit}
+    \subitem {rdefit.f}, \hyperpage{85}
+  \item {rdefit.f}
+    \subitem {rdefit}, \hyperpage{85}
+  \item {rdeqdg}
+    \subitem {rdeqdg.f}, \hyperpage{86}
+    \subitem {rdeqjt.f}, \hyperpage{88}
+  \item {rdeqdg.f}
+    \subitem {rdeqdg}, \hyperpage{86}
+  \item {rdeqjh}
+    \subitem {rdeqjh.f}, \hyperpage{87}
+  \item {rdeqjh.f}
+    \subitem {rdeqjh}, \hyperpage{87}
+  \item {rdeqjt.f}
+    \subitem {rdeqdg}, \hyperpage{88}
+  \item {rdeqlh}
+    \subitem {rdeqlh.f}, \hyperpage{89}
+  \item {rdeqlh.f}
+    \subitem {rdeqlh}, \hyperpage{89}
+  \item {rdeqnk}
+    \subitem {rdeqnk.f}, \hyperpage{90}
+  \item {rdeqnk.f}
+    \subitem {rdeqnk}, \hyperpage{90}
+  \item {rdeqnk2}
+    \subitem {rdeqnk2.f}, \hyperpage{91}
+  \item {rdeqnk2.f}
+    \subitem {rdeqnk2}, \hyperpage{91}
+  \item {rdeqpb}
+    \subitem {rdeqpb.f}, \hyperpage{92}
+  \item {rdeqpb.f}
+    \subitem {rdeqpb}, \hyperpage{92}
+  \item {rdeqvr}
+    \subitem {rdeqvr.f}, \hyperpage{93}
+  \item {rdeqvr.f}
+    \subitem {rdeqvr}, \hyperpage{93}
+  \item {rdim}
+    \subitem {culham}, \hyperpage{9}
+    \subitem {dg2ef}, \hyperpage{14}
+    \subitem {ef2dg}, \hyperpage{28}
+    \subitem {jt2dg}, \hyperpage{38}
+    \subitem {prinequ}, \hyperpage{47}
+  \item {redge}
+    \subitem {culham}, \hyperpage{9}
+    \subitem {dg2ef}, \hyperpage{14}
+    \subitem {ef2dg}, \hyperpage{28}
+    \subitem {jt2dg}, \hyperpage{38}
+    \subitem {prinequ}, \hyperpage{47}
+  \item {rgr}
+    \subitem {cropequ}, \hyperpage{7}
+    \subitem {culham}, \hyperpage{9}
+    \subitem {dg2dg}, \hyperpage{12}
+    \subitem {dg2ef}, \hyperpage{14}
+    \subitem {dg2vr}, \hyperpage{16}
+    \subitem {dg\_\discretionary {-}{}{}arith\_\discretionary {-}{}{}dg}, 
+		\hyperpage{19}
+    \subitem {dg\_\discretionary {-}{}{}minuspsi\_\discretionary {-}{}{}dg}, 
+		\hyperpage{20}
+    \subitem {dg\_\discretionary {-}{}{}proc\_\discretionary {-}{}{}dg}, 
+		\hyperpage{23}
+    \subitem {ef2dg}, \hyperpage{28}
+    \subitem {jt2dg}, \hyperpage{38}
+    \subitem {nk2dg}, \hyperpage{41}
+    \subitem {nkn2dg}, \hyperpage{43}
+    \subitem {pb2dg}, \hyperpage{45}
+    \subitem {prinequ}, \hyperpage{47}
+    \subitem {risepsi}, \hyperpage{50}
+    \subitem {vr2dg}, \hyperpage{60}
+  \item {ri}
+    \subitem {shotfile2dg}, \hyperpage{55}
+  \item {rin}
+    \subitem {shotfile2dg}, \hyperpage{55}
+  \item {risepsi}, \hyperpage{50}
+    \subitem {btorc}, \hyperpage{50}
+    \subitem {pfm}, \hyperpage{50}
+    \subitem {psilim}, \hyperpage{50}
+    \subitem {rcntc}, \hyperpage{50}
+    \subitem {rgr}, \hyperpage{50}
+    \subitem {shift}, \hyperpage{50}
+    \subitem {zgr}, \hyperpage{51}
+  \item {rma}
+    \subitem {culham}, \hyperpage{10}
+    \subitem {dg2ef}, \hyperpage{14}
+    \subitem {ef2dg}, \hyperpage{28}
+    \subitem {jt2dg}, \hyperpage{38}
+    \subitem {prinequ}, \hyperpage{47}
+  \item {rmax}
+    \subitem {cropequ}, \hyperpage{7}
+    \subitem {nk2dg}, \hyperpage{41}
+    \subitem {nkn2dg}, \hyperpage{43}
+  \item {rmin}
+    \subitem {cropequ}, \hyperpage{7}
+    \subitem {nk2dg}, \hyperpage{41}
+    \subitem {nkn2dg}, \hyperpage{43}
+  \item {rpfx}
+    \subitem {shotfile2dg}, \hyperpage{55}
+
+  \indexspace
+
+  \item {shift}
+    \subitem {dg\_\discretionary {-}{}{}arith\_\discretionary {-}{}{}dg}, 
+		\hyperpage{19}
+    \subitem {dg\_\discretionary {-}{}{}minuspsi\_\discretionary {-}{}{}dg}, 
+		\hyperpage{21}
+    \subitem {dg\_\discretionary {-}{}{}proc\_\discretionary {-}{}{}dg}, 
+		\hyperpage{23}
+    \subitem {risepsi}, \hyperpage{50}
+  \item {shotfile2dg}, \hyperpage{52}
+    \subitem {arg}, \hyperpage{53}
+    \subitem {br}, \hyperpage{53}
+    \subitem {bt}, \hyperpage{53}
+    \subitem {btorc}, \hyperpage{53}
+    \subitem {bz}, \hyperpage{53}
+    \subitem {dianam}, \hyperpage{53}
+    \subitem {expnam}, \hyperpage{53}
+    \subitem {filename}, \hyperpage{53}
+    \subitem {fjp}, \hyperpage{53}
+    \subitem {fpf}, \hyperpage{53}
+    \subitem {gpr}, \hyperpage{54}
+    \subitem {gpz}, \hyperpage{54}
+    \subitem {iarg}, \hyperpage{54}
+    \subitem {iargc}, \hyperpage{54}
+    \subitem {lin}, \hyperpage{54}
+    \subitem {lnblnk}, \hyperpage{54}
+    \subitem {lpfxdim}, \hyperpage{54}
+    \subitem {mdim}, \hyperpage{54}
+    \subitem {nedit}, \hyperpage{54}
+    \subitem {nshot}, \hyperpage{54}
+    \subitem {pfm}, \hyperpage{54}
+    \subitem {pfmd}, \hyperpage{55}
+    \subitem {pfxx}, \hyperpage{55}
+    \subitem {psilim}, \hyperpage{55}
+    \subitem {rcntc}, \hyperpage{55}
+    \subitem {ri}, \hyperpage{55}
+    \subitem {rin}, \hyperpage{55}
+    \subitem {rpfx}, \hyperpage{55}
+    \subitem {tshot}, \hyperpage{55}
+    \subitem {zin}, \hyperpage{55}
+    \subitem {zj}, \hyperpage{55}
+    \subitem {zpfx}, \hyperpage{55}
+  \item {shotfile2dg.f}
+    \subitem {lnblnk}, \hyperpage{95}
+  \item {src/cropequ.f}, \hyperpage{63}
+  \item {src/culham.f}, \hyperpage{65}
+  \item {src/dg2dg.f}, \hyperpage{66}
+  \item {src/dg2ef.f}, \hyperpage{67}
+  \item {src/dg2vr.f}, \hyperpage{68}
+  \item {src/dg\_\discretionary {-}{}{}arith\_\discretionary {-}{}{}dg.f}, 
+		\hyperpage{69}
+  \item {src/dg\_\discretionary {-}{}{}minuspsi\_\discretionary {-}{}{}dg.f}, 
+		\hyperpage{70}
+  \item {src/dg\_\discretionary {-}{}{}proc\_\discretionary {-}{}{}dg.f}, 
+		\hyperpage{71}
+  \item {src/diva2dg.f}, \hyperpage{72}
+  \item {src/double.f}, \hyperpage{73}
+  \item {src/ef2dg.f}, \hyperpage{74}
+  \item {src/jetppf2dg.f}, \hyperpage{75}
+  \item {src/jt2dg.f}, \hyperpage{77}
+  \item {src/nk2dg.f}, \hyperpage{78}
+  \item {src/nkn2dg.f}, \hyperpage{79}
+  \item {src/open\_\discretionary {-}{}{}files.f}, \hyperpage{80}
+  \item {src/pb2dg.f}, \hyperpage{81}
+  \item {src/prinequ.f}, \hyperpage{82}
+  \item {src/pt2dg.f}, \hyperpage{83}
+  \item {src/rdefit.f}, \hyperpage{85}
+  \item {src/rdeqdg.f}, \hyperpage{86}
+  \item {src/rdeqjh.f}, \hyperpage{87}
+  \item {src/rdeqjt.f}, \hyperpage{88}
+  \item {src/rdeqlh.f}, \hyperpage{89}
+  \item {src/rdeqnk.f}, \hyperpage{90}
+  \item {src/rdeqnk2.f}, \hyperpage{91}
+  \item {src/rdeqpb.f}, \hyperpage{92}
+  \item {src/rdeqvr.f}, \hyperpage{93}
+  \item {src/risepsi.f}, \hyperpage{94}
+  \item {src/shotfile2dg.f}, \hyperpage{95}
+  \item {src/sst2dg.f}, \hyperpage{96}
+  \item {src/vr2dg.f}, \hyperpage{97}
+  \item {src/wrefit.f}, \hyperpage{98}
+  \item {src/wreqdg.f}, \hyperpage{99}
+  \item {src/wreqvr.f}, \hyperpage{100}
+  \item {sst2dg}, \hyperpage{57}
+    \subitem {apf}, \hyperpage{57}
+    \subitem {Bt}, \hyperpage{57}
+    \subitem {btorc}, \hyperpage{57}
+    \subitem {derivative}, \hyperpage{57}
+    \subitem {gpr}, \hyperpage{58}
+    \subitem {gpz}, \hyperpage{58}
+    \subitem {pc}, \hyperpage{58}
+    \subitem {pcd}, \hyperpage{58}
+    \subitem {pfl}, \hyperpage{58}
+    \subitem {pfm}, \hyperpage{58}
+    \subitem {pr}, \hyperpage{58}
+    \subitem {prd}, \hyperpage{58}
+    \subitem {q}, \hyperpage{58}
+    \subitem {rcntc}, \hyperpage{58}
+    \subitem {xpf}, \hyperpage{58}
+
+  \indexspace
+
+  \item {TIME}
+    \subitem {JETPPF2DG}, \hyperpage{36}
+  \item {title}
+    \subitem {culham}, \hyperpage{10}
+    \subitem {dg2ef}, \hyperpage{15}
+    \subitem {ef2dg}, \hyperpage{29}
+    \subitem {jt2dg}, \hyperpage{39}
+    \subitem {prinequ}, \hyperpage{48}
+  \item {TRINWT}
+    \subitem {pt2dg.f}, \hyperpage{83}
+  \item {TSHOT}
+    \subitem {JETPPF2DG}, \hyperpage{36}
+  \item {tshot}
+    \subitem {shotfile2dg}, \hyperpage{55}
+  \item {TWOPI}
+    \subitem {JETPPF2DG}, \hyperpage{36}
+
+  \indexspace
+
+  \item {vr2dg}, \hyperpage{60}
+    \subitem {btorc}, \hyperpage{60}
+    \subitem {pfm}, \hyperpage{60}
+    \subitem {psilim}, \hyperpage{60}
+    \subitem {rcntc}, \hyperpage{60}
+    \subitem {rgr}, \hyperpage{60}
+    \subitem {zgr}, \hyperpage{60}
+
+  \indexspace
+
+  \item {WBPOLRZ}
+    \subitem {pt2dg.f}, \hyperpage{83}
+  \item {WIDTH}
+    \subitem {JETPPF2DG}, \hyperpage{36}
+  \item {wrefit}
+    \subitem {wrefit.f}, \hyperpage{98}
+  \item {wrefit.f}
+    \subitem {wrefit}, \hyperpage{98}
+  \item {wreqdg}
+    \subitem {pt2dg.f}, \hyperpage{83}
+    \subitem {wreqdg.f}, \hyperpage{99}
+  \item {wreqdg.f}
+    \subitem {wreqdg}, \hyperpage{99}
+  \item {wreqvr}
+    \subitem {wreqvr.f}, \hyperpage{100}
+  \item {wreqvr.f}
+    \subitem {wreqvr}, \hyperpage{100}
+
+  \indexspace
+
+  \item {xpf}
+    \subitem {diva2dg}, \hyperpage{26}
+    \subitem {sst2dg}, \hyperpage{58}
+
+  \indexspace
+
+  \item {Z}
+    \subitem {JETPPF2DG}, \hyperpage{36}
+  \item {Z1}
+    \subitem {JETPPF2DG}, \hyperpage{36}
+  \item {Z2}
+    \subitem {JETPPF2DG}, \hyperpage{36}
+  \item {zdim}
+    \subitem {culham}, \hyperpage{10}
+    \subitem {dg2ef}, \hyperpage{15}
+    \subitem {ef2dg}, \hyperpage{29}
+    \subitem {jt2dg}, \hyperpage{39}
+    \subitem {prinequ}, \hyperpage{48}
+  \item {zgr}
+    \subitem {cropequ}, \hyperpage{7}
+    \subitem {culham}, \hyperpage{10}
+    \subitem {dg2dg}, \hyperpage{12}
+    \subitem {dg2ef}, \hyperpage{15}
+    \subitem {dg2vr}, \hyperpage{16}
+    \subitem {dg\_\discretionary {-}{}{}arith\_\discretionary {-}{}{}dg}, 
+		\hyperpage{19}
+    \subitem {dg\_\discretionary {-}{}{}minuspsi\_\discretionary {-}{}{}dg}, 
+		\hyperpage{21}
+    \subitem {dg\_\discretionary {-}{}{}proc\_\discretionary {-}{}{}dg}, 
+		\hyperpage{23}
+    \subitem {ef2dg}, \hyperpage{29}
+    \subitem {jt2dg}, \hyperpage{39}
+    \subitem {nk2dg}, \hyperpage{41}
+    \subitem {nkn2dg}, \hyperpage{43}
+    \subitem {pb2dg}, \hyperpage{45}
+    \subitem {prinequ}, \hyperpage{48}
+    \subitem {risepsi}, \hyperpage{51}
+    \subitem {vr2dg}, \hyperpage{60}
+  \item {zin}
+    \subitem {shotfile2dg}, \hyperpage{55}
+  \item {zj}
+    \subitem {shotfile2dg}, \hyperpage{55}
+  \item {zma}
+    \subitem {culham}, \hyperpage{10}
+    \subitem {dg2ef}, \hyperpage{15}
+    \subitem {ef2dg}, \hyperpage{29}
+    \subitem {jt2dg}, \hyperpage{39}
+    \subitem {prinequ}, \hyperpage{48}
+  \item {zmax}
+    \subitem {cropequ}, \hyperpage{7}
+    \subitem {nk2dg}, \hyperpage{41}
+    \subitem {nkn2dg}, \hyperpage{43}
+  \item {zmin}
+    \subitem {cropequ}, \hyperpage{7}
+    \subitem {nk2dg}, \hyperpage{41}
+    \subitem {nkn2dg}, \hyperpage{43}
+  \item {zmsmid}
+    \subitem {culham}, \hyperpage{10}
+    \subitem {dg2ef}, \hyperpage{15}
+    \subitem {ef2dg}, \hyperpage{29}
+    \subitem {jt2dg}, \hyperpage{39}
+    \subitem {prinequ}, \hyperpage{48}
+  \item {zpfx}
+    \subitem {shotfile2dg}, \hyperpage{55}
+
+\end{theindex}

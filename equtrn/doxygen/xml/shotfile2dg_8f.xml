@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.5.6">
+  <compounddef id="shotfile2dg_8f" kind="file">
+    <compoundname>shotfile2dg.f</compoundname>
+    <innernamespace refid="namespaceshotfile2dg">shotfile2dg</innernamespace>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="shotfile2dg_8f_1a264a21cc4ba4bb23418babedd386991" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>integer</type>
+        <definition>integer lnblnk</definition>
+        <argsstring>(string)</argsstring>
+        <name>lnblnk</name>
+        <param>
+          <type>string</type>
+          <defname>string</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19" refid="namespaceshotfile2dg" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">program</highlight><highlight class="normal"><sp/>shotfile2dg</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/>version<sp/>:<sp/>16.11.95<sp/>20:04</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="comment">c=====================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Translation<sp/>of<sp/>shotfile<sp/>equilibrium<sp/>data<sp/>into<sp/>dg-compatible<sp/>format</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="comment">c=====================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>parameter<sp/>(pi=3.14159<sp/>26535<sp/>89793)</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>parameter<sp/>(ngpr=257,<sp/>ngpz=257,<sp/>ngpf=257)</highlight></codeline>
+<codeline lineno="28" refid="namespaceshotfile2dg_14175f5215674a1c9bade7bf6ba900feb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real*8</highlight><highlight class="normal"><sp/>gpr(ngpr),gpz(ngpz)</highlight></codeline>
+<codeline lineno="29" refid="namespaceshotfile2dg_1244c205e85803307a067220a9149a277" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real*8</highlight><highlight class="normal"><sp/>pfmd(ngpr,ngpz)</highlight></codeline>
+<codeline lineno="30" refid="namespaceshotfile2dg_1519caa04c862ac70905e9cb264d156b0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real*8</highlight><highlight class="normal"><sp/>rcntc,btorc,psilim</highlight></codeline>
+<codeline lineno="31" refid="namespaceshotfile2dg_1a8cbd5f464c93ce3054f69959f54f24f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">character*256</highlight><highlight class="normal"><sp/>arg,filename</highlight></codeline>
+<codeline lineno="32" refid="namespaceshotfile2dg_1035718019994ef0564c4ef1e6fbe1477" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">character</highlight><highlight class="normal"><sp/>expnam*4,<sp/>dianam*3</highlight></codeline>
+<codeline lineno="33" refid="namespaceshotfile2dg_1e24378204407e119ddc87122265ea324" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">integer</highlight><highlight class="normal"><sp/>nshot,nedit,iarg,iargc,lnblnk</highlight></codeline>
+<codeline lineno="34" refid="namespaceshotfile2dg_1c8db051db6516dbce57bfcf43cebcd46" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real</highlight><highlight class="normal"><sp/>tshot</highlight></codeline>
+<codeline lineno="35" refid="namespaceshotfile2dg_1d5647f654b30284142951c13b5f6fa46" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">integer</highlight><highlight class="normal"><sp/>mdim,lpfxdim,lin</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>parameter(mdim=256,lpfxdim=4,lin=1)</highlight></codeline>
+<codeline lineno="37" refid="namespaceshotfile2dg_19768ea742d6b7efdfd6e610f1e6f8914" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real</highlight><highlight class="normal"><sp/>ri(0:mdim),zj(0:mdim),pfm(0:mdim,0:mdim),</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>1<sp/>pfxx(0:lpfxdim),rpfx(0:lpfxdim),zpfx(0:lpfxdim),</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>2<sp/>rin(lin),zin(lin),br(lin),bz(lin),bt(lin),fpf(lin),fjp(lin)</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="comment">c=====================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>dianam=</highlight><highlight class="stringliteral">&apos;EQI&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>expnam=</highlight><highlight class="stringliteral">&apos;AUGD&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>m=mdim</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>n=mdim</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>nedit=0</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>iarg=iargc()</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;iarg&apos;</highlight><highlight class="normal">,iarg</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(iarg.ge.2)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/>getarg(1,arg)</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(arg,*)<sp/>nshot</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/>getarg(2,arg)</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(arg,*)<sp/>tshot</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(iarg.ge.3)<sp/>call<sp/>getarg(3,dianam)</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(iarg.ge.4)<sp/>call<sp/>getarg(4,expnam)</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(iarg.ge.5)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/>getarg(5,arg)</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(arg,*)<sp/>nedit</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;1st<sp/>arg<sp/>==<sp/>shot<sp/>number&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;2nd<sp/>arg<sp/>==<sp/>time&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;[3rd<sp/>arg<sp/>==<sp/>diagnostic<sp/>(EQI)]&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;[4th<sp/>arg<sp/>==<sp/>experiment<sp/>(AUGD)]&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;[5th<sp/>arg<sp/>==<sp/>edition<sp/>(0)]&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stop</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/>expnam,dianam,nshot,tshot</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(filename,</highlight><highlight class="stringliteral">&apos;(i5,&apos;</highlight><highlight class="stringliteral">&apos;.&apos;</highlight><highlight class="stringliteral">&apos;,i4,&apos;</highlight><highlight class="stringliteral">&apos;.&apos;</highlight><highlight class="stringliteral">&apos;,a4,&apos;</highlight><highlight class="stringliteral">&apos;.&apos;</highlight><highlight class="stringliteral">&apos;,a3,&apos;</highlight><highlight class="stringliteral">&apos;.&apos;</highlight><highlight class="stringliteral">&apos;,i2,&apos;</highlight><highlight class="stringliteral">&apos;.eq&apos;</highlight><highlight class="stringliteral">&apos;)&apos;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>1<sp/>nshot,nint(tshot*1000),expnam,dianam,nedit</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>i=1,10</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(filename(i:i).eq.</highlight><highlight class="stringliteral">&apos;<sp/>&apos;</highlight><highlight class="normal">)<sp/>filename(i:i)=</highlight><highlight class="stringliteral">&apos;0&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enddo</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>i=21,22</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(filename(i:i).eq.</highlight><highlight class="stringliteral">&apos;<sp/>&apos;</highlight><highlight class="normal">)<sp/>filename(i:i)=</highlight><highlight class="stringliteral">&apos;0&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enddo</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>i=11,<ref refid="shotfile2dg_8f_1a264a21cc4ba4bb23418babedd386991" kindref="member">lnblnk</ref>(filename)</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(filename(i:i).eq.</highlight><highlight class="stringliteral">&apos;<sp/>&apos;</highlight><highlight class="normal">)<sp/>filename(i:i)=</highlight><highlight class="stringliteral">&apos;_&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enddo</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/>kkEQintS(ierr,30)</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/>kkEQPFM(ierr,expnam,dianam,nshot,nedit,tshot,mdim+1,</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>1<sp/>m,n,ri,zj,pfm)</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;kkEQPFM:<sp/>ierr&apos;</highlight><highlight class="normal">,ierr</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;m,n=&apos;</highlight><highlight class="normal">,m,n</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>lpfx=lpfxdim</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/>kkEQpfx(iERR,expnam,dianam,nSHOT,nEDIT,tSHOT,</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>1<sp/>LPFx,PFxx,RPFx,zPFx)</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;kkEQpfx:<sp/>ierr&apos;</highlight><highlight class="normal">,ierr</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>rin(1)=rpfx(0)</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>zin(1)=zpfx(0)</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;rpfx&apos;</highlight><highlight class="normal">,rpfx</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;zpfx&apos;</highlight><highlight class="normal">,zpfx</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/>kkrzBrzt<sp/>(iERR,expnam,dianam,nSHOT,nEDIT,tSHOT,</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>1<sp/>rin,zin,lin,Br,Bz,Bt,fPF,fJp)</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;kkrzBrzt:<sp/>ierr&apos;</highlight><highlight class="normal">,ierr</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>rcntc=rin(1)</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>btorc=bt(1)</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>psilim=pfxx(1)/(2.0*3.14159<sp/>26535<sp/>89793<sp/>23846)</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>i=0,m</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>j=0,n</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pfmd(i+1,j+1)=pfm(i,j)/(2.0*3.14159<sp/>26535<sp/>89793<sp/>23846)-psilim</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enddo</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enddo</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>i=0,m</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>gpr(i+1)=ri(i)</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enddo</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>ngr=m+1</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>j=0,n</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>gpz(j+1)=zj(j)</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enddo</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>ngz=n+1</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;psilim<sp/>=<sp/>&apos;</highlight><highlight class="normal">,psilim</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;rcntc<sp/>=<sp/>&apos;</highlight><highlight class="normal">,rcntc</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;btorc<sp/>=<sp/>&apos;</highlight><highlight class="normal">,btorc</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">open</highlight><highlight class="normal">(2,file=filename)</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>psilim=0</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;ngr,ngz=&apos;</highlight><highlight class="normal">,ngr,ngz</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><ref refid="pt2dg_8f_19b1f405bcdbc8d49e53245d70506b459" kindref="member">wreqdg</ref>(2,ngpr,iret,ngr,ngz,psilim,</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>1<sp/>btorc,rcntc,gpr,gpz,pfmd)</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(iret.ne.0)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;====<sp/>shotfile2dg:<sp/>error<sp/>in<sp/>wreqdg.<sp/>iret<sp/>=<sp/>&apos;</highlight><highlight class="normal">,iret</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight><highlight class="keyword"><sp/><sp/><sp/><sp/><sp/><sp/>end</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="129" refid="shotfile2dg_8f_1a264a21cc4ba4bb23418babedd386991" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">integer<sp/></highlight><highlight class="keyword">function<sp/></highlight><highlight class="normal"><ref refid="shotfile2dg_8f_1a264a21cc4ba4bb23418babedd386991" kindref="member">lnblnk</ref>(string)</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight><highlight class="comment">c<sp/>returns<sp/>the<sp/>position<sp/>of<sp/>the<sp/>last<sp/>non-blank<sp/>character<sp/>in<sp/>&quot;string&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">character*(*)</highlight><highlight class="normal"><sp/>string</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">integer</highlight><highlight class="normal"><sp/>i</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>i=len(string),1,-1</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(string(i:i).ne.</highlight><highlight class="stringliteral">&apos;<sp/>&apos;</highlight><highlight class="normal">)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="shotfile2dg_8f_1a264a21cc4ba4bb23418babedd386991" kindref="member">lnblnk</ref>=i</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enddo</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="shotfile2dg_8f_1a264a21cc4ba4bb23418babedd386991" kindref="member">lnblnk</ref>=0</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>return</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight><highlight class="keyword"><sp/><sp/><sp/><sp/><sp/><sp/>end</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/shotfile2dg.f"/>
+  </compounddef>
+</doxygen>

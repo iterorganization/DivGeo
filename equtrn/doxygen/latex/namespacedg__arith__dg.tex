@@ -1,0 +1,117 @@
+\hypertarget{namespacedg__arith__dg}{
+\section{dg\_\-arith\_\-dg Module Reference}
+\label{namespacedg__arith__dg}\index{dg\_\-arith\_\-dg@{dg\_\-arith\_\-dg}}
+}
+Shift of the magnetic flux by a specified increment.  
+
+
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+real $\ast$8, dimension(ngpr, ngpz) \hyperlink{namespacedg__arith__dg_1b7f6dcfe1f48dfc989814a1519c6719}{pfm}
+\item 
+real $\ast$8, dimension(ngpr) \hyperlink{namespacedg__arith__dg_102091a4aff5243e0e79f2a5e5cfffe2}{rgr}
+\item 
+real $\ast$8, dimension(ngpz) \hyperlink{namespacedg__arith__dg_8a5f886abc8b62b69d48cfd735cfd10b}{zgr}
+\item 
+real $\ast$8 \hyperlink{namespacedg__arith__dg_3dc865564702fd81046c19f0a8f35140}{rcntc}
+\item 
+real $\ast$8 \hyperlink{namespacedg__arith__dg_456997baf11ae7fdf46a2643ced4568f}{psilim}
+\item 
+real $\ast$8 \hyperlink{namespacedg__arith__dg_7a992e5a439388ce2c9624a01757a066}{btorc}
+\item 
+real $\ast$8 \hyperlink{namespacedg__arith__dg_e54e3bfed258b16e900ebe885e898537}{shift}
+\item 
+character $\ast$256 \hyperlink{namespacedg__arith__dg_e5e4ec783b359df8e12cc4bda2a44ea1}{filename}
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Shift of the magnetic flux by a specified increment. 
+
+arg1: input equilibrium file name
+
+arg2: output equilibrium file name
+
+In this case, the values of alpha and beta are read in and the flux is transformed as
+
+pfm(i,j)=pfm(i,j)+alpha$\ast$zgr(j)+beta
+
+\begin{Desc}
+\item[Version:]30.01.96 21:58 \end{Desc}
+
+
+\subsection{Variable Documentation}
+\hypertarget{namespacedg__arith__dg_7a992e5a439388ce2c9624a01757a066}{
+\index{dg\_\-arith\_\-dg@{dg\_\-arith\_\-dg}!btorc@{btorc}}
+\index{btorc@{btorc}!dg_arith_dg@{dg\_\-arith\_\-dg}}
+\subsubsection[btorc]{\setlength{\rightskip}{0pt plus 5cm}real$\ast$8 {\bf dg\_\-arith\_\-dg::btorc}}}
+\label{namespacedg__arith__dg_7a992e5a439388ce2c9624a01757a066}
+
+
+
+
+Definition at line 22 of file dg\_\-arith\_\-dg.f.\hypertarget{namespacedg__arith__dg_e5e4ec783b359df8e12cc4bda2a44ea1}{
+\index{dg\_\-arith\_\-dg@{dg\_\-arith\_\-dg}!filename@{filename}}
+\index{filename@{filename}!dg_arith_dg@{dg\_\-arith\_\-dg}}
+\subsubsection[filename]{\setlength{\rightskip}{0pt plus 5cm}character$\ast$256 {\bf dg\_\-arith\_\-dg::filename}}}
+\label{namespacedg__arith__dg_e5e4ec783b359df8e12cc4bda2a44ea1}
+
+
+
+
+Definition at line 23 of file dg\_\-arith\_\-dg.f.\hypertarget{namespacedg__arith__dg_1b7f6dcfe1f48dfc989814a1519c6719}{
+\index{dg\_\-arith\_\-dg@{dg\_\-arith\_\-dg}!pfm@{pfm}}
+\index{pfm@{pfm}!dg_arith_dg@{dg\_\-arith\_\-dg}}
+\subsubsection[pfm]{\setlength{\rightskip}{0pt plus 5cm}real$\ast$8,dimension(ngpr,ngpz) {\bf dg\_\-arith\_\-dg::pfm}}}
+\label{namespacedg__arith__dg_1b7f6dcfe1f48dfc989814a1519c6719}
+
+
+
+
+Definition at line 21 of file dg\_\-arith\_\-dg.f.\hypertarget{namespacedg__arith__dg_456997baf11ae7fdf46a2643ced4568f}{
+\index{dg\_\-arith\_\-dg@{dg\_\-arith\_\-dg}!psilim@{psilim}}
+\index{psilim@{psilim}!dg_arith_dg@{dg\_\-arith\_\-dg}}
+\subsubsection[psilim]{\setlength{\rightskip}{0pt plus 5cm}real$\ast$8 {\bf dg\_\-arith\_\-dg::psilim}}}
+\label{namespacedg__arith__dg_456997baf11ae7fdf46a2643ced4568f}
+
+
+
+
+Definition at line 22 of file dg\_\-arith\_\-dg.f.\hypertarget{namespacedg__arith__dg_3dc865564702fd81046c19f0a8f35140}{
+\index{dg\_\-arith\_\-dg@{dg\_\-arith\_\-dg}!rcntc@{rcntc}}
+\index{rcntc@{rcntc}!dg_arith_dg@{dg\_\-arith\_\-dg}}
+\subsubsection[rcntc]{\setlength{\rightskip}{0pt plus 5cm}real$\ast$8 {\bf dg\_\-arith\_\-dg::rcntc}}}
+\label{namespacedg__arith__dg_3dc865564702fd81046c19f0a8f35140}
+
+
+
+
+Definition at line 22 of file dg\_\-arith\_\-dg.f.\hypertarget{namespacedg__arith__dg_102091a4aff5243e0e79f2a5e5cfffe2}{
+\index{dg\_\-arith\_\-dg@{dg\_\-arith\_\-dg}!rgr@{rgr}}
+\index{rgr@{rgr}!dg_arith_dg@{dg\_\-arith\_\-dg}}
+\subsubsection[rgr]{\setlength{\rightskip}{0pt plus 5cm}real$\ast$8,dimension(ngpr) {\bf dg\_\-arith\_\-dg::rgr}}}
+\label{namespacedg__arith__dg_102091a4aff5243e0e79f2a5e5cfffe2}
+
+
+
+
+Definition at line 21 of file dg\_\-arith\_\-dg.f.\hypertarget{namespacedg__arith__dg_e54e3bfed258b16e900ebe885e898537}{
+\index{dg\_\-arith\_\-dg@{dg\_\-arith\_\-dg}!shift@{shift}}
+\index{shift@{shift}!dg_arith_dg@{dg\_\-arith\_\-dg}}
+\subsubsection[shift]{\setlength{\rightskip}{0pt plus 5cm}real$\ast$8 {\bf dg\_\-arith\_\-dg::shift}}}
+\label{namespacedg__arith__dg_e54e3bfed258b16e900ebe885e898537}
+
+
+
+
+Definition at line 22 of file dg\_\-arith\_\-dg.f.\hypertarget{namespacedg__arith__dg_8a5f886abc8b62b69d48cfd735cfd10b}{
+\index{dg\_\-arith\_\-dg@{dg\_\-arith\_\-dg}!zgr@{zgr}}
+\index{zgr@{zgr}!dg_arith_dg@{dg\_\-arith\_\-dg}}
+\subsubsection[zgr]{\setlength{\rightskip}{0pt plus 5cm}real$\ast$8,dimension(ngpz) {\bf dg\_\-arith\_\-dg::zgr}}}
+\label{namespacedg__arith__dg_8a5f886abc8b62b69d48cfd735cfd10b}
+
+
+
+
+Definition at line 21 of file dg\_\-arith\_\-dg.f.

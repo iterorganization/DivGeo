@@ -1,0 +1,195 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.5.6">
+  <compounddef id="rdefit_8f" kind="file">
+    <compoundname>rdefit.f</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="rdefit_8f_11d6293f72a8f0a6e679969729b7701f4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>subroutine</type>
+        <definition>subroutine rdefit</definition>
+        <argsstring>(lun, ngpr, ngpz, iret, title, date, ipestg, nr, nz, rdim, zdim, zmsmid, rcntc, redge, rma, zma, psimin, psilim, btorc, fg, pg, ffg, ppg, pfm, rgr, zgr)</argsstring>
+        <name>rdefit</name>
+        <param>
+          <type>lun</type>
+        </param>
+        <param>
+          <type>ngpr</type>
+        </param>
+        <param>
+          <type>ngpz</type>
+        </param>
+        <param>
+          <type>iret</type>
+        </param>
+        <param>
+          <type>title</type>
+          <defname>title</defname>
+        </param>
+        <param>
+          <type>date</type>
+          <defname>date</defname>
+        </param>
+        <param>
+          <type>ipestg</type>
+        </param>
+        <param>
+          <type>nr</type>
+        </param>
+        <param>
+          <type>nz</type>
+        </param>
+        <param>
+          <type>rdim</type>
+          <defname>rdim</defname>
+        </param>
+        <param>
+          <type>zdim</type>
+          <defname>zdim</defname>
+        </param>
+        <param>
+          <type>zmsmid</type>
+          <defname>zmsmid</defname>
+        </param>
+        <param>
+          <type>rcntc</type>
+          <defname>rcntc</defname>
+        </param>
+        <param>
+          <type>redge</type>
+          <defname>redge</defname>
+        </param>
+        <param>
+          <type>rma</type>
+          <defname>rma</defname>
+        </param>
+        <param>
+          <type>zma</type>
+          <defname>zma</defname>
+        </param>
+        <param>
+          <type>psimin</type>
+          <defname>psimin</defname>
+        </param>
+        <param>
+          <type>psilim</type>
+          <defname>psilim</defname>
+        </param>
+        <param>
+          <type>btorc</type>
+          <defname>btorc</defname>
+        </param>
+        <param>
+          <type>fg</type>
+          <defname>fg</defname>
+        </param>
+        <param>
+          <type>pg</type>
+          <defname>pg</defname>
+        </param>
+        <param>
+          <type>ffg</type>
+          <defname>ffg</defname>
+        </param>
+        <param>
+          <type>ppg</type>
+          <defname>ppg</defname>
+        </param>
+        <param>
+          <type>pfm</type>
+          <defname>pfm</defname>
+        </param>
+        <param>
+          <type>rgr</type>
+          <defname>rgr</defname>
+        </param>
+        <param>
+          <type>zgr</type>
+          <defname>zgr</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="rdefit_8f_11d6293f72a8f0a6e679969729b7701f4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">subroutine<sp/></highlight><highlight class="normal"><ref refid="rdefit_8f_11d6293f72a8f0a6e679969729b7701f4" kindref="member">rdefit</ref>(lun,ngpr,ngpz,iret,<sp/>title,date,ipestg,nr,nz,</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rdim,zdim,zmsmid,rcntc,redge,rma,zma,psimin,psilim,</highlight></codeline>
+<codeline lineno="3"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>btorc,fg,pg,ffg,ppg,pfm,rgr,zgr)</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">c=====================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>where:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">c***</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>i)<sp/><sp/>nr,<sp/>nz,<sp/>rdim,<sp/>redge,<sp/>and<sp/>zdim<sp/>define<sp/>the<sp/>rectangular<sp/>mesh<sp/>used</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/><sp/><sp/><sp/>to<sp/>store<sp/>the<sp/>psi<sp/>values<sp/>via<sp/>the<sp/>functions<sp/>rr<sp/>&amp;<sp/>zz<sp/>defined<sp/>at</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/><sp/><sp/><sp/>the<sp/>top<sp/>of<sp/>these<sp/>code,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="comment">c***</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>ii)<sp/>psimin<sp/>is<sp/>the<sp/>flux<sp/>value<sp/>at<sp/>the<sp/>magnetic<sp/>axis;<sp/>psilim<sp/>is<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/><sp/><sp/><sp/>value<sp/>at<sp/>the<sp/>separatrix,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="comment">c***</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>iii)<sp/>btorc<sp/>is<sp/>the<sp/>toroidal<sp/>magnetic<sp/>field<sp/>at<sp/>a<sp/>radius<sp/>rcntc,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="comment">c***</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>iv)<sp/>the<sp/>poloidal<sp/>flux<sp/>is<sp/>pfm,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="comment">c***</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>v)<sp/>fg<sp/>is<sp/>the<sp/>flux<sp/>function<sp/>R*Btor;<sp/>ffg<sp/>is<sp/>its<sp/>derivative<sp/>with</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/><sp/><sp/>respect<sp/>to<sp/>psi,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">c***</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>vi)<sp/>pg<sp/>is<sp/>the<sp/>pressure<sp/>&amp;<sp/>ppg<sp/>is<sp/>its<sp/>derivative.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">c=====================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/>version<sp/>:<sp/>18.12.94<sp/>18:33</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real*8</highlight><highlight class="normal"><sp/>fg(*),pg(*),ffg(*),ppg(*),pfm(ngpr,*),rgr(*),zgr(*)</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real*8</highlight><highlight class="normal"><sp/>rdim,zdim,rcntc,redge,zmsmid,rma,zma,psimin,psilim,btorc</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">character</highlight><highlight class="normal"><sp/>title*40,<sp/>date*8</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="comment">c=====================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>rr(r)=r/(nr-1)*rdim+redge</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>zz(z)=(z-(nz+1)/2)/(nz-1)*zdim+zmsmid</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="comment">c=====================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>iret=0</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>rewind<sp/>lun</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(a40,a8,3i4)&apos;</highlight><highlight class="normal">)<sp/>title,date,ipestg,nr,nz</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(nr.gt.ngpr)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;===<sp/>rdefit:<sp/>nr<sp/>&gt;<sp/>ngpr&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iret=2</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(nz.gt.ngpz)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;===<sp/>rdefit:<sp/>nz<sp/>&gt;<sp/>ngpz&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iret=2</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(nr.le.0)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;===<sp/>rdefit:<sp/>nr<sp/>&lt;<sp/>1&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iret=4</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(nz.le.0)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;===<sp/>rdefit:<sp/>nz<sp/>&lt;<sp/>1&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iret=4</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(iret.ne.0)<sp/>return</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(5e16.9)&apos;</highlight><highlight class="normal">)<sp/>rdim,zdim,rcntc,redge,zmsmid</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(5e16.9)&apos;</highlight><highlight class="normal">)<sp/>rma,zma,psimin,psilim,btorc</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(5e16.9)&apos;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(5e16.9)&apos;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(5e16.9)&apos;</highlight><highlight class="normal">)<sp/>(fg(i),i=1,nr)</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(5e16.9)&apos;</highlight><highlight class="normal">)<sp/>(pg(i),i=1,nr)</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(5e16.9)&apos;</highlight><highlight class="normal">)<sp/>(ffg(i),i=1,nr)</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(5e16.9)&apos;</highlight><highlight class="normal">)<sp/>(ppg(i),i=1,nr)</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(5e16.9)&apos;</highlight><highlight class="normal">)<sp/>((pfm(i,j),i=1,nr),j=1,nz)</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>i=1,nr</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rgr(i)=rr(float(i-1))</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enddo</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>i=1,nz</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>zgr(i)=zz(float(i))</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enddo</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight><highlight class="keyword"><sp/><sp/><sp/><sp/><sp/><sp/>end</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/rdefit.f"/>
+  </compounddef>
+</doxygen>

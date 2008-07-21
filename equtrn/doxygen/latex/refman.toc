@@ -1,0 +1,482 @@
+\contentsline {chapter}{\numberline {1}Modules Index}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Modules List}{1}{section.1.1}
+\contentsline {chapter}{\numberline {2}File Index}{3}{chapter.2}
+\contentsline {section}{\numberline {2.1}File List}{3}{section.2.1}
+\contentsline {chapter}{\numberline {3}Module Documentation}{5}{chapter.3}
+\contentsline {section}{\numberline {3.1}cropequ Module Reference}{5}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Detailed Description}{5}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Variable Documentation}{6}{subsection.3.1.2}
+\contentsline {subsubsection}{\numberline {3.1.2.1}btorc}{6}{subsubsection.3.1.2.1}
+\contentsline {subsubsection}{\numberline {3.1.2.2}err}{6}{subsubsection.3.1.2.2}
+\contentsline {subsubsection}{\numberline {3.1.2.3}i}{6}{subsubsection.3.1.2.3}
+\contentsline {subsubsection}{\numberline {3.1.2.4}iret}{6}{subsubsection.3.1.2.4}
+\contentsline {subsubsection}{\numberline {3.1.2.5}j}{6}{subsubsection.3.1.2.5}
+\contentsline {subsubsection}{\numberline {3.1.2.6}ngpr}{6}{subsubsection.3.1.2.6}
+\contentsline {subsubsection}{\numberline {3.1.2.7}ngpz}{6}{subsubsection.3.1.2.7}
+\contentsline {subsubsection}{\numberline {3.1.2.8}nr}{6}{subsubsection.3.1.2.8}
+\contentsline {subsubsection}{\numberline {3.1.2.9}nrn}{6}{subsubsection.3.1.2.9}
+\contentsline {subsubsection}{\numberline {3.1.2.10}nz}{6}{subsubsection.3.1.2.10}
+\contentsline {subsubsection}{\numberline {3.1.2.11}nzn}{7}{subsubsection.3.1.2.11}
+\contentsline {subsubsection}{\numberline {3.1.2.12}pfm}{7}{subsubsection.3.1.2.12}
+\contentsline {subsubsection}{\numberline {3.1.2.13}psilim}{7}{subsubsection.3.1.2.13}
+\contentsline {subsubsection}{\numberline {3.1.2.14}psimin}{7}{subsubsection.3.1.2.14}
+\contentsline {subsubsection}{\numberline {3.1.2.15}rcntc}{7}{subsubsection.3.1.2.15}
+\contentsline {subsubsection}{\numberline {3.1.2.16}rgr}{7}{subsubsection.3.1.2.16}
+\contentsline {subsubsection}{\numberline {3.1.2.17}rmax}{7}{subsubsection.3.1.2.17}
+\contentsline {subsubsection}{\numberline {3.1.2.18}rmin}{7}{subsubsection.3.1.2.18}
+\contentsline {subsubsection}{\numberline {3.1.2.19}zgr}{7}{subsubsection.3.1.2.19}
+\contentsline {subsubsection}{\numberline {3.1.2.20}zmax}{7}{subsubsection.3.1.2.20}
+\contentsline {subsubsection}{\numberline {3.1.2.21}zmin}{7}{subsubsection.3.1.2.21}
+\contentsline {section}{\numberline {3.2}culham Module Reference}{8}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Detailed Description}{8}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Variable Documentation}{8}{subsection.3.2.2}
+\contentsline {subsubsection}{\numberline {3.2.2.1}btorc}{8}{subsubsection.3.2.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2.2}chop}{8}{subsubsection.3.2.2.2}
+\contentsline {subsubsection}{\numberline {3.2.2.3}date}{9}{subsubsection.3.2.2.3}
+\contentsline {subsubsection}{\numberline {3.2.2.4}ffg}{9}{subsubsection.3.2.2.4}
+\contentsline {subsubsection}{\numberline {3.2.2.5}fg}{9}{subsubsection.3.2.2.5}
+\contentsline {subsubsection}{\numberline {3.2.2.6}pfm}{9}{subsubsection.3.2.2.6}
+\contentsline {subsubsection}{\numberline {3.2.2.7}pg}{9}{subsubsection.3.2.2.7}
+\contentsline {subsubsection}{\numberline {3.2.2.8}ppg}{9}{subsubsection.3.2.2.8}
+\contentsline {subsubsection}{\numberline {3.2.2.9}psilim}{9}{subsubsection.3.2.2.9}
+\contentsline {subsubsection}{\numberline {3.2.2.10}psimin}{9}{subsubsection.3.2.2.10}
+\contentsline {subsubsection}{\numberline {3.2.2.11}rcntc}{9}{subsubsection.3.2.2.11}
+\contentsline {subsubsection}{\numberline {3.2.2.12}rdim}{9}{subsubsection.3.2.2.12}
+\contentsline {subsubsection}{\numberline {3.2.2.13}redge}{9}{subsubsection.3.2.2.13}
+\contentsline {subsubsection}{\numberline {3.2.2.14}rgr}{10}{subsubsection.3.2.2.14}
+\contentsline {subsubsection}{\numberline {3.2.2.15}rma}{10}{subsubsection.3.2.2.15}
+\contentsline {subsubsection}{\numberline {3.2.2.16}title}{10}{subsubsection.3.2.2.16}
+\contentsline {subsubsection}{\numberline {3.2.2.17}zdim}{10}{subsubsection.3.2.2.17}
+\contentsline {subsubsection}{\numberline {3.2.2.18}zgr}{10}{subsubsection.3.2.2.18}
+\contentsline {subsubsection}{\numberline {3.2.2.19}zma}{10}{subsubsection.3.2.2.19}
+\contentsline {subsubsection}{\numberline {3.2.2.20}zmsmid}{10}{subsubsection.3.2.2.20}
+\contentsline {section}{\numberline {3.3}dg2dg Module Reference}{11}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Detailed Description}{11}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}Variable Documentation}{11}{subsection.3.3.2}
+\contentsline {subsubsection}{\numberline {3.3.2.1}btorc}{11}{subsubsection.3.3.2.1}
+\contentsline {subsubsection}{\numberline {3.3.2.2}i}{11}{subsubsection.3.3.2.2}
+\contentsline {subsubsection}{\numberline {3.3.2.3}iret}{11}{subsubsection.3.3.2.3}
+\contentsline {subsubsection}{\numberline {3.3.2.4}j}{11}{subsubsection.3.3.2.4}
+\contentsline {subsubsection}{\numberline {3.3.2.5}ngpr}{12}{subsubsection.3.3.2.5}
+\contentsline {subsubsection}{\numberline {3.3.2.6}ngpz}{12}{subsubsection.3.3.2.6}
+\contentsline {subsubsection}{\numberline {3.3.2.7}nr}{12}{subsubsection.3.3.2.7}
+\contentsline {subsubsection}{\numberline {3.3.2.8}nz}{12}{subsubsection.3.3.2.8}
+\contentsline {subsubsection}{\numberline {3.3.2.9}pfm}{12}{subsubsection.3.3.2.9}
+\contentsline {subsubsection}{\numberline {3.3.2.10}psilim}{12}{subsubsection.3.3.2.10}
+\contentsline {subsubsection}{\numberline {3.3.2.11}psimin}{12}{subsubsection.3.3.2.11}
+\contentsline {subsubsection}{\numberline {3.3.2.12}rcntc}{12}{subsubsection.3.3.2.12}
+\contentsline {subsubsection}{\numberline {3.3.2.13}rgr}{12}{subsubsection.3.3.2.13}
+\contentsline {subsubsection}{\numberline {3.3.2.14}zgr}{12}{subsubsection.3.3.2.14}
+\contentsline {section}{\numberline {3.4}dg2ef Module Reference}{13}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}Detailed Description}{13}{subsection.3.4.1}
+\contentsline {subsection}{\numberline {3.4.2}Variable Documentation}{13}{subsection.3.4.2}
+\contentsline {subsubsection}{\numberline {3.4.2.1}btorc}{13}{subsubsection.3.4.2.1}
+\contentsline {subsubsection}{\numberline {3.4.2.2}date}{13}{subsubsection.3.4.2.2}
+\contentsline {subsubsection}{\numberline {3.4.2.3}ffg}{14}{subsubsection.3.4.2.3}
+\contentsline {subsubsection}{\numberline {3.4.2.4}fg}{14}{subsubsection.3.4.2.4}
+\contentsline {subsubsection}{\numberline {3.4.2.5}pfm}{14}{subsubsection.3.4.2.5}
+\contentsline {subsubsection}{\numberline {3.4.2.6}pg}{14}{subsubsection.3.4.2.6}
+\contentsline {subsubsection}{\numberline {3.4.2.7}ppg}{14}{subsubsection.3.4.2.7}
+\contentsline {subsubsection}{\numberline {3.4.2.8}psilim}{14}{subsubsection.3.4.2.8}
+\contentsline {subsubsection}{\numberline {3.4.2.9}psimin}{14}{subsubsection.3.4.2.9}
+\contentsline {subsubsection}{\numberline {3.4.2.10}rcntc}{14}{subsubsection.3.4.2.10}
+\contentsline {subsubsection}{\numberline {3.4.2.11}rdim}{14}{subsubsection.3.4.2.11}
+\contentsline {subsubsection}{\numberline {3.4.2.12}redge}{14}{subsubsection.3.4.2.12}
+\contentsline {subsubsection}{\numberline {3.4.2.13}rgr}{14}{subsubsection.3.4.2.13}
+\contentsline {subsubsection}{\numberline {3.4.2.14}rma}{15}{subsubsection.3.4.2.14}
+\contentsline {subsubsection}{\numberline {3.4.2.15}title}{15}{subsubsection.3.4.2.15}
+\contentsline {subsubsection}{\numberline {3.4.2.16}zdim}{15}{subsubsection.3.4.2.16}
+\contentsline {subsubsection}{\numberline {3.4.2.17}zgr}{15}{subsubsection.3.4.2.17}
+\contentsline {subsubsection}{\numberline {3.4.2.18}zma}{15}{subsubsection.3.4.2.18}
+\contentsline {subsubsection}{\numberline {3.4.2.19}zmsmid}{15}{subsubsection.3.4.2.19}
+\contentsline {section}{\numberline {3.5}dg2vr Module Reference}{16}{section.3.5}
+\contentsline {subsection}{\numberline {3.5.1}Detailed Description}{16}{subsection.3.5.1}
+\contentsline {subsection}{\numberline {3.5.2}Variable Documentation}{16}{subsection.3.5.2}
+\contentsline {subsubsection}{\numberline {3.5.2.1}btorc}{16}{subsubsection.3.5.2.1}
+\contentsline {subsubsection}{\numberline {3.5.2.2}pfm}{16}{subsubsection.3.5.2.2}
+\contentsline {subsubsection}{\numberline {3.5.2.3}psilim}{16}{subsubsection.3.5.2.3}
+\contentsline {subsubsection}{\numberline {3.5.2.4}rcntc}{16}{subsubsection.3.5.2.4}
+\contentsline {subsubsection}{\numberline {3.5.2.5}rgr}{16}{subsubsection.3.5.2.5}
+\contentsline {subsubsection}{\numberline {3.5.2.6}zgr}{17}{subsubsection.3.5.2.6}
+\contentsline {section}{\numberline {3.6}dg\_\discretionary {-}{}{}arith\_\discretionary {-}{}{}dg Module Reference}{18}{section.3.6}
+\contentsline {subsection}{\numberline {3.6.1}Detailed Description}{18}{subsection.3.6.1}
+\contentsline {subsection}{\numberline {3.6.2}Variable Documentation}{18}{subsection.3.6.2}
+\contentsline {subsubsection}{\numberline {3.6.2.1}btorc}{18}{subsubsection.3.6.2.1}
+\contentsline {subsubsection}{\numberline {3.6.2.2}filename}{18}{subsubsection.3.6.2.2}
+\contentsline {subsubsection}{\numberline {3.6.2.3}pfm}{18}{subsubsection.3.6.2.3}
+\contentsline {subsubsection}{\numberline {3.6.2.4}psilim}{18}{subsubsection.3.6.2.4}
+\contentsline {subsubsection}{\numberline {3.6.2.5}rcntc}{19}{subsubsection.3.6.2.5}
+\contentsline {subsubsection}{\numberline {3.6.2.6}rgr}{19}{subsubsection.3.6.2.6}
+\contentsline {subsubsection}{\numberline {3.6.2.7}shift}{19}{subsubsection.3.6.2.7}
+\contentsline {subsubsection}{\numberline {3.6.2.8}zgr}{19}{subsubsection.3.6.2.8}
+\contentsline {section}{\numberline {3.7}dg\_\discretionary {-}{}{}minuspsi\_\discretionary {-}{}{}dg Module Reference}{20}{section.3.7}
+\contentsline {subsection}{\numberline {3.7.1}Detailed Description}{20}{subsection.3.7.1}
+\contentsline {subsection}{\numberline {3.7.2}Variable Documentation}{20}{subsection.3.7.2}
+\contentsline {subsubsection}{\numberline {3.7.2.1}btorc}{20}{subsubsection.3.7.2.1}
+\contentsline {subsubsection}{\numberline {3.7.2.2}filename}{20}{subsubsection.3.7.2.2}
+\contentsline {subsubsection}{\numberline {3.7.2.3}pfm}{20}{subsubsection.3.7.2.3}
+\contentsline {subsubsection}{\numberline {3.7.2.4}psilim}{20}{subsubsection.3.7.2.4}
+\contentsline {subsubsection}{\numberline {3.7.2.5}rcntc}{20}{subsubsection.3.7.2.5}
+\contentsline {subsubsection}{\numberline {3.7.2.6}rgr}{21}{subsubsection.3.7.2.6}
+\contentsline {subsubsection}{\numberline {3.7.2.7}shift}{21}{subsubsection.3.7.2.7}
+\contentsline {subsubsection}{\numberline {3.7.2.8}zgr}{21}{subsubsection.3.7.2.8}
+\contentsline {section}{\numberline {3.8}dg\_\discretionary {-}{}{}proc\_\discretionary {-}{}{}dg Module Reference}{22}{section.3.8}
+\contentsline {subsection}{\numberline {3.8.1}Detailed Description}{22}{subsection.3.8.1}
+\contentsline {subsection}{\numberline {3.8.2}Variable Documentation}{22}{subsection.3.8.2}
+\contentsline {subsubsection}{\numberline {3.8.2.1}btorc}{22}{subsubsection.3.8.2.1}
+\contentsline {subsubsection}{\numberline {3.8.2.2}chop}{22}{subsubsection.3.8.2.2}
+\contentsline {subsubsection}{\numberline {3.8.2.3}filename}{22}{subsubsection.3.8.2.3}
+\contentsline {subsubsection}{\numberline {3.8.2.4}pfm}{22}{subsubsection.3.8.2.4}
+\contentsline {subsubsection}{\numberline {3.8.2.5}psilim}{22}{subsubsection.3.8.2.5}
+\contentsline {subsubsection}{\numberline {3.8.2.6}rcntc}{23}{subsubsection.3.8.2.6}
+\contentsline {subsubsection}{\numberline {3.8.2.7}rgr}{23}{subsubsection.3.8.2.7}
+\contentsline {subsubsection}{\numberline {3.8.2.8}shift}{23}{subsubsection.3.8.2.8}
+\contentsline {subsubsection}{\numberline {3.8.2.9}zgr}{23}{subsubsection.3.8.2.9}
+\contentsline {section}{\numberline {3.9}diva2dg Module Reference}{24}{section.3.9}
+\contentsline {subsection}{\numberline {3.9.1}Detailed Description}{24}{subsection.3.9.1}
+\contentsline {subsection}{\numberline {3.9.2}Variable Documentation}{24}{subsection.3.9.2}
+\contentsline {subsubsection}{\numberline {3.9.2.1}apf}{24}{subsubsection.3.9.2.1}
+\contentsline {subsubsection}{\numberline {3.9.2.2}Bt}{24}{subsubsection.3.9.2.2}
+\contentsline {subsubsection}{\numberline {3.9.2.3}btorc}{24}{subsubsection.3.9.2.3}
+\contentsline {subsubsection}{\numberline {3.9.2.4}derivative}{25}{subsubsection.3.9.2.4}
+\contentsline {subsubsection}{\numberline {3.9.2.5}filename}{25}{subsubsection.3.9.2.5}
+\contentsline {subsubsection}{\numberline {3.9.2.6}gpr}{25}{subsubsection.3.9.2.6}
+\contentsline {subsubsection}{\numberline {3.9.2.7}gpz}{25}{subsubsection.3.9.2.7}
+\contentsline {subsubsection}{\numberline {3.9.2.8}pc}{25}{subsubsection.3.9.2.8}
+\contentsline {subsubsection}{\numberline {3.9.2.9}pcd}{25}{subsubsection.3.9.2.9}
+\contentsline {subsubsection}{\numberline {3.9.2.10}pfl}{25}{subsubsection.3.9.2.10}
+\contentsline {subsubsection}{\numberline {3.9.2.11}pfm}{25}{subsubsection.3.9.2.11}
+\contentsline {subsubsection}{\numberline {3.9.2.12}pr}{25}{subsubsection.3.9.2.12}
+\contentsline {subsubsection}{\numberline {3.9.2.13}prd}{25}{subsubsection.3.9.2.13}
+\contentsline {subsubsection}{\numberline {3.9.2.14}q}{25}{subsubsection.3.9.2.14}
+\contentsline {subsubsection}{\numberline {3.9.2.15}rcntc}{26}{subsubsection.3.9.2.15}
+\contentsline {subsubsection}{\numberline {3.9.2.16}xpf}{26}{subsubsection.3.9.2.16}
+\contentsline {section}{\numberline {3.10}ef2dg Module Reference}{27}{section.3.10}
+\contentsline {subsection}{\numberline {3.10.1}Detailed Description}{27}{subsection.3.10.1}
+\contentsline {subsection}{\numberline {3.10.2}Variable Documentation}{27}{subsection.3.10.2}
+\contentsline {subsubsection}{\numberline {3.10.2.1}btorc}{27}{subsubsection.3.10.2.1}
+\contentsline {subsubsection}{\numberline {3.10.2.2}date}{27}{subsubsection.3.10.2.2}
+\contentsline {subsubsection}{\numberline {3.10.2.3}ffg}{28}{subsubsection.3.10.2.3}
+\contentsline {subsubsection}{\numberline {3.10.2.4}fg}{28}{subsubsection.3.10.2.4}
+\contentsline {subsubsection}{\numberline {3.10.2.5}pfm}{28}{subsubsection.3.10.2.5}
+\contentsline {subsubsection}{\numberline {3.10.2.6}pg}{28}{subsubsection.3.10.2.6}
+\contentsline {subsubsection}{\numberline {3.10.2.7}ppg}{28}{subsubsection.3.10.2.7}
+\contentsline {subsubsection}{\numberline {3.10.2.8}psilim}{28}{subsubsection.3.10.2.8}
+\contentsline {subsubsection}{\numberline {3.10.2.9}psimin}{28}{subsubsection.3.10.2.9}
+\contentsline {subsubsection}{\numberline {3.10.2.10}rcntc}{28}{subsubsection.3.10.2.10}
+\contentsline {subsubsection}{\numberline {3.10.2.11}rdim}{28}{subsubsection.3.10.2.11}
+\contentsline {subsubsection}{\numberline {3.10.2.12}redge}{28}{subsubsection.3.10.2.12}
+\contentsline {subsubsection}{\numberline {3.10.2.13}rgr}{28}{subsubsection.3.10.2.13}
+\contentsline {subsubsection}{\numberline {3.10.2.14}rma}{29}{subsubsection.3.10.2.14}
+\contentsline {subsubsection}{\numberline {3.10.2.15}title}{29}{subsubsection.3.10.2.15}
+\contentsline {subsubsection}{\numberline {3.10.2.16}zdim}{29}{subsubsection.3.10.2.16}
+\contentsline {subsubsection}{\numberline {3.10.2.17}zgr}{29}{subsubsection.3.10.2.17}
+\contentsline {subsubsection}{\numberline {3.10.2.18}zma}{29}{subsubsection.3.10.2.18}
+\contentsline {subsubsection}{\numberline {3.10.2.19}zmsmid}{29}{subsubsection.3.10.2.19}
+\contentsline {section}{\numberline {3.11}JETPPF2DG Module Reference}{30}{section.3.11}
+\contentsline {subsection}{\numberline {3.11.1}Detailed Description}{31}{subsection.3.11.1}
+\contentsline {subsection}{\numberline {3.11.2}Variable Documentation}{31}{subsection.3.11.2}
+\contentsline {subsubsection}{\numberline {3.11.2.1}arg}{31}{subsubsection.3.11.2.1}
+\contentsline {subsubsection}{\numberline {3.11.2.2}BR}{31}{subsubsection.3.11.2.2}
+\contentsline {subsubsection}{\numberline {3.11.2.3}BT}{31}{subsubsection.3.11.2.3}
+\contentsline {subsubsection}{\numberline {3.11.2.4}btorc}{31}{subsubsection.3.11.2.4}
+\contentsline {subsubsection}{\numberline {3.11.2.5}BZ}{32}{subsubsection.3.11.2.5}
+\contentsline {subsubsection}{\numberline {3.11.2.6}CONV}{32}{subsubsection.3.11.2.6}
+\contentsline {subsubsection}{\numberline {3.11.2.7}DDA}{32}{subsubsection.3.11.2.7}
+\contentsline {subsubsection}{\numberline {3.11.2.8}DPSI}{32}{subsubsection.3.11.2.8}
+\contentsline {subsubsection}{\numberline {3.11.2.9}EPS}{32}{subsubsection.3.11.2.9}
+\contentsline {subsubsection}{\numberline {3.11.2.10}filename}{32}{subsubsection.3.11.2.10}
+\contentsline {subsubsection}{\numberline {3.11.2.11}FP}{32}{subsubsection.3.11.2.11}
+\contentsline {subsubsection}{\numberline {3.11.2.12}FPT}{32}{subsubsection.3.11.2.12}
+\contentsline {subsubsection}{\numberline {3.11.2.13}i}{32}{subsubsection.3.11.2.13}
+\contentsline {subsubsection}{\numberline {3.11.2.14}iarg}{32}{subsubsection.3.11.2.14}
+\contentsline {subsubsection}{\numberline {3.11.2.15}iargc}{32}{subsubsection.3.11.2.15}
+\contentsline {subsubsection}{\numberline {3.11.2.16}IDUM}{33}{subsubsection.3.11.2.16}
+\contentsline {subsubsection}{\numberline {3.11.2.17}IER}{33}{subsubsection.3.11.2.17}
+\contentsline {subsubsection}{\numberline {3.11.2.18}IERRA}{33}{subsubsection.3.11.2.18}
+\contentsline {subsubsection}{\numberline {3.11.2.19}IERROR}{33}{subsubsection.3.11.2.19}
+\contentsline {subsubsection}{\numberline {3.11.2.20}IGO}{33}{subsubsection.3.11.2.20}
+\contentsline {subsubsection}{\numberline {3.11.2.21}IREAD}{33}{subsubsection.3.11.2.21}
+\contentsline {subsubsection}{\numberline {3.11.2.22}iret}{33}{subsubsection.3.11.2.22}
+\contentsline {subsubsection}{\numberline {3.11.2.23}IWRITE}{33}{subsubsection.3.11.2.23}
+\contentsline {subsubsection}{\numberline {3.11.2.24}j}{33}{subsubsection.3.11.2.24}
+\contentsline {subsubsection}{\numberline {3.11.2.25}LFLUSH}{33}{subsubsection.3.11.2.25}
+\contentsline {subsubsection}{\numberline {3.11.2.26}lnblnk}{33}{subsubsection.3.11.2.26}
+\contentsline {subsubsection}{\numberline {3.11.2.27}LUNMSG}{34}{subsubsection.3.11.2.27}
+\contentsline {subsubsection}{\numberline {3.11.2.28}MR}{34}{subsubsection.3.11.2.28}
+\contentsline {subsubsection}{\numberline {3.11.2.29}MSG}{34}{subsubsection.3.11.2.29}
+\contentsline {subsubsection}{\numberline {3.11.2.30}MZ}{34}{subsubsection.3.11.2.30}
+\contentsline {subsubsection}{\numberline {3.11.2.31}NP}{34}{subsubsection.3.11.2.31}
+\contentsline {subsubsection}{\numberline {3.11.2.32}NR}{34}{subsubsection.3.11.2.32}
+\contentsline {subsubsection}{\numberline {3.11.2.33}NSEQ}{34}{subsubsection.3.11.2.33}
+\contentsline {subsubsection}{\numberline {3.11.2.34}NSHOT}{34}{subsubsection.3.11.2.34}
+\contentsline {subsubsection}{\numberline {3.11.2.35}NX}{34}{subsubsection.3.11.2.35}
+\contentsline {subsubsection}{\numberline {3.11.2.36}NY}{34}{subsubsection.3.11.2.36}
+\contentsline {subsubsection}{\numberline {3.11.2.37}NZ}{34}{subsubsection.3.11.2.37}
+\contentsline {subsubsection}{\numberline {3.11.2.38}PPFUID}{35}{subsubsection.3.11.2.38}
+\contentsline {subsubsection}{\numberline {3.11.2.39}PSI}{35}{subsubsection.3.11.2.39}
+\contentsline {subsubsection}{\numberline {3.11.2.40}PSI0}{35}{subsubsection.3.11.2.40}
+\contentsline {subsubsection}{\numberline {3.11.2.41}PSIB}{35}{subsubsection.3.11.2.41}
+\contentsline {subsubsection}{\numberline {3.11.2.42}psilim}{35}{subsubsection.3.11.2.42}
+\contentsline {subsubsection}{\numberline {3.11.2.43}R}{35}{subsubsection.3.11.2.43}
+\contentsline {subsubsection}{\numberline {3.11.2.44}R1}{35}{subsubsection.3.11.2.44}
+\contentsline {subsubsection}{\numberline {3.11.2.45}R2}{35}{subsubsection.3.11.2.45}
+\contentsline {subsubsection}{\numberline {3.11.2.46}RATIOX}{35}{subsubsection.3.11.2.46}
+\contentsline {subsubsection}{\numberline {3.11.2.47}RATIOY}{35}{subsubsection.3.11.2.47}
+\contentsline {subsubsection}{\numberline {3.11.2.48}RBTOR}{35}{subsubsection.3.11.2.48}
+\contentsline {subsubsection}{\numberline {3.11.2.49}rcntc}{36}{subsubsection.3.11.2.49}
+\contentsline {subsubsection}{\numberline {3.11.2.50}TIME}{36}{subsubsection.3.11.2.50}
+\contentsline {subsubsection}{\numberline {3.11.2.51}TSHOT}{36}{subsubsection.3.11.2.51}
+\contentsline {subsubsection}{\numberline {3.11.2.52}TWOPI}{36}{subsubsection.3.11.2.52}
+\contentsline {subsubsection}{\numberline {3.11.2.53}WIDTH}{36}{subsubsection.3.11.2.53}
+\contentsline {subsubsection}{\numberline {3.11.2.54}Z}{36}{subsubsection.3.11.2.54}
+\contentsline {subsubsection}{\numberline {3.11.2.55}Z1}{36}{subsubsection.3.11.2.55}
+\contentsline {subsubsection}{\numberline {3.11.2.56}Z2}{36}{subsubsection.3.11.2.56}
+\contentsline {section}{\numberline {3.12}jt2dg Module Reference}{37}{section.3.12}
+\contentsline {subsection}{\numberline {3.12.1}Detailed Description}{37}{subsection.3.12.1}
+\contentsline {subsection}{\numberline {3.12.2}Variable Documentation}{37}{subsection.3.12.2}
+\contentsline {subsubsection}{\numberline {3.12.2.1}btorc}{37}{subsubsection.3.12.2.1}
+\contentsline {subsubsection}{\numberline {3.12.2.2}date}{37}{subsubsection.3.12.2.2}
+\contentsline {subsubsection}{\numberline {3.12.2.3}ffg}{38}{subsubsection.3.12.2.3}
+\contentsline {subsubsection}{\numberline {3.12.2.4}fg}{38}{subsubsection.3.12.2.4}
+\contentsline {subsubsection}{\numberline {3.12.2.5}pfm}{38}{subsubsection.3.12.2.5}
+\contentsline {subsubsection}{\numberline {3.12.2.6}pg}{38}{subsubsection.3.12.2.6}
+\contentsline {subsubsection}{\numberline {3.12.2.7}ppg}{38}{subsubsection.3.12.2.7}
+\contentsline {subsubsection}{\numberline {3.12.2.8}psilim}{38}{subsubsection.3.12.2.8}
+\contentsline {subsubsection}{\numberline {3.12.2.9}psimin}{38}{subsubsection.3.12.2.9}
+\contentsline {subsubsection}{\numberline {3.12.2.10}rcntc}{38}{subsubsection.3.12.2.10}
+\contentsline {subsubsection}{\numberline {3.12.2.11}rdim}{38}{subsubsection.3.12.2.11}
+\contentsline {subsubsection}{\numberline {3.12.2.12}redge}{38}{subsubsection.3.12.2.12}
+\contentsline {subsubsection}{\numberline {3.12.2.13}rgr}{38}{subsubsection.3.12.2.13}
+\contentsline {subsubsection}{\numberline {3.12.2.14}rma}{39}{subsubsection.3.12.2.14}
+\contentsline {subsubsection}{\numberline {3.12.2.15}title}{39}{subsubsection.3.12.2.15}
+\contentsline {subsubsection}{\numberline {3.12.2.16}zdim}{39}{subsubsection.3.12.2.16}
+\contentsline {subsubsection}{\numberline {3.12.2.17}zgr}{39}{subsubsection.3.12.2.17}
+\contentsline {subsubsection}{\numberline {3.12.2.18}zma}{39}{subsubsection.3.12.2.18}
+\contentsline {subsubsection}{\numberline {3.12.2.19}zmsmid}{39}{subsubsection.3.12.2.19}
+\contentsline {section}{\numberline {3.13}nk2dg Module Reference}{40}{section.3.13}
+\contentsline {subsection}{\numberline {3.13.1}Detailed Description}{40}{subsection.3.13.1}
+\contentsline {subsection}{\numberline {3.13.2}Variable Documentation}{40}{subsection.3.13.2}
+\contentsline {subsubsection}{\numberline {3.13.2.1}btorc}{40}{subsubsection.3.13.2.1}
+\contentsline {subsubsection}{\numberline {3.13.2.2}delr}{40}{subsubsection.3.13.2.2}
+\contentsline {subsubsection}{\numberline {3.13.2.3}delz}{40}{subsubsection.3.13.2.3}
+\contentsline {subsubsection}{\numberline {3.13.2.4}fg}{40}{subsubsection.3.13.2.4}
+\contentsline {subsubsection}{\numberline {3.13.2.5}pfm}{41}{subsubsection.3.13.2.5}
+\contentsline {subsubsection}{\numberline {3.13.2.6}psilim}{41}{subsubsection.3.13.2.6}
+\contentsline {subsubsection}{\numberline {3.13.2.7}rcntc}{41}{subsubsection.3.13.2.7}
+\contentsline {subsubsection}{\numberline {3.13.2.8}rgr}{41}{subsubsection.3.13.2.8}
+\contentsline {subsubsection}{\numberline {3.13.2.9}rmax}{41}{subsubsection.3.13.2.9}
+\contentsline {subsubsection}{\numberline {3.13.2.10}rmin}{41}{subsubsection.3.13.2.10}
+\contentsline {subsubsection}{\numberline {3.13.2.11}zgr}{41}{subsubsection.3.13.2.11}
+\contentsline {subsubsection}{\numberline {3.13.2.12}zmax}{41}{subsubsection.3.13.2.12}
+\contentsline {subsubsection}{\numberline {3.13.2.13}zmin}{41}{subsubsection.3.13.2.13}
+\contentsline {section}{\numberline {3.14}nkn2dg Module Reference}{42}{section.3.14}
+\contentsline {subsection}{\numberline {3.14.1}Detailed Description}{42}{subsection.3.14.1}
+\contentsline {subsection}{\numberline {3.14.2}Variable Documentation}{42}{subsection.3.14.2}
+\contentsline {subsubsection}{\numberline {3.14.2.1}btorc}{42}{subsubsection.3.14.2.1}
+\contentsline {subsubsection}{\numberline {3.14.2.2}delr}{42}{subsubsection.3.14.2.2}
+\contentsline {subsubsection}{\numberline {3.14.2.3}delz}{42}{subsubsection.3.14.2.3}
+\contentsline {subsubsection}{\numberline {3.14.2.4}fg}{42}{subsubsection.3.14.2.4}
+\contentsline {subsubsection}{\numberline {3.14.2.5}pfm}{43}{subsubsection.3.14.2.5}
+\contentsline {subsubsection}{\numberline {3.14.2.6}psilim}{43}{subsubsection.3.14.2.6}
+\contentsline {subsubsection}{\numberline {3.14.2.7}rcntc}{43}{subsubsection.3.14.2.7}
+\contentsline {subsubsection}{\numberline {3.14.2.8}rgr}{43}{subsubsection.3.14.2.8}
+\contentsline {subsubsection}{\numberline {3.14.2.9}rmax}{43}{subsubsection.3.14.2.9}
+\contentsline {subsubsection}{\numberline {3.14.2.10}rmin}{43}{subsubsection.3.14.2.10}
+\contentsline {subsubsection}{\numberline {3.14.2.11}zgr}{43}{subsubsection.3.14.2.11}
+\contentsline {subsubsection}{\numberline {3.14.2.12}zmax}{43}{subsubsection.3.14.2.12}
+\contentsline {subsubsection}{\numberline {3.14.2.13}zmin}{43}{subsubsection.3.14.2.13}
+\contentsline {section}{\numberline {3.15}pb2dg Module Reference}{44}{section.3.15}
+\contentsline {subsection}{\numberline {3.15.1}Detailed Description}{44}{subsection.3.15.1}
+\contentsline {subsection}{\numberline {3.15.2}Variable Documentation}{44}{subsection.3.15.2}
+\contentsline {subsubsection}{\numberline {3.15.2.1}btorc}{44}{subsubsection.3.15.2.1}
+\contentsline {subsubsection}{\numberline {3.15.2.2}ffg}{44}{subsubsection.3.15.2.2}
+\contentsline {subsubsection}{\numberline {3.15.2.3}fg}{44}{subsubsection.3.15.2.3}
+\contentsline {subsubsection}{\numberline {3.15.2.4}pfm}{44}{subsubsection.3.15.2.4}
+\contentsline {subsubsection}{\numberline {3.15.2.5}pg}{45}{subsubsection.3.15.2.5}
+\contentsline {subsubsection}{\numberline {3.15.2.6}pi}{45}{subsubsection.3.15.2.6}
+\contentsline {subsubsection}{\numberline {3.15.2.7}ppg}{45}{subsubsection.3.15.2.7}
+\contentsline {subsubsection}{\numberline {3.15.2.8}psilim}{45}{subsubsection.3.15.2.8}
+\contentsline {subsubsection}{\numberline {3.15.2.9}rcntc}{45}{subsubsection.3.15.2.9}
+\contentsline {subsubsection}{\numberline {3.15.2.10}rgr}{45}{subsubsection.3.15.2.10}
+\contentsline {subsubsection}{\numberline {3.15.2.11}zgr}{45}{subsubsection.3.15.2.11}
+\contentsline {section}{\numberline {3.16}prinequ Module Reference}{46}{section.3.16}
+\contentsline {subsection}{\numberline {3.16.1}Detailed Description}{46}{subsection.3.16.1}
+\contentsline {subsection}{\numberline {3.16.2}Variable Documentation}{46}{subsection.3.16.2}
+\contentsline {subsubsection}{\numberline {3.16.2.1}btorc}{46}{subsubsection.3.16.2.1}
+\contentsline {subsubsection}{\numberline {3.16.2.2}date}{46}{subsubsection.3.16.2.2}
+\contentsline {subsubsection}{\numberline {3.16.2.3}ffg}{46}{subsubsection.3.16.2.3}
+\contentsline {subsubsection}{\numberline {3.16.2.4}fg}{47}{subsubsection.3.16.2.4}
+\contentsline {subsubsection}{\numberline {3.16.2.5}page}{47}{subsubsection.3.16.2.5}
+\contentsline {subsubsection}{\numberline {3.16.2.6}pfm}{47}{subsubsection.3.16.2.6}
+\contentsline {subsubsection}{\numberline {3.16.2.7}pg}{47}{subsubsection.3.16.2.7}
+\contentsline {subsubsection}{\numberline {3.16.2.8}ppg}{47}{subsubsection.3.16.2.8}
+\contentsline {subsubsection}{\numberline {3.16.2.9}psilim}{47}{subsubsection.3.16.2.9}
+\contentsline {subsubsection}{\numberline {3.16.2.10}psimin}{47}{subsubsection.3.16.2.10}
+\contentsline {subsubsection}{\numberline {3.16.2.11}rcntc}{47}{subsubsection.3.16.2.11}
+\contentsline {subsubsection}{\numberline {3.16.2.12}rdim}{47}{subsubsection.3.16.2.12}
+\contentsline {subsubsection}{\numberline {3.16.2.13}redge}{47}{subsubsection.3.16.2.13}
+\contentsline {subsubsection}{\numberline {3.16.2.14}rgr}{47}{subsubsection.3.16.2.14}
+\contentsline {subsubsection}{\numberline {3.16.2.15}rma}{48}{subsubsection.3.16.2.15}
+\contentsline {subsubsection}{\numberline {3.16.2.16}title}{48}{subsubsection.3.16.2.16}
+\contentsline {subsubsection}{\numberline {3.16.2.17}zdim}{48}{subsubsection.3.16.2.17}
+\contentsline {subsubsection}{\numberline {3.16.2.18}zgr}{48}{subsubsection.3.16.2.18}
+\contentsline {subsubsection}{\numberline {3.16.2.19}zma}{48}{subsubsection.3.16.2.19}
+\contentsline {subsubsection}{\numberline {3.16.2.20}zmsmid}{48}{subsubsection.3.16.2.20}
+\contentsline {section}{\numberline {3.17}pt2dg Module Reference}{49}{section.3.17}
+\contentsline {subsection}{\numberline {3.17.1}Detailed Description}{49}{subsection.3.17.1}
+\contentsline {subsection}{\numberline {3.17.2}Variable Documentation}{49}{subsection.3.17.2}
+\contentsline {subsubsection}{\numberline {3.17.2.1}ex}{49}{subsubsection.3.17.2.1}
+\contentsline {subsubsection}{\numberline {3.17.2.2}exi}{49}{subsubsection.3.17.2.2}
+\contentsline {subsubsection}{\numberline {3.17.2.3}hlp\_\discretionary {-}{}{}txt}{49}{subsubsection.3.17.2.3}
+\contentsline {subsubsection}{\numberline {3.17.2.4}in\_\discretionary {-}{}{}mesh}{49}{subsubsection.3.17.2.4}
+\contentsline {subsubsection}{\numberline {3.17.2.5}in\_\discretionary {-}{}{}psi}{49}{subsubsection.3.17.2.5}
+\contentsline {subsubsection}{\numberline {3.17.2.6}out\_\discretionary {-}{}{}file}{49}{subsubsection.3.17.2.6}
+\contentsline {section}{\numberline {3.18}risepsi Module Reference}{50}{section.3.18}
+\contentsline {subsection}{\numberline {3.18.1}Detailed Description}{50}{subsection.3.18.1}
+\contentsline {subsection}{\numberline {3.18.2}Variable Documentation}{50}{subsection.3.18.2}
+\contentsline {subsubsection}{\numberline {3.18.2.1}btorc}{50}{subsubsection.3.18.2.1}
+\contentsline {subsubsection}{\numberline {3.18.2.2}pfm}{50}{subsubsection.3.18.2.2}
+\contentsline {subsubsection}{\numberline {3.18.2.3}psilim}{50}{subsubsection.3.18.2.3}
+\contentsline {subsubsection}{\numberline {3.18.2.4}rcntc}{50}{subsubsection.3.18.2.4}
+\contentsline {subsubsection}{\numberline {3.18.2.5}rgr}{50}{subsubsection.3.18.2.5}
+\contentsline {subsubsection}{\numberline {3.18.2.6}shift}{51}{subsubsection.3.18.2.6}
+\contentsline {subsubsection}{\numberline {3.18.2.7}zgr}{51}{subsubsection.3.18.2.7}
+\contentsline {section}{\numberline {3.19}shotfile2dg Module Reference}{52}{section.3.19}
+\contentsline {subsection}{\numberline {3.19.1}Detailed Description}{52}{subsection.3.19.1}
+\contentsline {subsection}{\numberline {3.19.2}Variable Documentation}{53}{subsection.3.19.2}
+\contentsline {subsubsection}{\numberline {3.19.2.1}arg}{53}{subsubsection.3.19.2.1}
+\contentsline {subsubsection}{\numberline {3.19.2.2}br}{53}{subsubsection.3.19.2.2}
+\contentsline {subsubsection}{\numberline {3.19.2.3}bt}{53}{subsubsection.3.19.2.3}
+\contentsline {subsubsection}{\numberline {3.19.2.4}btorc}{53}{subsubsection.3.19.2.4}
+\contentsline {subsubsection}{\numberline {3.19.2.5}bz}{53}{subsubsection.3.19.2.5}
+\contentsline {subsubsection}{\numberline {3.19.2.6}dianam}{53}{subsubsection.3.19.2.6}
+\contentsline {subsubsection}{\numberline {3.19.2.7}expnam}{53}{subsubsection.3.19.2.7}
+\contentsline {subsubsection}{\numberline {3.19.2.8}filename}{53}{subsubsection.3.19.2.8}
+\contentsline {subsubsection}{\numberline {3.19.2.9}fjp}{53}{subsubsection.3.19.2.9}
+\contentsline {subsubsection}{\numberline {3.19.2.10}fpf}{54}{subsubsection.3.19.2.10}
+\contentsline {subsubsection}{\numberline {3.19.2.11}gpr}{54}{subsubsection.3.19.2.11}
+\contentsline {subsubsection}{\numberline {3.19.2.12}gpz}{54}{subsubsection.3.19.2.12}
+\contentsline {subsubsection}{\numberline {3.19.2.13}iarg}{54}{subsubsection.3.19.2.13}
+\contentsline {subsubsection}{\numberline {3.19.2.14}iargc}{54}{subsubsection.3.19.2.14}
+\contentsline {subsubsection}{\numberline {3.19.2.15}lin}{54}{subsubsection.3.19.2.15}
+\contentsline {subsubsection}{\numberline {3.19.2.16}lnblnk}{54}{subsubsection.3.19.2.16}
+\contentsline {subsubsection}{\numberline {3.19.2.17}lpfxdim}{54}{subsubsection.3.19.2.17}
+\contentsline {subsubsection}{\numberline {3.19.2.18}mdim}{54}{subsubsection.3.19.2.18}
+\contentsline {subsubsection}{\numberline {3.19.2.19}nedit}{54}{subsubsection.3.19.2.19}
+\contentsline {subsubsection}{\numberline {3.19.2.20}nshot}{54}{subsubsection.3.19.2.20}
+\contentsline {subsubsection}{\numberline {3.19.2.21}pfm}{55}{subsubsection.3.19.2.21}
+\contentsline {subsubsection}{\numberline {3.19.2.22}pfmd}{55}{subsubsection.3.19.2.22}
+\contentsline {subsubsection}{\numberline {3.19.2.23}pfxx}{55}{subsubsection.3.19.2.23}
+\contentsline {subsubsection}{\numberline {3.19.2.24}psilim}{55}{subsubsection.3.19.2.24}
+\contentsline {subsubsection}{\numberline {3.19.2.25}rcntc}{55}{subsubsection.3.19.2.25}
+\contentsline {subsubsection}{\numberline {3.19.2.26}ri}{55}{subsubsection.3.19.2.26}
+\contentsline {subsubsection}{\numberline {3.19.2.27}rin}{55}{subsubsection.3.19.2.27}
+\contentsline {subsubsection}{\numberline {3.19.2.28}rpfx}{55}{subsubsection.3.19.2.28}
+\contentsline {subsubsection}{\numberline {3.19.2.29}tshot}{55}{subsubsection.3.19.2.29}
+\contentsline {subsubsection}{\numberline {3.19.2.30}zin}{55}{subsubsection.3.19.2.30}
+\contentsline {subsubsection}{\numberline {3.19.2.31}zj}{55}{subsubsection.3.19.2.31}
+\contentsline {subsubsection}{\numberline {3.19.2.32}zpfx}{56}{subsubsection.3.19.2.32}
+\contentsline {section}{\numberline {3.20}sst2dg Module Reference}{57}{section.3.20}
+\contentsline {subsection}{\numberline {3.20.1}Detailed Description}{57}{subsection.3.20.1}
+\contentsline {subsection}{\numberline {3.20.2}Variable Documentation}{57}{subsection.3.20.2}
+\contentsline {subsubsection}{\numberline {3.20.2.1}apf}{57}{subsubsection.3.20.2.1}
+\contentsline {subsubsection}{\numberline {3.20.2.2}Bt}{57}{subsubsection.3.20.2.2}
+\contentsline {subsubsection}{\numberline {3.20.2.3}btorc}{57}{subsubsection.3.20.2.3}
+\contentsline {subsubsection}{\numberline {3.20.2.4}derivative}{58}{subsubsection.3.20.2.4}
+\contentsline {subsubsection}{\numberline {3.20.2.5}gpr}{58}{subsubsection.3.20.2.5}
+\contentsline {subsubsection}{\numberline {3.20.2.6}gpz}{58}{subsubsection.3.20.2.6}
+\contentsline {subsubsection}{\numberline {3.20.2.7}pc}{58}{subsubsection.3.20.2.7}
+\contentsline {subsubsection}{\numberline {3.20.2.8}pcd}{58}{subsubsection.3.20.2.8}
+\contentsline {subsubsection}{\numberline {3.20.2.9}pfl}{58}{subsubsection.3.20.2.9}
+\contentsline {subsubsection}{\numberline {3.20.2.10}pfm}{58}{subsubsection.3.20.2.10}
+\contentsline {subsubsection}{\numberline {3.20.2.11}pr}{58}{subsubsection.3.20.2.11}
+\contentsline {subsubsection}{\numberline {3.20.2.12}prd}{58}{subsubsection.3.20.2.12}
+\contentsline {subsubsection}{\numberline {3.20.2.13}q}{58}{subsubsection.3.20.2.13}
+\contentsline {subsubsection}{\numberline {3.20.2.14}rcntc}{58}{subsubsection.3.20.2.14}
+\contentsline {subsubsection}{\numberline {3.20.2.15}xpf}{59}{subsubsection.3.20.2.15}
+\contentsline {section}{\numberline {3.21}vr2dg Module Reference}{60}{section.3.21}
+\contentsline {subsection}{\numberline {3.21.1}Detailed Description}{60}{subsection.3.21.1}
+\contentsline {subsection}{\numberline {3.21.2}Variable Documentation}{60}{subsection.3.21.2}
+\contentsline {subsubsection}{\numberline {3.21.2.1}btorc}{60}{subsubsection.3.21.2.1}
+\contentsline {subsubsection}{\numberline {3.21.2.2}pfm}{60}{subsubsection.3.21.2.2}
+\contentsline {subsubsection}{\numberline {3.21.2.3}psilim}{60}{subsubsection.3.21.2.3}
+\contentsline {subsubsection}{\numberline {3.21.2.4}rcntc}{60}{subsubsection.3.21.2.4}
+\contentsline {subsubsection}{\numberline {3.21.2.5}rgr}{60}{subsubsection.3.21.2.5}
+\contentsline {subsubsection}{\numberline {3.21.2.6}zgr}{61}{subsubsection.3.21.2.6}
+\contentsline {chapter}{\numberline {4}File Documentation}{63}{chapter.4}
+\contentsline {section}{\numberline {4.1}src/cropequ.f File Reference}{63}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Function Documentation}{64}{subsection.4.1.1}
+\contentsline {subsubsection}{\numberline {4.1.1.1}crop}{64}{subsubsection.4.1.1.1}
+\contentsline {section}{\numberline {4.2}src/culham.f File Reference}{65}{section.4.2}
+\contentsline {section}{\numberline {4.3}src/dg2dg.f File Reference}{66}{section.4.3}
+\contentsline {section}{\numberline {4.4}src/dg2ef.f File Reference}{67}{section.4.4}
+\contentsline {section}{\numberline {4.5}src/dg2vr.f File Reference}{68}{section.4.5}
+\contentsline {section}{\numberline {4.6}src/dg\_\discretionary {-}{}{}arith\_\discretionary {-}{}{}dg.f File Reference}{69}{section.4.6}
+\contentsline {section}{\numberline {4.7}src/dg\_\discretionary {-}{}{}minuspsi\_\discretionary {-}{}{}dg.f File Reference}{70}{section.4.7}
+\contentsline {section}{\numberline {4.8}src/dg\_\discretionary {-}{}{}proc\_\discretionary {-}{}{}dg.f File Reference}{71}{section.4.8}
+\contentsline {section}{\numberline {4.9}src/diva2dg.f File Reference}{72}{section.4.9}
+\contentsline {section}{\numberline {4.10}src/double.f File Reference}{73}{section.4.10}
+\contentsline {subsection}{\numberline {4.10.1}Function Documentation}{73}{subsection.4.10.1}
+\contentsline {subsubsection}{\numberline {4.10.1.1}double}{73}{subsubsection.4.10.1.1}
+\contentsline {section}{\numberline {4.11}src/ef2dg.f File Reference}{74}{section.4.11}
+\contentsline {section}{\numberline {4.12}src/jetppf2dg.f File Reference}{75}{section.4.12}
+\contentsline {subsection}{\numberline {4.12.1}Function Documentation}{76}{subsection.4.12.1}
+\contentsline {subsubsection}{\numberline {4.12.1.1}ERRMSS}{76}{subsubsection.4.12.1.1}
+\contentsline {subsubsection}{\numberline {4.12.1.2}LENSTR}{76}{subsubsection.4.12.1.2}
+\contentsline {section}{\numberline {4.13}src/jt2dg.f File Reference}{77}{section.4.13}
+\contentsline {section}{\numberline {4.14}src/nk2dg.f File Reference}{78}{section.4.14}
+\contentsline {section}{\numberline {4.15}src/nkn2dg.f File Reference}{79}{section.4.15}
+\contentsline {section}{\numberline {4.16}src/open\_\discretionary {-}{}{}files.f File Reference}{80}{section.4.16}
+\contentsline {subsection}{\numberline {4.16.1}Function Documentation}{80}{subsection.4.16.1}
+\contentsline {subsubsection}{\numberline {4.16.1.1}open\_\discretionary {-}{}{}files}{80}{subsubsection.4.16.1.1}
+\contentsline {section}{\numberline {4.17}src/pb2dg.f File Reference}{81}{section.4.17}
+\contentsline {section}{\numberline {4.18}src/prinequ.f File Reference}{82}{section.4.18}
+\contentsline {section}{\numberline {4.19}src/pt2dg.f File Reference}{83}{section.4.19}
+\contentsline {subsection}{\numberline {4.19.1}Function Documentation}{83}{subsection.4.19.1}
+\contentsline {subsubsection}{\numberline {4.19.1.1}BPOLRZ}{83}{subsubsection.4.19.1.1}
+\contentsline {subsubsection}{\numberline {4.19.1.2}TRINWT}{83}{subsubsection.4.19.1.2}
+\contentsline {subsubsection}{\numberline {4.19.1.3}WBPOLRZ}{83}{subsubsection.4.19.1.3}
+\contentsline {subsubsection}{\numberline {4.19.1.4}wreqdg}{83}{subsubsection.4.19.1.4}
+\contentsline {section}{\numberline {4.20}src/rdefit.f File Reference}{85}{section.4.20}
+\contentsline {subsection}{\numberline {4.20.1}Function Documentation}{85}{subsection.4.20.1}
+\contentsline {subsubsection}{\numberline {4.20.1.1}rdefit}{85}{subsubsection.4.20.1.1}
+\contentsline {section}{\numberline {4.21}src/rdeqdg.f File Reference}{86}{section.4.21}
+\contentsline {subsection}{\numberline {4.21.1}Function Documentation}{86}{subsection.4.21.1}
+\contentsline {subsubsection}{\numberline {4.21.1.1}rdeqdg}{86}{subsubsection.4.21.1.1}
+\contentsline {section}{\numberline {4.22}src/rdeqjh.f File Reference}{87}{section.4.22}
+\contentsline {subsection}{\numberline {4.22.1}Function Documentation}{87}{subsection.4.22.1}
+\contentsline {subsubsection}{\numberline {4.22.1.1}rdeqjh}{87}{subsubsection.4.22.1.1}
+\contentsline {section}{\numberline {4.23}src/rdeqjt.f File Reference}{88}{section.4.23}
+\contentsline {subsection}{\numberline {4.23.1}Function Documentation}{88}{subsection.4.23.1}
+\contentsline {subsubsection}{\numberline {4.23.1.1}rdeqdg}{88}{subsubsection.4.23.1.1}
+\contentsline {section}{\numberline {4.24}src/rdeqlh.f File Reference}{89}{section.4.24}
+\contentsline {subsection}{\numberline {4.24.1}Function Documentation}{89}{subsection.4.24.1}
+\contentsline {subsubsection}{\numberline {4.24.1.1}rdeqlh}{89}{subsubsection.4.24.1.1}
+\contentsline {section}{\numberline {4.25}src/rdeqnk.f File Reference}{90}{section.4.25}
+\contentsline {subsection}{\numberline {4.25.1}Function Documentation}{90}{subsection.4.25.1}
+\contentsline {subsubsection}{\numberline {4.25.1.1}rdeqnk}{90}{subsubsection.4.25.1.1}
+\contentsline {section}{\numberline {4.26}src/rdeqnk2.f File Reference}{91}{section.4.26}
+\contentsline {subsection}{\numberline {4.26.1}Function Documentation}{91}{subsection.4.26.1}
+\contentsline {subsubsection}{\numberline {4.26.1.1}rdeqnk2}{91}{subsubsection.4.26.1.1}
+\contentsline {section}{\numberline {4.27}src/rdeqpb.f File Reference}{92}{section.4.27}
+\contentsline {subsection}{\numberline {4.27.1}Function Documentation}{92}{subsection.4.27.1}
+\contentsline {subsubsection}{\numberline {4.27.1.1}rdeqpb}{92}{subsubsection.4.27.1.1}
+\contentsline {section}{\numberline {4.28}src/rdeqvr.f File Reference}{93}{section.4.28}
+\contentsline {subsection}{\numberline {4.28.1}Function Documentation}{93}{subsection.4.28.1}
+\contentsline {subsubsection}{\numberline {4.28.1.1}rdeqvr}{93}{subsubsection.4.28.1.1}
+\contentsline {section}{\numberline {4.29}src/risepsi.f File Reference}{94}{section.4.29}
+\contentsline {section}{\numberline {4.30}src/shotfile2dg.f File Reference}{95}{section.4.30}
+\contentsline {subsection}{\numberline {4.30.1}Function Documentation}{95}{subsection.4.30.1}
+\contentsline {subsubsection}{\numberline {4.30.1.1}lnblnk}{95}{subsubsection.4.30.1.1}
+\contentsline {section}{\numberline {4.31}src/sst2dg.f File Reference}{96}{section.4.31}
+\contentsline {section}{\numberline {4.32}src/vr2dg.f File Reference}{97}{section.4.32}
+\contentsline {section}{\numberline {4.33}src/wrefit.f File Reference}{98}{section.4.33}
+\contentsline {subsection}{\numberline {4.33.1}Function Documentation}{98}{subsection.4.33.1}
+\contentsline {subsubsection}{\numberline {4.33.1.1}wrefit}{98}{subsubsection.4.33.1.1}
+\contentsline {section}{\numberline {4.34}src/wreqdg.f File Reference}{99}{section.4.34}
+\contentsline {subsection}{\numberline {4.34.1}Function Documentation}{99}{subsection.4.34.1}
+\contentsline {subsubsection}{\numberline {4.34.1.1}wreqdg}{99}{subsubsection.4.34.1.1}
+\contentsline {section}{\numberline {4.35}src/wreqvr.f File Reference}{100}{section.4.35}
+\contentsline {subsection}{\numberline {4.35.1}Function Documentation}{100}{subsection.4.35.1}
+\contentsline {subsubsection}{\numberline {4.35.1.1}wreqvr}{100}{subsubsection.4.35.1.1}

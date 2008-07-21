@@ -1,0 +1,220 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.5.6">
+  <compounddef id="rdeqpb_8f" kind="file">
+    <compoundname>rdeqpb.f</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="rdeqpb_8f_1d8b9400fefc2fa78c7f72d61fbe9e451" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>subroutine</type>
+        <definition>subroutine rdeqpb</definition>
+        <argsstring>(lun, ngpr, ngpz, iret, nr, nz, rbtor, psilim, rgr, zgr, pfm)</argsstring>
+        <name>rdeqpb</name>
+        <param>
+          <type>lun</type>
+        </param>
+        <param>
+          <type>ngpr</type>
+        </param>
+        <param>
+          <type>ngpz</type>
+        </param>
+        <param>
+          <type>iret</type>
+        </param>
+        <param>
+          <type>nr</type>
+        </param>
+        <param>
+          <type>nz</type>
+        </param>
+        <param>
+          <type>rbtor</type>
+          <defname>rbtor</defname>
+        </param>
+        <param>
+          <type>psilim</type>
+          <defname>psilim</defname>
+        </param>
+        <param>
+          <type>rgr</type>
+          <defname>rgr</defname>
+        </param>
+        <param>
+          <type>zgr</type>
+          <defname>zgr</defname>
+        </param>
+        <param>
+          <type>pfm</type>
+          <defname>pfm</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="rdeqpb_8f_1d8b9400fefc2fa78c7f72d61fbe9e451" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">subroutine<sp/></highlight><highlight class="normal"><ref refid="rdeqpb_8f_1d8b9400fefc2fa78c7f72d61fbe9e451" kindref="member">rdeqpb</ref>(lun,ngpr,ngpz,</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iret,nr,nz,rbtor,psilim,rgr,zgr,pfm)</highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">c======================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Read<sp/>the<sp/>equilibrium<sp/>data<sp/>from<sp/>TdeV</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">c***</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Input:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>lun<sp/><sp/><sp/><sp/><sp/>the<sp/>logical<sp/>unit<sp/>number<sp/>for<sp/>the<sp/>input</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>ngpr<sp/><sp/><sp/><sp/>the<sp/>maximum<sp/>number<sp/>of<sp/>points<sp/>in<sp/>R<sp/>direction</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>ngpz<sp/><sp/><sp/><sp/>the<sp/>maximum<sp/>number<sp/>of<sp/>points<sp/>in<sp/>Z<sp/>direction</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="comment">c***</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Output:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>iret<sp/><sp/><sp/><sp/>return<sp/>code<sp/>(0<sp/>means<sp/>OK)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>nr<sp/><sp/><sp/><sp/><sp/><sp/>the<sp/>actual<sp/>number<sp/>of<sp/>points<sp/>in<sp/>R<sp/>direction</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>nz<sp/><sp/><sp/><sp/><sp/><sp/>the<sp/>actual<sp/>number<sp/>of<sp/>points<sp/>in<sp/>Z<sp/>direction</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>rbtor<sp/><sp/><sp/>product<sp/>of<sp/>the<sp/>toroidal<sp/>magnetic<sp/>field<sp/>by<sp/>R</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>zgr<sp/><sp/><sp/><sp/><sp/>the<sp/>Z<sp/>values<sp/>for<sp/>the<sp/>grid<sp/>points</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>pfm<sp/><sp/><sp/><sp/><sp/>the<sp/>values<sp/>of<sp/>the<sp/>(poloidal<sp/>flux<sp/>-<sp/>separatrix<sp/>flux)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">c***</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>If<sp/>the<sp/>input<sp/>file<sp/>contains<sp/>no<sp/>data<sp/>on<sp/>the<sp/>toroidal<sp/>field<sp/>(old</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>version),<sp/>then<sp/>the<sp/>file<sp/>&quot;rbtor.dat&quot;<sp/>is<sp/>looked<sp/>for,<sp/>and<sp/>if<sp/>there<sp/>is</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>no<sp/>data<sp/>there,<sp/>then<sp/>the<sp/>user<sp/>is<sp/>asked<sp/>to<sp/>enter<sp/>the<sp/>value<sp/>of<sp/>R*Btor</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">c======================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/>version<sp/>:<sp/>27.06.98<sp/>20:47</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real*8</highlight><highlight class="normal"><sp/>rgr(ngpr),<sp/>zgr(ngpz),<sp/>pfm(ngpr,<sp/>ngpz)</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="comment">c...<sp/>toroidal<sp/>field<sp/>in<sp/>tesla,<sp/>radius<sp/>in<sp/>m</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real*8</highlight><highlight class="normal"><sp/>rbtor,psilim</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">logical</highlight><highlight class="normal"><sp/>errenc</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">integer</highlight><highlight class="normal"><sp/>nnul</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>parameter<sp/>(nnul=72)</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">character</highlight><highlight class="normal"><sp/>ul*(nnul)</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment">c======================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Read<sp/>the<sp/>plasma<sp/>equilibrium<sp/>...</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>rbtor=0.</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>psilim=0</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/>10<sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(a72)&apos;</highlight><highlight class="normal">,end=980)<sp/>ul</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(ul.eq.</highlight><highlight class="stringliteral">&apos;<sp/>&apos;</highlight><highlight class="normal">)<sp/>go<sp/>to<sp/>10</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>l=index(ul,</highlight><highlight class="stringliteral">&apos;=&apos;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(l.eq.0)<sp/>go<sp/>to<sp/>20</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="comment">c----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Parse<sp/>the<sp/>header<sp/>lines</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(index(ul,</highlight><highlight class="stringliteral">&apos;R*BTOR&apos;</highlight><highlight class="normal">).gt.0)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(ul(l+1:nnul),*,err=982)<sp/>rbtor</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(index(ul,</highlight><highlight class="stringliteral">&apos;PSILIM&apos;</highlight><highlight class="normal">).gt.0)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(ul(l+1:nnul),*,err=982)<sp/>psilim</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(index(ul,</highlight><highlight class="stringliteral">&apos;X1,2,N&apos;</highlight><highlight class="normal">).gt.0)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(ul(l+1:nnul),*,err=982)<sp/>x1,x2,nr</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(index(ul,</highlight><highlight class="stringliteral">&apos;Y1,2,N&apos;</highlight><highlight class="normal">).gt.0)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(ul(l+1:nnul),*,err=982)<sp/>y1,y2,nz</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>go<sp/>to<sp/>10</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="comment">c----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Check<sp/>the<sp/>dimensions<sp/>and<sp/>determine<sp/>r,z<sp/>co-ordinates<sp/>of<sp/>the<sp/>grid</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/>20<sp/><sp/><sp/>errenc=.false.</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(nr.gt.ngpr<sp/>.or.<sp/>nr.le.1)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>errenc=.true.</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;wrong<sp/>value<sp/>of<sp/>nr:<sp/>&apos;</highlight><highlight class="normal">,nr</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(nz.gt.ngpz<sp/>.or.<sp/>nz.le.1)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>errenc=.true.</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;wrong<sp/>value<sp/>of<sp/>nz:<sp/>&apos;</highlight><highlight class="normal">,nz</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(x1.ge.x2)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>errenc=.true.</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;wrong<sp/>values<sp/>of<sp/>x1,x2:<sp/>&apos;</highlight><highlight class="normal">,x1,x2</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(y1.ge.y2)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>errenc=.true.</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;wrong<sp/>values<sp/>of<sp/>y1,y2:<sp/>&apos;</highlight><highlight class="normal">,y1,y2</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(errenc)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;rdeqpb:<sp/>error(s)<sp/>in<sp/>the<sp/>input<sp/>file<sp/>header<sp/>detected&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iret=8</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d=(x2-x1)/(nr-1)</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>x=x1</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>i=1,nr</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rgr(i)=x</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>x=x+d</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>do</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d=(y2-y1)/(nz-1)</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>y=y1</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>i=1,nz</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>zgr(i)=y</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>y=y+d</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>do</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight><highlight class="comment">c----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Check<sp/>the<sp/>R*Btor.<sp/>If<sp/>not<sp/>read,<sp/>look<sp/>for<sp/>the<sp/>file<sp/>&apos;rbtor.dat&apos;.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>If<sp/>does<sp/>not<sp/>exist,<sp/>ask<sp/>user<sp/>to<sp/>enter</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(rbtor.eq.0.)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inquire</highlight><highlight class="normal">(file=</highlight><highlight class="stringliteral">&apos;rbtor.dat&apos;</highlight><highlight class="normal">,exist=errenc)</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(errenc)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">open</highlight><highlight class="normal">(lun+2,file=</highlight><highlight class="stringliteral">&apos;rbtor.dat&apos;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rewind(lun+2)</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun+2,*,err=30)<sp/>rbtor</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;R*Btor<sp/>value<sp/>read<sp/>from<sp/>&quot;rbtor.dat&quot;&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">close</highlight><highlight class="normal">(lun+2)</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal">30<sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(rbtor.eq.0.)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;No<sp/>R*Btor<sp/>data<sp/>found,<sp/>neither<sp/>in<sp/>the<sp/>input<sp/>file<sp/>&apos;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&apos;nor<sp/>in<sp/>&quot;rbtor.dat&quot;&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;Please<sp/>enter<sp/>the<sp/>value<sp/>of<sp/>R*Btor<sp/>:<sp/>\c&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(*,*)<sp/>rbtor</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(rbtor.eq.0.)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;Zero<sp/>value<sp/>of<sp/>R*Btor<sp/>-<sp/>program<sp/>stops&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iret=8</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight><highlight class="comment">c----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Read<sp/>the<sp/>psi<sp/>values.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,*,err=984,end=986)<sp/>((pfm(i,j),i=1,nr),j=1,nz)</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>do<sp/>i=1,nr</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>do<sp/>j=1,nz</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pfm(i,j)=pfm(i,j)-psilim</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>end<sp/>do</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>end<sp/>do</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>iret=0</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>return</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight><highlight class="comment">c======================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/>980<sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;====<sp/>rdeqpb:<sp/>no<sp/>psi<sp/>data<sp/>found<sp/>in<sp/>the<sp/>input<sp/>file&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>iret=8</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>return</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/>982<sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;====<sp/>rdeqpb:<sp/>error<sp/>by<sp/>parsing<sp/>&apos;</highlight><highlight class="normal">,ul</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>iret=8</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>return</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/>984<sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;====<sp/>rdeqpb:<sp/>wrong<sp/>data<sp/>format<sp/>in<sp/>the<sp/>input<sp/>file&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>iret=8</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>return</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/>986<sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;====<sp/>rdeqpb:<sp/>not<sp/>enough<sp/>data<sp/>in<sp/>the<sp/>input<sp/>file&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>iret=8</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>return</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight><highlight class="comment">c======================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight><highlight class="keyword"><sp/><sp/><sp/><sp/><sp/><sp/>end</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/rdeqpb.f"/>
+  </compounddef>
+</doxygen>

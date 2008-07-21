@@ -1,0 +1,651 @@
+\hypertarget{namespaceJETPPF2DG}{
+\section{JETPPF2DG Module Reference}
+\label{namespaceJETPPF2DG}\index{JETPPF2DG@{JETPPF2DG}}
+}
+Translation of the JET PPF equilibrium data into dg-compatible format.  
+
+
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_258acbfd9dfc5ca34869c6edfdd89c8d}{LUNMSG}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_5e02219aa819d9f9f40ffb1884684f2c}{MR}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_887113770833f9aa581604f9474cb44c}{MZ}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_6db6d04641a552fe57c7f140cb8c09e6}{LFLUSH}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_5493047f501721b44b5e923dc3cd64d0}{IREAD}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_ab53f9bbac5ae7882b6288685910c67f}{IWRITE}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_47bfacdba737dd1c1fb6e676e5d5ace9}{IERRA}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_e270735b1159e8e19c3b3c52b0bb3d51}{NSHOT}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_1e11ff274dde21dbe30d2bb886dfd5b9}{NSEQ}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_a57c322f474d9c8344c098ffb1f2fbbc}{NX}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_fe7c59a5845e1d14c352d47c802827bb}{NY}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_7115e44048e1de47d26e48726e317603}{RATIOX}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_c27cb250b47cf21b49de19ad55baff1b}{RATIOY}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_bc3d3903b29c339401d382d43fd4ecc5}{IER}
+\item 
+integer \hyperlink{namespaceJETPPF2DG_ffda3e553d7afe1dc1f1b0b919addad8}{iarg}
+\item 
+integer \hyperlink{namespaceJETPPF2DG_d26188761e21fc3625e8c5ed7d44695c}{iargc}
+\item 
+integer \hyperlink{namespaceJETPPF2DG_407321de285e0bcd8e697236b9c7a990}{lnblnk}
+\item 
+integer \hyperlink{namespaceJETPPF2DG_cd9af8b5846f3015549a65dac27297d6}{i}
+\item 
+integer \hyperlink{namespaceJETPPF2DG_8b427254180dae4e03e464db25432b89}{j}
+\item 
+integer \hyperlink{namespaceJETPPF2DG_8a10d0fb8a6fcf0b1735d5264e4074c6}{iret}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_6fcf8fd1ddd7d7d89f9ebc42bb0acd4d}{IGO}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_525296fd37a70f64b96687ac65d85e15}{IDUM}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_7d9dd11fba52d0b1b824c1d55e435c0f}{IERROR}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_fc3e107505ebc9c764214d171a22c579}{NP}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_177fa052b15bf74d1b04fa4c6d0d246d}{NR}
+\item 
+INTEGER \hyperlink{namespaceJETPPF2DG_54b52cca10f228100e5bf6d6861b5744}{NZ}
+\item 
+REAL \hyperlink{namespaceJETPPF2DG_40cdb8daca293ee227018204f477a568}{TSHOT}
+\item 
+REAL \hyperlink{namespaceJETPPF2DG_eeb6ada756a20d433b90d04807324eec}{WIDTH}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_cc9d3570fc86b09342a8977a84c9b1e6}{CONV}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_54f18c6794b7739b7bc332cedd97d7f1}{RBTOR}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_0071ea355e749981556deb6108904af9}{TWOPI}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_0aea03eeb6f87047b94e1a0b718253af}{PSI0}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_e557339a1c12ba7e9ef7deadc7465739}{PSIB}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_fbb4fcc942fe28a23b23a8667d562b48}{DPSI}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_b093dcbbe39feeaa433796831d6374de}{PSI}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_9bcf5731b1080d6e8a268dc44d2c30a0}{EPS}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_a8c481ce2a9d8fee1b017a02d4bf7504}{R1}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_737ed75dab8a61babe35ac43c0a217e2}{R2}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_e8aae9ece2ea51185b537f3815875dbe}{R}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_b51d877f8345dc64e86952fa279daa83}{Z1}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_dc17956d43608921538c64177125e1c4}{Z2}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_e77dc9f382919eb823a6a004b79dec10}{Z}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_c9078c3f7f6a9052eb87d78ea959db39}{TIME}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_049a0aaf18dbe2243eb88e6b3098e4d3}{FP}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_e35362876d621deef2d3119b6bec9e86}{BR}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_caf852e3dca62b109e51b850e9a30668}{BZ}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_1f8b39341692faac86ea6fbb52b03493}{BT}
+\item 
+REAL $\ast$8 \hyperlink{namespaceJETPPF2DG_697e63ef731b230d271dcbe3e66f07b2}{FPT}
+\item 
+real $\ast$8 \hyperlink{namespaceJETPPF2DG_be3c9bcf4058d9ec55ba6288bdef97fb}{rcntc}
+\item 
+real $\ast$8 \hyperlink{namespaceJETPPF2DG_b68b36ffa6613e3d1a69d435b2b5aaea}{btorc}
+\item 
+real $\ast$8 \hyperlink{namespaceJETPPF2DG_35264362cd8206b3671ba0049d7b3d5f}{psilim}
+\item 
+CHARACTER \hyperlink{namespaceJETPPF2DG_48577f770d2731f2e0b6560b4098131b}{PPFUID}
+\item 
+CHARACTER \hyperlink{namespaceJETPPF2DG_755c2f476cb350b1019df567507bd092}{DDA}
+\item 
+CHARACTER \hyperlink{namespaceJETPPF2DG_90aaa1a998c6e80c66375bf2e0f4cc2f}{MSG}
+\item 
+CHARACTER \hyperlink{namespaceJETPPF2DG_359c6fe9b150c29087e3c047ff7a6701}{arg}
+\item 
+CHARACTER \hyperlink{namespaceJETPPF2DG_9a2fec5fe980e03ddb99646d384a4d47}{filename}
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Translation of the JET PPF equilibrium data into dg-compatible format. 
+
+1st arg == shot number
+
+2nd arg == time
+
+\mbox{[}3rd arg == DDA (EFIT)\mbox{]}
+
+\mbox{[}4th arg == PPFUID (JETPPF)\mbox{]}
+
+\mbox{[}5th arg == edition (0)\mbox{]}
+
+The output filename is derived from the shot, time, experiment, diagnostic and edition
+
+Specific JET library routines are used to access the data
+
+\begin{Desc}
+\item[Version:]2008-07-17 16:15 \end{Desc}
+
+
+\subsection{Variable Documentation}
+\hypertarget{namespaceJETPPF2DG_359c6fe9b150c29087e3c047ff7a6701}{
+\index{JETPPF2DG@{JETPPF2DG}!arg@{arg}}
+\index{arg@{arg}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[arg]{\setlength{\rightskip}{0pt plus 5cm}CHARACTER {\bf JETPPF2DG::arg}}}
+\label{namespaceJETPPF2DG_359c6fe9b150c29087e3c047ff7a6701}
+
+
+
+
+Definition at line 58 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_e35362876d621deef2d3119b6bec9e86}{
+\index{JETPPF2DG@{JETPPF2DG}!BR@{BR}}
+\index{BR@{BR}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[BR]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::BR}}}
+\label{namespaceJETPPF2DG_e35362876d621deef2d3119b6bec9e86}
+
+
+
+
+Definition at line 55 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_1f8b39341692faac86ea6fbb52b03493}{
+\index{JETPPF2DG@{JETPPF2DG}!BT@{BT}}
+\index{BT@{BT}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[BT]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::BT}}}
+\label{namespaceJETPPF2DG_1f8b39341692faac86ea6fbb52b03493}
+
+
+
+
+Definition at line 55 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_b68b36ffa6613e3d1a69d435b2b5aaea}{
+\index{JETPPF2DG@{JETPPF2DG}!btorc@{btorc}}
+\index{btorc@{btorc}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[btorc]{\setlength{\rightskip}{0pt plus 5cm}real$\ast$8 {\bf JETPPF2DG::btorc}}}
+\label{namespaceJETPPF2DG_b68b36ffa6613e3d1a69d435b2b5aaea}
+
+
+
+
+Definition at line 56 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_caf852e3dca62b109e51b850e9a30668}{
+\index{JETPPF2DG@{JETPPF2DG}!BZ@{BZ}}
+\index{BZ@{BZ}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[BZ]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::BZ}}}
+\label{namespaceJETPPF2DG_caf852e3dca62b109e51b850e9a30668}
+
+
+
+
+Definition at line 55 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_cc9d3570fc86b09342a8977a84c9b1e6}{
+\index{JETPPF2DG@{JETPPF2DG}!CONV@{CONV}}
+\index{CONV@{CONV}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[CONV]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::CONV}}}
+\label{namespaceJETPPF2DG_cc9d3570fc86b09342a8977a84c9b1e6}
+
+
+
+
+Definition at line 51 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_755c2f476cb350b1019df567507bd092}{
+\index{JETPPF2DG@{JETPPF2DG}!DDA@{DDA}}
+\index{DDA@{DDA}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[DDA]{\setlength{\rightskip}{0pt plus 5cm}CHARACTER {\bf JETPPF2DG::DDA}}}
+\label{namespaceJETPPF2DG_755c2f476cb350b1019df567507bd092}
+
+
+
+
+Definition at line 58 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_fbb4fcc942fe28a23b23a8667d562b48}{
+\index{JETPPF2DG@{JETPPF2DG}!DPSI@{DPSI}}
+\index{DPSI@{DPSI}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[DPSI]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::DPSI}}}
+\label{namespaceJETPPF2DG_fbb4fcc942fe28a23b23a8667d562b48}
+
+
+
+
+Definition at line 52 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_9bcf5731b1080d6e8a268dc44d2c30a0}{
+\index{JETPPF2DG@{JETPPF2DG}!EPS@{EPS}}
+\index{EPS@{EPS}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[EPS]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::EPS}}}
+\label{namespaceJETPPF2DG_9bcf5731b1080d6e8a268dc44d2c30a0}
+
+
+
+
+Definition at line 54 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_9a2fec5fe980e03ddb99646d384a4d47}{
+\index{JETPPF2DG@{JETPPF2DG}!filename@{filename}}
+\index{filename@{filename}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[filename]{\setlength{\rightskip}{0pt plus 5cm}CHARACTER {\bf JETPPF2DG::filename}}}
+\label{namespaceJETPPF2DG_9a2fec5fe980e03ddb99646d384a4d47}
+
+
+
+
+Definition at line 58 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_049a0aaf18dbe2243eb88e6b3098e4d3}{
+\index{JETPPF2DG@{JETPPF2DG}!FP@{FP}}
+\index{FP@{FP}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[FP]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::FP}}}
+\label{namespaceJETPPF2DG_049a0aaf18dbe2243eb88e6b3098e4d3}
+
+
+
+
+Definition at line 55 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_697e63ef731b230d271dcbe3e66f07b2}{
+\index{JETPPF2DG@{JETPPF2DG}!FPT@{FPT}}
+\index{FPT@{FPT}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[FPT]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::FPT}}}
+\label{namespaceJETPPF2DG_697e63ef731b230d271dcbe3e66f07b2}
+
+
+
+
+Definition at line 55 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_cd9af8b5846f3015549a65dac27297d6}{
+\index{JETPPF2DG@{JETPPF2DG}!i@{i}}
+\index{i@{i}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[i]{\setlength{\rightskip}{0pt plus 5cm}integer {\bf JETPPF2DG::i}}}
+\label{namespaceJETPPF2DG_cd9af8b5846f3015549a65dac27297d6}
+
+
+
+
+Definition at line 46 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_ffda3e553d7afe1dc1f1b0b919addad8}{
+\index{JETPPF2DG@{JETPPF2DG}!iarg@{iarg}}
+\index{iarg@{iarg}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[iarg]{\setlength{\rightskip}{0pt plus 5cm}integer {\bf JETPPF2DG::iarg}}}
+\label{namespaceJETPPF2DG_ffda3e553d7afe1dc1f1b0b919addad8}
+
+
+
+
+Definition at line 46 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_d26188761e21fc3625e8c5ed7d44695c}{
+\index{JETPPF2DG@{JETPPF2DG}!iargc@{iargc}}
+\index{iargc@{iargc}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[iargc]{\setlength{\rightskip}{0pt plus 5cm}integer {\bf JETPPF2DG::iargc}}}
+\label{namespaceJETPPF2DG_d26188761e21fc3625e8c5ed7d44695c}
+
+
+
+
+Definition at line 46 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_525296fd37a70f64b96687ac65d85e15}{
+\index{JETPPF2DG@{JETPPF2DG}!IDUM@{IDUM}}
+\index{IDUM@{IDUM}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[IDUM]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::IDUM}}}
+\label{namespaceJETPPF2DG_525296fd37a70f64b96687ac65d85e15}
+
+
+
+
+Definition at line 47 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_bc3d3903b29c339401d382d43fd4ecc5}{
+\index{JETPPF2DG@{JETPPF2DG}!IER@{IER}}
+\index{IER@{IER}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[IER]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::IER}}}
+\label{namespaceJETPPF2DG_bc3d3903b29c339401d382d43fd4ecc5}
+
+
+
+
+Definition at line 45 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_47bfacdba737dd1c1fb6e676e5d5ace9}{
+\index{JETPPF2DG@{JETPPF2DG}!IERRA@{IERRA}}
+\index{IERRA@{IERRA}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[IERRA]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::IERRA}}}
+\label{namespaceJETPPF2DG_47bfacdba737dd1c1fb6e676e5d5ace9}
+
+
+
+
+Definition at line 44 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_7d9dd11fba52d0b1b824c1d55e435c0f}{
+\index{JETPPF2DG@{JETPPF2DG}!IERROR@{IERROR}}
+\index{IERROR@{IERROR}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[IERROR]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::IERROR}}}
+\label{namespaceJETPPF2DG_7d9dd11fba52d0b1b824c1d55e435c0f}
+
+
+
+
+Definition at line 47 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_6fcf8fd1ddd7d7d89f9ebc42bb0acd4d}{
+\index{JETPPF2DG@{JETPPF2DG}!IGO@{IGO}}
+\index{IGO@{IGO}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[IGO]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::IGO}}}
+\label{namespaceJETPPF2DG_6fcf8fd1ddd7d7d89f9ebc42bb0acd4d}
+
+
+
+
+Definition at line 47 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_5493047f501721b44b5e923dc3cd64d0}{
+\index{JETPPF2DG@{JETPPF2DG}!IREAD@{IREAD}}
+\index{IREAD@{IREAD}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[IREAD]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::IREAD}}}
+\label{namespaceJETPPF2DG_5493047f501721b44b5e923dc3cd64d0}
+
+
+
+
+Definition at line 44 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_8a10d0fb8a6fcf0b1735d5264e4074c6}{
+\index{JETPPF2DG@{JETPPF2DG}!iret@{iret}}
+\index{iret@{iret}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[iret]{\setlength{\rightskip}{0pt plus 5cm}integer {\bf JETPPF2DG::iret}}}
+\label{namespaceJETPPF2DG_8a10d0fb8a6fcf0b1735d5264e4074c6}
+
+
+
+
+Definition at line 46 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_ab53f9bbac5ae7882b6288685910c67f}{
+\index{JETPPF2DG@{JETPPF2DG}!IWRITE@{IWRITE}}
+\index{IWRITE@{IWRITE}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[IWRITE]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::IWRITE}}}
+\label{namespaceJETPPF2DG_ab53f9bbac5ae7882b6288685910c67f}
+
+
+
+
+Definition at line 44 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_8b427254180dae4e03e464db25432b89}{
+\index{JETPPF2DG@{JETPPF2DG}!j@{j}}
+\index{j@{j}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[j]{\setlength{\rightskip}{0pt plus 5cm}integer {\bf JETPPF2DG::j}}}
+\label{namespaceJETPPF2DG_8b427254180dae4e03e464db25432b89}
+
+
+
+
+Definition at line 46 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_6db6d04641a552fe57c7f140cb8c09e6}{
+\index{JETPPF2DG@{JETPPF2DG}!LFLUSH@{LFLUSH}}
+\index{LFLUSH@{LFLUSH}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[LFLUSH]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::LFLUSH}}}
+\label{namespaceJETPPF2DG_6db6d04641a552fe57c7f140cb8c09e6}
+
+
+
+
+Definition at line 41 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_407321de285e0bcd8e697236b9c7a990}{
+\index{JETPPF2DG@{JETPPF2DG}!lnblnk@{lnblnk}}
+\index{lnblnk@{lnblnk}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[lnblnk]{\setlength{\rightskip}{0pt plus 5cm}integer {\bf JETPPF2DG::lnblnk}}}
+\label{namespaceJETPPF2DG_407321de285e0bcd8e697236b9c7a990}
+
+
+
+
+Definition at line 46 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_258acbfd9dfc5ca34869c6edfdd89c8d}{
+\index{JETPPF2DG@{JETPPF2DG}!LUNMSG@{LUNMSG}}
+\index{LUNMSG@{LUNMSG}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[LUNMSG]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::LUNMSG}}}
+\label{namespaceJETPPF2DG_258acbfd9dfc5ca34869c6edfdd89c8d}
+
+
+
+
+Definition at line 37 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_5e02219aa819d9f9f40ffb1884684f2c}{
+\index{JETPPF2DG@{JETPPF2DG}!MR@{MR}}
+\index{MR@{MR}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[MR]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::MR}}}
+\label{namespaceJETPPF2DG_5e02219aa819d9f9f40ffb1884684f2c}
+
+
+
+
+Definition at line 39 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_90aaa1a998c6e80c66375bf2e0f4cc2f}{
+\index{JETPPF2DG@{JETPPF2DG}!MSG@{MSG}}
+\index{MSG@{MSG}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[MSG]{\setlength{\rightskip}{0pt plus 5cm}CHARACTER {\bf JETPPF2DG::MSG}}}
+\label{namespaceJETPPF2DG_90aaa1a998c6e80c66375bf2e0f4cc2f}
+
+
+
+
+Definition at line 58 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_887113770833f9aa581604f9474cb44c}{
+\index{JETPPF2DG@{JETPPF2DG}!MZ@{MZ}}
+\index{MZ@{MZ}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[MZ]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::MZ}}}
+\label{namespaceJETPPF2DG_887113770833f9aa581604f9474cb44c}
+
+
+
+
+Definition at line 39 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_fc3e107505ebc9c764214d171a22c579}{
+\index{JETPPF2DG@{JETPPF2DG}!NP@{NP}}
+\index{NP@{NP}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[NP]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::NP}}}
+\label{namespaceJETPPF2DG_fc3e107505ebc9c764214d171a22c579}
+
+
+
+
+Definition at line 47 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_177fa052b15bf74d1b04fa4c6d0d246d}{
+\index{JETPPF2DG@{JETPPF2DG}!NR@{NR}}
+\index{NR@{NR}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[NR]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::NR}}}
+\label{namespaceJETPPF2DG_177fa052b15bf74d1b04fa4c6d0d246d}
+
+
+
+
+Definition at line 47 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_1e11ff274dde21dbe30d2bb886dfd5b9}{
+\index{JETPPF2DG@{JETPPF2DG}!NSEQ@{NSEQ}}
+\index{NSEQ@{NSEQ}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[NSEQ]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::NSEQ}}}
+\label{namespaceJETPPF2DG_1e11ff274dde21dbe30d2bb886dfd5b9}
+
+
+
+
+Definition at line 45 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_e270735b1159e8e19c3b3c52b0bb3d51}{
+\index{JETPPF2DG@{JETPPF2DG}!NSHOT@{NSHOT}}
+\index{NSHOT@{NSHOT}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[NSHOT]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::NSHOT}}}
+\label{namespaceJETPPF2DG_e270735b1159e8e19c3b3c52b0bb3d51}
+
+
+
+
+Definition at line 45 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_a57c322f474d9c8344c098ffb1f2fbbc}{
+\index{JETPPF2DG@{JETPPF2DG}!NX@{NX}}
+\index{NX@{NX}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[NX]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::NX}}}
+\label{namespaceJETPPF2DG_a57c322f474d9c8344c098ffb1f2fbbc}
+
+
+
+
+Definition at line 45 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_fe7c59a5845e1d14c352d47c802827bb}{
+\index{JETPPF2DG@{JETPPF2DG}!NY@{NY}}
+\index{NY@{NY}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[NY]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::NY}}}
+\label{namespaceJETPPF2DG_fe7c59a5845e1d14c352d47c802827bb}
+
+
+
+
+Definition at line 45 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_54b52cca10f228100e5bf6d6861b5744}{
+\index{JETPPF2DG@{JETPPF2DG}!NZ@{NZ}}
+\index{NZ@{NZ}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[NZ]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::NZ}}}
+\label{namespaceJETPPF2DG_54b52cca10f228100e5bf6d6861b5744}
+
+
+
+
+Definition at line 47 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_48577f770d2731f2e0b6560b4098131b}{
+\index{JETPPF2DG@{JETPPF2DG}!PPFUID@{PPFUID}}
+\index{PPFUID@{PPFUID}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[PPFUID]{\setlength{\rightskip}{0pt plus 5cm}CHARACTER {\bf JETPPF2DG::PPFUID}}}
+\label{namespaceJETPPF2DG_48577f770d2731f2e0b6560b4098131b}
+
+
+
+
+Definition at line 58 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_b093dcbbe39feeaa433796831d6374de}{
+\index{JETPPF2DG@{JETPPF2DG}!PSI@{PSI}}
+\index{PSI@{PSI}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[PSI]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::PSI}}}
+\label{namespaceJETPPF2DG_b093dcbbe39feeaa433796831d6374de}
+
+
+
+
+Definition at line 52 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_0aea03eeb6f87047b94e1a0b718253af}{
+\index{JETPPF2DG@{JETPPF2DG}!PSI0@{PSI0}}
+\index{PSI0@{PSI0}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[PSI0]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::PSI0}}}
+\label{namespaceJETPPF2DG_0aea03eeb6f87047b94e1a0b718253af}
+
+
+
+
+Definition at line 52 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_e557339a1c12ba7e9ef7deadc7465739}{
+\index{JETPPF2DG@{JETPPF2DG}!PSIB@{PSIB}}
+\index{PSIB@{PSIB}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[PSIB]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::PSIB}}}
+\label{namespaceJETPPF2DG_e557339a1c12ba7e9ef7deadc7465739}
+
+
+
+
+Definition at line 52 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_35264362cd8206b3671ba0049d7b3d5f}{
+\index{JETPPF2DG@{JETPPF2DG}!psilim@{psilim}}
+\index{psilim@{psilim}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[psilim]{\setlength{\rightskip}{0pt plus 5cm}real$\ast$8 {\bf JETPPF2DG::psilim}}}
+\label{namespaceJETPPF2DG_35264362cd8206b3671ba0049d7b3d5f}
+
+
+
+
+Definition at line 56 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_e8aae9ece2ea51185b537f3815875dbe}{
+\index{JETPPF2DG@{JETPPF2DG}!R@{R}}
+\index{R@{R}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[R]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::R}}}
+\label{namespaceJETPPF2DG_e8aae9ece2ea51185b537f3815875dbe}
+
+
+
+
+Definition at line 54 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_a8c481ce2a9d8fee1b017a02d4bf7504}{
+\index{JETPPF2DG@{JETPPF2DG}!R1@{R1}}
+\index{R1@{R1}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[R1]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::R1}}}
+\label{namespaceJETPPF2DG_a8c481ce2a9d8fee1b017a02d4bf7504}
+
+
+
+
+Definition at line 54 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_737ed75dab8a61babe35ac43c0a217e2}{
+\index{JETPPF2DG@{JETPPF2DG}!R2@{R2}}
+\index{R2@{R2}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[R2]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::R2}}}
+\label{namespaceJETPPF2DG_737ed75dab8a61babe35ac43c0a217e2}
+
+
+
+
+Definition at line 54 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_7115e44048e1de47d26e48726e317603}{
+\index{JETPPF2DG@{JETPPF2DG}!RATIOX@{RATIOX}}
+\index{RATIOX@{RATIOX}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[RATIOX]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::RATIOX}}}
+\label{namespaceJETPPF2DG_7115e44048e1de47d26e48726e317603}
+
+
+
+
+Definition at line 45 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_c27cb250b47cf21b49de19ad55baff1b}{
+\index{JETPPF2DG@{JETPPF2DG}!RATIOY@{RATIOY}}
+\index{RATIOY@{RATIOY}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[RATIOY]{\setlength{\rightskip}{0pt plus 5cm}INTEGER {\bf JETPPF2DG::RATIOY}}}
+\label{namespaceJETPPF2DG_c27cb250b47cf21b49de19ad55baff1b}
+
+
+
+
+Definition at line 45 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_54f18c6794b7739b7bc332cedd97d7f1}{
+\index{JETPPF2DG@{JETPPF2DG}!RBTOR@{RBTOR}}
+\index{RBTOR@{RBTOR}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[RBTOR]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::RBTOR}}}
+\label{namespaceJETPPF2DG_54f18c6794b7739b7bc332cedd97d7f1}
+
+
+
+
+Definition at line 51 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_be3c9bcf4058d9ec55ba6288bdef97fb}{
+\index{JETPPF2DG@{JETPPF2DG}!rcntc@{rcntc}}
+\index{rcntc@{rcntc}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[rcntc]{\setlength{\rightskip}{0pt plus 5cm}real$\ast$8 {\bf JETPPF2DG::rcntc}}}
+\label{namespaceJETPPF2DG_be3c9bcf4058d9ec55ba6288bdef97fb}
+
+
+
+
+Definition at line 56 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_c9078c3f7f6a9052eb87d78ea959db39}{
+\index{JETPPF2DG@{JETPPF2DG}!TIME@{TIME}}
+\index{TIME@{TIME}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[TIME]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::TIME}}}
+\label{namespaceJETPPF2DG_c9078c3f7f6a9052eb87d78ea959db39}
+
+
+
+
+Definition at line 55 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_40cdb8daca293ee227018204f477a568}{
+\index{JETPPF2DG@{JETPPF2DG}!TSHOT@{TSHOT}}
+\index{TSHOT@{TSHOT}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[TSHOT]{\setlength{\rightskip}{0pt plus 5cm}REAL {\bf JETPPF2DG::TSHOT}}}
+\label{namespaceJETPPF2DG_40cdb8daca293ee227018204f477a568}
+
+
+
+
+Definition at line 49 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_0071ea355e749981556deb6108904af9}{
+\index{JETPPF2DG@{JETPPF2DG}!TWOPI@{TWOPI}}
+\index{TWOPI@{TWOPI}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[TWOPI]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::TWOPI}}}
+\label{namespaceJETPPF2DG_0071ea355e749981556deb6108904af9}
+
+
+
+
+Definition at line 52 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_eeb6ada756a20d433b90d04807324eec}{
+\index{JETPPF2DG@{JETPPF2DG}!WIDTH@{WIDTH}}
+\index{WIDTH@{WIDTH}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[WIDTH]{\setlength{\rightskip}{0pt plus 5cm}REAL {\bf JETPPF2DG::WIDTH}}}
+\label{namespaceJETPPF2DG_eeb6ada756a20d433b90d04807324eec}
+
+
+
+
+Definition at line 49 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_e77dc9f382919eb823a6a004b79dec10}{
+\index{JETPPF2DG@{JETPPF2DG}!Z@{Z}}
+\index{Z@{Z}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[Z]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::Z}}}
+\label{namespaceJETPPF2DG_e77dc9f382919eb823a6a004b79dec10}
+
+
+
+
+Definition at line 54 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_b51d877f8345dc64e86952fa279daa83}{
+\index{JETPPF2DG@{JETPPF2DG}!Z1@{Z1}}
+\index{Z1@{Z1}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[Z1]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::Z1}}}
+\label{namespaceJETPPF2DG_b51d877f8345dc64e86952fa279daa83}
+
+
+
+
+Definition at line 54 of file jetppf2dg.f.\hypertarget{namespaceJETPPF2DG_dc17956d43608921538c64177125e1c4}{
+\index{JETPPF2DG@{JETPPF2DG}!Z2@{Z2}}
+\index{Z2@{Z2}!JETPPF2DG@{JETPPF2DG}}
+\subsubsection[Z2]{\setlength{\rightskip}{0pt plus 5cm}REAL$\ast$8 {\bf JETPPF2DG::Z2}}}
+\label{namespaceJETPPF2DG_dc17956d43608921538c64177125e1c4}
+
+
+
+
+Definition at line 54 of file jetppf2dg.f.

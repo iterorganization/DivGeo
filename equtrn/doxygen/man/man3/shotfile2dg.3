@@ -1,0 +1,235 @@
+.TH "shotfile2dg" 3 "21 Jul 2008" "Version 2008-06" "DivGeo/dg/equtrn" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+shotfile2dg \- Translation of the AUG shotfile equilibrium data into dg-compatible format.  
+
+.PP
+.SH SYNOPSIS
+.br
+.PP
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "real *8, dimension(ngpr) \fBgpr\fP"
+.br
+.ti -1c
+.RI "real *8, dimension(ngpz) \fBgpz\fP"
+.br
+.ti -1c
+.RI "real *8, dimension(ngpr, ngpz) \fBpfmd\fP"
+.br
+.ti -1c
+.RI "real *8 \fBrcntc\fP"
+.br
+.ti -1c
+.RI "real *8 \fBbtorc\fP"
+.br
+.ti -1c
+.RI "real *8 \fBpsilim\fP"
+.br
+.ti -1c
+.RI "character *256 \fBarg\fP"
+.br
+.ti -1c
+.RI "character *256 \fBfilename\fP"
+.br
+.ti -1c
+.RI "character \fBexpnam\fP"
+.br
+.ti -1c
+.RI "character \fBdianam\fP"
+.br
+.ti -1c
+.RI "integer \fBnshot\fP"
+.br
+.ti -1c
+.RI "integer \fBnedit\fP"
+.br
+.ti -1c
+.RI "integer \fBiarg\fP"
+.br
+.ti -1c
+.RI "integer \fBiargc\fP"
+.br
+.ti -1c
+.RI "integer \fBlnblnk\fP"
+.br
+.ti -1c
+.RI "real \fBtshot\fP"
+.br
+.ti -1c
+.RI "integer \fBmdim\fP"
+.br
+.ti -1c
+.RI "integer \fBlpfxdim\fP"
+.br
+.ti -1c
+.RI "integer \fBlin\fP"
+.br
+.ti -1c
+.RI "real, dimension(0:\fBmdim\fP) \fBri\fP"
+.br
+.ti -1c
+.RI "real, dimension(0:\fBmdim\fP) \fBzj\fP"
+.br
+.ti -1c
+.RI "real, dimension(0:\fBmdim\fP, 0:\fBmdim\fP) \fBpfm\fP"
+.br
+.ti -1c
+.RI "real, dimension(0:\fBlpfxdim\fP) \fBpfxx\fP"
+.br
+.ti -1c
+.RI "real, dimension(0:\fBlpfxdim\fP) \fBrpfx\fP"
+.br
+.ti -1c
+.RI "real, dimension(0:\fBlpfxdim\fP) \fBzpfx\fP"
+.br
+.ti -1c
+.RI "real, dimension(\fBlin\fP) \fBrin\fP"
+.br
+.ti -1c
+.RI "real, dimension(\fBlin\fP) \fBzin\fP"
+.br
+.ti -1c
+.RI "real, dimension(\fBlin\fP) \fBbr\fP"
+.br
+.ti -1c
+.RI "real, dimension(\fBlin\fP) \fBbz\fP"
+.br
+.ti -1c
+.RI "real, dimension(\fBlin\fP) \fBbt\fP"
+.br
+.ti -1c
+.RI "real, dimension(\fBlin\fP) \fBfpf\fP"
+.br
+.ti -1c
+.RI "real, dimension(\fBlin\fP) \fBfjp\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Translation of the AUG shotfile equilibrium data into dg-compatible format. 
+
+1st arg == shot number
+.PP
+2nd arg == time
+.PP
+[3rd arg == diagnostic (EQI)]
+.PP
+[4th arg == experiment (AUGD)]
+.PP
+[5th arg == edition (0)]
+.PP
+The output filename is derived from the shot, time, experiment, diagnostic and edition
+.PP
+Specific AUG library routines are used to access the data
+.PP
+\fBVersion:\fP
+.RS 4
+16.11.95 20:04 
+.RE
+.PP
+
+.SH "Variable Documentation"
+.PP 
+.SS "character*256 \fBshotfile2dg::arg\fP"
+.PP
+Definition at line 31 of file shotfile2dg.f.
+.SS "real,dimension(\fBlin\fP) \fBshotfile2dg::br\fP"
+.PP
+Definition at line 37 of file shotfile2dg.f.
+.SS "real,dimension(\fBlin\fP) \fBshotfile2dg::bt\fP"
+.PP
+Definition at line 37 of file shotfile2dg.f.
+.SS "real*8 \fBshotfile2dg::btorc\fP"
+.PP
+Definition at line 30 of file shotfile2dg.f.
+.SS "real,dimension(\fBlin\fP) \fBshotfile2dg::bz\fP"
+.PP
+Definition at line 37 of file shotfile2dg.f.
+.SS "character \fBshotfile2dg::dianam\fP"
+.PP
+Definition at line 32 of file shotfile2dg.f.
+.SS "character \fBshotfile2dg::expnam\fP"
+.PP
+Definition at line 32 of file shotfile2dg.f.
+.SS "character*256 \fBshotfile2dg::filename\fP"
+.PP
+Definition at line 31 of file shotfile2dg.f.
+.SS "real,dimension(\fBlin\fP) \fBshotfile2dg::fjp\fP"
+.PP
+Definition at line 37 of file shotfile2dg.f.
+.SS "real,dimension(\fBlin\fP) \fBshotfile2dg::fpf\fP"
+.PP
+Definition at line 37 of file shotfile2dg.f.
+.SS "real*8,dimension(ngpr) \fBshotfile2dg::gpr\fP"
+.PP
+Definition at line 28 of file shotfile2dg.f.
+.SS "real*8,dimension(ngpz) \fBshotfile2dg::gpz\fP"
+.PP
+Definition at line 28 of file shotfile2dg.f.
+.SS "integer \fBshotfile2dg::iarg\fP"
+.PP
+Definition at line 33 of file shotfile2dg.f.
+.SS "integer \fBshotfile2dg::iargc\fP"
+.PP
+Definition at line 33 of file shotfile2dg.f.
+.SS "integer \fBshotfile2dg::lin\fP"
+.PP
+Definition at line 35 of file shotfile2dg.f.
+.SS "integer \fBshotfile2dg::lnblnk\fP"
+.PP
+Definition at line 33 of file shotfile2dg.f.
+.SS "integer \fBshotfile2dg::lpfxdim\fP"
+.PP
+Definition at line 35 of file shotfile2dg.f.
+.SS "integer \fBshotfile2dg::mdim\fP"
+.PP
+Definition at line 35 of file shotfile2dg.f.
+.SS "integer \fBshotfile2dg::nedit\fP"
+.PP
+Definition at line 33 of file shotfile2dg.f.
+.SS "integer \fBshotfile2dg::nshot\fP"
+.PP
+Definition at line 33 of file shotfile2dg.f.
+.SS "real,dimension(0:\fBmdim\fP,0:\fBmdim\fP) \fBshotfile2dg::pfm\fP"
+.PP
+Definition at line 37 of file shotfile2dg.f.
+.SS "real*8,dimension(ngpr,ngpz) \fBshotfile2dg::pfmd\fP"
+.PP
+Definition at line 29 of file shotfile2dg.f.
+.SS "real,dimension(0:\fBlpfxdim\fP) \fBshotfile2dg::pfxx\fP"
+.PP
+Definition at line 37 of file shotfile2dg.f.
+.SS "real*8 \fBshotfile2dg::psilim\fP"
+.PP
+Definition at line 30 of file shotfile2dg.f.
+.SS "real*8 \fBshotfile2dg::rcntc\fP"
+.PP
+Definition at line 30 of file shotfile2dg.f.
+.SS "real,dimension(0:\fBmdim\fP) \fBshotfile2dg::ri\fP"
+.PP
+Definition at line 37 of file shotfile2dg.f.
+.SS "real,dimension(\fBlin\fP) \fBshotfile2dg::rin\fP"
+.PP
+Definition at line 37 of file shotfile2dg.f.
+.SS "real,dimension(0:\fBlpfxdim\fP) \fBshotfile2dg::rpfx\fP"
+.PP
+Definition at line 37 of file shotfile2dg.f.
+.SS "real \fBshotfile2dg::tshot\fP"
+.PP
+Definition at line 34 of file shotfile2dg.f.
+.SS "real,dimension(\fBlin\fP) \fBshotfile2dg::zin\fP"
+.PP
+Definition at line 37 of file shotfile2dg.f.
+.SS "real,dimension(0:\fBmdim\fP) \fBshotfile2dg::zj\fP"
+.PP
+Definition at line 37 of file shotfile2dg.f.
+.SS "real,dimension(0:\fBlpfxdim\fP) \fBshotfile2dg::zpfx\fP"
+.PP
+Definition at line 37 of file shotfile2dg.f.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for DivGeo/dg/equtrn from the source code.

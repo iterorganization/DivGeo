@@ -1,0 +1,287 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.5.6">
+  <compounddef id="namespacecropequ" kind="namespace">
+    <compoundname>cropequ</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacecropequ_1b915d54338bbf1eef691e09d62c5ca74" prot="public" static="no" mutable="no">
+        <type>integer</type>
+        <definition>integer cropequ::ngpr</definition>
+        <argsstring></argsstring>
+        <name>ngpr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_15e809f294cb46948b68e7f84c5b3e5e7" prot="public" static="no" mutable="no">
+        <type>integer</type>
+        <definition>integer cropequ::ngpz</definition>
+        <argsstring></argsstring>
+        <name>ngpz</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_15473fc74d051d894f0ec5d9f694b5a7c" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(<ref refid="namespacecropequ_1b915d54338bbf1eef691e09d62c5ca74" kindref="member">ngpr</ref>, <ref refid="namespacecropequ_15e809f294cb46948b68e7f84c5b3e5e7" kindref="member">ngpz</ref>)</type>
+        <definition>real*8,dimension(ngpr,ngpz) cropequ::pfm</definition>
+        <argsstring></argsstring>
+        <name>pfm</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_178c5274a895c892c290855610e3fe6dd" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(<ref refid="namespacecropequ_1b915d54338bbf1eef691e09d62c5ca74" kindref="member">ngpr</ref>)</type>
+        <definition>real*8,dimension(ngpr) cropequ::rgr</definition>
+        <argsstring></argsstring>
+        <name>rgr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_1ba94b950afefefed82de22487f2e6f95" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(<ref refid="namespacecropequ_15e809f294cb46948b68e7f84c5b3e5e7" kindref="member">ngpz</ref>)</type>
+        <definition>real*8,dimension(ngpz) cropequ::zgr</definition>
+        <argsstring></argsstring>
+        <name>zgr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_1847b9d7c0a63b3cf6f8c121587f8d128" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 cropequ::rcntc</definition>
+        <argsstring></argsstring>
+        <name>rcntc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_1226aa64e7824a43774d5758f1cbbfdc3" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 cropequ::psimin</definition>
+        <argsstring></argsstring>
+        <name>psimin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_139bc7b9e1955e30091891c1f2dbbea4d" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 cropequ::psilim</definition>
+        <argsstring></argsstring>
+        <name>psilim</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_12fa7545a4a2d563a0df549f2a29ad11f" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 cropequ::btorc</definition>
+        <argsstring></argsstring>
+        <name>btorc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_1cf78277c748724ebe92ec8527f5acc26" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 cropequ::rmin</definition>
+        <argsstring></argsstring>
+        <name>rmin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_1e0f2d36e258a08a73b6444150b9aac34" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 cropequ::rmax</definition>
+        <argsstring></argsstring>
+        <name>rmax</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_19a350ad968e30ba111940f451ea50702" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 cropequ::zmin</definition>
+        <argsstring></argsstring>
+        <name>zmin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_1ad2308c1d9ad8704c10ca1a8a65a44c0" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 cropequ::zmax</definition>
+        <argsstring></argsstring>
+        <name>zmax</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_129c60057cd3ac46029ead264faa6e632" prot="public" static="no" mutable="no">
+        <type>integer</type>
+        <definition>integer cropequ::i</definition>
+        <argsstring></argsstring>
+        <name>i</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_191eff21312f6ddff6f7faf416d09a8a5" prot="public" static="no" mutable="no">
+        <type>integer</type>
+        <definition>integer cropequ::j</definition>
+        <argsstring></argsstring>
+        <name>j</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_127fba5a93cdc5a7654bdf5667c178b15" prot="public" static="no" mutable="no">
+        <type>integer</type>
+        <definition>integer cropequ::nr</definition>
+        <argsstring></argsstring>
+        <name>nr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_1ffd518930bd0631a6a50368c71e950b4" prot="public" static="no" mutable="no">
+        <type>integer</type>
+        <definition>integer cropequ::nz</definition>
+        <argsstring></argsstring>
+        <name>nz</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_18343e4bb7153d2e5b304f677249a514a" prot="public" static="no" mutable="no">
+        <type>integer</type>
+        <definition>integer cropequ::nrn</definition>
+        <argsstring></argsstring>
+        <name>nrn</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_1d9c10ef53d2478403af28fcbabddebaa" prot="public" static="no" mutable="no">
+        <type>integer</type>
+        <definition>integer cropequ::nzn</definition>
+        <argsstring></argsstring>
+        <name>nzn</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_1f6dbf4b8794c7af19a050269451861e5" prot="public" static="no" mutable="no">
+        <type>integer</type>
+        <definition>integer cropequ::iret</definition>
+        <argsstring></argsstring>
+        <name>iret</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacecropequ_1a9edc1a57af22096446e628df43d5388" prot="public" static="no" mutable="no">
+        <type>logical</type>
+        <definition>logical cropequ::err</definition>
+        <argsstring></argsstring>
+        <name>err</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Crop the equilibrium. </para>    </briefdescription>
+    <detaileddescription>
+<para>arg1: input equilibrium file name</para><para>arg2: output equilibrium file name</para><para>reads data from standard input</para><para><simplesect kind="version"><para>21.07.2000 16:44 </para></simplesect>
+</para>    </detaileddescription>
+    <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f" line="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.5.6">
+  <compounddef id="namespacedg__minuspsi__dg" kind="namespace">
+    <compoundname>dg_minuspsi_dg</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacedg__minuspsi__dg_17c52d7de062161616c4daae88f302c48" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr, ngpz)</type>
+        <definition>real*8,dimension(ngpr,ngpz) dg_minuspsi_dg::pfm</definition>
+        <argsstring></argsstring>
+        <name>pfm</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_minuspsi_dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_minuspsi_dg.f" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacedg__minuspsi__dg_10c32314aec56f7439884635ae85f8414" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr)</type>
+        <definition>real*8,dimension(ngpr) dg_minuspsi_dg::rgr</definition>
+        <argsstring></argsstring>
+        <name>rgr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_minuspsi_dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_minuspsi_dg.f" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacedg__minuspsi__dg_1055027e90abf39aceabd4a50f02421ac" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpz)</type>
+        <definition>real*8,dimension(ngpz) dg_minuspsi_dg::zgr</definition>
+        <argsstring></argsstring>
+        <name>zgr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_minuspsi_dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_minuspsi_dg.f" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacedg__minuspsi__dg_1d70201e77c046670a22c0a662cf3ade5" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 dg_minuspsi_dg::rcntc</definition>
+        <argsstring></argsstring>
+        <name>rcntc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_minuspsi_dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_minuspsi_dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacedg__minuspsi__dg_19a8c4ea8cf9c956b104c5de7d7f3bf43" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 dg_minuspsi_dg::psilim</definition>
+        <argsstring></argsstring>
+        <name>psilim</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_minuspsi_dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_minuspsi_dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacedg__minuspsi__dg_1c3c338a5853d966dbecf9104f273869e" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 dg_minuspsi_dg::btorc</definition>
+        <argsstring></argsstring>
+        <name>btorc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_minuspsi_dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_minuspsi_dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacedg__minuspsi__dg_11f21182b81c907694c4d1674bc7ef246" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 dg_minuspsi_dg::shift</definition>
+        <argsstring></argsstring>
+        <name>shift</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_minuspsi_dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_minuspsi_dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacedg__minuspsi__dg_12eaba41888ea9b54a4f395da5f6f962c" prot="public" static="no" mutable="no">
+        <type>character *256</type>
+        <definition>character*256 dg_minuspsi_dg::filename</definition>
+        <argsstring></argsstring>
+        <name>filename</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_minuspsi_dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_minuspsi_dg.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Change the sign of the flux. </para>    </briefdescription>
+    <detaileddescription>
+<para>arg1: input equilibrium file name</para><para>arg2: output equilibrium file name</para><para><simplesect kind="version"><para>30.01.96 21:58 </para></simplesect>
+</para>    </detaileddescription>
+    <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_minuspsi_dg.f" line="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,72 @@
+\hypertarget{cropequ_8f}{
+\section{src/cropequ.f File Reference}
+\label{cropequ_8f}\index{src/cropequ.f@{src/cropequ.f}}
+}
+\subsection*{Modules}
+\begin{CompactItemize}
+\item 
+module \hyperlink{namespacecropequ}{cropequ}
+\end{CompactItemize}
+\subsection*{Functions/Subroutines}
+\begin{CompactItemize}
+\item 
+subroutine \hyperlink{cropequ_8f_8fbd92e0fb3fd378dbbc241a291b18ec}{crop} (pfm, ngpr, ngpz, rgr, nr, zgr, nz, nrn, rmin, rmax, nzn, zmin, zmax)
+\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+integer \hyperlink{namespacecropequ_b915d54338bbf1eef691e09d62c5ca74}{cropequ::ngpr}
+\item 
+integer \hyperlink{namespacecropequ_5e809f294cb46948b68e7f84c5b3e5e7}{cropequ::ngpz}
+\item 
+real $\ast$8, dimension(ngpr, ngpz) \hyperlink{namespacecropequ_5473fc74d051d894f0ec5d9f694b5a7c}{cropequ::pfm}
+\item 
+real $\ast$8, dimension(ngpr) \hyperlink{namespacecropequ_78c5274a895c892c290855610e3fe6dd}{cropequ::rgr}
+\item 
+real $\ast$8, dimension(ngpz) \hyperlink{namespacecropequ_ba94b950afefefed82de22487f2e6f95}{cropequ::zgr}
+\item 
+real $\ast$8 \hyperlink{namespacecropequ_847b9d7c0a63b3cf6f8c121587f8d128}{cropequ::rcntc}
+\item 
+real $\ast$8 \hyperlink{namespacecropequ_226aa64e7824a43774d5758f1cbbfdc3}{cropequ::psimin}
+\item 
+real $\ast$8 \hyperlink{namespacecropequ_39bc7b9e1955e30091891c1f2dbbea4d}{cropequ::psilim}
+\item 
+real $\ast$8 \hyperlink{namespacecropequ_2fa7545a4a2d563a0df549f2a29ad11f}{cropequ::btorc}
+\item 
+real $\ast$8 \hyperlink{namespacecropequ_cf78277c748724ebe92ec8527f5acc26}{cropequ::rmin}
+\item 
+real $\ast$8 \hyperlink{namespacecropequ_e0f2d36e258a08a73b6444150b9aac34}{cropequ::rmax}
+\item 
+real $\ast$8 \hyperlink{namespacecropequ_9a350ad968e30ba111940f451ea50702}{cropequ::zmin}
+\item 
+real $\ast$8 \hyperlink{namespacecropequ_ad2308c1d9ad8704c10ca1a8a65a44c0}{cropequ::zmax}
+\item 
+integer \hyperlink{namespacecropequ_29c60057cd3ac46029ead264faa6e632}{cropequ::i}
+\item 
+integer \hyperlink{namespacecropequ_91eff21312f6ddff6f7faf416d09a8a5}{cropequ::j}
+\item 
+integer \hyperlink{namespacecropequ_27fba5a93cdc5a7654bdf5667c178b15}{cropequ::nr}
+\item 
+integer \hyperlink{namespacecropequ_ffd518930bd0631a6a50368c71e950b4}{cropequ::nz}
+\item 
+integer \hyperlink{namespacecropequ_8343e4bb7153d2e5b304f677249a514a}{cropequ::nrn}
+\item 
+integer \hyperlink{namespacecropequ_d9c10ef53d2478403af28fcbabddebaa}{cropequ::nzn}
+\item 
+integer \hyperlink{namespacecropequ_f6dbf4b8794c7af19a050269451861e5}{cropequ::iret}
+\item 
+logical \hyperlink{namespacecropequ_a9edc1a57af22096446e628df43d5388}{cropequ::err}
+\end{CompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{cropequ_8f_8fbd92e0fb3fd378dbbc241a291b18ec}{
+\index{cropequ.f@{cropequ.f}!crop@{crop}}
+\index{crop@{crop}!cropequ.f@{cropequ.f}}
+\subsubsection[crop]{\setlength{\rightskip}{0pt plus 5cm}subroutine crop (real$\ast$8,dimension(ngpr,ngpz) {\em pfm}, \/  integer {\em ngpr}, \/  integer {\em ngpz}, \/  real$\ast$8,dimension(ngpr) {\em rgr}, \/  integer {\em nr}, \/  real$\ast$8,dimension(ngpz) {\em zgr}, \/  integer {\em nz}, \/  integer {\em nrn}, \/  real$\ast$8 {\em rmin}, \/  real$\ast$8 {\em rmax}, \/  integer {\em nzn}, \/  real$\ast$8 {\em zmin}, \/  real$\ast$8 {\em zmax})}}
+\label{cropequ_8f_8fbd92e0fb3fd378dbbc241a291b18ec}
+
+
+
+
+Definition at line 82 of file cropequ.f.

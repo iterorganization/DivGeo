@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.5.6">
+  <compounddef id="rdeqvr_8f" kind="file">
+    <compoundname>rdeqvr.f</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="rdeqvr_8f_1288409707b84c12795e31acb329ce87a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>subroutine</type>
+        <definition>subroutine rdeqvr</definition>
+        <argsstring>(lun, ngpr, ngpz, iret, nr, nz, btf, rtf, rgr, zgr, pfm)</argsstring>
+        <name>rdeqvr</name>
+        <param>
+          <type>lun</type>
+          <defname>lun</defname>
+        </param>
+        <param>
+          <type>ngpr</type>
+          <defname>ngpr</defname>
+        </param>
+        <param>
+          <type>ngpz</type>
+          <defname>ngpz</defname>
+        </param>
+        <param>
+          <type>iret</type>
+          <defname>iret</defname>
+        </param>
+        <param>
+          <type>nr</type>
+          <defname>nr</defname>
+        </param>
+        <param>
+          <type>nz</type>
+          <defname>nz</defname>
+        </param>
+        <param>
+          <type>btf</type>
+          <defname>btf</defname>
+        </param>
+        <param>
+          <type>rtf</type>
+          <defname>rtf</defname>
+        </param>
+        <param>
+          <type>rgr</type>
+          <defname>rgr</defname>
+        </param>
+        <param>
+          <type>zgr</type>
+          <defname>zgr</defname>
+        </param>
+        <param>
+          <type>pfm</type>
+          <defname>pfm</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="rdeqvr_8f_1288409707b84c12795e31acb329ce87a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">subroutine<sp/></highlight><highlight class="normal"><ref refid="rdeqvr_8f_1288409707b84c12795e31acb329ce87a" kindref="member">rdeqvr</ref>(lun,ngpr,ngpz,iret,<sp/>nr,nz,<sp/>btf,rtf,rgr,zgr,pfm)</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">c======================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Read<sp/>the<sp/>equilibrium<sp/>data<sp/>from<sp/>TdeV</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">c***</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Input:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>lun<sp/><sp/><sp/><sp/><sp/>the<sp/>logical<sp/>unit<sp/>number<sp/>for<sp/>the<sp/>input</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>ngpr<sp/><sp/><sp/><sp/>the<sp/>maximum<sp/>number<sp/>of<sp/>points<sp/>in<sp/>R<sp/>direction</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>ngpz<sp/><sp/><sp/><sp/>the<sp/>maximum<sp/>number<sp/>of<sp/>points<sp/>in<sp/>Z<sp/>direction</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="comment">c***</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Output:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>iret<sp/><sp/><sp/><sp/>return<sp/>code<sp/>(0<sp/>means<sp/>OK)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>nr<sp/><sp/><sp/><sp/><sp/><sp/>the<sp/>actual<sp/>number<sp/>of<sp/>points<sp/>in<sp/>R<sp/>direction</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>nz<sp/><sp/><sp/><sp/><sp/><sp/>the<sp/>actual<sp/>number<sp/>of<sp/>points<sp/>in<sp/>Z<sp/>direction</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>btf<sp/><sp/><sp/><sp/><sp/>the<sp/>toroidal<sp/>magnetic<sp/>field<sp/>at<sp/>the<sp/>R=rtf</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>rgr<sp/><sp/><sp/><sp/><sp/>the<sp/>R<sp/>values<sp/>for<sp/>the<sp/>grid<sp/>points</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>zgr<sp/><sp/><sp/><sp/><sp/>the<sp/>Z<sp/>values<sp/>for<sp/>the<sp/>grid<sp/>points</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>pfm<sp/><sp/><sp/><sp/><sp/>the<sp/>values<sp/>of<sp/>the<sp/>(poloidal<sp/>flux<sp/>-<sp/>separatrix<sp/>flux)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">c***</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>If<sp/>the<sp/>input<sp/>file<sp/>contains<sp/>no<sp/>data<sp/>on<sp/>the<sp/>toroidal<sp/>field<sp/>(old</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>version),<sp/>then<sp/>the<sp/>field<sp/>file<sp/>must<sp/>be<sp/>pre-connected<sp/>to<sp/>LUN<sp/>3</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="comment">c======================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/>version<sp/>:<sp/>06.02.99<sp/>20:52</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">implicit<sp/>none</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">integer</highlight><highlight class="normal"><sp/>lun,<sp/>ngpr,<sp/>ngpz,<sp/>iret,<sp/>nr,nz</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real*8</highlight><highlight class="normal"><sp/>rgr(*),<sp/>zgr(*),<sp/>pfm(ngpr,<sp/>*)</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="comment">c...<sp/>toroidal<sp/>field<sp/>in<sp/>tesla,<sp/>radius<sp/>in<sp/>m</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real*8</highlight><highlight class="normal"><sp/>btf,<sp/>rtf</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">integer</highlight><highlight class="normal"><sp/>i,<sp/>j</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">character</highlight><highlight class="normal"><sp/>ul*72,uch*4</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="comment">c-----------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Read<sp/>the<sp/>plasma<sp/>equilibrium<sp/>...</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>rtf=0.</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>uch=</highlight><highlight class="stringliteral">&apos;$r&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/>10<sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(a72)&apos;</highlight><highlight class="normal">,end=98)<sp/>ul</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(index(ul,</highlight><highlight class="stringliteral">&apos;$r&apos;</highlight><highlight class="normal">).le.0)<sp/>go<sp/>to<sp/>10</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>uch=</highlight><highlight class="stringliteral">&apos;nr&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(a72)&apos;</highlight><highlight class="normal">,end=98)<sp/>ul</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>i=index(ul,</highlight><highlight class="stringliteral">&apos;=&apos;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(i.le.0)<sp/>go<sp/>to<sp/>99</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(ul(i+1:72),*,err=99)<sp/>nr</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;nr<sp/>&apos;</highlight><highlight class="normal">,nr</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(nr.gt.ngpr)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;====<sp/>rdeqvr:<sp/>nr<sp/>&gt;<sp/>ngpr<sp/>&apos;</highlight><highlight class="normal">,nr</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iret=2</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(nr.le.0)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;===<sp/>rdeqvr:<sp/>nr<sp/>&lt;<sp/>1&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iret=4</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>uch=</highlight><highlight class="stringliteral">&apos;r&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,*,err=99)<sp/>(rgr(i),i=1,nr)</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;Read<sp/>r&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>uch=</highlight><highlight class="stringliteral">&apos;$z&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/>15<sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(a72)&apos;</highlight><highlight class="normal">,end=98)<sp/>ul</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(index(ul,</highlight><highlight class="stringliteral">&apos;$z&apos;</highlight><highlight class="normal">).le.0)<sp/>go<sp/>to<sp/>15</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>uch=</highlight><highlight class="stringliteral">&apos;nz&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(a72)&apos;</highlight><highlight class="normal">,end=98)<sp/>ul</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>i=index(ul,</highlight><highlight class="stringliteral">&apos;=&apos;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(i.le.0)<sp/>go<sp/>to<sp/>99</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(ul(i+1:72),*,err=99)<sp/>nz</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;nz<sp/>&apos;</highlight><highlight class="normal">,nz</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(nz.gt.ngpz)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;===<sp/>rdeqvr:<sp/>nz<sp/>&gt;<sp/>ngpz&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iret=2</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(nz.le.0)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;===<sp/>rdeqvr:<sp/>nz<sp/>&lt;<sp/>1&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iret=4</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>uch=</highlight><highlight class="stringliteral">&apos;z&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,*,err=99)<sp/>(zgr(i),i=1,nz)</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;Read<sp/>z&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>uch=</highlight><highlight class="stringliteral">&apos;$psi&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/>30<sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(a72)&apos;</highlight><highlight class="normal">,end=98)<sp/>ul</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(index(ul,</highlight><highlight class="stringliteral">&apos;$psi&apos;</highlight><highlight class="normal">).le.0)<sp/>go<sp/>to<sp/>30</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>uch=</highlight><highlight class="stringliteral">&apos;psi&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,*,err=99)<sp/>((pfm(i,j),i=1,nr),j=1,nz)</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;Read<sp/>psi&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(rtf.le.0.)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Read<sp/>the<sp/>toroidal<sp/>field<sp/>and<sp/>the<sp/>corresponding<sp/>radius</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>from<sp/>a<sp/>separate<sp/>file<sp/>(for<sp/>compatibility<sp/>with<sp/>old<sp/>versions)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uch=</highlight><highlight class="stringliteral">&apos;btf&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/>40<sp/><sp/><sp/><sp/><sp/><sp/><sp/>continue</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(3,*,err=40,<sp/>end=99)<sp/>btf</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rtf=1.</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">close</highlight><highlight class="normal">(3)</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>iret=0</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>return</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight><highlight class="comment">c-----------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/>98<sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;====<sp/>rdeqvr:<sp/>no<sp/>label<sp/>&apos;</highlight><highlight class="normal">,uch</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>iret=8</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>return</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/>99<sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;====<sp/>rdeqvr:<sp/>error<sp/>by<sp/>reading<sp/>&apos;</highlight><highlight class="normal">,uch</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>iret=8</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight><highlight class="keyword"><sp/><sp/><sp/><sp/><sp/><sp/>end</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/rdeqvr.f"/>
+  </compounddef>
+</doxygen>

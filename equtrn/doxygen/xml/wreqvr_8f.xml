@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.5.6">
+  <compounddef id="wreqvr_8f" kind="file">
+    <compoundname>wreqvr.f</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="wreqvr_8f_1d575c6e670cf2db5c2dca653a97ef0d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>subroutine</type>
+        <definition>subroutine wreqvr</definition>
+        <argsstring>(lun, ngpr, iret, nr, nz, rgr, zgr, pfm)</argsstring>
+        <name>wreqvr</name>
+        <param>
+          <type>lun</type>
+        </param>
+        <param>
+          <type>ngpr</type>
+        </param>
+        <param>
+          <type>iret</type>
+        </param>
+        <param>
+          <type>nr</type>
+        </param>
+        <param>
+          <type>nz</type>
+        </param>
+        <param>
+          <type>rgr</type>
+          <defname>rgr</defname>
+        </param>
+        <param>
+          <type>zgr</type>
+          <defname>zgr</defname>
+        </param>
+        <param>
+          <type>pfm</type>
+          <defname>pfm</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="wreqvr_8f_1d575c6e670cf2db5c2dca653a97ef0d2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">subroutine<sp/></highlight><highlight class="normal"><ref refid="wreqvr_8f_1d575c6e670cf2db5c2dca653a97ef0d2" kindref="member">wreqvr</ref>(lun,ngpr,iret,nr,nz,rgr,zgr,pfm)</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/>version<sp/>:<sp/>18.01.96<sp/>15:02</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">c=====================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Wrighting<sp/>the<sp/>CARRE<sp/>equilibrium<sp/>file</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="comment">c***</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Input:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>lun<sp/><sp/><sp/><sp/><sp/>the<sp/>logical<sp/>unit<sp/>number<sp/>for<sp/>the<sp/>output</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>ngpr<sp/><sp/><sp/><sp/>the<sp/>maximum<sp/>number<sp/>of<sp/>points<sp/>in<sp/>R<sp/>direction</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>nr<sp/><sp/><sp/><sp/><sp/><sp/>the<sp/>actual<sp/>number<sp/>of<sp/>points<sp/>in<sp/>R<sp/>direction</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>nz<sp/><sp/><sp/><sp/><sp/><sp/>the<sp/>actual<sp/>number<sp/>of<sp/>points<sp/>in<sp/>Z<sp/>direction</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>rgr<sp/><sp/><sp/><sp/><sp/>the<sp/>R<sp/>values<sp/>for<sp/>the<sp/>grid<sp/>points</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>zgr<sp/><sp/><sp/><sp/><sp/>the<sp/>Z<sp/>values<sp/>for<sp/>the<sp/>grid<sp/>points</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>pfm<sp/><sp/><sp/><sp/><sp/>the<sp/>values<sp/>of<sp/>the<sp/>poloidal<sp/>flux</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="comment">c***</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Output:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">c***<sp/><sp/>iret<sp/><sp/><sp/><sp/>return<sp/>code<sp/>(0<sp/>means<sp/>OK)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="comment">c=====================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real*8</highlight><highlight class="normal"><sp/>pfm(ngpr,*),rgr(ngpr),zgr(*)</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="comment">c=====================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(lun,*,err=999)</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(i5,i6)&apos;</highlight><highlight class="normal">,err=999)<sp/>nr,nz</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(lun,*,err=999)<sp/></highlight><highlight class="stringliteral">&apos;$r&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(lun,710,err=999)<sp/></highlight><highlight class="stringliteral">&apos;nr&apos;</highlight><highlight class="normal">,nr</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(lun,720,err=999)<sp/>(rgr(i),i=1,nr)</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(lun,*,err=999)<sp/></highlight><highlight class="stringliteral">&apos;$z&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(lun,710,err=999)<sp/></highlight><highlight class="stringliteral">&apos;nz&apos;</highlight><highlight class="normal">,nz</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(lun,720,err=999)<sp/>(zgr(i),i=1,nz)</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(lun,*,err=999)</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(lun,*,err=999)<sp/></highlight><highlight class="stringliteral">&apos;$psi&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(lun,720,err=999)<sp/>((pfm(i,j),i=1,nr),j=1,nz)</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>iret=0</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>return</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="comment">c=====================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/>999<sp/><sp/>iret=1</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="comment">c=====================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/>710<sp/>format(1x,a2,</highlight><highlight class="stringliteral">&apos;=&apos;</highlight><highlight class="normal">,i3)</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/>720<sp/>format(1p,1x,6e13.5)</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="keyword"><sp/><sp/><sp/><sp/><sp/><sp/>end</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/wreqvr.f"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.5.6">
+  <compounddef id="dg2dg_8f" kind="file">
+    <compoundname>dg2dg.f</compoundname>
+    <innernamespace refid="namespacedg2dg">dg2dg</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9" refid="namespacedg2dg" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">program</highlight><highlight class="normal"><sp/>dg2dg</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/>version<sp/>:<sp/>16.01.2001<sp/>16:55</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">implicit<sp/>none</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="namespacedg2dg_1e7dd506213bbb6cba705ecab71df0a94" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">integer</highlight><highlight class="normal"><sp/>ngpr,ngpz</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>parameter<sp/>(ngpr=1025,<sp/>ngpz=1025)</highlight></codeline>
+<codeline lineno="16" refid="namespacedg2dg_135685ffad7953d2a38165725ba540d49" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real*8</highlight><highlight class="normal"><sp/>pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)</highlight></codeline>
+<codeline lineno="17" refid="namespacedg2dg_119f3394ca4f1ef71cd6de32f9d199b7b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real*8</highlight><highlight class="normal"><sp/>rcntc,psimin,psilim,btorc</highlight></codeline>
+<codeline lineno="18" refid="namespacedg2dg_1d946d8fc014faceab571c2af730bc414" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">integer</highlight><highlight class="normal"><sp/>nr,nz,iret,i,j</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>character<sp/>tab</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">c----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>tab=char(9)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><ref refid="open__files_8f_1ea2224f1a3d84bb57bfbbba13313b32b" kindref="member">open_files</ref>(</highlight><highlight class="stringliteral">&apos;&apos;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><ref refid="rdeqdg_8f_1cb140037f9a9e37e0d492c89d1917d71" kindref="member">rdeqdg</ref>(1,ngpr,ngpz,iret,<sp/>nr,nz,btorc,rcntc,rgr,zgr,pfm)</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(iret.ne.0)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;====<sp/>dg2dg:<sp/>error<sp/>in<sp/>rdeqdg.<sp/>iret<sp/>=&apos;</highlight><highlight class="normal">,iret</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stop</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><ref refid="double_8f_1639b51ff3554881589a55df2cdbd9d0c" kindref="member">double</ref>(pfm,ngpr,ngpz,rgr,nr,zgr,nz)</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>psilim=0</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><ref refid="pt2dg_8f_19b1f405bcdbc8d49e53245d70506b459" kindref="member">wreqdg</ref>(2,ngpr,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(iret.ne.0)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;====<sp/>dg2dg:<sp/>error<sp/>in<sp/>wreqdg.<sp/>iret<sp/>=<sp/>&apos;</highlight><highlight class="normal">,iret</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword"><sp/><sp/><sp/><sp/><sp/><sp/>end</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg2dg.f"/>
+  </compounddef>
+</doxygen>

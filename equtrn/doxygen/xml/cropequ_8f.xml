@@ -1,0 +1,255 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.5.6">
+  <compounddef id="cropequ_8f" kind="file">
+    <compoundname>cropequ.f</compoundname>
+    <innernamespace refid="namespacecropequ">cropequ</innernamespace>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="cropequ_8f_18fbd92e0fb3fd378dbbc241a291b18ec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>subroutine</type>
+        <definition>subroutine crop</definition>
+        <argsstring>(pfm, ngpr, ngpz, rgr, nr, zgr, nz, nrn, rmin, rmax, nzn, zmin, zmax)</argsstring>
+        <name>crop</name>
+        <param>
+          <type>pfm</type>
+          <defname>pfm</defname>
+        </param>
+        <param>
+          <type>ngpr</type>
+          <defname>ngpr</defname>
+        </param>
+        <param>
+          <type>ngpz</type>
+          <defname>ngpz</defname>
+        </param>
+        <param>
+          <type>rgr</type>
+          <defname>rgr</defname>
+        </param>
+        <param>
+          <type>nr</type>
+          <defname>nr</defname>
+        </param>
+        <param>
+          <type>zgr</type>
+          <defname>zgr</defname>
+        </param>
+        <param>
+          <type>nz</type>
+          <defname>nz</defname>
+        </param>
+        <param>
+          <type>nrn</type>
+          <defname>nrn</defname>
+        </param>
+        <param>
+          <type>rmin</type>
+          <defname>rmin</defname>
+        </param>
+        <param>
+          <type>rmax</type>
+          <defname>rmax</defname>
+        </param>
+        <param>
+          <type>nzn</type>
+          <defname>nzn</defname>
+        </param>
+        <param>
+          <type>zmin</type>
+          <defname>zmin</defname>
+        </param>
+        <param>
+          <type>zmax</type>
+          <defname>zmax</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11" refid="namespacecropequ" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">program</highlight><highlight class="normal"><sp/>cropequ</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/>version<sp/>:<sp/>21.07.2000<sp/>16:44</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">implicit<sp/>none</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16" refid="namespacecropequ_15e809f294cb46948b68e7f84c5b3e5e7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">integer</highlight><highlight class="normal"><sp/>ngpr,ngpz</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>parameter<sp/>(ngpr=257,<sp/>ngpz=257)</highlight></codeline>
+<codeline lineno="18" refid="namespacecropequ_1ba94b950afefefed82de22487f2e6f95" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real*8</highlight><highlight class="normal"><sp/>pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)</highlight></codeline>
+<codeline lineno="19" refid="namespacecropequ_19a350ad968e30ba111940f451ea50702" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real*8</highlight><highlight class="normal"><sp/>rcntc,psimin,psilim,btorc,rmin,rmax,zmin,zmax</highlight></codeline>
+<codeline lineno="20" refid="namespacecropequ_1d9c10ef53d2478403af28fcbabddebaa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">integer</highlight><highlight class="normal"><sp/>i,j,nr,nz,nrn,nzn,iret</highlight></codeline>
+<codeline lineno="21" refid="namespacecropequ_1a9edc1a57af22096446e628df43d5388" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">logical</highlight><highlight class="normal"><sp/>err</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>character<sp/>tab<sp/><sp/><sp/><sp/>!###</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="comment">c----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>tab=char(9)<sp/><sp/><sp/><sp/><sp/><sp/>!###</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><ref refid="open__files_8f_1ea2224f1a3d84bb57bfbbba13313b32b" kindref="member">open_files</ref>(</highlight><highlight class="stringliteral">&apos;Input<sp/><sp/><sp/>==<sp/>nr,<sp/>Rmin,<sp/>Rmax,<sp/>nz,<sp/>Zmin,<sp/>Zmax&apos;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><ref refid="rdeqdg_8f_1cb140037f9a9e37e0d492c89d1917d71" kindref="member">rdeqdg</ref>(1,ngpr,ngpz,iret,<sp/>nr,nz,btorc,rcntc,rgr,zgr,pfm)</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(iret.ne.0)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;====<sp/>dg2dg:<sp/>error<sp/>in<sp/>rdeqdg.<sp/>iret<sp/>=&apos;</highlight><highlight class="normal">,iret</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stop</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>nrn=nr</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>nzn=nz</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>rmin=rgr(1)</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>rmax=rgr(nr)</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>zmin=zgr(1)</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>zmax=zgr(nz)</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal"><sp/>(*,*)<sp/></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal"><sp/>(*,*)<sp/></highlight><highlight class="stringliteral">&apos;Source<sp/>grid:&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal"><sp/>(*,*)<sp/></highlight><highlight class="stringliteral">&apos;<sp/><sp/><sp/>nr,rmin,rmax=&apos;</highlight><highlight class="normal">,<sp/>nr,rmin,rmax</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal"><sp/>(*,*)<sp/></highlight><highlight class="stringliteral">&apos;<sp/><sp/><sp/>nz,zmin,zmax=&apos;</highlight><highlight class="normal">,<sp/>nz,zmin,zmax</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal"><sp/>(*,*)<sp/></highlight><highlight class="stringliteral">&apos;Input<sp/>new<sp/>values<sp/>(list-directed<sp/>format)<sp/>=&gt;&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal"><sp/>(*,*,end=20)<sp/>nrn,rmin,rmax,nzn,zmin,zmax</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/>20<sp/><sp/><sp/>err=.false.</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(nrn.lt.3<sp/>.or.<sp/>nrn.gt.ngpr)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">!{</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal"><sp/>(0,*)<sp/></highlight><highlight class="stringliteral">&apos;Wrong<sp/>input<sp/>value<sp/>of<sp/>nr:<sp/>&apos;</highlight><highlight class="normal">,nrn,</highlight><highlight class="stringliteral">&apos;.<sp/>Must<sp/>be<sp/>between&apos;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>,<sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&apos;<sp/>3<sp/>and<sp/>&apos;</highlight><highlight class="normal">,ngpr</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>err=.true.</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">!}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(nzn.lt.3<sp/>.or.<sp/>nzn.gt.ngpz)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">!{</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal"><sp/>(0,*)<sp/></highlight><highlight class="stringliteral">&apos;Wrong<sp/>input<sp/>value<sp/>of<sp/>nz:<sp/>&apos;</highlight><highlight class="normal">,nzn,</highlight><highlight class="stringliteral">&apos;.<sp/>Must<sp/>be<sp/>between&apos;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>,<sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&apos;<sp/>3<sp/>and<sp/>&apos;</highlight><highlight class="normal">,ngpz</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>err=.true.</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">!}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(err)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">!{</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;Input<sp/><sp/><sp/>==<sp/>nr,<sp/>Rmin,<sp/>Rmax,<sp/>nz,<sp/>Zmin,<sp/>Zmax&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stop<sp/></highlight><highlight class="stringliteral">&apos;==&gt;<sp/>check<sp/>ngpr<sp/>and<sp/>ngpz<sp/>in<sp/>cropequ.f&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">!}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>rmin=max(rmin,rgr(1))</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>rmax=min(rmax,rgr(nr))</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>zmin=max(zmin,zgr(1))</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>zmax=min(zmax,zgr(nz))</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(rmax.le.rgr(1))<sp/>rmax=rgr(nr)</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(rmin.ge.rgr(nr))<sp/>rmin=rgr(1)</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(zmax.le.zgr(1))<sp/>zmax=zgr(nz)</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(zmin.ge.zgr(nz))<sp/>zmin=zgr(1)</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><ref refid="cropequ_8f_18fbd92e0fb3fd378dbbc241a291b18ec" kindref="member">crop</ref>(pfm,ngpr,ngpz,rgr,nr,zgr,nz,nrn,rmin,rmax,nzn,zmin,zmax)</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>psilim=0</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><ref refid="pt2dg_8f_19b1f405bcdbc8d49e53245d70506b459" kindref="member">wreqdg</ref>(2,ngpr,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(iret.ne.0)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print<sp/>*,</highlight><highlight class="stringliteral">&apos;====<sp/>dg2dg:<sp/>error<sp/>in<sp/>wreqdg.<sp/>iret<sp/>=<sp/>&apos;</highlight><highlight class="normal">,iret</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="keyword"><sp/><sp/><sp/><sp/><sp/><sp/>end</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight><highlight class="comment">c======================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82" refid="cropequ_8f_18fbd92e0fb3fd378dbbc241a291b18ec" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">subroutine<sp/></highlight><highlight class="normal"><ref refid="cropequ_8f_18fbd92e0fb3fd378dbbc241a291b18ec" kindref="member">crop</ref>(pfm,ngpr,ngpz,rgr,nr,zgr,nz,</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>nrn,rmin,rmax,nzn,zmin,zmax)</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">implicit<sp/>none</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">integer</highlight><highlight class="normal"><sp/>ir,ifail,nn,nz2,iz,nr2,nr,ngpz,ngpr,j,i,nz,nrn,nzn</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real*8</highlight><highlight class="normal"><sp/>pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz),rmin,rmax,zmin,zmax,h,x</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real</highlight><highlight class="normal"><sp/><sp/><sp/>pfms(nr,nz),rgrs(ngpr),zgrs(ngpz)</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real</highlight><highlight class="normal"><sp/><sp/><sp/>pfmss(ngpr,ngpz),rgrss(ngpr),zgrss(ngpz)</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">real</highlight><highlight class="normal"><sp/><sp/><sp/>cx(nr,3,nz),cy(nz,3,nr),cc(nz,3,nr,3),wrkz(nz),wrkr(nr,4)</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight><highlight class="comment">c----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>character<sp/>tab</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>tab=char(9)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="comment">c----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>pfms(1:nr,1:nz)=pfm(1:nr,1:nz)</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>rgrs(1:nr)=rgr(1:nr)</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>zgrs(1:nz)=zgr(1:nz)</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight><highlight class="comment">c----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>open(91,file=&apos;rgrs.dat&apos;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>write(91,&apos;(1h#)&apos;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>write(91,&apos;(1p,i4,a1,e15.6)&apos;)<sp/>(i,tab,rgrs(i),i=1,nr)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>open(91,file=&apos;zgrs.dat&apos;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>write(91,&apos;(1h#)&apos;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>write(91,&apos;(1p,i4,a1,e15.6)&apos;)<sp/>(i,tab,zgrs(i),i=1,nz)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>open(91,file=&apos;zpfs.dat&apos;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>write(91,&apos;(2h#<sp/>,2a1,257(a1,i3.3,a1))&apos;)<sp/>&apos;z&apos;,tab,(&apos;r&apos;,i,tab,i=1,nr)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>do<sp/>j=1,nz</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>write(91,&apos;(1p,258(e11.4,a1))&apos;)<sp/>zgrs(j),tab,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(pfms(i,j),tab,i=1,nr)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>end<sp/>do</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>open(91,file=&apos;rpfs.dat&apos;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>write(91,&apos;(2h#<sp/>,2a1,257(a1,i3.3,a1))&apos;)<sp/>&apos;r&apos;,tab,(&apos;z&apos;,i,tab,i=1,nz)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>do<sp/>j=1,nr</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>write(91,&apos;(1p,258(e11.4,a1))&apos;)<sp/>rgrs(j),tab,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(pfms(j,i),tab,i=1,nz)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>end<sp/>do</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight><highlight class="comment">c----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>if(ngpr.lt.2*nr-1)<sp/>stop<sp/>&apos;increase<sp/>ngpr&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>if(ngpz.lt.2*nz-1)<sp/>stop<sp/>&apos;increase<sp/>ngpz&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>nn=nr*nz</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/>splbcb(rgrs,<sp/>nr,<sp/>zgrs,<sp/>nz,<sp/>pfms,<sp/>nr,<sp/>cx,<sp/>nn*3,<sp/>cy,<sp/>nn*3,</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cc,<sp/>nn*9,<sp/>wrkr,<sp/>nz,<sp/>ifail)</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(ifail.ne.0)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;splbcb:<sp/>ifail<sp/>&apos;</highlight><highlight class="normal">,ifail</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stop</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>x=rmin</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>h=(rmax-rmin)/(nrn-1)</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>i=1,nrn</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rgr(i)=x</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>x=x+h</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>do</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>x=zmin</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>h=(zmax-zmin)/(nzn-1)</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>i=1,nzn</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>zgr(i)=x</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>x=x+h</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>do</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>rgrss(1:nrn)=rgr(1:nrn)</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>zgrss(1:nzn)=zgr(1:nzn)</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/>evlbcs(rgrss,<sp/>nrn,<sp/>zgrss,<sp/>nzn,<sp/>pfmss,<sp/>ngpr,</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rgrs,<sp/>nr,<sp/>zgrs,<sp/>nz,<sp/>pfms,<sp/>nr,<sp/>cx,<sp/>nn*3,<sp/>cy,<sp/>nn*3,</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cc,<sp/>nn*9,<sp/>wrkr,<sp/>4*nr,<sp/>wrkz,<sp/>nz,<sp/>ifail)</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(ifail.ne.0)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal">(*,*)<sp/></highlight><highlight class="stringliteral">&apos;evlbcs:<sp/>ifail<sp/>&apos;</highlight><highlight class="normal">,ifail</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(ifail.lt.0)<sp/>stop</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>nr=nrn</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>nz=nzn</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>i=1,nr<sp/></highlight><highlight class="comment">!{</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>j=1,nz<sp/></highlight><highlight class="comment">!{</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pfm(i,j)=pfmss(i,j)</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>do</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">!}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>do</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">!}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>pfm(1:nr,1:nz)=pfmss(1:nr,1:nz)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight><highlight class="comment">c----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>open(91,file=&apos;zpss.dat&apos;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>write(91,&apos;(2h#<sp/>,2a1,257(a1,i3.3,a1))&apos;)<sp/>&apos;z&apos;,tab,(&apos;r&apos;,i,tab,i=1,nr)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>do<sp/>j=1,nz</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>write(91,&apos;(1p,258(e11.4,a1))&apos;)<sp/>zgr(j),tab,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(pfmss(i,j),tab,i=1,nr)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>end<sp/>do</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>open(91,file=&apos;rpss.dat&apos;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>write(91,&apos;(2h#<sp/>,2a1,257(a1,i3.3,a1))&apos;)<sp/>&apos;r&apos;,tab,(&apos;z&apos;,i,tab,i=1,nz)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>do<sp/>j=1,nr</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>write(91,&apos;(1p,258(e11.4,a1))&apos;)<sp/>rgr(j),tab,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(pfmss(j,i),tab,i=1,nz)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/><sp/><sp/><sp/><sp/>end<sp/>do</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight><highlight class="comment">c----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight><highlight class="keyword"><sp/><sp/><sp/><sp/><sp/><sp/>end</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/cropequ.f"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.5.6">
+  <compounddef id="namespacedg__proc__dg" kind="namespace">
+    <compoundname>dg_proc_dg</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacedg__proc__dg_134d4b6308d30eeff40494270ca3e41dd" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr, ngpz)</type>
+        <definition>real*8,dimension(ngpr,ngpz) dg_proc_dg::pfm</definition>
+        <argsstring></argsstring>
+        <name>pfm</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacedg__proc__dg_137701a396c79a6a032240cbce2a97e69" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr)</type>
+        <definition>real*8,dimension(ngpr) dg_proc_dg::rgr</definition>
+        <argsstring></argsstring>
+        <name>rgr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacedg__proc__dg_16664346fe46f234f41c923f7d8710b09" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpz)</type>
+        <definition>real*8,dimension(ngpz) dg_proc_dg::zgr</definition>
+        <argsstring></argsstring>
+        <name>zgr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacedg__proc__dg_1a41e0e0e8c2ba411d2b43e2265775189" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 dg_proc_dg::rcntc</definition>
+        <argsstring></argsstring>
+        <name>rcntc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacedg__proc__dg_15107aa7a882e962895ad0db819eac7f9" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 dg_proc_dg::psilim</definition>
+        <argsstring></argsstring>
+        <name>psilim</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacedg__proc__dg_14858e0f24b3a2b945edb969aa3397018" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 dg_proc_dg::btorc</definition>
+        <argsstring></argsstring>
+        <name>btorc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacedg__proc__dg_15b2c26eb45e5141de307ba77ec9b63f7" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 dg_proc_dg::shift</definition>
+        <argsstring></argsstring>
+        <name>shift</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacedg__proc__dg_1afbcde755b792e734f84703b785a4725" prot="public" static="no" mutable="no">
+        <type>character *256</type>
+        <definition>character*256 dg_proc_dg::filename</definition>
+        <argsstring></argsstring>
+        <name>filename</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacedg__proc__dg_1db49100523d7293683f277516929fea3" prot="public" static="no" mutable="no">
+        <type>integer</type>
+        <definition>integer dg_proc_dg::chop</definition>
+        <argsstring></argsstring>
+        <name>chop</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>do arbitrary re-processing of the equilibrium --- in this case chop off the first few columns </para>    </briefdescription>
+    <detaileddescription>
+<para>arg1: input equilibrium file name</para><para>arg2: output equilibrium file name</para><para><simplesect kind="version"><para>30.01.96 21:58 </para></simplesect>
+</para>    </detaileddescription>
+    <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/dg_proc_dg.f" line="1"/>
+  </compounddef>
+</doxygen>

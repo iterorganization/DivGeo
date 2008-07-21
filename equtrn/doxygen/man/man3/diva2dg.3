@@ -1,0 +1,129 @@
+.TH "diva2dg" 3 "21 Jul 2008" "Version 2008-06" "DivGeo/dg/equtrn" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+diva2dg \- Translation of Diva equilibrium data into dg-compatible format.  
+
+.PP
+.SH SYNOPSIS
+.br
+.PP
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "real *8, dimension(ngpr) \fBgpr\fP"
+.br
+.ti -1c
+.RI "real *8, dimension(ngpz) \fBgpz\fP"
+.br
+.ti -1c
+.RI "real *8, dimension(ngpf) \fBpfl\fP"
+.br
+.ti -1c
+.RI "real *8, dimension(ngpf) \fBpc\fP"
+.br
+.ti -1c
+.RI "real *8, dimension(ngpf) \fBpcd\fP"
+.br
+.ti -1c
+.RI "real *8, dimension(ngpf) \fBpr\fP"
+.br
+.ti -1c
+.RI "real *8, dimension(ngpf) \fBprd\fP"
+.br
+.ti -1c
+.RI "real *8, dimension(ngpf) \fBq\fP"
+.br
+.ti -1c
+.RI "real *8, dimension(3) \fBapf\fP"
+.br
+.ti -1c
+.RI "real *8, dimension(3) \fBxpf\fP"
+.br
+.ti -1c
+.RI "real *8, dimension(ngpr, ngpz) \fBpfm\fP"
+.br
+.ti -1c
+.RI "real *8 \fBrcntc\fP"
+.br
+.ti -1c
+.RI "real *8 \fBbtorc\fP"
+.br
+.ti -1c
+.RI "real *8 \fBBt\fP"
+.br
+.ti -1c
+.RI "real *8, dimension(6) \fBderivative\fP"
+.br
+.ti -1c
+.RI "character *256 \fBfilename\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Translation of Diva equilibrium data into dg-compatible format. 
+
+arg1: input equilibrium file name
+.PP
+arg2: output equilibrium file name
+.PP
+\fBVersion:\fP
+.RS 4
+16.11.95 20:04 
+.RE
+.PP
+
+.SH "Variable Documentation"
+.PP 
+.SS "real*8,dimension(3) \fBdiva2dg::apf\fP"
+.PP
+Definition at line 18 of file diva2dg.f.
+.SS "real*8 \fBdiva2dg::Bt\fP"
+.PP
+Definition at line 23 of file diva2dg.f.
+.SS "real*8 \fBdiva2dg::btorc\fP"
+.PP
+Definition at line 22 of file diva2dg.f.
+.SS "real*8,dimension(6) \fBdiva2dg::derivative\fP"
+.PP
+Definition at line 23 of file diva2dg.f.
+.SS "character*256 \fBdiva2dg::filename\fP"
+.PP
+Definition at line 24 of file diva2dg.f.
+.SS "real*8,dimension(ngpr) \fBdiva2dg::gpr\fP"
+.PP
+Definition at line 18 of file diva2dg.f.
+.SS "real*8,dimension(ngpz) \fBdiva2dg::gpz\fP"
+.PP
+Definition at line 18 of file diva2dg.f.
+.SS "real*8,dimension(ngpf) \fBdiva2dg::pc\fP"
+.PP
+Definition at line 18 of file diva2dg.f.
+.SS "real*8,dimension(ngpf) \fBdiva2dg::pcd\fP"
+.PP
+Definition at line 18 of file diva2dg.f.
+.SS "real*8,dimension(ngpf) \fBdiva2dg::pfl\fP"
+.PP
+Definition at line 18 of file diva2dg.f.
+.SS "real*8,dimension(ngpr,ngpz) \fBdiva2dg::pfm\fP"
+.PP
+Definition at line 21 of file diva2dg.f.
+.SS "real*8,dimension(ngpf) \fBdiva2dg::pr\fP"
+.PP
+Definition at line 18 of file diva2dg.f.
+.SS "real*8,dimension(ngpf) \fBdiva2dg::prd\fP"
+.PP
+Definition at line 18 of file diva2dg.f.
+.SS "real*8,dimension(ngpf) \fBdiva2dg::q\fP"
+.PP
+Definition at line 18 of file diva2dg.f.
+.SS "real*8 \fBdiva2dg::rcntc\fP"
+.PP
+Definition at line 22 of file diva2dg.f.
+.SS "real*8,dimension(3) \fBdiva2dg::xpf\fP"
+.PP
+Definition at line 18 of file diva2dg.f.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for DivGeo/dg/equtrn from the source code.

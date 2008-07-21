@@ -1,0 +1,379 @@
+.TH "JETPPF2DG" 3 "21 Jul 2008" "Version 2008-06" "DivGeo/dg/equtrn" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+JETPPF2DG \- Translation of the JET PPF equilibrium data into dg-compatible format.  
+
+.PP
+.SH SYNOPSIS
+.br
+.PP
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "INTEGER \fBLUNMSG\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBMR\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBMZ\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBLFLUSH\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBIREAD\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBIWRITE\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBIERRA\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBNSHOT\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBNSEQ\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBNX\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBNY\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBRATIOX\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBRATIOY\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBIER\fP"
+.br
+.ti -1c
+.RI "integer \fBiarg\fP"
+.br
+.ti -1c
+.RI "integer \fBiargc\fP"
+.br
+.ti -1c
+.RI "integer \fBlnblnk\fP"
+.br
+.ti -1c
+.RI "integer \fBi\fP"
+.br
+.ti -1c
+.RI "integer \fBj\fP"
+.br
+.ti -1c
+.RI "integer \fBiret\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBIGO\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBIDUM\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBIERROR\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBNP\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBNR\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBNZ\fP"
+.br
+.ti -1c
+.RI "REAL \fBTSHOT\fP"
+.br
+.ti -1c
+.RI "REAL \fBWIDTH\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBCONV\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBRBTOR\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBTWOPI\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBPSI0\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBPSIB\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBDPSI\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBPSI\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBEPS\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBR1\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBR2\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBR\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBZ1\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBZ2\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBZ\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBTIME\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBFP\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBBR\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBBZ\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBBT\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBFPT\fP"
+.br
+.ti -1c
+.RI "real *8 \fBrcntc\fP"
+.br
+.ti -1c
+.RI "real *8 \fBbtorc\fP"
+.br
+.ti -1c
+.RI "real *8 \fBpsilim\fP"
+.br
+.ti -1c
+.RI "CHARACTER \fBPPFUID\fP"
+.br
+.ti -1c
+.RI "CHARACTER \fBDDA\fP"
+.br
+.ti -1c
+.RI "CHARACTER \fBMSG\fP"
+.br
+.ti -1c
+.RI "CHARACTER \fBarg\fP"
+.br
+.ti -1c
+.RI "CHARACTER \fBfilename\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Translation of the JET PPF equilibrium data into dg-compatible format. 
+
+1st arg == shot number
+.PP
+2nd arg == time
+.PP
+[3rd arg == DDA (EFIT)]
+.PP
+[4th arg == PPFUID (JETPPF)]
+.PP
+[5th arg == edition (0)]
+.PP
+The output filename is derived from the shot, time, experiment, diagnostic and edition
+.PP
+Specific JET library routines are used to access the data
+.PP
+\fBVersion:\fP
+.RS 4
+2008-07-17 16:15 
+.RE
+.PP
+
+.SH "Variable Documentation"
+.PP 
+.SS "CHARACTER \fBJETPPF2DG::arg\fP"
+.PP
+Definition at line 58 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::BR\fP"
+.PP
+Definition at line 55 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::BT\fP"
+.PP
+Definition at line 55 of file jetppf2dg.f.
+.SS "real*8 \fBJETPPF2DG::btorc\fP"
+.PP
+Definition at line 56 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::BZ\fP"
+.PP
+Definition at line 55 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::CONV\fP"
+.PP
+Definition at line 51 of file jetppf2dg.f.
+.SS "CHARACTER \fBJETPPF2DG::DDA\fP"
+.PP
+Definition at line 58 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::DPSI\fP"
+.PP
+Definition at line 52 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::EPS\fP"
+.PP
+Definition at line 54 of file jetppf2dg.f.
+.SS "CHARACTER \fBJETPPF2DG::filename\fP"
+.PP
+Definition at line 58 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::FP\fP"
+.PP
+Definition at line 55 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::FPT\fP"
+.PP
+Definition at line 55 of file jetppf2dg.f.
+.SS "integer \fBJETPPF2DG::i\fP"
+.PP
+Definition at line 46 of file jetppf2dg.f.
+.SS "integer \fBJETPPF2DG::iarg\fP"
+.PP
+Definition at line 46 of file jetppf2dg.f.
+.SS "integer \fBJETPPF2DG::iargc\fP"
+.PP
+Definition at line 46 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::IDUM\fP"
+.PP
+Definition at line 47 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::IER\fP"
+.PP
+Definition at line 45 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::IERRA\fP"
+.PP
+Definition at line 44 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::IERROR\fP"
+.PP
+Definition at line 47 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::IGO\fP"
+.PP
+Definition at line 47 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::IREAD\fP"
+.PP
+Definition at line 44 of file jetppf2dg.f.
+.SS "integer \fBJETPPF2DG::iret\fP"
+.PP
+Definition at line 46 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::IWRITE\fP"
+.PP
+Definition at line 44 of file jetppf2dg.f.
+.SS "integer \fBJETPPF2DG::j\fP"
+.PP
+Definition at line 46 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::LFLUSH\fP"
+.PP
+Definition at line 41 of file jetppf2dg.f.
+.SS "integer \fBJETPPF2DG::lnblnk\fP"
+.PP
+Definition at line 46 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::LUNMSG\fP"
+.PP
+Definition at line 37 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::MR\fP"
+.PP
+Definition at line 39 of file jetppf2dg.f.
+.SS "CHARACTER \fBJETPPF2DG::MSG\fP"
+.PP
+Definition at line 58 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::MZ\fP"
+.PP
+Definition at line 39 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::NP\fP"
+.PP
+Definition at line 47 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::NR\fP"
+.PP
+Definition at line 47 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::NSEQ\fP"
+.PP
+Definition at line 45 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::NSHOT\fP"
+.PP
+Definition at line 45 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::NX\fP"
+.PP
+Definition at line 45 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::NY\fP"
+.PP
+Definition at line 45 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::NZ\fP"
+.PP
+Definition at line 47 of file jetppf2dg.f.
+.SS "CHARACTER \fBJETPPF2DG::PPFUID\fP"
+.PP
+Definition at line 58 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::PSI\fP"
+.PP
+Definition at line 52 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::PSI0\fP"
+.PP
+Definition at line 52 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::PSIB\fP"
+.PP
+Definition at line 52 of file jetppf2dg.f.
+.SS "real*8 \fBJETPPF2DG::psilim\fP"
+.PP
+Definition at line 56 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::R\fP"
+.PP
+Definition at line 54 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::R1\fP"
+.PP
+Definition at line 54 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::R2\fP"
+.PP
+Definition at line 54 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::RATIOX\fP"
+.PP
+Definition at line 45 of file jetppf2dg.f.
+.SS "INTEGER \fBJETPPF2DG::RATIOY\fP"
+.PP
+Definition at line 45 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::RBTOR\fP"
+.PP
+Definition at line 51 of file jetppf2dg.f.
+.SS "real*8 \fBJETPPF2DG::rcntc\fP"
+.PP
+Definition at line 56 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::TIME\fP"
+.PP
+Definition at line 55 of file jetppf2dg.f.
+.SS "REAL \fBJETPPF2DG::TSHOT\fP"
+.PP
+Definition at line 49 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::TWOPI\fP"
+.PP
+Definition at line 52 of file jetppf2dg.f.
+.SS "REAL \fBJETPPF2DG::WIDTH\fP"
+.PP
+Definition at line 49 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::Z\fP"
+.PP
+Definition at line 54 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::Z1\fP"
+.PP
+Definition at line 54 of file jetppf2dg.f.
+.SS "REAL*8 \fBJETPPF2DG::Z2\fP"
+.PP
+Definition at line 54 of file jetppf2dg.f.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for DivGeo/dg/equtrn from the source code.

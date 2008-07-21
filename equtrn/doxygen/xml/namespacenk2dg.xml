@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.5.6">
+  <compounddef id="namespacenk2dg" kind="namespace">
+    <compoundname>nk2dg</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacenk2dg_1733992eb6e80ce656c32d6d353c4677b" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr, ngpz)</type>
+        <definition>real*8,dimension(ngpr,ngpz) nk2dg::pfm</definition>
+        <argsstring></argsstring>
+        <name>pfm</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacenk2dg_1cf5c5ade5f9197d1f9a6a9730e570159" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr)</type>
+        <definition>real*8,dimension(ngpr) nk2dg::rgr</definition>
+        <argsstring></argsstring>
+        <name>rgr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacenk2dg_1fe36aa20b7f59d22623f4125397651d6" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpz)</type>
+        <definition>real*8,dimension(ngpz) nk2dg::zgr</definition>
+        <argsstring></argsstring>
+        <name>zgr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacenk2dg_1395609fb530be70486fc118f6f819b3a" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 nk2dg::rmin</definition>
+        <argsstring></argsstring>
+        <name>rmin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacenk2dg_108d442b8e9fa8d3621dbd6c09ee2b4be" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 nk2dg::zmin</definition>
+        <argsstring></argsstring>
+        <name>zmin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacenk2dg_172fec23caa6a548271a5e18c11a1dce9" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 nk2dg::rmax</definition>
+        <argsstring></argsstring>
+        <name>rmax</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacenk2dg_1ba6a5a016ae20d3d4055b43ed890a3b2" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 nk2dg::zmax</definition>
+        <argsstring></argsstring>
+        <name>zmax</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacenk2dg_1f992f0e8d5ad4ef0f9529778eda2cdff" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 nk2dg::delr</definition>
+        <argsstring></argsstring>
+        <name>delr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacenk2dg_1654247a44246ac3e92803f639aaa7007" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 nk2dg::delz</definition>
+        <argsstring></argsstring>
+        <name>delz</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacenk2dg_1af4c53f2a1030fd743abb4a613562faa" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 nk2dg::psilim</definition>
+        <argsstring></argsstring>
+        <name>psilim</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacenk2dg_1f54459b76d986d4d7eec7446c33e6356" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 nk2dg::btorc</definition>
+        <argsstring></argsstring>
+        <name>btorc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacenk2dg_1b8da20bfe7c672322e034214f4902319" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 nk2dg::rcntc</definition>
+        <argsstring></argsstring>
+        <name>rcntc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacenk2dg_1309a619ea56590d21043369e3f3f50e7" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 nk2dg::fg</definition>
+        <argsstring></argsstring>
+        <name>fg</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Translation of equilibrium data from Naka to dg-compatible format. </para>    </briefdescription>
+    <detaileddescription>
+<para>arg1: input equilibrium file name</para><para>arg2: output equilibrium file name</para><para><simplesect kind="version"><para>16.01.96 19:48 </para></simplesect>
+</para>    </detaileddescription>
+    <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/nk2dg.f" line="1"/>
+  </compounddef>
+</doxygen>

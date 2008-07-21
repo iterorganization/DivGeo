@@ -1,0 +1,208 @@
+.TH "src/jetppf2dg.f" 3 "21 Jul 2008" "Version 2008-06" "DivGeo/dg/equtrn" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/jetppf2dg.f \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Modules"
+
+.in +1c
+.ti -1c
+.RI "module \fBJETPPF2DG\fP"
+.br
+.in -1c
+.SS "Functions/Subroutines"
+
+.in +1c
+.ti -1c
+.RI "subroutine \fBERRMSS\fP (LUN, MODULE, IER, MSG1, MSG2, MSG3)"
+.br
+.ti -1c
+.RI "INTEGER \fBLENSTR\fP (ASTR)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::LUNMSG\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::MR\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::MZ\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::LFLUSH\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::IREAD\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::IWRITE\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::IERRA\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::NSHOT\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::NSEQ\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::NX\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::NY\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::RATIOX\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::RATIOY\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::IER\fP"
+.br
+.ti -1c
+.RI "integer \fBJETPPF2DG::iarg\fP"
+.br
+.ti -1c
+.RI "integer \fBJETPPF2DG::iargc\fP"
+.br
+.ti -1c
+.RI "integer \fBJETPPF2DG::lnblnk\fP"
+.br
+.ti -1c
+.RI "integer \fBJETPPF2DG::i\fP"
+.br
+.ti -1c
+.RI "integer \fBJETPPF2DG::j\fP"
+.br
+.ti -1c
+.RI "integer \fBJETPPF2DG::iret\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::IGO\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::IDUM\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::IERROR\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::NP\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::NR\fP"
+.br
+.ti -1c
+.RI "INTEGER \fBJETPPF2DG::NZ\fP"
+.br
+.ti -1c
+.RI "REAL \fBJETPPF2DG::TSHOT\fP"
+.br
+.ti -1c
+.RI "REAL \fBJETPPF2DG::WIDTH\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::CONV\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::RBTOR\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::TWOPI\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::PSI0\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::PSIB\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::DPSI\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::PSI\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::EPS\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::R1\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::R2\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::R\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::Z1\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::Z2\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::Z\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::TIME\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::FP\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::BR\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::BZ\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::BT\fP"
+.br
+.ti -1c
+.RI "REAL *8 \fBJETPPF2DG::FPT\fP"
+.br
+.ti -1c
+.RI "real *8 \fBJETPPF2DG::rcntc\fP"
+.br
+.ti -1c
+.RI "real *8 \fBJETPPF2DG::btorc\fP"
+.br
+.ti -1c
+.RI "real *8 \fBJETPPF2DG::psilim\fP"
+.br
+.ti -1c
+.RI "CHARACTER \fBJETPPF2DG::PPFUID\fP"
+.br
+.ti -1c
+.RI "CHARACTER \fBJETPPF2DG::DDA\fP"
+.br
+.ti -1c
+.RI "CHARACTER \fBJETPPF2DG::MSG\fP"
+.br
+.ti -1c
+.RI "CHARACTER \fBJETPPF2DG::arg\fP"
+.br
+.ti -1c
+.RI "CHARACTER \fBJETPPF2DG::filename\fP"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "subroutine ERRMSS (INTEGER LUN, CHARACTER*(*) MODULE, INTEGER IER, CHARACTER*(*) MSG1, CHARACTER*(*) MSG2, CHARACTER*(*) MSG3)"
+.PP
+Definition at line 247 of file jetppf2dg.f.
+.SS "INTEGER LENSTR (CHARACTER*(*) ASTR)"
+.PP
+Definition at line 311 of file jetppf2dg.f.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for DivGeo/dg/equtrn from the source code.

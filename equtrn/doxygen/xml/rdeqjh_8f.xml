@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.5.6">
+  <compounddef id="rdeqjh_8f" kind="file">
+    <compoundname>rdeqjh.f</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="rdeqjh_8f_169474b4e13362274ce3461aec98ffc3c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>subroutine</type>
+        <definition>subroutine rdeqjh</definition>
+        <argsstring>(lun, nr, nz, psib, btf, rtf,*)</argsstring>
+        <name>rdeqjh</name>
+        <param>
+          <type>lun</type>
+        </param>
+        <param>
+          <type>nr</type>
+        </param>
+        <param>
+          <type>nz</type>
+        </param>
+        <param>
+          <type>psib</type>
+        </param>
+        <param>
+          <type>btf</type>
+        </param>
+        <param>
+          <type>rtf</type>
+        </param>
+        <param>
+          <type>*</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="rdeqjh_8f_169474b4e13362274ce3461aec98ffc3c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">subroutine<sp/></highlight><highlight class="normal"><ref refid="rdeqjh_8f_169474b4e13362274ce3461aec98ffc3c" kindref="member">rdeqjh</ref>(lun,nr,nz,psib,btf,rtf,*)</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">c<sp/><sp/>version<sp/>:<sp/>09.07.97<sp/>17:08</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">c=====================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Reads<sp/>the<sp/>header<sp/>of<sp/>the<sp/>equilibrium<sp/>file<sp/>and<sp/>returns<sp/>dimensions</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>and<sp/>the<sp/>value<sp/>of<sp/>the<sp/>toroidal<sp/>field,<sp/>btf,<sp/>measured<sp/>at<sp/>radius<sp/>rtf<sp/>-</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>provided<sp/>that<sp/>this<sp/>information<sp/>is<sp/>present<sp/>in<sp/>the<sp/>equilibrium<sp/>file.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">character</highlight><highlight class="normal"><sp/>ss*80,<sp/>s(80),<sp/>hh*80,<sp/>h(80),<sp/>utb</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>equivalence<sp/>(s,ss),(h,hh)</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="comment">c=====================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>utb=char(9)</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>rtf=-1.</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/>10<sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(lun,</highlight><highlight class="stringliteral">&apos;(a80)&apos;</highlight><highlight class="normal">,end=90)<sp/>ss</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(ss.eq.</highlight><highlight class="stringliteral">&apos;<sp/>&apos;</highlight><highlight class="normal">)<sp/>go<sp/>to<sp/>10</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>k=0</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>hh=</highlight><highlight class="stringliteral">&apos;<sp/>&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>100<sp/>i=1,80</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(s(i).eq.</highlight><highlight class="stringliteral">&apos;(&apos;</highlight><highlight class="normal">)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(hh.eq.</highlight><highlight class="stringliteral">&apos;r&apos;</highlight><highlight class="normal">)<sp/>return</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>go<sp/>to<sp/>90</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(s(i).eq.</highlight><highlight class="stringliteral">&apos;:&apos;</highlight><highlight class="normal">)<sp/>go<sp/>to<sp/>10</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(s(i).eq.</highlight><highlight class="stringliteral">&apos;<sp/>&apos;</highlight><highlight class="normal"><sp/>.or.<sp/>s(i).eq.utb)<sp/>go<sp/>to<sp/>100</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(s(i).eq.</highlight><highlight class="stringliteral">&apos;=&apos;</highlight><highlight class="normal">)<sp/>go<sp/>to<sp/>20</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>k=k+1</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>h(k)=s(i)</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/>100<sp/><sp/>continue</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(hh.eq.</highlight><highlight class="stringliteral">&apos;r(1:jm);&apos;</highlight><highlight class="normal">)<sp/>return</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>go<sp/>to<sp/>90</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="comment">c-----------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Parse<sp/>the<sp/>string</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/>20<sp/><sp/><sp/>l=i+1</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(hh.eq.</highlight><highlight class="stringliteral">&apos;jm&apos;</highlight><highlight class="normal">)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>j=1</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(hh.eq.</highlight><highlight class="stringliteral">&apos;km&apos;</highlight><highlight class="normal">)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>j=2</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(hh.eq.</highlight><highlight class="stringliteral">&apos;btf&apos;</highlight><highlight class="normal">)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>j=3</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(hh.eq.</highlight><highlight class="stringliteral">&apos;rtf&apos;</highlight><highlight class="normal">)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>j=4</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(hh.eq.</highlight><highlight class="stringliteral">&apos;psib&apos;</highlight><highlight class="normal">)<sp/></highlight><highlight class="keyword">then</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>j=5</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>go<sp/>to<sp/>10</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">end<sp/>if</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>k=0</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>hh=</highlight><highlight class="stringliteral">&apos;<sp/>&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">do</highlight><highlight class="normal"><sp/>110<sp/>i=l,80</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(s(i).eq.</highlight><highlight class="stringliteral">&apos;;&apos;</highlight><highlight class="normal">)<sp/>go<sp/>to<sp/>30</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">if</highlight><highlight class="normal">(s(i).eq.</highlight><highlight class="stringliteral">&apos;<sp/>&apos;</highlight><highlight class="normal"><sp/>.or.<sp/>s(i).eq.utb)<sp/>go<sp/>to<sp/>110</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>k=k+1</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>h(k)=s(i)</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/>110<sp/><sp/>continue</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/>30<sp/><sp/><sp/>go<sp/>to<sp/>(31,32,33,34,35),j</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/>31<sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(hh,</highlight><highlight class="stringliteral">&apos;(bn,i4)&apos;</highlight><highlight class="normal">)<sp/>nr</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>go<sp/>to<sp/>10</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/>32<sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(hh,</highlight><highlight class="stringliteral">&apos;(bn,i4)&apos;</highlight><highlight class="normal">)<sp/>nz</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>go<sp/>to<sp/>10</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/>33<sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(hh,</highlight><highlight class="stringliteral">&apos;(bn,e12.0)&apos;</highlight><highlight class="normal">)<sp/>btf</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>go<sp/>to<sp/>10</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/>34<sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(hh,</highlight><highlight class="stringliteral">&apos;(bn,e12.0)&apos;</highlight><highlight class="normal">)<sp/>rtf</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>go<sp/>to<sp/>10</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/>35<sp/><sp/><sp/></highlight><highlight class="keyword">read</highlight><highlight class="normal">(hh,</highlight><highlight class="stringliteral">&apos;(bn,e12.0)&apos;</highlight><highlight class="normal">)<sp/>psib</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>go<sp/>to<sp/>10</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight><highlight class="comment">c=====================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight><highlight class="comment">c***<sp/>Error<sp/>encountered</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="comment">c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/>90<sp/><sp/><sp/></highlight><highlight class="keyword">write</highlight><highlight class="normal"><sp/>(6,*)<sp/></highlight><highlight class="stringliteral">&apos;Wrong<sp/>format<sp/>of<sp/>the<sp/>equilibrium<sp/>file<sp/>-<sp/>sorry!&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>1</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="comment">c=====================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight><highlight class="keyword"><sp/><sp/><sp/><sp/><sp/><sp/>end</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/rdeqjh.f"/>
+  </compounddef>
+</doxygen>

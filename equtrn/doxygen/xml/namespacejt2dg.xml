@@ -1,0 +1,261 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.5.6">
+  <compounddef id="namespacejt2dg" kind="namespace">
+    <compoundname>jt2dg</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacejt2dg_117c615f62c0c05b808d87246266ab536" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr)</type>
+        <definition>real*8,dimension(ngpr) jt2dg::fg</definition>
+        <argsstring></argsstring>
+        <name>fg</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_108d804a6c5152c65e1500244fa1410f6" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr)</type>
+        <definition>real*8,dimension(ngpr) jt2dg::pg</definition>
+        <argsstring></argsstring>
+        <name>pg</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_180fab5edf3704e21b81149c9e637f497" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr)</type>
+        <definition>real*8,dimension(ngpr) jt2dg::ffg</definition>
+        <argsstring></argsstring>
+        <name>ffg</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_16f762b87bc8dd1ed612d879909319f97" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr)</type>
+        <definition>real*8,dimension(ngpr) jt2dg::ppg</definition>
+        <argsstring></argsstring>
+        <name>ppg</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_1b7a37a375ca78999b17c11ceea0bec58" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr, ngpz)</type>
+        <definition>real*8,dimension(ngpr,ngpz) jt2dg::pfm</definition>
+        <argsstring></argsstring>
+        <name>pfm</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_1b4d8b9997f9926f576c02a07ccc16176" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr)</type>
+        <definition>real*8,dimension(ngpr) jt2dg::rgr</definition>
+        <argsstring></argsstring>
+        <name>rgr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_160cde3de8e847fbf8f420fe9ce5f465d" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpz)</type>
+        <definition>real*8,dimension(ngpz) jt2dg::zgr</definition>
+        <argsstring></argsstring>
+        <name>zgr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_1b4ad724a904b761b05f1d0fe6ce382b8" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 jt2dg::rdim</definition>
+        <argsstring></argsstring>
+        <name>rdim</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_14e55ac9b9c6c4c69545058d6b2194852" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 jt2dg::zdim</definition>
+        <argsstring></argsstring>
+        <name>zdim</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_1c556fd21d38d2c16cf2084c07b3c0c20" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 jt2dg::rcntc</definition>
+        <argsstring></argsstring>
+        <name>rcntc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_1b1344521a6c6c72af5caecd650ebe2f6" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 jt2dg::redge</definition>
+        <argsstring></argsstring>
+        <name>redge</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_1201bfea2375282f6c8c0fd2b5c51a3fa" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 jt2dg::zmsmid</definition>
+        <argsstring></argsstring>
+        <name>zmsmid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_1ab82ffdff1e4668d4385405aa75ccd89" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 jt2dg::rma</definition>
+        <argsstring></argsstring>
+        <name>rma</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_161fcb02be858569f8d4d26baf5a40611" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 jt2dg::zma</definition>
+        <argsstring></argsstring>
+        <name>zma</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_1c9e6897e44c92cd87f08bc39a66d332e" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 jt2dg::psimin</definition>
+        <argsstring></argsstring>
+        <name>psimin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_114f47c1ae6f543fcfb7074e1fa879656" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 jt2dg::psilim</definition>
+        <argsstring></argsstring>
+        <name>psilim</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_14d893dd31631d4c355e8ed3d4be79dd7" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 jt2dg::btorc</definition>
+        <argsstring></argsstring>
+        <name>btorc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_1c32ba1b009dff05e5ec89ca21de79ee1" prot="public" static="no" mutable="no">
+        <type>character</type>
+        <definition>character jt2dg::title</definition>
+        <argsstring></argsstring>
+        <name>title</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacejt2dg_198bd4e896161de789c7c592b8d610eb2" prot="public" static="no" mutable="no">
+        <type>character</type>
+        <definition>character jt2dg::date</definition>
+        <argsstring></argsstring>
+        <name>date</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Translation of efit equilibrium data into dg-compatible format. </para>    </briefdescription>
+    <detaileddescription>
+<para>arg1: input equilibrium file name</para><para>arg2: output equilibrium file name</para><para><simplesect kind="version"><para>09.07.97 17:14 </para></simplesect>
+</para>    </detaileddescription>
+    <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/jt2dg.f" line="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,85 @@
+.TH "dg_arith_dg" 3 "21 Jul 2008" "Version 2008-06" "DivGeo/dg/equtrn" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+dg_arith_dg \- Shift of the magnetic flux by a specified increment.  
+
+.PP
+.SH SYNOPSIS
+.br
+.PP
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "real *8, dimension(ngpr, ngpz) \fBpfm\fP"
+.br
+.ti -1c
+.RI "real *8, dimension(ngpr) \fBrgr\fP"
+.br
+.ti -1c
+.RI "real *8, dimension(ngpz) \fBzgr\fP"
+.br
+.ti -1c
+.RI "real *8 \fBrcntc\fP"
+.br
+.ti -1c
+.RI "real *8 \fBpsilim\fP"
+.br
+.ti -1c
+.RI "real *8 \fBbtorc\fP"
+.br
+.ti -1c
+.RI "real *8 \fBshift\fP"
+.br
+.ti -1c
+.RI "character *256 \fBfilename\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Shift of the magnetic flux by a specified increment. 
+
+arg1: input equilibrium file name
+.PP
+arg2: output equilibrium file name
+.PP
+In this case, the values of alpha and beta are read in and the flux is transformed as
+.PP
+pfm(i,j)=pfm(i,j)+alpha*zgr(j)+beta
+.PP
+\fBVersion:\fP
+.RS 4
+30.01.96 21:58 
+.RE
+.PP
+
+.SH "Variable Documentation"
+.PP 
+.SS "real*8 \fBdg_arith_dg::btorc\fP"
+.PP
+Definition at line 22 of file dg_arith_dg.f.
+.SS "character*256 \fBdg_arith_dg::filename\fP"
+.PP
+Definition at line 23 of file dg_arith_dg.f.
+.SS "real*8,dimension(ngpr,ngpz) \fBdg_arith_dg::pfm\fP"
+.PP
+Definition at line 21 of file dg_arith_dg.f.
+.SS "real*8 \fBdg_arith_dg::psilim\fP"
+.PP
+Definition at line 22 of file dg_arith_dg.f.
+.SS "real*8 \fBdg_arith_dg::rcntc\fP"
+.PP
+Definition at line 22 of file dg_arith_dg.f.
+.SS "real*8,dimension(ngpr) \fBdg_arith_dg::rgr\fP"
+.PP
+Definition at line 21 of file dg_arith_dg.f.
+.SS "real*8 \fBdg_arith_dg::shift\fP"
+.PP
+Definition at line 22 of file dg_arith_dg.f.
+.SS "real*8,dimension(ngpz) \fBdg_arith_dg::zgr\fP"
+.PP
+Definition at line 21 of file dg_arith_dg.f.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for DivGeo/dg/equtrn from the source code.

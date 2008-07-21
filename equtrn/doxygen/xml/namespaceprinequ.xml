@@ -1,0 +1,274 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.5.6">
+  <compounddef id="namespaceprinequ" kind="namespace">
+    <compoundname>prinequ</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceprinequ_18c941e8d1710a7e26be0b09de01cc307" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr)</type>
+        <definition>real*8,dimension(ngpr) prinequ::fg</definition>
+        <argsstring></argsstring>
+        <name>fg</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_127c808b12ae848c864b2ff5c5369e351" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr)</type>
+        <definition>real*8,dimension(ngpr) prinequ::pg</definition>
+        <argsstring></argsstring>
+        <name>pg</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_1f8556fceda08dd098e7ba4d9057fd31c" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr)</type>
+        <definition>real*8,dimension(ngpr) prinequ::ffg</definition>
+        <argsstring></argsstring>
+        <name>ffg</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_1d9209d25e3945dd8a3d16e06dd159380" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr)</type>
+        <definition>real*8,dimension(ngpr) prinequ::ppg</definition>
+        <argsstring></argsstring>
+        <name>ppg</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_1bfe2ebab5c6892d669d60769f6271de2" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr, ngpz)</type>
+        <definition>real*8,dimension(ngpr,ngpz) prinequ::pfm</definition>
+        <argsstring></argsstring>
+        <name>pfm</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_1138b25820f0b9623a1ad87f0e82f7d8d" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpr)</type>
+        <definition>real*8,dimension(ngpr) prinequ::rgr</definition>
+        <argsstring></argsstring>
+        <name>rgr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_1fa746dd8a2614f015972663b4d587fd2" prot="public" static="no" mutable="no">
+        <type>real *8, dimension(ngpz)</type>
+        <definition>real*8,dimension(ngpz) prinequ::zgr</definition>
+        <argsstring></argsstring>
+        <name>zgr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_1abf70da38478de9db7c738b09c099027" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 prinequ::rdim</definition>
+        <argsstring></argsstring>
+        <name>rdim</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_13a44d82c8ebf602b6048ebf656101a4b" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 prinequ::zdim</definition>
+        <argsstring></argsstring>
+        <name>zdim</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_183e3bb5db3b95a0d14bd1261dbc323ab" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 prinequ::rcntc</definition>
+        <argsstring></argsstring>
+        <name>rcntc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_1daccbb92c2237bfd27acd42cfc7a1753" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 prinequ::redge</definition>
+        <argsstring></argsstring>
+        <name>redge</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_160a29e973631324ed2ad950585ad50d4" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 prinequ::zmsmid</definition>
+        <argsstring></argsstring>
+        <name>zmsmid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_19baaf20a81d9b0570388ae03719ea32e" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 prinequ::rma</definition>
+        <argsstring></argsstring>
+        <name>rma</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_12eef48f5c40af1c24381aed32f643c19" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 prinequ::zma</definition>
+        <argsstring></argsstring>
+        <name>zma</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_15c8e4bf1504c7b93d7ff84932c976a15" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 prinequ::psimin</definition>
+        <argsstring></argsstring>
+        <name>psimin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_105b4c9c9a512ba7b68c5d65d9ce3b41b" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 prinequ::psilim</definition>
+        <argsstring></argsstring>
+        <name>psilim</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_1e10a61ae7e5b9a1d4e8995f3bf7a1a55" prot="public" static="no" mutable="no">
+        <type>real *8</type>
+        <definition>real*8 prinequ::btorc</definition>
+        <argsstring></argsstring>
+        <name>btorc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_1c547b01609416ef885762a15c771e7fa" prot="public" static="no" mutable="no">
+        <type>character</type>
+        <definition>character prinequ::title</definition>
+        <argsstring></argsstring>
+        <name>title</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_10bf10630a1327bf8bcdec7ccc05aa19d" prot="public" static="no" mutable="no">
+        <type>character</type>
+        <definition>character prinequ::date</definition>
+        <argsstring></argsstring>
+        <name>date</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceprinequ_1739dea1dcb841b3637127568990b1f19" prot="public" static="no" mutable="no">
+        <type>character</type>
+        <definition>character prinequ::page</definition>
+        <argsstring></argsstring>
+        <name>page</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1" bodyfile="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Printout of dg-compatible equilibrium data in a table. </para>    </briefdescription>
+    <detaileddescription>
+<para>The file is read from standard input and the result sent to the standard output</para><para><simplesect kind="version"><para>02.09.99 14:21 </para></simplesect>
+</para>    </detaileddescription>
+    <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/prinequ.f" line="1"/>
+  </compounddef>
+</doxygen>

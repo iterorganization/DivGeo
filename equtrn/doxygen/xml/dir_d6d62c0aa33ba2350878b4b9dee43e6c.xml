@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.5.6">
+  <compounddef id="dir_d6d62c0aa33ba2350878b4b9dee43e6c" kind="dir">
+    <compoundname>src/</compoundname>
+    <innerfile refid="cropequ_8f">cropequ.f</innerfile>
+    <innerfile refid="culham_8f">culham.f</innerfile>
+    <innerfile refid="dg2dg_8f">dg2dg.f</innerfile>
+    <innerfile refid="dg2ef_8f">dg2ef.f</innerfile>
+    <innerfile refid="dg2vr_8f">dg2vr.f</innerfile>
+    <innerfile refid="dg__arith__dg_8f">dg_arith_dg.f</innerfile>
+    <innerfile refid="dg__minuspsi__dg_8f">dg_minuspsi_dg.f</innerfile>
+    <innerfile refid="dg__proc__dg_8f">dg_proc_dg.f</innerfile>
+    <innerfile refid="diva2dg_8f">diva2dg.f</innerfile>
+    <innerfile refid="double_8f">double.f</innerfile>
+    <innerfile refid="ef2dg_8f">ef2dg.f</innerfile>
+    <innerfile refid="jetppf2dg_8f">jetppf2dg.f</innerfile>
+    <innerfile refid="jt2dg_8f">jt2dg.f</innerfile>
+    <innerfile refid="nk2dg_8f">nk2dg.f</innerfile>
+    <innerfile refid="nkn2dg_8f">nkn2dg.f</innerfile>
+    <innerfile refid="open__files_8f">open_files.f</innerfile>
+    <innerfile refid="pb2dg_8f">pb2dg.f</innerfile>
+    <innerfile refid="prinequ_8f">prinequ.f</innerfile>
+    <innerfile refid="pt2dg_8f">pt2dg.f</innerfile>
+    <innerfile refid="rdefit_8f">rdefit.f</innerfile>
+    <innerfile refid="rdeqdg_8f">rdeqdg.f</innerfile>
+    <innerfile refid="rdeqjh_8f">rdeqjh.f</innerfile>
+    <innerfile refid="rdeqjt_8f">rdeqjt.f</innerfile>
+    <innerfile refid="rdeqlh_8f">rdeqlh.f</innerfile>
+    <innerfile refid="rdeqnk_8f">rdeqnk.f</innerfile>
+    <innerfile refid="rdeqnk2_8f">rdeqnk2.f</innerfile>
+    <innerfile refid="rdeqpb_8f">rdeqpb.f</innerfile>
+    <innerfile refid="rdeqvr_8f">rdeqvr.f</innerfile>
+    <innerfile refid="risepsi_8f">risepsi.f</innerfile>
+    <innerfile refid="shotfile2dg_8f">shotfile2dg.f</innerfile>
+    <innerfile refid="sst2dg_8f">sst2dg.f</innerfile>
+    <innerfile refid="vr2dg_8f">vr2dg.f</innerfile>
+    <innerfile refid="wrefit_8f">wrefit.f</innerfile>
+    <innerfile refid="wreqdg_8f">wreqdg.f</innerfile>
+    <innerfile refid="wreqvr_8f">wreqvr.f</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/dpc/SVN/SOLPS/solps5.0/src/DivGeo/dg/equtrn/src/"/>
+  </compounddef>
+</doxygen>
