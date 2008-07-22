@@ -1,5 +1,5 @@
-FC = f95f
-FFLAGS = -g
+FC 	 = f95f
+FFLAGS 	 = -g -X9
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP	 = /lib/cpp -traditional
 

@@ -16,8 +16,8 @@ c
       integer ngpr,ngpz
       parameter (ngpr=257, ngpz=257)
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
-      real*8 rcntc,psimin,psilim,btorc,rmin,rmax,zmin,zmax
-      integer i,j,nr,nz,nrn,nzn,iret
+      real*8 rcntc,psilim,btorc,rmin,rmax,zmin,zmax
+      integer nr,nz,nrn,nzn,iret
       logical err
 c      character tab    !###
 c----------------------------------------------------------------------
@@ -83,7 +83,7 @@ c======================================================================
      ,                                      nrn,rmin,rmax,nzn,zmin,zmax)
 
       implicit none
-      integer ir,ifail,nn,nz2,iz,nr2,nr,ngpz,ngpr,j,i,nz,nrn,nzn
+      integer ifail,nn,nr,ngpz,ngpr,j,i,nz,nrn,nzn
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz),rmin,rmax,zmin,zmax,h,x
       real   pfms(nr,nz),rgrs(ngpr),zgrs(ngpz)
       real   pfmss(ngpr,ngpz),rgrss(ngpr),zgrss(ngpz)

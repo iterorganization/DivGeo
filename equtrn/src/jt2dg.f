@@ -16,8 +16,7 @@ c=====================================================
       parameter (ngpr=257, ngpz=257)
       real*8 fg(ngpr),pg(ngpr),ffg(ngpr),ppg(ngpr)
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
-      real*8 rdim,zdim,rcntc,redge,zmsmid,rma,zma,psimin,psilim,btorc
-      character title*40, date*8
+      real*8 rcntc,redge,psimin,psilim,btorc
 c=====================================================
 c
       call open_files('')

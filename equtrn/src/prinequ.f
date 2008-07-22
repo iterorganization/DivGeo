@@ -16,10 +16,9 @@ c*** The file is read from standard input and the result sent to the
 c*** standard output
 c=====================================================
       parameter (ngpr=129, ngpz=257)
-      real*8 fg(ngpr),pg(ngpr),ffg(ngpr),ppg(ngpr)
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
-      real*8 rdim,zdim,rcntc,redge,zmsmid,rma,zma,psimin,psilim,btorc
-      character title*40, date*9, page
+      real*8 rdim,rcntc,btorc
+      character date*9, page
 c=====================================================
 c
       page=char(12)

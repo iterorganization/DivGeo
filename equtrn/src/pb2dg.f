@@ -15,7 +15,6 @@ c*** Translation of equilibrium data from P. Barabasci
 c*** into dg-compatible format
 c======================================================================
       parameter (ngpr=257, ngpz=513)
-      real*8 fg(ngpr),pg(ngpr),ffg(ngpr),ppg(ngpr)
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real*8 rcntc,psilim,btorc,pi
       parameter (pi=3.1415926535898)
