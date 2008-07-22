@@ -1,4 +1,4 @@
-      subroutine wreqdg(lun,ngpr,iret, nr,nz, psib,
+      subroutine wreqdg(lun,ngpr,ngpz,iret, nr,nz, psib,
      ,                                             btf,rtf,rgr,zgr,pfm)
 c=====================================================
 c*** Write the equilibrium data in the dg-compatible format.
@@ -6,6 +6,7 @@ c***
 c*** Input:
 c***  lun     the logical unit number for the output
 c***  ngpr    the maximum number of points in R direction
+c***  ngpz    the maximum number of points in Z direction
 c***  nr      the actual number of points in R direction
 c***  nz      the actual number of points in Z direction
 c***  psib    the poloidal flux at the separatrix

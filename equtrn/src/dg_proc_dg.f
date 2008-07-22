@@ -41,7 +41,7 @@ c need to add something here to remove the first few columns
       nr=nr-chop
       psilim=0.
 
-      call wreqdg(2,ngpr,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
+      call wreqdg(2,ngpr,ngpz,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== dg_proc_dg: error in wreqdg. iret = ',iret
       end if

@@ -29,7 +29,7 @@ c
       end if
 c
       print *,'psilim = ',psilim
-      call wreqdg(2,ngpr,iret, nr,nz, psilim,btorc,rcntc,rgr,zgr,pfm)
+      call wreqdg(2,ngpr,ngpz,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== nk2dg: error in wreqdg. iret = ',iret
       end if

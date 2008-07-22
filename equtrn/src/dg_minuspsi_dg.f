@@ -34,7 +34,8 @@ c
       end do
       psilim=0.
 
-      call wreqdg(2,ngpr,iret,nr,nz,-psilim,btorc,rcntc,rgr,zgr,pfm)
+      call wreqdg(2,ngpr,ngpz,iret,nr,nz,-psilim,btorc,rcntc,
+     .            rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== dg_minuspsi_dg: error in wreqdg. iret = ',iret
       end if
