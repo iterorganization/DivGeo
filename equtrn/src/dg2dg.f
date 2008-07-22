@@ -14,8 +14,8 @@ c
       integer ngpr,ngpz
       parameter (ngpr=1025, ngpz=1025)
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
-      real*8 rcntc,psimin,psilim,btorc
-      integer nr,nz,iret,i,j
+      real*8 rcntc,psilim,btorc
+      integer nr,nz,iret
 c      character tab
 c----------------------------------------------------------------------
 

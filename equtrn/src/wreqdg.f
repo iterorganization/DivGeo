@@ -22,7 +22,7 @@ c  version : 23.06.97 17:23
 c
       implicit none
       integer lun, ngpr, ngpz, iret, nr, nz
-      real*8 rgr(*), zgr(*), pfm(ngpr, *)
+      real*8 rgr(ngpz), zgr(ngpz), pfm(ngpr,ngpz)
 c... toroidal field in tesla, radius in m
       real*8 btf, rtf, psib
       integer i, j
@@ -68,7 +68,7 @@ c
       write(lun,*)
       write(lun,*) '     ((psi(j,k)-psib,j=1,jm),k=1,km)'
       write(lun,8000) ((pfm(i,j)-psib,i=1,nr),j=1,nz)
- 8000 format(5(3x,e14.8))
+ 8000 format(5(3x,e15.8))
       iret=0
       return
 c-----------------------------------------------------

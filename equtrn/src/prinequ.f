@@ -17,7 +17,7 @@ c*** standard output
 c=====================================================
       parameter (ngpr=129, ngpz=257)
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
-      real*8 rdim,rcntc,btorc
+      real*8 rcntc,btorc
       character date*9, page
 c=====================================================
 c
