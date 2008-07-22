@@ -1,9 +1,13 @@
-FC = f90
-FFLAGS = -g
+FC	 = f90
+FFLAGS 	 = -g
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP	 = /usr/ccs/lib/cpp
 
-LDLIBS    = -L${SOLPSTOP}/src/lib/${OBJECTCODE}
-LDFLAGS   =-lmscl ${SOLPS_LIBS} -lf77compat
+ifeq ($(shell [ -e ${SOLPSTOP}/src/lib/${OBJECTCODE} ] && echo yes || echo no ),yes)
+LDLIBS   = -L${SOLPSTOP}/src/lib/${OBJECTCODE}
+else
+LDLIBS   = -L${SOLPSTOP}/lib/${OBJECTCODE}
+endif
+LDFLAGS  = -lmscl ${SOLPS_LIBS} -lf77compat
 
-LDWOS =  -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
+LDWOS 	 = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket

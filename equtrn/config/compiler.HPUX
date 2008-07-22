@@ -8,6 +8,10 @@ FFLAGS   = +O3 -R8
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP	 = /lib/cpp
 
-LDLIBS    = -Wl,-L${SOLPSTOP}/src/lib/${OBJECTCODE} -Wl,-L/usr/local/lib
-LDFLAGS   = -lmscl ${SOLPS_LIBS}
+ifeq ($(shell [ -e ${SOLPSTOP}/src/lib/${OBJECTCODE} ] && echo yes || echo no ),yes)
+LDLIBS   = -Wl,-L${SOLPSTOP}/src/lib/${OBJECTCODE} -Wl,-L/usr/local/lib
+else
+LDLIBS   = -Wl,-L${SOLPSTOP}/lib/${OBJECTCODE} -Wl,-L/usr/local/lib
+endif
+LDFLAGS  = -lmscl ${SOLPS_LIBS}
 LDEXTRA	 =

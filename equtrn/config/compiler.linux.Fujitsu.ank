@@ -7,7 +7,11 @@ FFLAGS   = -Am -X9 -fw -Kfast,eval -x- -O
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP	 = /lib/cpp -C -traditional
 
-#LDLIBS    = -L${SOLPSTOP}/src/lib/${OBJECTCODE} -L/usr/local/lib -L/usr/lpp/xlC/lib
-LDLIBS    = -L${SOLPSTOP}/src/lib/${OBJECTCODE} -L/usr/local/lib
-LDFLAGS   = -lmscl -lnag
+ifeq ($(shell [ -e ${SOLPSTOP}/src/lib/${OBJECTCODE} ] && echo yes || echo no ),yes)
+#LDLIBS   = -L${SOLPSTOP}/src/lib/${OBJECTCODE} -L/usr/local/lib -L/usr/lpp/xlC/lib
+LDLIBS   = -L${SOLPSTOP}/src/lib/${OBJECTCODE} -L/usr/local/lib
+else
+LDLIBS   = -L${SOLPSTOP}/lib/${OBJECTCODE} -L/usr/local/lib
+endif
+LDFLAGS  = -lmscl -lnag
 LDEXTRA	 =

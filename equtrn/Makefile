@@ -26,6 +26,9 @@ shotfile2dg = shotfile2dg.o wreqdg.o
 jetppf2dg = jetppf2dg.o wreqdg.o
 
 include config/compiler.${OBJECTCODE}
+ifeq ($(shell [ -e config.local/compiler.${OBJECTCODE} ] && echo yes || echo no ),yes)
+include config.local/compiler.${OBJECTCODE}
+endif
 
 include LISTOBJ
 

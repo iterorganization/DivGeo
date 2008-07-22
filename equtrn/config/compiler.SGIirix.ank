@@ -7,8 +7,12 @@ FFLAGS   = -static -r8 -O2 -nocpp
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP	 = /lib/cpp
 
-LDLIBS    = -L${SOLPSTOP}/src/lib/${OBJECTCODE} -L/afs/ipp-garching.mpg.de/@sys/lib -L/usr/local/lib -L/usr/lpp/xlC/lib
-LDFLAGS   =-lnag -lslap -lmach -lblas -lxersla -lsonnet -lnagblas -lC -ldumsgi
+ifeq ($(shell [ -e ${SOLPSTOP}/src/lib/${OBJECTCODE} ] && echo yes || echo no ),yes)
+LDLIBS   = -L${SOLPSTOP}/src/lib/${OBJECTCODE} -L/afs/ipp-garching.mpg.de/@sys/lib -L/usr/local/lib -L/usr/lpp/xlC/lib
+else
+LDLIBS   = -L${SOLPSTOP}/lib/${OBJECTCODE} -L/afs/ipp-garching.mpg.de/@sys/lib -L/usr/local/lib -L/usr/lpp/xlC/lib
+endif
+LDFLAGS  = -lnag -lslap -lmach -lblas -lxersla -lsonnet -lnagblas -lC -ldumsgi
 LDEXTRA	 =
 
 # LDUMLIB = -lnagblas -lC

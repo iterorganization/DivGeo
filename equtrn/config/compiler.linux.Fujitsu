@@ -3,7 +3,11 @@ FFLAGS = -g
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP	 = /lib/cpp -traditional
 
-LDLIBS    = -L${SOLPSTOP}/src/lib/${OBJECTCODE}
-LDFLAGS   =-lmscl ${SOLPS_LIBS}
+ifeq ($(shell [ -e ${SOLPSTOP}/src/lib/${OBJECTCODE} ] && echo yes || echo no ),yes)
+LDLIBS   = -L${SOLPSTOP}/src/lib/${OBJECTCODE}
+else
+LDLIBS   = -L${SOLPSTOP}/lib/${OBJECTCODE}
+endif
+LDFLAGS  = -lmscl ${SOLPS_LIBS}
 
-LDWOS =  -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
+LDWOS 	 = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
