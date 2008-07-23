@@ -4,7 +4,7 @@
 
 FC      = f95f -v 6.2d
 #FFLAGS	= -g -Am -X9 -AR -fw -Ha -Hs -Hu
-FFLAGS	= -Am -X9 -fw -Kfast,eval -x- -O
+#FFLAGS	= -Am -X9 -fw -Kfast,eval -x- -O
 ifdef SOLPS_DEBUG
 FFLAGS = -g -A2 -Am -X9 -Hasu --trace
 else
@@ -14,6 +14,10 @@ endif
 COMPILE = ${FC} -c ${FFLAGS}
 CPP	= /lib/cpp -C -traditional
 
+ifeq ($(shell [ -e ${SOLPSTOP}/src/lib/${OBJECTCODE} ] && echo yes || echo no ),yes)
+MSCL	= ${SOLPSTOP}/src/lib/${OBJECTCODE}
+else
 MSCL	= ${SOLPSTOP}/lib/${OBJECTCODE}
+endif
 LDLIBS	= -L$(MSCL) -lmscl /usr/lib/libstdc++.so.2.9
 LDEXTRA	= 

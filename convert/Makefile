@@ -6,6 +6,9 @@ INCLUDE =
 ALL = cnveir cnvtria
 
 include config/compiler.${OBJECTCODE}
+ifeq ($(shell [ -e config.local/compiler.${OBJECTCODE} ] && echo yes || echo no ),yes)
+include config.local/compiler.${OBJECTCODE}
+endif
 
 eirdg = cnveir.o
 tridg = cnvtria.o
@@ -27,10 +30,12 @@ all: $(ALL:%=$(OBJECTCODE)/%)
 
 ${OBJECTCODE}/cnveir: $(EIRDG) $(MSCL)/libmscl.a
 	${FC} ${FFLAGS} -o ${OBJECTCODE}/cnveir $(EIRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
-#	if [ -x ${OBJECTCODE}/cnveir ]; then ln -sf ${PWD}/${OBJECTCODE}/cnveir ${SOLPSTOP}/src/bin/${OBJECTCODE}; fi
+	if [ -d ${SOLPSTOP}/src/bin/${OBJECTCODE} ]; then ln -sf ${PWD}/${OBJECTCODE}/cnveir ${SOLPSTOP}/src/bin/${OBJECTCODE}; fi
+	if [ -d ${SOLPSTOP}/bin/${OBJECTCODE} ]; then ln -sf ${PWD}/${OBJECTCODE}/cnveir ${SOLPSTOP}/bin/${OBJECTCODE}; fi
 
 ${OBJECTCODE}/cnvtria: $(TRIDG)
 	${FC} ${FFLAGS} -o ${OBJECTCODE}/cnvtria $(TRIDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
-#	if [ -x ${OBJECTCODE}/cnvtria ]; then ln -sf ${PWD}/${OBJECTCODE}/cnvtria ${SOLPSTOP}/src/bin/${OBJECTCODE}; fi
+	if [ -d ${SOLPSTOP}/src/bin/${OBJECTCODE} ]; then ln -sf ${PWD}/${OBJECTCODE}/cnvtria ${SOLPSTOP}/src/bin/${OBJECTCODE}; fi
+	if [ -d ${SOLPSTOP}/bin/${OBJECTCODE} ]; then ln -sf ${PWD}/${OBJECTCODE}/cnvtria ${SOLPSTOP}/bin/${OBJECTCODE}; fi
 
 

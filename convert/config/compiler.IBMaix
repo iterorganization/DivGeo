@@ -7,7 +7,11 @@ FFLAGS	= -O
 COMPILE = ${FC} -c ${FFLAGS}
 CPP	= /lib/cpp
 
+ifeq ($(shell [ -e ${SOLPSTOP}/src/lib/${OBJECTCODE} ] && echo yes || echo no ),yes)
 MSCL	= ${SOLPSTOP}/src/lib/${OBJECTCODE}
+else
+MSCL	= ${SOLPSTOP}/lib/${OBJECTCODE}
+endif
 LDLIBS	= -L${MSCL} -L/usr/local/lib -L/usr/lpp/xlC/lib
 LDFLAGS =-lmscl
 LDEXTRA =
