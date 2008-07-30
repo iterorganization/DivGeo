@@ -3,10 +3,10 @@ FFLAGS	 = -g
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP	 = /lib/cpp -traditional
 
-ifeq ($(shell [ -e ${SOLPSTOP}/src/lib/${OBJECTCODE} ] && echo yes || echo no ),yes)
-LDLIBS   = -L${SOLPSTOP}/src/lib/${OBJECTCODE}
+ifeq ($(shell [ -e ${SOLPS_LIB} ] && echo yes || echo no ),yes)
+LDLIBS   = -L${SOLPS_LIB}
 else
-LDLIBS   = -L${SOLPSTOP}/lib/${OBJECTCODE}
+LDLIBS   = -L${SOLPS_LIB}
 endif
 LDFLAGS  = -lmscl ${SOLPS_LIBS}
 

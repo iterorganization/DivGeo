@@ -6,10 +6,10 @@ CPP	= /usr/ucb/cpp -DNOB2GXDR
 FFLAGS	= -r8 -i4 -fast
 COMPILE	= ${FC} -c ${FFLAGS}
 
-ifeq ($(shell [ -e ${SOLPSTOP}/src/lib/${OBJECTCODE} ] && echo yes || echo no ),yes)
-LDLIBS	= -L${SOLPSTOP}/src/lib/${OBJECTCODE} -L${SOLPSMASTER}/@sys/lib -L/usr/local/lib
+ifeq ($(shell [ -e ${SOLPS_LIB} ] && echo yes || echo no ),yes)
+LDLIBS	= -L${SOLPS_LIB} -L${SOLPSMASTER}/@sys/lib -L/usr/local/lib
 else
-LDLIBS	= -L${SOLPSTOP}/lib/${OBJECTCODE} -L${SOLPSMASTER}/@sys/lib -L/usr/local/lib
+LDLIBS	= -L${SOLPS_LIB} -L${SOLPSMASTER}/@sys/lib -L/usr/local/lib
 endif
 LDFLAGS = -lblas -lnag -lslap -lmmach -lxersla -lmscl -lsonnet3.1 -lnetcdf ${SOLPS_LIBS}
 

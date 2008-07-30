@@ -14,10 +14,5 @@ endif
 COMPILE = ${FC} -c ${FFLAGS}
 CPP	= /lib/cpp -C -traditional
 
-ifeq ($(shell [ -e ${SOLPSTOP}/src/lib/${OBJECTCODE} ] && echo yes || echo no ),yes)
-MSCL	= ${SOLPSTOP}/src/lib/${OBJECTCODE}
-else
-MSCL	= ${SOLPSTOP}/lib/${OBJECTCODE}
-endif
-LDLIBS	= -L$(MSCL) -lmscl /usr/lib/libstdc++.so.2.9
+LDLIBS	= -L$(SOLPS_LIB) -lmscl /usr/lib/libstdc++.so.2.9
 LDEXTRA	= 
