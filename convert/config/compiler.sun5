@@ -4,5 +4,5 @@ COMPILE = ${FC} -c ${FFLAGS}
 CPP	= /lib/cpp
 
 LDLIBS	= -L${SOLPS_LIB} -L/usr/local/lib -L/usr/lpp/xlC/lib
-LDFLAGS =-lmscl
+LDFLAGS = -lmscl
 LDEXTRA =

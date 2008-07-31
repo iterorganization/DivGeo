@@ -1,4 +1,4 @@
-LIBS= -L /usr/openwin/lib -lXm -lXt -lX11 -lm
-CFLAGS= -g
-CC=cc
-INCLUDES= -I/opt/SUNWmotif/include
+LIBS = -L /usr/openwin/lib -lXm -lXt -lX11 -lm
+CFLAGS = -g
+CC = cc
+INCLUDES = -I/opt/SUNWmotif/include

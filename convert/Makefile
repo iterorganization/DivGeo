@@ -22,7 +22,7 @@ TRIDG = $(tridg:%.o=$(OBJECTCODE)/%.o)
 #	  $(FC) $<
 
 $(OBJECTCODE)/%.o : %.f
-	[ -d  ${OBJECTCODE} ] || mkdir  ${OBJECTCODE}
+	[ -d ${OBJECTCODE} ] || mkdir ${OBJECTCODE}
 	$(COMPILE) -o ${OBJECTCODE}/$*.o $<
 	if [ -f $*.o ]; then /bin/mv $*.o ${OBJECTCODE}; fi
 

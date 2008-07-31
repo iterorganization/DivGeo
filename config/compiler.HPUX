@@ -1,6 +1,6 @@
-LIBS=  -Wl,-L/usr/lib/X11R5 -lXm -lXt -lX11 -lm
-CFLAGS= 
-CC=gcc
-INCLUDES= -I /usr/include/X11R5
-DEFINES= -DHPUX
-LD=gcc
+LIBS = -Wl,-L/usr/lib/X11R5 -lXm -lXt -lX11 -lm
+CFLAGS = 
+CC = gcc
+INCLUDES = -I /usr/include/X11R5
+DEFINES = -DHPUX
+LD = gcc

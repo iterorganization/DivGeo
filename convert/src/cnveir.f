@@ -23,10 +23,10 @@ c*** done:  the segment is not yet written to the output
 c*** next:    the next segment not found yet
 c*** prvs:    the previous segment not found yet
 c*** free:    one of the ends of the segment is not yet linked
-      logical done(nxelm),next(nxelm),prvs(nxelm),free(nxelm),b,ex,open
+      logical done(nxelm),next(nxelm),prvs(nxelm),free(nxelm),b,open
       logical bbb
 c
-      character ss*72,s1,s3*3,fname*48,stub*4
+      character ss*72,s1,s3*3
       equivalence (ss,s1,s3)
 c======================================================================
 c*** Read the data from the input file
