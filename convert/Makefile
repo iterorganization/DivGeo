@@ -28,7 +28,7 @@ $(OBJECTCODE)/%.o : %.f
 
 all: $(ALL:%=$(OBJECTCODE)/%)
 
-${OBJECTCODE}/cnveir: $(EIRDG) $(MSCL)/libmscl.a
+${OBJECTCODE}/cnveir: $(EIRDG) $(SOLPS_LIB)/libmscl.a
 	${FC} ${FFLAGS} -o ${OBJECTCODE}/cnveir $(EIRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 	if [ -d ${SOLPSTOP}/src/bin/${OBJECTCODE} ]; then ln -sf ${PWD}/${OBJECTCODE}/cnveir ${SOLPSTOP}/src/bin/${OBJECTCODE}; fi
 	if [ -d ${SOLPSTOP}/bin/${OBJECTCODE} ]; then ln -sf ${PWD}/${OBJECTCODE}/cnveir ${SOLPSTOP}/bin/${OBJECTCODE}; fi

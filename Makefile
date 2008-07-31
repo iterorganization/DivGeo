@@ -1,14 +1,14 @@
 #  VERSION : 02.11.2000 22:29
 
-SHELL=/bin/sh
-DG=$(OBJECTCODE)/dg
-VPATH=src
+SHELL = /bin/sh
+DG = $(OBJECTCODE)/dg
+VPATH = src
 
 include LISTOBJ
 
-#LIBS=  -Wl,-Bstatic -lXm -Wl,-Bdynamic -lXt -lX11 -lm -L/usr/X11R6/lib
-#CFLAGS= -g
-#CC=cc
+#LIBS = -Wl,-Bstatic -lXm -Wl,-Bdynamic -lXt -lX11 -lm -L/usr/X11R6/lib
+#CFLAGS = -g
+#CC = cc
 
 include config/compiler.$(OBJECTCODE)
 ifeq ($(shell [ -e config.local/compiler.${OBJECTCODE} ] && echo yes || echo no ),yes)
