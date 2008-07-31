@@ -20,7 +20,7 @@ c=====================================================
       character title*40, date*8
 c=====================================================
 c
-      call open_files('')
+      call open_files(' ')
 
       call rdefit(1,ngpr,ngpz,iret, title,date,ipestg,nr,nz,
      ,           rdim,zdim,zmsmid,rcntc,redge,rma,zma,psimin,psilim,

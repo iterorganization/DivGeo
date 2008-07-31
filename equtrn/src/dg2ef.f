@@ -24,7 +24,7 @@ c
 c      call date2(date)
       call date_and_time(date)
 
-      call open_files('')
+      call open_files(' ')
 
       call rdeqdg(1,ngpr,ngpz,iret, nr,nz,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then

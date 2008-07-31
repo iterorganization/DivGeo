@@ -18,7 +18,7 @@ c=====================================================
       real*8 rcntc,psilim,btorc
 c=====================================================
 c
-      call open_files('')
+      call open_files(' ')
 
       call rdeqdg(1,ngpr,ngpz,iret, nr,nz,
      ,                                  psilim,btorc,rcntc,rgr,zgr,pfm)

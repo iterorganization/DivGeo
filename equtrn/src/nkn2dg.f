@@ -18,7 +18,7 @@ c=====================================================
       real*8 rmin,zmin,rmax,zmax,delr,delz,psilim,btorc,rcntc,fg
 c=====================================================
 c
-      call open_files('')
+      call open_files(' ')
 
       call rdeqnk2(1,ngpr,ngpz,iret, nr,nz,
      ,           rmin,zmin,rmax,zmax,delr,delz,psilim,

@@ -30,7 +30,7 @@ c----------------------------------------------------------------------
 
 c      tab=char(9)
 
-      call open_files('')
+      call open_files(' ')
  
       call rdefit(1,ngpr,ngpz,iret, title,date,ipestg,nr,nz,
      ,           rdim,zdim,zmsmid,rcntc,redge,rma,zma,psimin,psilim,
