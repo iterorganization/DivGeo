@@ -51,8 +51,7 @@ ${OBJECTCODE}/dependencies:
 	touch ${OBJECTCODE}/dependencies
 	${MAKE} depend
 
-LISTOBJ:
-	touch LISTOBJ
+LISTOBJ: listobj
 
 include ${OBJECTCODE}/dependencies
 
