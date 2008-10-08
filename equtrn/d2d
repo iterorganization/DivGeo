@@ -1,2 +1,15 @@
 #! /bin/tcsh
-`dirname $0`/$OBJECTCODE/dg2dg $1 $2
+Name=`basename $0`
+Usage="$Name: DG equilibrium refinement
+Usage: $Name DG-old-file DG-new-file \[Field-file\]
+       where DG-old-file and Field-file the input filenames,
+       and DG-new-file is the output filename.
+       If the Field-file is not specified, the default field.snn is used.
+
+       The Field-file is only needed, when the DG-file is in old format!
+"
+
+[ $# -lt 2 ] && { echo "$Usage"; exit; }
+F='field.snn'; [ -n "$3" ] && F=$3
+[ -r $1 ] || { echo "File $1 is absent\n"; echo "$Usage"; exit; }
+[ -r $F ] || { `dirname $0`/$OBJECTCODE/dg2dg $1 $2 } && { `dirname $0`/$OBJECTCODE/dg2dg $1 $2 $F }
