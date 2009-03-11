@@ -25,6 +25,7 @@ c*** Translation of shotfile equilibrium data into dg-compatible format
 c=====================================================
       parameter (pi=3.14159 26535 89793)
       parameter (ngpr=257, ngpz=257, ngpf=257)
+      parameter (ndim=1000, NdGC=100) 
       real*8 gpr(ngpr),gpz(ngpz)
       real*8 pfmd(ngpr,ngpz)
       real*8 rcntc,btorc,psilim
@@ -37,6 +38,11 @@ c=====================================================
       real ri(0:mdim),zj(0:mdim),pfm(0:mdim,0:mdim),
      1 pfxx(0:lpfxdim),rpfx(0:lpfxdim),zpfx(0:lpfxdim),
      2 rin(lin),zin(lin),br(lin),bz(lin),bt(lin),fpf(lin),fjp(lin)
+      real xyGC(1:Ndim,1:2)
+      integer ixbeg(1:NdGC), lenix(1:NdGC), valix(1:NdGC)
+      character*8 GCnam(1:NdGC)
+      integer ngc
+
 c=====================================================
 c
       dianam='EQI'
@@ -66,17 +72,18 @@ c
 	stop
       endif
       write(*,*) expnam,dianam,nshot,tshot
-      write(filename,'(i5,''.'',i4,''.'',a4,''.'',a3,''.'',i2,''.eq'')')
+      write(filename,
+     1 '(i5.5,''.'',i4.4,''.'',a4,''.'',a3,''.'',i2.2,''.eq'')')
      1 nshot,nint(tshot*1000),expnam,dianam,nedit
-      do i=1,10
-	if(filename(i:i).eq.' ') filename(i:i)='0'
-      enddo
-      do i=21,22
-	if(filename(i:i).eq.' ') filename(i:i)='0'
-      enddo
-      do i=11,lnblnk(filename)
-	if(filename(i:i).eq.' ') filename(i:i)='_'
-      enddo
+ !       do i=1,10
+ ! 	if(filename(i:i).eq.' ') filename(i:i)='0'
+ !       enddo
+ !       do i=21,22
+ ! 	if(filename(i:i).eq.' ') filename(i:i)='0'
+ !       enddo
+ !       do i=11,lnblnk(filename)
+ ! 	if(filename(i:i).eq.' ') filename(i:i)='_'
+ !       enddo
       
       call kkEQintS(ierr,30)
       call kkEQPFM(ierr,expnam,dianam,nshot,nedit,tshot,mdim+1,
@@ -124,6 +131,25 @@ c
           print *,'==== shotfile2dg: error in wreqdg. iret = ',iret
       end if
 c
+      call kkGCd0 (iERR ,expnam,dianam,nSHOT,nEDIT,
+     & Ndim,xyGC,NdGC, NGC,ixbeg,lenix,valix,GCnam)
+
+      write(filename,
+     1 '(i5.5,''.str'')')
+     1 nshot
+      open(2,file=filename)
+      write(*,*) ierr, ngc
+      do i=1, NGC
+	write(2,*)
+	write(2,*) '#',i,GCnam(i),valix(i)
+	write(2,*)
+	if(valix(i).ne.0) then
+	  do j=ixbeg(i),ixbeg(i)+lenix(i)-1
+	    write(2,*) xyGC(j,1), xyGC(j,2)
+	  enddo
+	endif
+      enddo
+
       end
 c
       integer function lnblnk(string)
