@@ -125,8 +125,8 @@ tags:
 	rm TAGS ; etags src/*.f
 
 depend: ${OBJS:.o=.f}
-	echo ${OBJS}
-	echo ${OBJS:.o=.f}
+	@echo ${OBJS}
+	@echo ${OBJS:.o=.f}
 	makedepend -f  ${OBJECTCODE}/dependencies ${INCLUDE} $^
 	mv ${OBJECTCODE}/dependencies ${OBJECTCODE}/dependencies.bak
 	sed -e '3,$$s/^/${OBJECTCODE}\//' ${OBJECTCODE}/dependencies.bak > ${OBJECTCODE}/dependencies
