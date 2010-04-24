@@ -1,6 +1,6 @@
 FC      = ifort
 ifdef SOLPS_DEBUG
-FFLAGS = -g -C -debug_all
+FFLAGS = -g -C -debug all
 else
 FFLAGS = -O3 -vec_report0
 endif
