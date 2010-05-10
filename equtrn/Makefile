@@ -52,7 +52,7 @@ SHOTFILE2DG = $(shotfile2dg:%.o=$(OBJECTCODE)/%.o)
 JETPPF2DG = $(jetppf2dg:%.o=$(OBJECTCODE)/%.o)
 
 $(OBJECTCODE)/%.o : %.f
-	${CPP} -P -C ${INCLUDE} $< >${OBJECTCODE}/$*.f
+	${CPP} -P -C ${INCLUDE} $< > ${OBJECTCODE}/$*.f
 #	$(COMPILE) -o ${OBJECTCODE}/$*.o $<
 	$(COMPILE) -o ${OBJECTCODE}/$*.o ${OBJECTCODE}/$*.f ${FINCLUDE}
 #	/bin/rm ${OBJECTCODE}/$*.f
