@@ -908,10 +908,10 @@ int ActChangeObjInt(App a,ChangeObjIntRec ar) {
       ur->value=*(int*)pv;
       *(int*)pv=(int)ar->value;
       break;
-/*    case sizeof(long):
+    case sizeof(long):
       ur->value=*(long*)pv;
       *(long*)pv=ar->value;
-      break; */
+      break;
     default:
       assert(0);
   }
