@@ -898,7 +898,7 @@ int ActChangeObjInt(App a,ChangeObjIntRec ar) {
   }
 
   pv=(void*)((char*)ar->objChange+ar->fieldOffset);
-
+  /*
   switch (ar->length) {
     case sizeof(char):
       ur->value=*(char*)pv;
@@ -914,6 +914,20 @@ int ActChangeObjInt(App a,ChangeObjIntRec ar) {
       break;
     default:
       assert(0);
+  }
+  */
+
+  if ( ar->length == sizeof(char) ) {
+    ur->value=*(char*)pv;
+    *(char*)pv=(char)ar->value;
+  } else if ( ar->length == sizeof(int) ) {
+    ur->value=*(int*)pv;
+    *(int*)pv=(int)ar->value;
+  } else if ( ar->length == sizeof(long) ) {
+    ur->value=*(long*)pv;
+    *(long*)pv=ar->value;
+  } else {
+    assert(0);
   }
 
   if (ar->bRedraw) {
