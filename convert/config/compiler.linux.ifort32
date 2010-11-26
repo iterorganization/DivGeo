@@ -1,0 +1,12 @@
+FC      = ifort
+ifdef SOLPS_DEBUG
+FFLAGS = -g -C -debug all
+else
+FFLAGS = -O3 -vec_report0
+endif
+
+COMPILE = ${FC} -c ${FFLAGS}
+CPP	= /lib/cpp -C -traditional
+
+LDLIBS	= -L$(SOLPS_LIB) -lmscl -lstdc++
+LDEXTRA	= 
