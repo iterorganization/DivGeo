@@ -106,7 +106,7 @@ The surface type (ILIIN in 2.3.B)
 
 14 : periodicity surface
  3 : mirror
- 2 : black hole
+ 2 : absorbing surface
  1 : material surface
  0 : no action
 -1 : switch in both directions
@@ -183,7 +183,7 @@ text101 4
 Energy of thermal particles
 >0 : monoenergetic particles, E=ewall
 =0 : Thompson distribution with EWBIN
-<0 : maxwellian with T=ewall
+<0 : Maxwellian with T=ewall
 Float -n+m-S-s-h-i 0 11
 EnumText102
 text101 0
@@ -277,7 +277,7 @@ text101 0
 Help
 Help
 text101 1
-Obsolette - use "Target specification" instead.
+Obsolete - use "Target specification" instead.
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
@@ -298,7 +298,7 @@ text101 0
 Help
 Help
 text101 1
-Obsolette - use "Target specification" instead
+Obsolete - use "Target specification" instead
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
@@ -319,7 +319,7 @@ text101 0
 Help
 Help
 text101 1
-Obsolette - use "Target specification" instead.
+Obsolete - use "Target specification" instead.
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
@@ -340,7 +340,7 @@ text101 0
 Help
 Help
 text101 1
-Obsolette - use "Target specification" instead.
+Obsolete - use "Target specification" instead.
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
@@ -409,7 +409,7 @@ In the Sonnet mode, the Structure must be a singly-connected closed polygon.
 In the Carre mode, the Structure must consist of several parts. 
 
 Those intersecting the separatrix branches (the target structures) must be 
-closed, and every of them must intersect only one branch. 
+closed, and every one of them must intersect only one branch. 
 
 Other pieces of the Structure (limiting structures) can be either open or 
 closed. 
@@ -465,9 +465,9 @@ text101 0
 Help
 Help
 text101 3
-This is an obsolette specification for calculation of radiative wall loading.
+This is an obsolete specification for calculation of radiative wall loading.
 
-It only works in Sonnet outpu mode.
+It only works in Sonnet output mode.
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
@@ -595,7 +595,7 @@ text101 4
 This is the label to mark the plot zone - 8 symbols max.
 It will appear in the filenames for the plot data produced
 by b2plot for this zone.
-Must not contain ellipses, commas, or asterrisks
+Must not contain ellipses, commas, or asterisks
 Text -n-m-S-s-h+i 0 3
 EnumText102
 text101 0
@@ -831,7 +831,7 @@ text101 0
 Help
 Help
 text101 1
-Obsolette - use "Target specification" instead.
+Obsolete - use "Target specification" instead.
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
@@ -901,7 +901,7 @@ text101 4
 Energy of thermal particles
 >0 : monoenergetic particles, E=ewall
 =0 : Thompson distribution with EWBIN
-<0 : maxwellian with T=ewall
+<0 : Maxwellian with T=ewall
 Float -n-m-S-s-h-i 0 5
 EnumText102
 text101 0
@@ -1052,14 +1052,14 @@ text101 12
 Here you specify the target-related data for Eirene. You must specify these 
 for each target.
 
-The Eirene replaces the elements corresponding to the targets by the grid 
+Eirene replaces the elements corresponding to the targets by the grid 
 edges and re-connects the elements specified as "SOL edge" and "PFR edge" to 
 the corresponding grid corners. 
 
 The boundary conditions for neutrals are also set here - in a way similar to 
 the specification of the "General surface data".
 
-Apart from this, some targert-related data for the grid generator is also 
+Apart from this, some target-related data for the grid generator is also 
 specified here.
 Text +n-m-S-s-h-i 0 0
 EnumText102
@@ -1140,8 +1140,8 @@ Help
 text101 6
 Here you specify the default plasma species - add this layer for each 
 species.
-Once a species is selected, the whole suit of plasma ions, atoms, molecules,
- and test ions will be added to the input files.
+Once a species is selected, the whole suite of plasma ions, atoms, 
+molecules, and test ions will be added to the input files.
 The order in which the species appear in the input files is the same as the 
 order they are listed here.
 Text +n-m-S-s-h-i 0 0
@@ -1247,7 +1247,7 @@ text101 5
 The energy of puffed particles (eV)
 
  > 0 : E - monoenergetic flux;
- < 0 : T - maxwellian;
+ < 0 : T - Maxwellian;
  = 0 : the default value (0.03 eV) is used
 Float -n-m-S-s-h-i 0 5
 EnumText102
@@ -1588,7 +1588,7 @@ Energy of the sputtered particles.
 =0: the energy distribution determined by the "Wall temperature"
     in the "General surface data"
 
-<0: maxwellian distribution with absolute value of this energy as
+<0: Maxwellian distribution with absolute value of this energy as
     the temperature
 Float -n-m-S-s-h-i 0 4
 EnumText102
@@ -1623,7 +1623,7 @@ text101 4
 Reaction product. Text notation, must be consistent
 with "Species" specification.
 
-At present, comma and asterrisk must not appear in this specification.
+At present, comma and asterisk must not appear in this specification.
 Text -n-m-S-s-h-i 0 2
 EnumText102
 text101 0
@@ -1646,7 +1646,7 @@ of certain material belonging to a certain group.
 The groups are assigned to the wall segments and targets in
 "General surface data" and "Target specification".
 
-At present, comma and asterrisk must not appear in this specification.
+At present, comma and asterisk must not appear in this specification.
 Text -n-m-S-s-h+i 0 1
 EnumText102
 text101 0
@@ -2619,14 +2619,14 @@ Vars110 3
 Press ? for Help
 0
 trirect
-Mesh Refinement Zone
+Mesh Refinement Zones
 text101 0
 0 100
 VarDefs102 3
 Help
 Help
 text101 4
-Zone definition to set up refinement parameter for the TRIA mesh.
+Zone definitions to set up refinement parameter for the TRIA mesh.
 In fact only the min and max coordinates of the ends of the 
 specified elements are used. 
 Elements should belong to the set of 'Elements not for Eirene'!
