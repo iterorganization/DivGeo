@@ -5,9 +5,9 @@ This file should not be modified manually.
 DG version:             2.01
 File format version:    114
 Creation time:          Fri Apr  1 14:38:31 2005
-Last Modified time:     Fri Apr  1 14:40:54 2005
+Last Modified time:     Fri Dec  3 12:52:54 2010
 
-Original filename:      /b2-ext/B2E/solps4.0/src/DivGeo/dg/linux.Fujitsu/dg.dgc
+Original filename:      /work/xbon/solps5.1_trunk/src/DivGeo/dg/dg.dgc
 Radial cells:           1SOL 0OSR 0TPF 0OSL 0BPF 0Core 
 
 ------------------------------------------------------------------------
@@ -2066,7 +2066,7 @@ VarDefs102 5
 ref_wall
 Reference wall segment
 text101 2
-Here you select the wall segment to apply its' material properties to
+Here you select the wall segment to apply its material properties to
 selected boundary zones at the radial edges of the grid.
 Elem -n-m-S-s-h-i 0 1
 EnumText102
@@ -2146,7 +2146,7 @@ Help
 Help
 text101 22
 Here you specify the data for evaluation of wall erosion for 
-different wall materials. The evaluation can be  done in a stand-
+different wall materials. The evaluation can be done in a stand-
 alone Eirene run through a call to the diagnostic routine "diag2". 
 If this specification is present in the DG output file, then uinp 
 will create a separate Eirene input file called "diag2.eir" which 
