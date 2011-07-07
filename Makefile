@@ -37,6 +37,8 @@ tags:
 	etags src/*.c src/*.h
 
 depend: ${OBJS:.o=.c}
+	-mkdir ${OBJECTCODE}
+	-cd ${OBJECTCODE} ; ln -s ../src/dg.dgh ../dg.dgc .
 	makedepend -f  ${OBJECTCODE}/dependencies $^; \
 	mv ${OBJECTCODE}/dependencies ${OBJECTCODE}/dependencies.bak; \
 	sed -e '3,$$s/^/${OBJECTCODE}\//' ${OBJECTCODE}/dependencies.bak > ${OBJECTCODE}/dependencies
