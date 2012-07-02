@@ -34,12 +34,12 @@ neat:
 	/bin/rm -rf ${OBJECTCODE}/*.o *.bak
 
 tags:
-	etags src/*.c src/*.h
+	rm -f TAGS ; etags src/*.c src/*.h
 
 depend: ${OBJS:.o=.c}
-	-mkdir ${OBJECTCODE}
-	-cd ${OBJECTCODE} ; ln -s ../src/dg.dgh ../dg.dgc .
-	makedepend -f  ${OBJECTCODE}/dependencies $^; \
+	-mkdir -p ${OBJECTCODE}
+	-cd ${OBJECTCODE} ; ln -sf ../src/dg.dgh ../dg.dgc .
+	makedepend -f ${OBJECTCODE}/dependencies ${INCLUDE} $^; \
 	mv ${OBJECTCODE}/dependencies ${OBJECTCODE}/dependencies.bak; \
 	sed -e '3,$$s/^/${OBJECTCODE}\//' ${OBJECTCODE}/dependencies.bak > ${OBJECTCODE}/dependencies
 
@@ -48,9 +48,10 @@ listobj:
 	echo "OBJS =" *.c | sed -e 's/ [^ /]*\// /g' -e 's/\.c/.o/g' -e 's/res2fbr\.o//g' > $${P}/LISTOBJ
 
 ${OBJECTCODE}/dependencies:
-	-mkdir ${OBJECTCODE}
-	-cd ${OBJECTCODE} ; ln -s ../src/dg.dgh ../dg.dgc .
+	-mkdir -p ${OBJECTCODE}
+	-cd ${OBJECTCODE} ; ln -sf ../src/dg.dgh ../dg.dgc .
 	touch ${OBJECTCODE}/dependencies
+	${MAKE} listobj
 	${MAKE} depend
 
 LISTOBJ: listobj
