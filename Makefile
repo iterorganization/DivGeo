@@ -18,10 +18,10 @@ endif
 DEST = $(OBJS:%.o=$(OBJECTCODE)/%.o)
 
 $(OBJECTCODE)/%.o : %.c
-	 $(CC) $(CFLAGS) -c $< -o $@
+	 $(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 $(DG): $(DEST)
-	 $(CC) $(CFLAGS) -o $@ $(DEST) $(LIBS)
+	 $(CC) $(CFLAGS) $(INCLUDE) -o $@ $(DEST) $(LIBS)
 
 all: listobj depend $(DG)
 
