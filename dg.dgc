@@ -810,7 +810,7 @@ edge_pfr
 PFR edge
 text101 5
 Element to be linked to the grid corner
-from the PFR side of the target.
+from the PFR side of the OUTER target.
 
 The targets are numbered in B2 notation:
 clockwise starting from the lower left.
@@ -821,7 +821,7 @@ edge_sol
 SOL edge
 text101 5
 Element to be linked to the grid corner
-from the SOL side of the target.
+from the SOL side of the OUTER target.
 
 The targets are numbered in B2 notation:
 clockwise starting from the lower left.

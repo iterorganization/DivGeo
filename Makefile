@@ -28,10 +28,10 @@ all: listobj depend $(DG)
 update: clean listobj depend all
 
 clean:
-	/bin/rm -rf ${OBJECTCODE}/*.o $(DG) *.bak
+	/bin/rm -rf ${OBJECTCODE}/*.o $(DG) ${OBJECTCODE}/*.bak
 
 neat:
-	/bin/rm -rf ${OBJECTCODE}/*.o *.bak
+	/bin/rm -rf ${OBJECTCODE}/*.o ${OBJECTCODE}/*.bak
 
 tags:
 	rm -f TAGS ; etags src/*.c src/*.h
