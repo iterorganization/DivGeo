@@ -39,9 +39,7 @@ tags:
 depend: ${OBJS:.o=.c}
 	-mkdir -p ${OBJECTCODE}
 	-cd ${OBJECTCODE} ; ln -sf ../src/dg.dgh ../dg.dgc .
-	makedepend -f ${OBJECTCODE}/dependencies ${INCLUDE} $^; \
-	mv ${OBJECTCODE}/dependencies ${OBJECTCODE}/dependencies.bak; \
-	sed -e '3,$$s/^/${OBJECTCODE}\//' ${OBJECTCODE}/dependencies.bak > ${OBJECTCODE}/dependencies
+	$(CC) ${INCLUDE} -M $^ > ${OBJECTCODE}/dependencies
 
 listobj:
 	@P=`pwd`; cd src ; rm -f $${P}/LISTOBJ; touch $${P}/LISTOBJ; \
