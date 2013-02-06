@@ -13,7 +13,7 @@ c
 c=====================================================
 c*** Translation of dg-compatible equilibrium data into efit format
 c=====================================================
-      parameter (ngpr=129, ngpz=257)
+      parameter (ngpr=513, ngpz=1025)
       real*8 fg(ngpr),pg(ngpr),ffg(ngpr),ppg(ngpr)
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real*8 rdim,zdim,rcntc,redge,zmsmid,rma,zma,psimin,psilim,btorc
