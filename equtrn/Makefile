@@ -58,7 +58,7 @@ $(OBJECTCODE)/%.o : %.f
 #	/bin/rm ${OBJECTCODE}/$*.f
 	if [ -f $*.o ]; then /bin/mv $*.o ${OBJECTCODE}; fi
 
-all: $(ALL:%=$(OBJECTCODE)/%)
+all: TAGS $(ALL:%=$(OBJECTCODE)/%)
 
 ${OBJECTCODE}/cropequ: $(CREQ)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
@@ -121,12 +121,12 @@ ${OBJECTCODE}/jetppf2dg: $(JETPPF2DG)
 clean:
 	cd ${OBJECTCODE}; rm -rf *.o $(ALL)
 
+TAGS:	tags
+
 tags:
-	rm TAGS ; etags src/*.f
+	rm -f TAGS ; etags src/*.f
 
 depend: ${OBJS:.o=.f}
-	@echo ${OBJS}
-	@echo ${OBJS:.o=.f}
 	makedepend -f  ${OBJECTCODE}/dependencies ${INCLUDE} $^
 	mv ${OBJECTCODE}/dependencies ${OBJECTCODE}/dependencies.bak
 	sed -e '3,$$s/^/${OBJECTCODE}\//' ${OBJECTCODE}/dependencies.bak > ${OBJECTCODE}/dependencies
@@ -137,8 +137,9 @@ listobj:
 	@cd src ; echo "OBJS =" *.f | sed -e 's/ [^ /]*\// /g' -e 's/\.f/.o/g' > ../LISTOBJ
 
 ${OBJECTCODE}/dependencies:
-	-mkdir ${OBJECTCODE}
+	-mkdir -p ${OBJECTCODE}
 	touch ${OBJECTCODE}/dependencies
+	${MAKE} listobj
 	${MAKE} depend
 
 include ${OBJECTCODE}/dependencies
