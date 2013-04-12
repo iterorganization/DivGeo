@@ -35,8 +35,6 @@ ${OBJECTCODE}/cnveir: $(EIRDG) $(SOLPS_LIB)/libmscl.a
 
 ${OBJECTCODE}/cnvtria: $(TRIDG)
 	${FC} ${FFLAGS} -o ${OBJECTCODE}/cnvtria $(TRIDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
-	if [ -d ${SOLPSTOP}/src/bin/${OBJECTCODE} ]; then ln -sf ${PWD}/${OBJECTCODE}/cnvtria ${SOLPSTOP}/src/bin/${OBJECTCODE}; fi
-	if [ -d ${SOLPSTOP}/bin/${OBJECTCODE} ]; then ln -sf ${PWD}/${OBJECTCODE}/cnvtria ${SOLPSTOP}/bin/${OBJECTCODE}; fi
 
 clean:
 	cd ${OBJECTCODE}; rm -rf *.o $(ALL)
