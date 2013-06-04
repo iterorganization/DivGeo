@@ -58,7 +58,7 @@ $(OBJECTCODE)/%.o : %.f
 #	/bin/rm ${OBJECTCODE}/$*.f
 	if [ -f $*.o ]; then /bin/mv $*.o ${OBJECTCODE}; fi
 
-all: TAGS $(ALL:%=$(OBJECTCODE)/%)
+all: $(ALL:%=$(OBJECTCODE)/%)
 
 ${OBJECTCODE}/cropequ: $(CREQ)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
