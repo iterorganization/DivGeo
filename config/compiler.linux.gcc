@@ -1,4 +1,3 @@
-INCLUDE = -I${SOLPSTOP}/../solps_other/DG_requirement/include
 LIBS = -lXm -lXt -lX11 -lXext -lXmuu -lXp -lXft -lpthread -lm -L/usr/X11R6/lib
 CFLAGS = -g
 CC = cc
