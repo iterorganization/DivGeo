@@ -1,5 +1,9 @@
 FC	 = ifort 
-FFLAGS	 = -g -vec_report0
+ifdef SOLPS_DEBUG
+FFLAGS	 = -g -C -vec_report0
+else
+FFLAGS	 = -O -vec_report0
+endif
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP	 = /lib/cpp -traditional
 
