@@ -18,10 +18,10 @@ endif
 DEST = $(OBJS:%.o=$(OBJECTCODE)/%.o)
 
 $(OBJECTCODE)/%.o : %.c
-	 $(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+	 $(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(DG): $(DEST)
-	 $(CC) $(CFLAGS) $(INCLUDE) -o $@ $(DEST) $(LIBS)
+	 $(CC) $(CFLAGS) $(INCLUDES) -o $@ $(DEST) $(LIBS)
 
 all: listobj depend $(DG)
 
@@ -39,7 +39,7 @@ tags:
 depend: ${OBJS:.o=.c}
 	-mkdir -p ${OBJECTCODE}
 	-cd ${OBJECTCODE} ; ln -sf ../src/dg.dgh ../dg.dgc .
-	$(CC) ${INCLUDE} -M $^ > ${OBJECTCODE}/dependencies
+	$(CC) ${INCLUDES} -M $^ > ${OBJECTCODE}/dependencies
 
 listobj:
 	@P=`pwd`; cd src ; rm -f $${P}/LISTOBJ; touch $${P}/LISTOBJ; \

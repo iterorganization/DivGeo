@@ -1,0 +1,11 @@
+#  version : 28.06.2012 18:40
+
+#LIBS= -Wl,-Bstatic -lXm -Wl,-Bdynamic -lXt -lX11 -lm -L/usr/lib
+#LIBS= -Wl,-Bstatic -lXm -Wl,-Bdynamic -L/usr/lib64 -lXmu -lXt -lX11 -lXp -lpangoxft -ljpeg -lpng -lm
+LIBS= -Wl,-Bstatic -lXm -Wl,-Bdynamic -L/usr/lib64 -lXmu  -lXp -lXext -lXt -lSM -lICE -lX11 -lpangoxft -ljpeg -lpng -lm
+
+#INCLUDES=-I/usr/lib/gcc/x86_64-redhat-linux/4.4.4/include
+INCLUDES=-I/usr/lib/gcc/x86_64-redhat-linux/4.1.1/include
+#CFLAGS= -g -m32 $(INCLUDES)
+CFLAGS= -g -m64 $(INCLUDES)
+CC= cc
