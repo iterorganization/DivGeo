@@ -35,27 +35,29 @@ c
       rewind lun
       read(lun,'(a40,a8,3i4)') title,date,ipestg,nr,nz
       if(nr.gt.ngpr) then
-          print *,'=== rdefit: nr > ngpr'
+          write (6,'(a,i4,a,i4,a)') 
+     .     '=== rdefit: nr (',nr,') > ngpr (',ngpr,')'
           iret=2
       end if
       if(nz.gt.ngpz) then
-          print *,'=== rdefit: nz > ngpz'
+          write (6,'(a,i4,a,i4,a)') 
+     .     '=== rdefit: nz (',nz,') > ngpz (',ngpz,')'
           iret=2
       end if
       if(nr.le.0) then
-          print *,'=== rdefit: nr < 1'
+          write (6,'(a,i4,a)') '=== rdefit: nr (',nr,') < 1'
           iret=4
       end if
       if(nz.le.0) then
-          print *,'=== rdefit: nz < 1'
+          write (6,'(a,i4,a)') '=== rdefit: nz (',nz,') < 1'
           iret=4
       end if
       if(iret.ne.0) return
 c
-      read(lun,'(5e16.9)') rdim,zdim,rcntc,redge,zmsmid
-      read(lun,'(5e16.9)') rma,zma,psimin,psilim,btorc
-      read(lun,'(5e16.9)')
-      read(lun,'(5e16.9)')
+      read(lun,*) rdim,zdim,rcntc,redge,zmsmid
+      read(lun,*) rma,zma,psimin,psilim,btorc
+      read(lun,'()')
+      read(lun,'()')
       read(lun,'(5e16.9)') (fg(i),i=1,nr)
       read(lun,'(5e16.9)') (pg(i),i=1,nr)
       read(lun,'(5e16.9)') (ffg(i),i=1,nr)
