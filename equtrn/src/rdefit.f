@@ -25,7 +25,8 @@ c  version : 18.12.94 18:33
 c
       real*8 fg(*),pg(*),ffg(*),ppg(*),pfm(ngpr,*),rgr(*),zgr(*)
       real*8 rdim,zdim,rcntc,redge,zmsmid,rma,zma,psimin,psilim,btorc
-      character title*40, date*8
+      integer l
+      character title*40, date*8, cvect(80)*1
 c=====================================================
       rr(r)=r/(nr-1)*rdim+redge
       zz(z)=(z-(nz+1)/2)/(nz-1)*zdim+zmsmid
@@ -34,6 +35,7 @@ c
       iret=0
       rewind lun
       read(lun,'(a40,a8,3i4)') title,date,ipestg,nr,nz
+      write(*,*) ipestg,nr,nz
       if(nr.gt.ngpr) then
           write (6,'(a,i4,a,i4,a)') 
      .     '=== rdefit: nr (',nr,') > ngpr (',ngpr,')'
@@ -54,8 +56,20 @@ c
       end if
       if(iret.ne.0) return
 c
-      read(lun,*) rdim,zdim,rcntc,redge,zmsmid
-      read(lun,*) rma,zma,psimin,psilim,btorc
+      read(lun,'(q,80a1)') l, (cvect(i),i=1,l)
+      backspace(lun)
+      if (l.eq.80) then
+        read(lun,'(5e16.9)') rdim,zdim,rcntc,redge,zmsmid
+      else
+        read(lun,*) rdim,zdim,rcntc,redge,zmsmid
+      endif
+      read(lun,'(q,80a1)') l, (cvect(i),i=1,l)
+      backspace(lun)
+      if (l.eq.80) then
+        read(lun,'(5e16.9)') rma,zma,psimin,psilim,btorc
+      else
+        read(lun,*) rma,zma,psimin,psilim,btorc
+      endif
       read(lun,'()')
       read(lun,'()')
       read(lun,'(5e16.9)') (fg(i),i=1,nr)
