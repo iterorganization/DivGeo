@@ -1,8 +1,12 @@
 #  VERSION : 02.11.2000 22:29
 
-SHELL = /bin/sh
-DG = $(OBJECTCODE)/dg
-VPATH = src
+OBJDIR = $(OBJECTCODE)
+
+SHELL  = /bin/sh
+DG     = $(OBJDIR)/dg
+VPATH  = src
+
+SRCDIR = ${PWD}
 
 include LISTOBJ
 
@@ -15,9 +19,9 @@ ifeq ($(shell [ -e config.local/compiler.${OBJECTCODE} ] && echo yes || echo no 
 include config.local/compiler.${OBJECTCODE}
 endif
 
-DEST = $(OBJS:%.o=$(OBJECTCODE)/%.o)
+DEST = $(OBJS:%.o=$(OBJDIR)/%.o)
 
-$(OBJECTCODE)/%.o : %.c
+$(OBJDIR)/%.o : %.c
 	 $(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(DG): $(DEST)
@@ -28,31 +32,31 @@ all: listobj depend $(DG)
 update: clean listobj depend all
 
 clean:
-	/bin/rm -rf ${OBJECTCODE}/*.o $(DG) ${OBJECTCODE}/*.bak
+	/bin/rm -rf ${OBJDIR}/*.o $(DG) ${OBJDIR}/*.bak
 
 neat:
-	/bin/rm -rf ${OBJECTCODE}/*.o ${OBJECTCODE}/*.bak
+	/bin/rm -rf ${OBJDIR}/*.o ${OBJDIR}/*.bak
 
 tags:
 	rm -f TAGS ; etags src/*.c src/*.h
 
 depend: ${OBJS:.o=.c}
-	-mkdir -p ${OBJECTCODE}
-	-cd ${OBJECTCODE} ; ln -sf ../src/dg.dgh ../dg.dgc .
-	$(CC) ${INCLUDES} -M $^ > ${OBJECTCODE}/dependencies
+	-mkdir -p ${OBJDIR}
+	-cd ${OBJDIR} ; ln -sf ${SRCDIR}/src/dg.dgh ${SRCDIR}/dg.dgc .
+	$(CC) ${INCLUDES} -M $^ > ${OBJDIR}/dependencies
 
 listobj:
 	@P=`pwd`; cd src ; rm -f $${P}/LISTOBJ; touch $${P}/LISTOBJ; \
 	echo "OBJS =" *.c | sed -e 's/ [^ /]*\// /g' -e 's/\.c/.o/g' -e 's/res2fbr\.o//g' > $${P}/LISTOBJ
 
-${OBJECTCODE}/dependencies:
-	-mkdir -p ${OBJECTCODE}
-	-cd ${OBJECTCODE} ; ln -sf ../src/dg.dgh ../dg.dgc .
-	touch ${OBJECTCODE}/dependencies
+${OBJDIR}/dependencies:
+	-mkdir -p ${OBJDIR}
+	-cd ${OBJDIR} ; ln -sf ../src/dg.dgh ../dg.dgc .
+	touch ${OBJDIR}/dependencies
 	${MAKE} listobj
 	${MAKE} depend
 
 LISTOBJ: listobj
 
-include ${OBJECTCODE}/dependencies
+include ${OBJDIR}/dependencies
 

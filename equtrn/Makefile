@@ -1,5 +1,7 @@
 #  VERSION : 21.10.2000 00:50
 
+OBJDIR = ${OBJECTCODE}
+
 VPATH = src
 INCLUDE = 
 FINCLUDE = -I${FLUSH}/source/default/commons
@@ -32,94 +34,94 @@ endif
 
 include LISTOBJ
 
-CREQ = $(creq:%.o=$(OBJECTCODE)/%.o)
-DGDG = $(dgdg:%.o=$(OBJECTCODE)/%.o)
-DGMINUSPSIDG = $(dgminuspsidg:%.o=$(OBJECTCODE)/%.o)
-DGEF = $(dgef:%.o=$(OBJECTCODE)/%.o)
-DGVR = $(dgvr:%.o=$(OBJECTCODE)/%.o)
-EFDG = $(efdg:%.o=$(OBJECTCODE)/%.o)
-VRDG = $(vrdg:%.o=$(OBJECTCODE)/%.o)
-NKDG = $(nkdg:%.o=$(OBJECTCODE)/%.o)
-NKNDG = $(nkndg:%.o=$(OBJECTCODE)/%.o)
-RSPS = $(rsps:%.o=$(OBJECTCODE)/%.o)
-PREQ = $(preq:%.o=$(OBJECTCODE)/%.o)
-JTDG = $(jtdg:%.o=$(OBJECTCODE)/%.o)
-PBDG = $(pbdg:%.o=$(OBJECTCODE)/%.o)
-PTDG = $(ptdg:%.o=$(OBJECTCODE)/%.o)
-CULHAM = $(culham:%.o=$(OBJECTCODE)/%.o)
-SSTDG = $(sstdg:%.o=$(OBJECTCODE)/%.o)
-SHOTFILE2DG = $(shotfile2dg:%.o=$(OBJECTCODE)/%.o)
-JETPPF2DG = $(jetppf2dg:%.o=$(OBJECTCODE)/%.o)
+CREQ = $(creq:%.o=$(OBJDIR)/%.o)
+DGDG = $(dgdg:%.o=$(OBJDIR)/%.o)
+DGMINUSPSIDG = $(dgminuspsidg:%.o=$(OBJDIR)/%.o)
+DGEF = $(dgef:%.o=$(OBJDIR)/%.o)
+DGVR = $(dgvr:%.o=$(OBJDIR)/%.o)
+EFDG = $(efdg:%.o=$(OBJDIR)/%.o)
+VRDG = $(vrdg:%.o=$(OBJDIR)/%.o)
+NKDG = $(nkdg:%.o=$(OBJDIR)/%.o)
+NKNDG = $(nkndg:%.o=$(OBJDIR)/%.o)
+RSPS = $(rsps:%.o=$(OBJDIR)/%.o)
+PREQ = $(preq:%.o=$(OBJDIR)/%.o)
+JTDG = $(jtdg:%.o=$(OBJDIR)/%.o)
+PBDG = $(pbdg:%.o=$(OBJDIR)/%.o)
+PTDG = $(ptdg:%.o=$(OBJDIR)/%.o)
+CULHAM = $(culham:%.o=$(OBJDIR)/%.o)
+SSTDG = $(sstdg:%.o=$(OBJDIR)/%.o)
+SHOTFILE2DG = $(shotfile2dg:%.o=$(OBJDIR)/%.o)
+JETPPF2DG = $(jetppf2dg:%.o=$(OBJDIR)/%.o)
 
-$(OBJECTCODE)/%.o : %.f
-	${CPP} -P -C ${INCLUDE} $< > ${OBJECTCODE}/$*.f
-#	$(COMPILE) -o ${OBJECTCODE}/$*.o $<
-	$(COMPILE) -o ${OBJECTCODE}/$*.o ${OBJECTCODE}/$*.f ${FINCLUDE}
-#	/bin/rm ${OBJECTCODE}/$*.f
-	if [ -f $*.o ]; then /bin/mv $*.o ${OBJECTCODE}; fi
+$(OBJDIR)/%.o : %.f
+	${CPP} -P -C ${INCLUDE} $< > ${OBJDIR}/$*.f
+#	$(COMPILE) -o ${OBJDIR}/$*.o $<
+	$(COMPILE) -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f ${FINCLUDE}
+#	/bin/rm ${OBJDIR}/$*.f
+	if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
 
-all: $(ALL:%=$(OBJECTCODE)/%)
+all: $(ALL:%=$(OBJDIR)/%)
 
-${OBJECTCODE}/cropequ: $(CREQ)
+${OBJDIR}/cropequ: $(CREQ)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
-	if [ -d ${SOLPSTOP}/src/bin/${OBJECTCODE} ]; then ln -sf ${PWD}/${OBJECTCODE}/cropequ ${SOLPSTOP}/src/bin/${OBJECTCODE}; fi
-	if [ -d ${SOLPSTOP}/bin/${OBJECTCODE} ]; then ln -sf ${PWD}/${OBJECTCODE}/cropequ ${SOLPSTOP}/bin/${OBJECTCODE}; fi
+	if [ -d ${SOLPSTOP}/src/bin/${OBJECTCODE} ]; then ln -sf ${OBJDIR}/cropequ ${SOLPSTOP}/src/bin/${OBJECTCODE}; fi
+	if [ -d ${SOLPSTOP}/bin/${OBJECTCODE} ]; then ln -sf ${OBJDIR}/cropequ ${SOLPSTOP}/bin/${OBJECTCODE}; fi
 
-${OBJECTCODE}/dg2dg: $(DGDG)
+${OBJDIR}/dg2dg: $(DGDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
-	if [ -d ${SOLPSTOP}/src/bin/${OBJECTCODE} ]; then ln -sf ${PWD}/${OBJECTCODE}/dg2dg ${SOLPSTOP}/src/bin/${OBJECTCODE}; fi
-	if [ -d ${SOLPSTOP}/bin/${OBJECTCODE} ]; then ln -sf ${PWD}/${OBJECTCODE}/dg2dg ${SOLPSTOP}/bin/${OBJECTCODE}; fi
+	if [ -d ${SOLPSTOP}/src/bin/${OBJECTCODE} ]; then ln -sf ${OBJDIR}/dg2dg ${SOLPSTOP}/src/bin/${OBJECTCODE}; fi
+	if [ -d ${SOLPSTOP}/bin/${OBJECTCODE} ]; then ln -sf ${OBJDIR}/dg2dg ${SOLPSTOP}/bin/${OBJECTCODE}; fi
 
-${OBJECTCODE}/culham: $(CULHAM)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
-
-${OBJECTCODE}/sst2dg: $(SSTDG)
+${OBJDIR}/culham: $(CULHAM)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJECTCODE}/dg2ef: $(DGEF)
+${OBJDIR}/sst2dg: $(SSTDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJECTCODE}/dg2vr: $(DGVR)
+${OBJDIR}/dg2ef: $(DGEF)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJECTCODE}/ef2dg: $(EFDG)
+${OBJDIR}/dg2vr: $(DGVR)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJECTCODE}/vr2dg: $(VRDG)
+${OBJDIR}/ef2dg: $(EFDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJECTCODE}/nk2dg: $(NKDG)
+${OBJDIR}/vr2dg: $(VRDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJECTCODE}/nkn2dg: $(NKNDG)
+${OBJDIR}/nk2dg: $(NKDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJECTCODE}/jt2dg: $(JTDG)
+${OBJDIR}/nkn2dg: $(NKNDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJECTCODE}/risepsi: $(RSPS)
+${OBJDIR}/jt2dg: $(JTDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJECTCODE}/prinequ: $(PREQ)
+${OBJDIR}/risepsi: $(RSPS)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJECTCODE}/pb2dg: $(PBDG)
+${OBJDIR}/prinequ: $(PREQ)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJECTCODE}/pt2dg: $(PTDG)
+${OBJDIR}/pb2dg: $(PBDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJECTCODE}/dg_minuspsi_dg: $(DGMINUSPSIDG)
+${OBJDIR}/pt2dg: $(PTDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJECTCODE}/shotfile2dg: $(SHOTFILE2DG)
+${OBJDIR}/dg_minuspsi_dg: $(DGMINUSPSIDG)
+	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+
+${OBJDIR}/shotfile2dg: $(SHOTFILE2DG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDWOS)
 
-${OBJECTCODE}/jetppf2dg: $(JETPPF2DG)
+${OBJDIR}/jetppf2dg: $(JETPPF2DG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDFLUSH)
 
 clean:
-	cd ${OBJECTCODE}; rm -rf *.o $(ALL)
+	cd ${OBJDIR}; rm -rf *.o $(ALL)
 
 TAGS:	tags
 
@@ -127,22 +129,22 @@ tags:
 	rm -f TAGS ; etags src/*.f
 
 depend: ${OBJS:.o=.f}
-	makedepend -f  ${OBJECTCODE}/dependencies ${INCLUDE} $^
-	mv ${OBJECTCODE}/dependencies ${OBJECTCODE}/dependencies.bak
-	sed -e '3,$$s/^/${OBJECTCODE}\//' ${OBJECTCODE}/dependencies.bak > ${OBJECTCODE}/dependencies
+	makedepend -f  ${OBJDIR}/dependencies ${INCLUDE} $^
+	mv ${OBJDIR}/dependencies ${OBJDIR}/dependencies.bak
+	sed -e '3,$$s/^/${OBJDIR}\//' ${OBJDIR}/dependencies.bak > ${OBJDIR}/dependencies
 
 LISTOBJ: listobj
 
 listobj:
 	@cd src ; echo "OBJS =" *.f | sed -e 's/ [^ /]*\// /g' -e 's/\.f/.o/g' > ../LISTOBJ
 
-${OBJECTCODE}/dependencies:
-	-mkdir -p ${OBJECTCODE}
-	touch ${OBJECTCODE}/dependencies
+${OBJDIR}/dependencies:
+	-mkdir -p ${OBJDIR}
+	touch ${OBJDIR}/dependencies
 	${MAKE} listobj
 	${MAKE} depend
 
-include ${OBJECTCODE}/dependencies
+include ${OBJDIR}/dependencies
 
 DOC:
 	doxygen
