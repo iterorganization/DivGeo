@@ -131,7 +131,7 @@ tags:
 depend: ${OBJS:.o=.f}
 	makedepend -f  ${OBJDIR}/dependencies ${INCLUDE} $^
 	mv ${OBJDIR}/dependencies ${OBJDIR}/dependencies.bak
-	sed -e '3,$$s/^/${OBJDIR}\//' ${OBJDIR}/dependencies.bak > ${OBJDIR}/dependencies
+	sed -e '3,$$s|^|${OBJDIR}/|' ${OBJDIR}/dependencies.bak > ${OBJDIR}/dependencies
 
 LISTOBJ: listobj
 
