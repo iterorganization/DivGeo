@@ -28,8 +28,8 @@ c
       integer l
       character title*40, date*8, cvect(80)*1
 c=====================================================
-      rr(r)=r/(nr-1)*rdim+redge
-      zz(z)=(z-(nz+1)/2)/(nz-1)*zdim+zmsmid
+      rr(r)=r/float(nr-1)*rdim+redge
+      zz(z)=(z-float(nz+1)/float(2))/float(nz-1)*zdim+zmsmid
 c=====================================================
 c
       iret=0
