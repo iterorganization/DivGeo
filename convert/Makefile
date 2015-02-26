@@ -32,12 +32,10 @@ all: $(ALL:%=$(OBJDIR)/%)
 
 ${OBJDIR}/cnveir: $(EIRDG) $(SOLPS_LIB)/libmscl.a
 	${FC} ${FFLAGS} -o ${OBJDIR}/cnveir $(EIRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
-	if [ -d ${SOLPSTOP}/src/bin/${OBJECTCODE} ]; then ln -sf ${OBJDIR}/cnveir ${SOLPSTOP}/src/bin/${OBJECTCODE}; fi
-	if [ -d ${SOLPSTOP}/bin/${OBJECTCODE} ]; then ln -sf ${OBJDIR}/cnveir ${SOLPSTOP}/bin/${OBJECTCODE}; fi
 
 ${OBJDIR}/cnvtria: $(TRIDG)
 	${FC} ${FFLAGS} -o ${OBJDIR}/cnvtria $(TRIDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 clean:
 	cd ${OBJDIR}; rm -rf *.o $(ALL)
- 
+

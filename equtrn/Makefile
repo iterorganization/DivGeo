@@ -64,13 +64,9 @@ all: $(ALL:%=$(OBJDIR)/%)
 
 ${OBJDIR}/cropequ: $(CREQ)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
-	if [ -d ${SOLPSTOP}/src/bin/${OBJECTCODE} ]; then ln -sf ${OBJDIR}/cropequ ${SOLPSTOP}/src/bin/${OBJECTCODE}; fi
-	if [ -d ${SOLPSTOP}/bin/${OBJECTCODE} ]; then ln -sf ${OBJDIR}/cropequ ${SOLPSTOP}/bin/${OBJECTCODE}; fi
 
 ${OBJDIR}/dg2dg: $(DGDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
-	if [ -d ${SOLPSTOP}/src/bin/${OBJECTCODE} ]; then ln -sf ${OBJDIR}/dg2dg ${SOLPSTOP}/src/bin/${OBJECTCODE}; fi
-	if [ -d ${SOLPSTOP}/bin/${OBJECTCODE} ]; then ln -sf ${OBJDIR}/dg2dg ${SOLPSTOP}/bin/${OBJECTCODE}; fi
 
 ${OBJDIR}/culham: $(CULHAM)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
