@@ -51,7 +51,7 @@ listobj:
 
 ${OBJDIR}/dependencies:
 	-mkdir -p ${OBJDIR}
-	-cd ${OBJDIR} ; ln -sf ../src/dg.dgh ../dg.dgc .
+	-cd ${OBJDIR} ; ln -sf ${SRCDIR}/src/dg.dgh ${SRCDIR}/dg.dgc .
 	touch ${OBJDIR}/dependencies
 	${MAKE} listobj
 	${MAKE} depend
