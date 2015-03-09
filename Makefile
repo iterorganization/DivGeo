@@ -27,12 +27,14 @@ $(OBJDIR)/%.o : %.c
 $(DG): $(DEST)
 	 $(CC) $(CFLAGS) $(INCLUDES) -o $@ $(DEST) $(LIBS)
 
-all: listobj depend $(DG)
+all: VERSION listobj depend $(DG)
 
-update: clean listobj depend all
+update: clean VERSION listobj depend all
+
+.PHONY: VERSION clean listobj update depend all neat tags
 
 clean:
-	/bin/rm -rf ${OBJDIR}/*.o $(DG) ${OBJDIR}/*.bak
+	/bin/rm -rf ${OBJDIR}/*.o $(DG) ${OBJDIR}/*.bak src/git_version.h
 
 neat:
 	/bin/rm -rf ${OBJDIR}/*.o ${OBJDIR}/*.bak
@@ -48,6 +50,15 @@ depend: ${OBJS:.o=.c}
 listobj:
 	@P=`pwd`; cd src ; rm -f $${P}/LISTOBJ; touch $${P}/LISTOBJ; \
 	echo "OBJS =" *.c | sed -e 's/ [^ /]*\// /g' -e 's/\.c/.o/g' -e 's/res2fbr\.o//g' > $${P}/LISTOBJ
+
+VERSION: src/git_version.h
+
+src/git_version.h:
+ifeq ($(shell [ -d ${SOLPSTOP} ] && echo yes || echo no ),yes)
+	echo "#define GIT_VERSION \0042`(cd ${SOLPSTOP}; git describe --dirty --always)`\0042" > src/git_version.h
+else
+	echo "#define GIT_VERSION \0042`git describe --dirty --always`\0042" > src/git_version.h
+endif
 
 ${OBJDIR}/dependencies:
 	-mkdir -p ${OBJDIR}

@@ -1,4 +1,5 @@
 #include "dg.h"
+#include "git_version.h"
 
 #define FILE_VERSION 115
 #define DG_VERSION_NEEDED 15000
@@ -1099,11 +1100,13 @@ int SaveApp(App a,char* fName,int mode) {
     "File format version:    %d\n"
     "Creation time:          %s\n"
     "Last Modified time:     %s\n"
-    "Original filename:      %s\n",
+    "Original filename:      %s\n"
+    "GIT version:            %s\n",
     GetVersionStr(DG_VERSION),
     FILE_VERSION,
     a->creationTime==NULL ? "---" : a->creationTime,
-    asctime(localtime((time(&timer),&timer))),fName);
+    asctime(localtime((time(&timer),&timer))),fName,
+    GIT_VERSION);
 
   if (a->equil!=NULL) fprintf(f,
     "Equilibrium file:       %s\n",a->equil->fName);

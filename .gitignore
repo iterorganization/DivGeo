@@ -6,13 +6,14 @@
 # object, archive,... files
 *.[oa]
 *.mod
-TAGS
 
 # error messages from compiler etc.
 *.error
 
-
+# Files created at compilation time
 LISTOBJ
+TAGS
+git_version.h
 linux.*/
 g77*/
 IBMaix*/
