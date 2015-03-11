@@ -64,6 +64,8 @@ ${OBJDIR}/dependencies:
 	-mkdir -p ${OBJDIR}
 	-cd ${OBJDIR} ; ln -sf ${SRCDIR}/src/dg.dgh ${SRCDIR}/dg.dgc .
 	touch ${OBJDIR}/dependencies
+	${MAKE} VERSION
+	${MAKE} tags
 	${MAKE} listobj
 	${MAKE} depend
 
