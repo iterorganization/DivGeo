@@ -24,14 +24,14 @@ DEST = $(OBJS:%.o=$(OBJDIR)/%.o)
 $(OBJDIR)/%.o : %.c
 	 $(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(DG): $(DEST)
+$(DG): $(DEST) src/git_version.h
 	 $(CC) $(CFLAGS) $(INCLUDES) -o $@ $(DEST) $(LIBS)
 
 all: VERSION listobj depend $(DG)
 
 update: clean VERSION listobj depend all
 
-.PHONY: VERSION clean listobj update depend all neat tags
+.PHONY: VERSION clean listobj update depend all neat tags force
 
 clean:
 	/bin/rm -rf ${OBJDIR}/*.o $(DG) ${OBJDIR}/*.bak src/git_version.h
@@ -53,12 +53,14 @@ listobj:
 
 VERSION: src/git_version.h
 
-src/git_version.h:
+src/git_version.h: force
 ifeq ($(shell [ -d ${SOLPSTOP} ] && echo yes || echo no ),yes)
-	echo "#define GIT_VERSION \0042`(cd ${SOLPSTOP}; git describe --dirty --always)`\0042" > src/git_version.h
+	@echo "#define GIT_VERSION \"`(cd ${SOLPSTOP}; git describe --dirty --always)`\"" > src/git_version_new.h
 else
-	echo "#define GIT_VERSION \0042`git describe --dirty --always`\0042" > src/git_version.h
+	@echo "#define GIT_VERSION \"`git describe --dirty --always`\"" > src/git_version_new.h
 endif
+	@if cmp -s src/git_version_new.h src/git_version.h; then rm src/git_version_new.h; else mv src/git_version_new.h src/git_version.h; fi
+	
 
 ${OBJDIR}/dependencies:
 	-mkdir -p ${OBJDIR}
@@ -72,4 +74,5 @@ ${OBJDIR}/dependencies:
 LISTOBJ: listobj
 
 include ${OBJDIR}/dependencies
+
 
