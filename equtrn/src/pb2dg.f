@@ -1,4 +1,4 @@
-!> Translation of equilibrium data from P. Barabasci into dg-compatible format
+!> Translation of equilibrium data from P. Barabasci into dg compatible format
 !>
 !> arg1: input equilibrium file name
 !>
@@ -12,7 +12,7 @@ c  version : 02.09.99 19:37
 c
 c======================================================================
 c*** Translation of equilibrium data from P. Barabasci
-c*** into dg-compatible format
+c*** into dg compatible format
 c======================================================================
       parameter (ngpr=257, ngpz=513)
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)

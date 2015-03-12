@@ -1,4 +1,4 @@
-!> Translation of Diva equilibrium data into dg-compatible format
+!> Translation of Diva equilibrium data into dg compatible format
 !>
 !> arg1: input equilibrium file name
 !>
@@ -11,7 +11,7 @@ c
 c  version : 16.11.95 20:04
 c
 c=====================================================
-c*** Translation of efit equilibrium data into dg-compatible format
+c*** Translation of efit equilibrium data into dg compatible format
 c=====================================================
       parameter (pi=3.14159 26535 89793)
       parameter (ngpr=257, ngpz=257, ngpf=257)

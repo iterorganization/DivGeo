@@ -1,4 +1,4 @@
-!> Translation of the JET PPF equilibrium data into dg-compatible format
+!> Translation of the JET PPF equilibrium data into dg compatible format
 !>
 !> 1st arg == shot number
 !>

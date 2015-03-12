@@ -1,7 +1,7 @@
       subroutine wreqdg(lun,ngpr,ngpz,iret, nr,nz, psib,
      ,                                             btf,rtf,rgr,zgr,pfm)
 c=====================================================
-c*** Write the equilibrium data in the dg-compatible format.
+c*** Write the equilibrium data in the dg compatible format.
 c***
 c*** Input:
 c***  lun     the logical unit number for the output

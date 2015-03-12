@@ -1,4 +1,4 @@
-!> Translation of equilibrium data from Naka to dg-compatible format
+!> Translation of equilibrium data from Naka to dg compatible format
 !>
 !> arg1: input equilibrium file name
 !>
@@ -11,7 +11,7 @@ c
 c  version : 16.01.96 19:48
 c
 c=====================================================
-c*** Translation of equilibrium data from Naka to dg-compatible format
+c*** Translation of equilibrium data from Naka to dg compatible format
 c=====================================================
       parameter (ngpr=257, ngpz=257)
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)

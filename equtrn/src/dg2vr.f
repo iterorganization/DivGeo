@@ -1,4 +1,4 @@
-!> Translation of TdeV equilibrium data into dg-compatible format
+!> Translation of TdeV equilibrium data into dg compatible format
 !>
 !> arg1: input equilibrium file name
 !>
@@ -11,7 +11,7 @@ c
 c  version : 30.01.96 21:59
 c
 c=====================================================
-c*** Translation of TdeV equilibrium data into dg-compatible format
+c*** Translation of TdeV equilibrium data into dg compatible format
 c=====================================================
       parameter (ngpr=1025, ngpz=1025)
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)

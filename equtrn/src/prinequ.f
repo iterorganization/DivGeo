@@ -1,4 +1,4 @@
-!> Printout of dg-compatible equilibrium data in a table
+!> Printout of dg compatible equilibrium data in a table
 !>
 !> The file is read from standard input and the result sent to the
 !> standard output
@@ -10,7 +10,7 @@ c
 c  version : 02.09.99 14:21
 c
 c=====================================================
-c*** Printout of dg-compatible equilibrium data in a table
+c*** Printout of dg compatible equilibrium data in a table
 c***
 c*** The file is read from standard input and the result sent to the
 c*** standard output

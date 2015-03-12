@@ -1,4 +1,4 @@
-!> Translation of efit equilibrium data into dg-compatible format
+!> Translation of efit equilibrium data into dg compatible format
 !>
 !> arg1: input equilibrium file name
 !>
@@ -11,7 +11,7 @@ c
 c  version : 09.07.97 17:14
 c
 c=====================================================
-c*** Translation of efit equilibrium data into dg-compatible format
+c*** Translation of efit equilibrium data into dg compatible format
 c=====================================================
       parameter (ngpr=257, ngpz=257)
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)

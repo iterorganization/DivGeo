@@ -1,4 +1,4 @@
-!> Translation of the AUG shotfile equilibrium data into dg-compatible format
+!> Translation of the AUG shotfile equilibrium data into dg compatible format
 !>
 !> 1st arg == shot number
 !>
@@ -21,7 +21,7 @@ c
 c  version : 16.11.95 20:04
 c
 c=====================================================
-c*** Translation of shotfile equilibrium data into dg-compatible format
+c*** Translation of shotfile equilibrium data into dg compatible format
 c=====================================================
       parameter (pi=3.14159 26535 89793)
       parameter (ngpr=257, ngpz=257, ngpf=257)
