@@ -32,7 +32,7 @@ ifeq ($(shell [ -e config.local/compiler.${OBJECTCODE} ] && echo yes || echo no 
 include config.local/compiler.${OBJECTCODE}
 endif
 
-include LISTOBJ
+include $(OBJDIR)/LISTOBJ
 
 CREQ = $(creq:%.o=$(OBJDIR)/%.o)
 DGDG = $(dgdg:%.o=$(OBJDIR)/%.o)
@@ -129,10 +129,10 @@ depend: ${OBJS:.o=.f}
 	mv ${OBJDIR}/dependencies ${OBJDIR}/dependencies.bak
 	sed -e '3,$$s|^|${OBJDIR}/|' ${OBJDIR}/dependencies.bak > ${OBJDIR}/dependencies
 
-LISTOBJ: listobj
+$(OBJDIR)/LISTOBJ: listobj
 
 listobj:
-	@cd src ; echo "OBJS =" *.f | sed -e 's/ [^ /]*\// /g' -e 's/\.f/.o/g' > ../LISTOBJ
+	@cd src ; echo "OBJS =" *.f | sed -e 's/ [^ /]*\// /g' -e 's/\.f/.o/g' > $(OBJDIR)/LISTOBJ
 
 ${OBJDIR}/dependencies:
 	-mkdir -p ${OBJDIR}

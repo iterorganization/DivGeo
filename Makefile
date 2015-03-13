@@ -8,7 +8,7 @@ VPATH  = src
 
 SRCDIR = ${PWD}
 
-include LISTOBJ
+include ${OBJDIR}/LISTOBJ
 
 #LIBS = -Wl,-Bstatic -lXm -Wl,-Bdynamic -lXt -lX11 -lm -L/usr/X11R6/lib
 #CFLAGS = -g
@@ -48,7 +48,7 @@ depend: ${OBJS:.o=.c}
 	$(CC) ${INCLUDES} -M $^ > ${OBJDIR}/dependencies
 
 listobj:
-	@P=`pwd`; cd src ; rm -f $${P}/LISTOBJ; touch $${P}/LISTOBJ; \
+	@P=${OBJDIR}; cd src ; rm -f $${P}/LISTOBJ; touch $${P}/LISTOBJ; \
 	echo "OBJS =" *.c | sed -e 's/ [^ /]*\// /g' -e 's/\.c/.o/g' -e 's/res2fbr\.o//g' > $${P}/LISTOBJ
 
 VERSION: src/git_version.h
@@ -71,7 +71,7 @@ ${OBJDIR}/dependencies:
 	${MAKE} listobj
 	${MAKE} depend
 
-LISTOBJ: listobj
+${OBJDIR}/LISTOBJ: listobj
 
 include ${OBJDIR}/dependencies
 
