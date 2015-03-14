@@ -1,6 +1,10 @@
 #  VERSION : 10.12.2004 19:05
 
 OBJDIR = ${OBJECTCODE}
+ifdef SOLPSTOP
+OBJDIR = $(SOLPSTOP)/bin/$(OBJECTCODE)/DivGeo/convert
+endif
+
 
 VPATH = src
 INCLUDE =

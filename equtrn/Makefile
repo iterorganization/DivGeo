@@ -2,7 +2,7 @@
 
 OBJDIR = ${OBJECTCODE}
 ifdef SOLPSTOP
-OBJDIR = ${SOLPSTOP}/bin/${OBJECTCODE}/DivGeo/equtrn
+OBJDIR = $(SOLPSTOP)/bin/$(OBJECTCODE)/DivGeo/equtrn
 endif
 
 VPATH = src

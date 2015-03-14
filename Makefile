@@ -2,7 +2,7 @@
 
 OBJDIR = $(OBJECTCODE)
 ifdef SOLPSTOP
-OBJDIR = ${SOLPSTOP}/bin/${OBJECTCODE}/DivGeo
+OBJDIR = $(SOLPSTOP)/bin/$(OBJECTCODE)/DivGeo
 endif
 
 SHELL  = /bin/sh
