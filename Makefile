@@ -27,7 +27,7 @@ DEST = $(OBJS:%.o=$(OBJDIR)/%.o)
 $(OBJDIR)/%.o : %.c
 	 $(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(DG): $(DEST) src/git_version.h
+$(DG): $(DEST)
 	 $(CC) $(CFLAGS) $(INCLUDES) -o $@ $(DEST) $(LIBS)
 
 all: VERSION listobj depend $(DG)
@@ -48,7 +48,7 @@ tags:
 depend: ${OBJS:.o=.c}
 	-mkdir -p ${OBJDIR}
 	-cd ${OBJDIR} ; ln -sf ${SRCDIR}/src/dg.dgh ${SRCDIR}/dg.dgc .
-	$(CC) ${INCLUDES} -M $^ > ${OBJDIR}/dependencies
+	$(CC) ${INCLUDES} -M $^ | sed '/^[^ ]*.o: / s|^|${OBJDIR}/|' > ${OBJDIR}/dependencies
 
 listobj:
 	@P=${OBJDIR}; cd src ; rm -f $${P}/LISTOBJ; touch $${P}/LISTOBJ; \
