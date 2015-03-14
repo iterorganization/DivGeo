@@ -1,6 +1,9 @@
 #  VERSION : 02.11.2000 22:29
 
 OBJDIR = $(OBJECTCODE)
+ifdef SOLPSTOP
+OBJDIR = ${SOLPSTOP}/bin/${OBJECTCODE}/DivGeo
+endif
 
 SHELL  = /bin/sh
 DG     = $(OBJDIR)/dg

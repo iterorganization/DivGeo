@@ -1,6 +1,9 @@
 #  VERSION : 21.10.2000 00:50
 
 OBJDIR = ${OBJECTCODE}
+ifdef SOLPSTOP
+OBJDIR = ${SOLPSTOP}/bin/${OBJECTCODE}/DivGeo/equtrn
+endif
 
 VPATH = src
 INCLUDE = 
