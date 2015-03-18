@@ -1,0 +1,15 @@
+# check if necessary variables are correctly defined
+LD_MSCL ?= `pkg-config mscl --libs`
+
+FC      = ifort
+ifdef SOLPS_DEBUG
+FFLAGS = -g -C -debug all
+else
+FFLAGS = -O3 -vec_report0
+endif
+
+COMPILE = ${FC} -c ${FFLAGS}
+CPP	= /lib/cpp -C -traditional
+
+LDLIBS	= ${LD_MSCL} -lstdc++
+LDEXTRA	= 

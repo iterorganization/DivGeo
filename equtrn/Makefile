@@ -1,9 +1,17 @@
 #  VERSION : 21.10.2000 00:50
 
-OBJDIR = ${OBJECTCODE}
-ifdef SOLPSTOP
-OBJDIR = $(SOLPSTOP)/bin/$(OBJECTCODE)/DivGeo/equtrn
+# Test whether necessary environment variables are defined; if not, exit
+ifndef HOST
+$(error HOST not defined)
 endif
+ifndef OBJECTCODE
+$(error OBJECTCODE not defined)
+endif
+ifdef SOLPS_DEBUG
+EXT_DEBUG = .debug
+endif
+
+OBJDIR = ${PWD}/builds/${HOST}.${OBJECTCODE}${EXT_DEBUG}
 
 VPATH = src
 INCLUDE = 
@@ -30,9 +38,14 @@ sstdg = sst2dg.o wreqdg.o open_files.o
 shotfile2dg = shotfile2dg.o wreqdg.o
 jetppf2dg = jetppf2dg.o wreqdg.o
 
-include config/compiler.${OBJECTCODE}
-ifeq ($(shell [ -e config.local/compiler.${OBJECTCODE} ] && echo yes || echo no ),yes)
-include config.local/compiler.${OBJECTCODE}
+ifeq ($(shell [ -e config/config.${HOST}.${OBJECTCODE} ] && echo yes || echo no ),yes)
+include config/config.${HOST}.${OBJECTCODE}
+else
+$(error config/config.${HOST}.${OBJECTCODE} not found.)
+endif
+
+ifeq ($(shell [ -e config/config.${HOST}.${OBJECTCODE}.local ] && echo yes || echo no ),yes)
+include config/config.${HOST}.${OBJECTCODE}.local
 endif
 
 include $(OBJDIR)/LISTOBJ

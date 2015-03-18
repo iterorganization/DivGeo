@@ -1,9 +1,17 @@
 #  VERSION : 02.11.2000 22:29
 
-OBJDIR = $(OBJECTCODE)
-ifdef SOLPSTOP
-OBJDIR = $(SOLPSTOP)/bin/$(OBJECTCODE)/DivGeo
+# Test whether necessary environment variables are defined; if not, exit
+ifndef HOST
+$(error HOST not defined)
 endif
+ifndef OBJECTCODE
+$(error OBJECTCODE not defined)
+endif
+ifdef SOLPS_DEBUG
+EXT_DEBUG = .debug
+endif
+
+OBJDIR = ${PWD}/builds/$(HOST).$(OBJECTCODE)$(EXT_DEBUG)
 
 SHELL  = /bin/sh
 DG     = $(OBJDIR)/dg
@@ -17,9 +25,15 @@ include ${OBJDIR}/LISTOBJ
 #CFLAGS = -g
 #CC = cc
 
-include config/compiler.$(OBJECTCODE)
-ifeq ($(shell [ -e config.local/compiler.${OBJECTCODE} ] && echo yes || echo no ),yes)
-include config.local/compiler.${OBJECTCODE}
+
+ifeq ($(shell [ -e config/config.${HOST}.${OBJECTCODE} ] && echo yes || echo no ),yes)
+include config/config.${HOST}.${OBJECTCODE}
+else
+$(error config/config.${HOST}.${OBJECTCODE} not found.)
+endif
+
+ifeq ($(shell [ -e config/config.${HOST}.${OBJECTCODE}.local ] && echo yes || echo no ),yes)
+include config/config.${HOST}.${OBJECTCODE}.local
 endif
 
 DEST = $(OBJS:%.o=$(OBJDIR)/%.o)
@@ -57,11 +71,7 @@ listobj:
 VERSION: src/git_version.h
 
 src/git_version.h: force
-ifeq ($(shell [ -d ${SOLPSTOP} ] && echo yes || echo no ),yes)
-	@echo "#define GIT_VERSION \"`(cd ${SOLPSTOP}; git describe --dirty --always)`\"" > src/git_version_new.h
-else
 	@echo "#define GIT_VERSION \"`git describe --dirty --always`\"" > src/git_version_new.h
-endif
 	@if cmp -s src/git_version_new.h src/git_version.h; then rm src/git_version_new.h; else mv src/git_version_new.h src/git_version.h; fi
 	
 

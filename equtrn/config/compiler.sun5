@@ -1,9 +1,0 @@
-FC	 = f90
-FFLAGS 	 = -g
-COMPILE  = ${FC} -c ${FFLAGS}
-CPP	 = /usr/ccs/lib/cpp
-
-LDLIBS   = -L${SOLPS_LIB}
-LDFLAGS  = -lmscl ${SOLPS_LIBS} -lf77compat
-
-LDWOS 	 = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
