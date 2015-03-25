@@ -16,7 +16,10 @@ OBJDIR = ${PWD}/builds/${HOST}.${COMPILER}${EXT_DEBUG}
 VPATH = src
 INCLUDE =
 
-ALL = cnveir cnvtria
+PROGEIR  = cnveir.exe
+PROGTRIA = cnvtria.exe
+
+ALL = ${PROGEIR} ${PROGTRIA}
 
 ifeq ($(shell [ -e config/config.${HOST}.${COMPILER} ] && echo yes || echo no ),yes)
 include config/config.${HOST}.${COMPILER}
@@ -46,11 +49,11 @@ $(OBJDIR)/%.o : %.f
 
 all: $(ALL:%=$(OBJDIR)/%)
 
-${OBJDIR}/cnveir: $(EIRDG)
-	${FC} ${FFLAGS} -o ${OBJDIR}/cnveir $(EIRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROGEIR}: $(EIRDG)
+	${FC} ${FFLAGS} -o ${OBJDIR}/${PROGEIR} $(EIRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/cnvtria: $(TRIDG)
-	${FC} ${FFLAGS} -o ${OBJDIR}/cnvtria $(TRIDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROGTRIA}: $(TRIDG)
+	${FC} ${FFLAGS} -o ${OBJDIR}/${PROGTRIA} $(TRIDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 clean:
 	cd ${OBJDIR}; rm -rf *.o $(ALL)
