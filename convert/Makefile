@@ -4,28 +4,28 @@
 ifndef HOST
 $(error HOST not defined)
 endif
-ifndef OBJECTCODE
-$(error OBJECTCODE not defined)
+ifndef COMPILER
+$(error COMPILER not defined)
 endif
 ifdef SOLPS_DEBUG
 EXT_DEBUG = .debug
 endif
 
-OBJDIR = ${PWD}/builds/${HOST}.${OBJECTCODE}${EXT_DEBUG}
+OBJDIR = ${PWD}/builds/${HOST}.${COMPILER}${EXT_DEBUG}
 
 VPATH = src
 INCLUDE =
 
 ALL = cnveir cnvtria
 
-ifeq ($(shell [ -e config/config.${HOST}.${OBJECTCODE} ] && echo yes || echo no ),yes)
-include config/config.${HOST}.${OBJECTCODE}
+ifeq ($(shell [ -e config/config.${HOST}.${COMPILER} ] && echo yes || echo no ),yes)
+include config/config.${HOST}.${COMPILER}
 else
-$(error config/config.${HOST}.${OBJECTCODE} not found.)
+$(error config/config.${HOST}.${COMPILER} not found.)
 endif
 
-ifeq ($(shell [ -e config/config.${HOST}.${OBJECTCODE}.local ] && echo yes || echo no ),yes)
-include config/config.${HOST}.${OBJECTCODE}.local
+ifeq ($(shell [ -e config/config.${HOST}.${COMPILER}.local ] && echo yes || echo no ),yes)
+include config/config.${HOST}.${COMPILER}.local
 endif
 
 eirdg = cnveir.o

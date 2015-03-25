@@ -17,5 +17,5 @@ F='field.snn'; [ $# -eq 4 ] && { [ -n "$3" ] && F=$3 }
 [ -r $1 ] || { echo "File $1 is absent\n"; echo "$Usage"; exit; }
 # rm -f fort.2 > /dev/null
 # ln -sf $1 fort.1
-[ $# -lt 4 ] || { echo "$3" | `dirname $0`/$OBJECTCODE/risepsi $1 $2 } && { echo "$4" | `dirname $0`/$OBJECTCODE/risepsi $1 $2 $F }
+[ $# -lt 4 ] || { echo "$3" | `dirname $0`/builds/${HOST}.${COMPILER}/risepsi $1 $2 } && { echo "$4" | `dirname $0`/builds/${HOST}.${COMPILER}/risepsi $1 $2 $F }
 #     && { mv fort.2 $2; rm -f fort.1; }

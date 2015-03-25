@@ -4,20 +4,40 @@
 ifndef HOST
 $(error HOST not defined)
 endif
-ifndef OBJECTCODE
-$(error OBJECTCODE not defined)
+ifndef COMPILER
+$(error COMPILER not defined)
 endif
 ifdef SOLPS_DEBUG
 EXT_DEBUG = .debug
 endif
 
-OBJDIR = ${PWD}/builds/${HOST}.${OBJECTCODE}${EXT_DEBUG}
+OBJDIR = ${PWD}/builds/${HOST}.${COMPILER}${EXT_DEBUG}
 
 VPATH = src
 INCLUDE = 
 FINCLUDE = -I${FLUSH}/source/default/commons
 
-ALL = cropequ dg2dg dg2ef ef2dg vr2dg nk2dg dg2vr risepsi prinequ jt2dg pb2dg pt2dg
+
+PROG_cropequ = cropequ
+PROG_dg2dg   = dg2dg
+PROG_dg2ef   = dg2ef
+PROG_ef2dg   = ef2dg
+PROG_vr2dg   = vr2dg
+PROG_dg2vr   = dg2vr
+PROG_nk2dg   = nk2dg
+PROG_nkn2dg  = nkn2dg
+PROG_risepsi = risepsi
+PROG_prinequ = prinequ
+PROG_jt2dg   = jt2dg
+PROG_pb2dg   = pb2dg
+PROG_pt2dg   = pt2dg
+PROG_sst2dg  = sst2dg
+PROG_culham  = culham
+PROG_dg_minuspsi_dg = dg_minuspsi_dg
+PROG_shotfile2dg    = shotfile2dg
+PROG_jetppf2dg      = jetppf2dg
+
+ALL = $PROG_cropequ $PROG_dg2dg $PROG_dg2ef $PROG_ef2dg $PROG_vr2dg $PROG_nk2dg $PROG_dg2vr $PROG_risepsi $PROG_prinequ $PROG_jt2dg $PROG_pb2dg $PROG_pt2dg
 
 creq =  cropequ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
 dgdg =	dg2dg.o rdeqdg.o wreqdg.o rdeqlh.o double.o open_files.o
@@ -38,14 +58,14 @@ sstdg = sst2dg.o wreqdg.o open_files.o
 shotfile2dg = shotfile2dg.o wreqdg.o
 jetppf2dg = jetppf2dg.o wreqdg.o
 
-ifeq ($(shell [ -e config/config.${HOST}.${OBJECTCODE} ] && echo yes || echo no ),yes)
-include config/config.${HOST}.${OBJECTCODE}
+ifeq ($(shell [ -e config/config.${HOST}.${COMPILER} ] && echo yes || echo no ),yes)
+include config/config.${HOST}.${COMPILER}
 else
-$(error config/config.${HOST}.${OBJECTCODE} not found.)
+$(error config/config.${HOST}.${COMPILER} not found.)
 endif
 
-ifeq ($(shell [ -e config/config.${HOST}.${OBJECTCODE}.local ] && echo yes || echo no ),yes)
-include config/config.${HOST}.${OBJECTCODE}.local
+ifeq ($(shell [ -e config/config.${HOST}.${COMPILER}.local ] && echo yes || echo no ),yes)
+include config/config.${HOST}.${COMPILER}.local
 endif
 
 include $(OBJDIR)/LISTOBJ
@@ -78,58 +98,58 @@ $(OBJDIR)/%.o : %.f
 
 all: $(ALL:%=$(OBJDIR)/%)
 
-${OBJDIR}/cropequ: $(CREQ)
+${OBJDIR}/$PROG_cropequ: $(CREQ)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/dg2dg: $(DGDG)
+${OBJDIR}/$PROG_dg2dg: $(DGDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/culham: $(CULHAM)
+${OBJDIR}/$PROG_culham: $(CULHAM)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/sst2dg: $(SSTDG)
+${OBJDIR}/$PROG_sst2dg: $(SSTDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/dg2ef: $(DGEF)
+${OBJDIR}/$PROG_dg2ef: $(DGEF)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/dg2vr: $(DGVR)
+${OBJDIR}/$PROG_dg2vr: $(DGVR)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/ef2dg: $(EFDG)
+${OBJDIR}/$PROG_ef2dg: $(EFDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/vr2dg: $(VRDG)
+${OBJDIR}/$PROG_vr2dg: $(VRDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/nk2dg: $(NKDG)
+${OBJDIR}/$PROG_nk2dg: $(NKDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/nkn2dg: $(NKNDG)
+${OBJDIR}/$PROG_nkn2dg: $(NKNDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/jt2dg: $(JTDG)
+${OBJDIR}/$PROG_jt2dg: $(JTDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/risepsi: $(RSPS)
+${OBJDIR}/$PROG_risepsi: $(RSPS)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/prinequ: $(PREQ)
+${OBJDIR}/$PROG_prinequ: $(PREQ)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/pb2dg: $(PBDG)
+${OBJDIR}/$PROG_pb2dg: $(PBDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/pt2dg: $(PTDG)
+${OBJDIR}/$PROG_pt2dg: $(PTDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/dg_minuspsi_dg: $(DGMINUSPSIDG)
+${OBJDIR}/$PROG_dg_minuspsi_dg: $(DGMINUSPSIDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/shotfile2dg: $(SHOTFILE2DG)
+${OBJDIR}/$PROG_shotfile2dg: $(SHOTFILE2DG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDWOS)
 
-${OBJDIR}/jetppf2dg: $(JETPPF2DG)
+${OBJDIR}/$PROG_jetppf2dg: $(JETPPF2DG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDFLUSH)
 
 clean:
