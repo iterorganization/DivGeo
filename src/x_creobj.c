@@ -1005,10 +1005,10 @@ typedef struct _CreateSurfaceDlg {
   char oldCreatorId[512];
   int oldOutputMode;
 
-  Widget wDlg,wSwByPoint,wSwByLevel,wSwSingle, /* Single-surface set */
+  Widget wDlg,wSwByPoint,wSwByLevel,wSwSingle, /* Single surface set */
     wX,wY,wArea,wLevel;
 
-  struct _DistrGraph dg;                       /* Multi-surface set */
+  struct _DistrGraph dg;                       /* Multi surface set */
   Widget wMArea,wMLevel1,wMLevel2,wMLevel1Label,wMLevel2Label,
     wMLevel1Pick,wMLevel2Pick,wMBoundingElem,
     wMCount,wMAlpha,wMAlpha2,wMDraw,wMLaw,wSwRemoveOld;
@@ -1576,7 +1576,7 @@ typedef struct _CreateGridPointDlg {
 
   Widget wDlg,wArea,wValue,wSwSingle;
 
-  struct _DistrGraph dg;                       /* Multi-surface set */
+  struct _DistrGraph dg;                       /* Multi surface set */
   Widget wMZone,wMCount,wMAlpha,wMAlpha2,wMDraw,wMLaw;
 }* CreateGridPointDlg;
 
