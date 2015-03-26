@@ -3,8 +3,8 @@
 PROG = dg.exe
 
 # Test whether necessary environment variables are defined; if not, exit
-ifndef HOST
-$(error HOST not defined)
+ifndef HOST_NAME
+$(error HOST_NAME not defined)
 endif
 ifndef COMPILER
 $(error COMPILER not defined)
@@ -13,7 +13,7 @@ ifdef SOLPS_DEBUG
 EXT_DEBUG = .debug
 endif
 
-OBJDIR = ${PWD}/builds/$(HOST).$(COMPILER)$(EXT_DEBUG)
+OBJDIR = ${PWD}/builds/$(HOST_NAME).$(COMPILER)$(EXT_DEBUG)
 
 SHELL  = /bin/sh
 DG     = $(OBJDIR)/${PROG}
@@ -28,14 +28,14 @@ include ${OBJDIR}/LISTOBJ
 #CC = cc
 
 
-ifeq ($(shell [ -e config/config.${HOST}.${COMPILER} ] && echo yes || echo no ),yes)
-include config/config.${HOST}.${COMPILER}
+ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
+include config/config.${HOST_NAME}.${COMPILER}
 else
-$(error config/config.${HOST}.${COMPILER} not found.)
+$(error config/config.${HOST_NAME}.${COMPILER} not found.)
 endif
 
-ifeq ($(shell [ -e config/config.${HOST}.${COMPILER}.local ] && echo yes || echo no ),yes)
-include config/config.${HOST}.${COMPILER}.local
+ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER}.local ] && echo yes || echo no ),yes)
+include config/config.${HOST_NAME}.${COMPILER}.local
 endif
 
 DEST = $(OBJS:%.o=$(OBJDIR)/%.o)
