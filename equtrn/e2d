@@ -13,5 +13,5 @@ Usage: $Name EFIT-file DG-file
 [ -r $1 ] || { echo "File $1 is absent\n"; echo "$Usage"; exit; }
 # rm -f fort.2 > /dev/null
 # ln -sf $1 fort.1
-`dirname $0`/$OBJECTCODE/ef2dg $1 $2 
+`dirname $0`/builds/${HOST_NAME}.${COMPILER}/ef2dg $1 $2 
 #      && { mv fort.2 $2; rm -f fort.1; }

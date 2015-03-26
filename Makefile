@@ -1,12 +1,22 @@
 #  VERSION : 02.11.2000 22:29
 
-OBJDIR = $(OBJECTCODE)
-ifdef SOLPSTOP
-OBJDIR = $(SOLPSTOP)/bin/$(OBJECTCODE)/DivGeo
+PROG = dg.exe
+
+# Test whether necessary environment variables are defined; if not, exit
+ifndef HOST_NAME
+$(error HOST_NAME not defined)
+endif
+ifndef COMPILER
+$(error COMPILER not defined)
+endif
+ifdef SOLPS_DEBUG
+EXT_DEBUG = .debug
 endif
 
+OBJDIR = ${PWD}/builds/$(HOST_NAME).$(COMPILER)$(EXT_DEBUG)
+
 SHELL  = /bin/sh
-DG     = $(OBJDIR)/dg
+DG     = $(OBJDIR)/${PROG}
 VPATH  = src
 
 SRCDIR = ${PWD}
@@ -17,9 +27,15 @@ include ${OBJDIR}/LISTOBJ
 #CFLAGS = -g
 #CC = cc
 
-include config/compiler.$(OBJECTCODE)
-ifeq ($(shell [ -e config.local/compiler.${OBJECTCODE} ] && echo yes || echo no ),yes)
-include config.local/compiler.${OBJECTCODE}
+
+ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
+include config/config.${HOST_NAME}.${COMPILER}
+else
+$(error config/config.${HOST_NAME}.${COMPILER} not found.)
+endif
+
+ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER}.local ] && echo yes || echo no ),yes)
+include config/config.${HOST_NAME}.${COMPILER}.local
 endif
 
 DEST = $(OBJS:%.o=$(OBJDIR)/%.o)
@@ -57,11 +73,7 @@ listobj:
 VERSION: src/git_version.h
 
 src/git_version.h: force
-ifeq ($(shell [ -d ${SOLPSTOP} ] && echo yes || echo no ),yes)
-	@echo "#define GIT_VERSION \"`(cd ${SOLPSTOP}; git describe --dirty --always)`\"" > src/git_version_new.h
-else
 	@echo "#define GIT_VERSION \"`git describe --dirty --always`\"" > src/git_version_new.h
-endif
 	@if cmp -s src/git_version_new.h src/git_version.h; then rm src/git_version_new.h; else mv src/git_version_new.h src/git_version.h; fi
 	
 

@@ -1,0 +1,19 @@
+#  VERSION : 29.05.95 20:00
+
+# check if necessary variables are correctly defined
+ifndef LD_MSCL
+$(error LD_MSCL not defined)
+endif
+
+# File compiler.macro for SGI f77
+
+FC       = f77
+FFLAGS   = -static -r8 -O2 -nocpp
+COMPILE  = ${FC} -c ${FFLAGS}
+CPP	 = /lib/cpp
+
+LDLIBS   = ${LD_MSCL} -L/afs/ipp-garching.mpg.de/@sys/lib -L/usr/local/lib -L/usr/lpp/xlC/lib
+LDFLAGS  = -lnag -lslap -lmach -lblas -lxersla -lsonnet -lnagblas -lC -ldumsgi
+LDEXTRA	 =
+
+# LDUMLIB = -lnagblas -lC

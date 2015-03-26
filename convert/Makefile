@@ -1,19 +1,34 @@
 #  VERSION : 10.12.2004 19:05
 
-OBJDIR = ${OBJECTCODE}
-ifdef SOLPSTOP
-OBJDIR = $(SOLPSTOP)/bin/$(OBJECTCODE)/DivGeo/convert
+# Test whether necessary environment variables are defined; if not, exit
+ifndef HOST_NAME
+$(error HOST_NAME not defined)
+endif
+ifndef COMPILER
+$(error COMPILER not defined)
+endif
+ifdef SOLPS_DEBUG
+EXT_DEBUG = .debug
 endif
 
+OBJDIR = ${PWD}/builds/${HOST_NAME}.${COMPILER}${EXT_DEBUG}
 
 VPATH = src
 INCLUDE =
 
-ALL = cnveir cnvtria
+PROGEIR  = cnveir.exe
+PROGTRIA = cnvtria.exe
 
-include config/compiler.${OBJECTCODE}
-ifeq ($(shell [ -e config.local/compiler.${OBJECTCODE} ] && echo yes || echo no ),yes)
-include config.local/compiler.${OBJECTCODE}
+ALL = ${PROGEIR} ${PROGTRIA}
+
+ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
+include config/config.${HOST_NAME}.${COMPILER}
+else
+$(error config/config.${HOST_NAME}.${COMPILER} not found.)
+endif
+
+ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER}.local ] && echo yes || echo no ),yes)
+include config/config.${HOST_NAME}.${COMPILER}.local
 endif
 
 eirdg = cnveir.o
@@ -28,17 +43,17 @@ TRIDG = $(tridg:%.o=$(OBJDIR)/%.o)
 #	  $(FC) $<
 
 $(OBJDIR)/%.o : %.f
-	[ -d ${OBJDIR} ] || mkdir ${OBJDIR}
+	[ -d ${OBJDIR} ] || mkdir -p ${OBJDIR}
 	$(COMPILE) -o ${OBJDIR}/$*.o $<
 	if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
 
 all: $(ALL:%=$(OBJDIR)/%)
 
-${OBJDIR}/cnveir: $(EIRDG) $(SOLPS_LIB)/libmscl.a
-	${FC} ${FFLAGS} -o ${OBJDIR}/cnveir $(EIRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROGEIR}: $(EIRDG)
+	${FC} ${FFLAGS} -o ${OBJDIR}/${PROGEIR} $(EIRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/cnvtria: $(TRIDG)
-	${FC} ${FFLAGS} -o ${OBJDIR}/cnvtria $(TRIDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROGTRIA}: $(TRIDG)
+	${FC} ${FFLAGS} -o ${OBJDIR}/${PROGTRIA} $(TRIDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 clean:
 	cd ${OBJDIR}; rm -rf *.o $(ALL)

@@ -1,0 +1,18 @@
+#  VERSION : 14.07.98 20:18
+
+# check if necessary variables are correctly defined
+ifndef LD_MSCL
+$(error LD_MSCL not defined)
+endif
+
+
+# File compiler.macro for IBM xlf
+
+FC	= xlf
+FFLAGS	= -O
+COMPILE = ${FC} -c ${FFLAGS}
+CPP	= /lib/cpp
+
+LDLIBS	= ${LD_MSCL} -L/usr/local/lib -L/usr/lpp/xlC/lib
+LDFLAGS = 
+LDEXTRA =
