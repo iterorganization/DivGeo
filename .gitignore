@@ -28,3 +28,8 @@ unicos*/
 bin/
 lib/
 builds/
+
+# DivGeo archive
+ 
+device/
+
