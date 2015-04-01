@@ -3,11 +3,11 @@ ifndef LD_MSCL
   $(error LD_MSCL not defined)
 endif
 
-FC      = pgf90
+FC      = ifort
 ifdef SOLPS_DEBUG
-FFLAGS = -g -C
+FFLAGS = -g -C -traceback -debug all
 else
-FFLAGS = -O3
+FFLAGS = -O3 -vec_report0
 endif
 
 COMPILE = ${FC} -c ${FFLAGS}

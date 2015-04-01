@@ -1,8 +1,9 @@
 # check if necessary variables are correctly defined
-LD_MSCL ?= `pkg-config mscl --libs`
+ifndef LD_MSCL
+  $(error LD_MSCL not defined)
+endif
 
-
-FC	     = ifort 
+FC	 = ifort 
 ifdef SOLPS_DEBUG
 FFLAGS	 = -g -C -vec_report0 -traceback
 else
@@ -16,4 +17,4 @@ LDFLAGS  =
 
 #LDWOS	 = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
 #LDWOS	 = -L/afs/ipp/aug/ads/lib64/@sys -lKK -lwoss -lddww -lpplotXt -lsocket
-#LDWOS   = -L/afs/ipp/aug-ads/@sys/lib64 -Wl,-R/afs/ipp/aug-ads/@sys/lib64 -lkk -lddww
+#LDWOS    = -L/afs/ipp/aug-ads/@sys/lib64 -Wl,-R/afs/ipp/aug-ads/@sys/lib64 -lkk -lddww

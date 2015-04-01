@@ -1,6 +1,8 @@
 # check if necessary variables are correctly defined
-LD_MSCL ?= `pkg-config mscl --libs`
-
+ifndef MSCL_ROOT
+  $(error MSCL_ROOT not defined)
+endif
+LD_MSCL  ?= -L{MSCL_ROOT} -lmscl
 
 FC	     = ifort 
 ifdef SOLPS_DEBUG

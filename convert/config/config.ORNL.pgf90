@@ -1,7 +1,8 @@
 # check if necessary variables are correctly defined
-ifndef LD_MSCL
-  $(error LD_MSCL not defined)
+ifndef MSCL_ROOT
+  $(error MSCL_ROOT not defined)
 endif
+LD_MSCL = -L${MSCL_ROOT} -lmscl
 
 FC      = pgf90
 ifdef SOLPS_DEBUG
