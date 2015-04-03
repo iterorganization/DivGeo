@@ -37,7 +37,7 @@ PROG_dg_minuspsi_dg = dg_minuspsi_dg
 PROG_shotfile2dg    = shotfile2dg
 PROG_jetppf2dg      = jetppf2dg
 
-ALL = $PROG_cropequ $PROG_dg2dg $PROG_dg2ef $PROG_ef2dg $PROG_vr2dg $PROG_nk2dg $PROG_dg2vr $PROG_risepsi $PROG_prinequ $PROG_jt2dg $PROG_pb2dg $PROG_pt2dg
+ALL = ${PROG_cropequ} ${PROG_dg2dg} ${PROG_dg2ef} ${PROG_ef2dg} ${PROG_vr2dg} ${PROG_nk2dg} ${PROG_dg2vr} ${PROG_risepsi} ${PROG_prinequ} ${PROG_jt2dg} ${PROG_pb2dg} ${PROG_pt2dg}
 
 creq =  cropequ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
 dgdg =	dg2dg.o rdeqdg.o wreqdg.o rdeqlh.o double.o open_files.o
@@ -98,58 +98,58 @@ $(OBJDIR)/%.o : %.f
 
 all: $(ALL:%=$(OBJDIR)/%)
 
-${OBJDIR}/$PROG_cropequ: $(CREQ)
+${OBJDIR}/${PROG_cropequ}: $(CREQ)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/$PROG_dg2dg: $(DGDG)
+${OBJDIR}/${PROG_dg2dg}: $(DGDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/$PROG_culham: $(CULHAM)
+${OBJDIR}/${PROG_culham}: $(CULHAM)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/$PROG_sst2dg: $(SSTDG)
+${OBJDIR}/${PROG_sst2dg}: $(SSTDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/$PROG_dg2ef: $(DGEF)
+${OBJDIR}/${PROG_dg2ef}: $(DGEF)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/$PROG_dg2vr: $(DGVR)
+${OBJDIR}/${PROG_dg2vr}: $(DGVR)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/$PROG_ef2dg: $(EFDG)
+${OBJDIR}/${PROG_ef2dg}: $(EFDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/$PROG_vr2dg: $(VRDG)
+${OBJDIR}/${PROG_vr2dg}: $(VRDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/$PROG_nk2dg: $(NKDG)
+${OBJDIR}/${PROG_nk2dg}: $(NKDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/$PROG_nkn2dg: $(NKNDG)
+${OBJDIR}/${PROG_nkn2dg}: $(NKNDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/$PROG_jt2dg: $(JTDG)
+${OBJDIR}/${PROG_jt2dg}: $(JTDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/$PROG_risepsi: $(RSPS)
+${OBJDIR}/${PROG_risepsi}: $(RSPS)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/$PROG_prinequ: $(PREQ)
+${OBJDIR}/${PROG_prinequ}: $(PREQ)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/$PROG_pb2dg: $(PBDG)
+${OBJDIR}/${PROG_pb2dg}: $(PBDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/$PROG_pt2dg: $(PTDG)
+${OBJDIR}/${PROG_pt2dg}: $(PTDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/$PROG_dg_minuspsi_dg: $(DGMINUSPSIDG)
+${OBJDIR}/${PROG_dg_minuspsi_dg}: $(DGMINUSPSIDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/$PROG_shotfile2dg: $(SHOTFILE2DG)
+${OBJDIR}/${PROG_shotfile2dg}: $(SHOTFILE2DG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDWOS)
 
-${OBJDIR}/$PROG_jetppf2dg: $(JETPPF2DG)
+${OBJDIR}/${PROG_jetppf2dg}: $(JETPPF2DG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDFLUSH)
 
 clean:
