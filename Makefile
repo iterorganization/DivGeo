@@ -53,7 +53,7 @@ update: clean VERSION listobj depend all
 .PHONY: VERSION clean listobj update depend all neat tags force
 
 clean:
-	/bin/rm -rf ${OBJDIR}/*.o $(DG) ${OBJDIR}/*.bak src/git_version.h
+	/bin/rm -rf ${OBJDIR}/*.o $(DG) ${OBJDIR}/*.bak src/git_version.h ${OBJDIR}/dependencies* ${OBJDIR}/LISTOBJ ${OBJDIR}/dg.dgc ${OBJDIR}/dg.dgh 
 
 neat:
 	/bin/rm -rf ${OBJDIR}/*.o ${OBJDIR}/*.bak

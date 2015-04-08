@@ -153,7 +153,7 @@ ${OBJDIR}/${PROG_jetppf2dg}: $(JETPPF2DG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDFLUSH)
 
 clean:
-	cd ${OBJDIR}; rm -rf *.o $(ALL)
+	cd ${OBJDIR}; rm -rf *.o  *.f $(ALL) LISTOBJ dependencies*
 
 TAGS:	tags
 
