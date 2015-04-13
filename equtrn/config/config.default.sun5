@@ -4,10 +4,10 @@ $(error LD_MSCL not defined)
 endif
 
 
-FC	 = f90
+FC	     = f90
 FFLAGS 	 = -g
 COMPILE  = ${FC} -c ${FFLAGS}
-CPP	 = /usr/ccs/lib/cpp
+CPP	     = /usr/ccs/lib/cpp
 
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  = -lf77compat

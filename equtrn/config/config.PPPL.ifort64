@@ -10,7 +10,7 @@ else
 FFLAGS	 = -O -vec_report0
 endif
 COMPILE  = ${FC} -c ${FFLAGS}
-CPP	 = /lib/cpp -traditional
+CPP	     = /lib/cpp -C -traditional
 
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  = 

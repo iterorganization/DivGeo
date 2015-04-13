@@ -10,10 +10,10 @@ endif
 FC       = f77
 FFLAGS   = -static -r8 -O2 -nocpp
 COMPILE  = ${FC} -c ${FFLAGS}
-CPP	 = /lib/cpp
+CPP	     = /lib/cpp
 
 LDLIBS   = ${LD_MSCL} -L/afs/ipp-garching.mpg.de/@sys/lib -L/usr/local/lib -L/usr/lpp/xlC/lib
-LDFLAGS  = -lnag -lslap -lmach -lblas -lxersla -lsonnet -lnagblas -lC -ldumsgi
+LDFLAGS  = ${LD_NAG} -lslap -lmach -lblas -lxersla ${LD_SONNET} -lnagblas -lC -ldumsgi
 LDEXTRA	 =
 
 # LDUMLIB = -lnagblas -lC

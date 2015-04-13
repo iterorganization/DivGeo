@@ -90,7 +90,7 @@ SHOTFILE2DG = $(shotfile2dg:%.o=$(OBJDIR)/%.o)
 JETPPF2DG = $(jetppf2dg:%.o=$(OBJDIR)/%.o)
 
 $(OBJDIR)/%.o : %.f
-	${CPP} -P -C ${INCLUDE} $< > ${OBJDIR}/$*.f
+	${CPP} -P ${INCLUDE} $< > ${OBJDIR}/$*.f
 #	$(COMPILE) -o ${OBJDIR}/$*.o $<
 	$(COMPILE) -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f ${FINCLUDE}
 #	/bin/rm ${OBJDIR}/$*.f
