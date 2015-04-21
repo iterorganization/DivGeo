@@ -56,14 +56,14 @@ c
       end if
       if(iret.ne.0) return
 c
-      read(lun,'(q,80a1)') l, (cvect(i),i=1,l)
+      read(lun,'(80a1)',advance='no',size=l) cvect
       backspace(lun)
       if (l.eq.80) then
         read(lun,'(5e16.9)') rdim,zdim,rcntc,redge,zmsmid
       else
         read(lun,*) rdim,zdim,rcntc,redge,zmsmid
       endif
-      read(lun,'(q,80a1)') l, (cvect(i),i=1,l)
+      read(lun,'(80a1)',advance='no',size=l) cvect
       backspace(lun)
       if (l.eq.80) then
         read(lun,'(5e16.9)') rma,zma,psimin,psilim,btorc
