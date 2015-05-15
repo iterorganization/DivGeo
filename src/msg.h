@@ -98,12 +98,12 @@
 #define ERR_REPOS_TEMPLATE_2 94   /* To be used only in TlReposition */
 #define ERR_FLAT_EQUIL 95
 #define ERR_DUP_MESH_ELNO 96      /* Duplicate element number in a mesh file */
-#define ERR_MOVE_CUT_MESH_PT 97   /* Can't move a "cut" mesh point */
+#define ERR_MOVE_CUT_MESH_PT 97   /* Cannot move a "cut" mesh point */
 #define ERR_MESH_NO_EQUIL    98   /* Equilibrium reqd for mesh operations */
 #define ERR_MESH_OUT_OF_EQUIL 99
 #define ERR_DEL_MARKED_OBJECT_TYPE 100 /* Deleting a marked mesh element/cell */
 #define ERR_MESH_ELEMENT_DIR 101  /* Mesh element with a wrong orientation*/
-#define ERR_MESH_CELL_FIND 102    /* Couldn't find the nearest mesh cell */
+#define ERR_MESH_CELL_FIND 102    /* Could not find the nearest mesh cell */
 #define ERR_BAD_OBJECT_TYPE 103   /* For "export elements as template" */
 
 #define ERR_MESH_HDR_NO_LF 104    /* Used in                 */

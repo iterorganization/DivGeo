@@ -963,7 +963,7 @@ void* GetLockingObject(App a,void* object) {
       }
 
       for (vd=AppVarDef1st(a,&ix);vd!=NULL;vd=Next(&ix))
-        if (vd->varType & VTM_HASGROUP) /* $$$ - didn't understand well */
+        if (vd->varType & VTM_HASGROUP) /* $$$ - did not understand well */
           for (v=Group1st(vd->vars,&ix1);v!=NULL;v=Next(&ix1))
             if (v->val!=NULL && InGroup(v->val,object)) return IsLocked(v) ?
                 GetLockingObject(a,v) : v;

@@ -162,7 +162,7 @@ char* dgResources[]={
   "DivGeo.errNoSurfaceZoneAtXY:            This point does not belong to any defined zone\n",
   "DivGeo.errOldFileNoTopology:            This file was saved with an older version of DG and has no topology information.\n",
   "DivGeo.errTargetCrossed2x:              A target intersects more than one separatrix segment\n",
-  "DivGeo.errTargetNotCrossed:             A target doesn't intersect any separatrix segment\n",
+  "DivGeo.errTargetNotCrossed:             A target does not intersect any separatrix segment\n",
   "DivGeo.errOutputSurfaceXY:              Cannot output virtual surfaces.\n",
   "DivGeo.errNoElementsInPath:             No elements in the path of this chord.\n"
   "\n",

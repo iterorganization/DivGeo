@@ -522,7 +522,7 @@ Widget OpenSetAngleDlg(View w) {
   else {
     sprintf(s,"%f",180/M_PI*w->xyAngle);
     wg=XtNameToWidget(w->x->wMain,"*angle");
-    if (wg==NULL)  fprintf(stderr,"couldn't set string\n");
+    if (wg==NULL)  fprintf(stderr,"could not set string\n");
     XmTextSetString(wg,s);
     XtPopup(XtParent(wDlg),XtGrabNone);
   }

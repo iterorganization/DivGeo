@@ -422,7 +422,7 @@ static void CbFile_Open(Widget wg,View w,void* xtp) {
     }
     SetViewMsg(w2,GetStr(w,MSG_FILEOPENED));
 /*    ShowPicture(w2); */
-/*    NotifyChange(a,w2); ??? - can't figure out the purpose of this */
+/*    NotifyChange(a,w2); ??? - cannot figure out the purpose of this */
     FreeUndoInfo(a);
     AddXAppRecentFile(w2->xapp,a->fName);
   }
