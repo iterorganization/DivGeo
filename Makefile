@@ -64,7 +64,9 @@ tags:
 depend: ${OBJS:.o=.c}
 	-mkdir -p ${OBJDIR}
 	-cd ${OBJDIR} ; ln -sf ${SRCDIR}/src/dg.dgh ${SRCDIR}/dg.dgc .
-	$(CC) ${INCLUDES} -M $^ | sed '/^[^ ]*.o: / s|^|${OBJDIR}/|' > ${OBJDIR}/dependencies
+	$(CC) ${INCLUDES} -M $^ | sed '/^[^ ]*.o: / s|^|${OBJDIR}/|' | \
+	sed -e 's,^${OBJDIR}/,\$${OBJDIR}/,' | \
+	sed 's,: ${SOLPSTOP},: $${SOLPSTOP},' > ${OBJDIR}/dependencies
 
 listobj:
 	@P=${OBJDIR}; cd src ; rm -f $${P}/LISTOBJ; touch $${P}/LISTOBJ; \
@@ -75,7 +77,6 @@ VERSION: src/git_version.h
 src/git_version.h: force
 	@echo "#define GIT_VERSION \"`git describe --dirty --always`\"" > src/git_version_new.h
 	@if cmp -s src/git_version_new.h src/git_version.h; then rm src/git_version_new.h; else mv src/git_version_new.h src/git_version.h; fi
-	
 
 ${OBJDIR}/dependencies:
 	-mkdir -p ${OBJDIR}

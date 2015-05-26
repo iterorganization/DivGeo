@@ -161,9 +161,10 @@ tags:
 	rm -f TAGS ; etags src/*.f
 
 depend: ${OBJS:.o=.f}
-	makedepend -f  ${OBJDIR}/dependencies ${INCLUDE} $^
-	mv ${OBJDIR}/dependencies ${OBJDIR}/dependencies.bak
-	sed -e '3,$$s|^|${OBJDIR}/|' ${OBJDIR}/dependencies.bak > ${OBJDIR}/dependencies
+	makedepend -f- ${INCLUDE} $^ | \
+	sed -e '3,$$s|^|${OBJDIR}/|' | \
+	sed -e 's,^${OBJDIR}/,\$${OBJDIR}/,' | \
+	sed -e 's,: ${SOLPSTOP},: $${SOLPSTOP},' > ${OBJDIR}/dependencies
 
 $(OBJDIR)/LISTOBJ: listobj
 
