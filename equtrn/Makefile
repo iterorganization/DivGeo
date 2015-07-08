@@ -14,8 +14,11 @@ endif
 OBJDIR = ${PWD}/builds/${HOST_NAME}.${COMPILER}${EXT_DEBUG}
 
 VPATH = src
-INCLUDE = 
-FINCLUDE = -I${FLUSH}/source/default/commons
+INCLUDE =
+FINCLUDE =
+ifeq ($(shell [ -d ${FLUSH}/source/default/commons ] && echo yes || echo no ),yes)
+FINCLUDE += -I${FLUSH}/source/default/commons
+endif
 
 
 PROG_cropequ = cropequ
