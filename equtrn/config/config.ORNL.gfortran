@@ -1,14 +1,15 @@
 # check if necessary variables are correctly defined
-ifndef MSCL_ROOT
-  $(error MSCL_ROOT not defined)
-endif
+#ifndef MSCL_ROOT
+#  $(error MSCL_ROOT not defined)
+#endif
+MSCL_ROOT ?= /usr/local/mscl/linux_gfortran_JDL
 LD_MSCL ?= -L${MSCL_ROOT} -lmscl
 
 FC	     = gfortran
 ifdef SOLPS_DEBUG
-FFLAGS	 = -g -C 
+FFLAGS	 = -g -C -fdefault-real-8
 else
-FFLAGS	 = -O3 
+FFLAGS	 = -O3 -fdefault-real-8
 endif
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP	     = /lib/cpp -traditional
