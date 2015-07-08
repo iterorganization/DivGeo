@@ -1,4 +1,5 @@
 #include "x_dg.h"
+#include <stdint.h>
 
 #define DLG_TOOLBAR "dlgToolBox"
 
@@ -19,7 +20,7 @@ static void CbToolBarDlgSetTool(Widget wg,XtPointer pView,XtPointer pcbs) {
   GetValues(wg,XmNuserData,&xtp,NULL);tp=(ToolProc)xtp;
   GetValues(XtParent(wg),XmNuserData,&xtp,NULL);
   if (tp!=NULL) {
-    w->x->tools[(int)xtp]=tp;
+    w->x->tools[(uintptr_t)xtp]=tp;
     NotifyNewTool(w);
   }
 }

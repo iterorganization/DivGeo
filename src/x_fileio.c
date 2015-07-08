@@ -1,4 +1,5 @@
 #include "x_dg.h"
+#include <stdint.h>
 
 #define DLG_APPUNSAVED "dlgAppUnsaved"
 #define DLG_APP_UNSAVED "dlgAppUnsaved"
@@ -200,7 +201,7 @@ Widget OpenExportMeshDlg(View w,int bAtExit) {
     XmStringFree(xms);
   }
 
-  SetValues(wg,XmNuserData,(XtPointer)bAtExit,NULL);
+  SetValues(wg,XmNuserData,(XtPointer)(uintptr_t)bAtExit,NULL);
 
   return wg;
 }
@@ -277,7 +278,7 @@ Widget OpenFileSaveDlg(View w,int bAtExit) {
     XtPopup(XtParent(wg),XtGrabNone);
   }
 
-  SetValues(wg,XmNuserData,(XtPointer)bAtExit,NULL);
+  SetValues(wg,XmNuserData,(XtPointer)(uintptr_t)bAtExit,NULL);
 
   XmListDeselectAllItems(XmFileSelectionBoxGetChild(wg,XmDIALOG_LIST));
   if (w->app->fName!=NULL) {
@@ -369,7 +370,7 @@ static void CbExportMesh(Widget wg,XtPointer xtpV,XtPointer pcbs) {
     XtPopdown(XtParent(wg));
     SetViewMsg(w,GetResourceString(wg,"msgMeshSaved",NULL,NULL));
     UndoMark(w->app);
-    if ((int)GetUserData(wg)) CloseXmView(w,-1);
+    if ((uintptr_t)GetUserData(wg)) CloseXmView(w,-1);
   }
   XtFree(s);
 
@@ -457,7 +458,7 @@ static void CbFile_Save(Widget wg,View w,void* xtp) {
     UndoMark(w->app);
     AddXAppRecentFile(w->xapp,w->app->fName);
 
-    if ((int)userData) CloseXmView(w,-1);
+    if ((uintptr_t)userData) CloseXmView(w,-1);
   }
   XtFree(s);
 }
@@ -695,7 +696,7 @@ static void CbFilePrintOk(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
 
   s=XmTextGetString(dlg->wCommand);
 
-  switch((int)GetOptionMenuValue(dlg->wCmdType)) {
+  switch((uintptr_t)GetOptionMenuValue(dlg->wCmdType)) {
     case CMT_FILE:
       r=PsViewOutput(psW,s,-1,title);
       break;
@@ -901,7 +902,7 @@ static int EEAT_OkCheck(EEAT_Dlg dlg) {
 
 
 static Group EEAT_GetGroup(EEAT_Dlg dlg) {
-  switch((int)GetOptionMenuValue(dlg->wOptMenu)) {
+  switch((uintptr_t)GetOptionMenuValue(dlg->wOptMenu)) {
     case EEAT_ALL:
       return dlg->w->app->elems;
     case EEAT_MARKED:

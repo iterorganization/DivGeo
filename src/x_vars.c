@@ -1,4 +1,5 @@
 #include "x_dg.h"
+#include <stdint.h>
 
 /**********************************************************************\
 *                                                                      *
@@ -484,7 +485,7 @@ static void ResetVarsDlgField(VarsEditField vef,unsigned flags) {
     else {
       SetLabelString(vef->dlg->wMessage,s);
       SetUserData(vef->dlg->wMessage,
-          (XtPointer)(flags & RF_NEWVAL? XT_NEWVAL : XT_VEF));
+	  (XtPointer)(uintptr_t)(flags & RF_NEWVAL? XT_NEWVAL : XT_VEF));
     }
   }
 
@@ -730,7 +731,7 @@ static void CbVarsEditFocus(Widget wg,XtPointer pField,XtPointer pcbs) {
 static void CbVarsEditCompare_p(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
   VarsEditDlg dlg=(VarsEditDlg)xtpDlg;
   VarsEditField vef=dlg->popupMenuField;
-  int mode=(int)GetUserData(wg);
+  int mode=(uintptr_t)GetUserData(wg);
   int i1,i2,comp;
   double f1,f2;
   char* s,* s1;

@@ -1,6 +1,7 @@
 /* Menu commands */
 
 #include "x_dg.h"
+#include <stdint.h>
 
 /* Menu callbacks
 */
@@ -241,7 +242,7 @@ void CbCmDelObjects(Widget wg,View w,void* pcbs) {
   SetActiveView(w);
 
   GetValues(wg,XmNuserData,&objType,NULL);
-  switch((int)objType) {
+  switch((uintptr_t)objType) {
     case T_MARKING:
       for (p=AppMark1st(w->app,&ix);p!=NULL;p=Next(&ix)) {
         switch (GetObjType(p)) {

@@ -63,6 +63,7 @@
 #include <values.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include "vacreate.h"
 
@@ -457,7 +458,7 @@ printf("creating: %s\n",strName);               /* relcheck_ignore_line */
       case '=':
         pt1=va_arg(*pvl,XtPointer);
         if (XmIsToggleButton(w))
-          XmToggleButtonSetState(w,(int)pt1,True);
+          XmToggleButtonSetState(w,(uintptr_t)pt1,True);
         else if (XmIsText(w))
           XmTextSetString(w,pt1);
         else if (XmIsTextField(w))
@@ -608,7 +609,7 @@ int GetResourceInt(Widget wg,char* name,char* class,int def) {
   if (class==NULL) class=name;
   xtr.resource_name=name;
   xtr.resource_class=class;
-  xtr.default_addr=(XtPointer)def;
+  xtr.default_addr=(XtPointer)(uintptr_t)def;
   XtGetApplicationResources(wg,&i,&xtr,1,NULL,0);
 
   return i;
@@ -660,14 +661,14 @@ void CbFreeGC(Widget wg,XtPointer xtpGC,XtPointer pcbs) {
 void CbRemovePTimeOut(Widget wg,XtPointer xtppTO,XtPointer pcbs) {
   XtIntervalId* pxtiid=(XtIntervalId*)xtppTO;
 
-  if (*pxtiid!=(int) NULL) {
+  if (*pxtiid!=(uintptr_t) NULL) {
     XtRemoveTimeOut(*pxtiid);
-    *pxtiid=(int) NULL;
+    *pxtiid=(uintptr_t) NULL;
   }
 }
 
 void CbExitApp(Widget wg,XtPointer xtpExitCode,XtPointer pcbs) {
-  exit((int)xtpExitCode);
+  exit((uintptr_t)xtpExitCode);
 }
 
 void CbDebugPrint(Widget wg,XtPointer xtpDebugStr,XtPointer pcbs) {
@@ -1117,8 +1118,8 @@ void Form2Table(Widget form) {
   for (i=0;i<numChildren;i++) {
     pos[i].wg=children[i];
     GetValues(children[i],XmNuserData,&xtp,NULL);
-    pos[i].x=(int)xtp/256;
-    pos[i].y=(int)xtp%256;
+    pos[i].x=(uintptr_t)xtp/256;
+    pos[i].y=(uintptr_t)xtp%256;
   }
 
   CreateFormTable(form,pos,numChildren);
