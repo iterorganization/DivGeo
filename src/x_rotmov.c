@@ -1,5 +1,4 @@
 #include "x_dg.h"
-#include <stdint.h>
 
 #define DLG_ROTMOVE "dlgRotMove"
 #define DLG_GLUEPOINTS "dlgGluePoints"
@@ -354,7 +353,7 @@ void CbGroupNormals(Widget wg,XtPointer xtpV,XtPointer pbcs) {
   int i,r;
   Group g;
 
-  i=GlueNormals(w->app,(uintptr_t)GetUserData(wg)? w->app->mark : NULL,&r);
+  i=GlueNormals(w->app,(int)GetUserData(wg)? w->app->mark : NULL,&r);
   if (i) {
     Cancel(w->app);
     MessageBox(w->x->wMain,GetStr(w,i));

@@ -11,7 +11,6 @@
 \**********************************************************************/
 
 #include "x_dg.h"
-#include <stdint.h>
 
 #define XTBGS XmToggleButtonGetState
 #define XTBSS XmToggleButtonSetState
@@ -1663,7 +1662,7 @@ void DelDependentWidgetEx(View w,Widget wg,int bWidgetDestroyed) {
 
 void AddDWProc(Widget wg,XtPointer xtpV,XtPointer mask,XtPointer obj,
     XtPointer xtpProc,XtPointer userData) {
-  AddDependentWidget((View)xtpV,wg,(uintptr_t)mask,(void*)obj,
+  AddDependentWidget((View)xtpV,wg,(int)mask,(void*)obj,
     (DwNotifyProc)xtpProc,(void*)userData);
 }
 

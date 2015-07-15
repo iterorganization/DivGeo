@@ -1,6 +1,5 @@
 #include "dg.h"
 #include "git_version.h"
-#include <stdint.h>
 
 #define FILE_VERSION 115
 #define DG_VERSION_NEEDED 15000
@@ -86,13 +85,13 @@ static struct _NameRec meshSlidingModes[]={
 
 static struct _FlagsRec surfaceZoneFlags[]={
   {SZF_LIMITBYSURFACE,'i'},
-  {0,(uintptr_t) NULL}
+  {0,(int) NULL}
 };
 
 static struct _FlagsRec gridPointSegFlags[]={
   {GPSF_USED,'u'},
   {GPSF_TARGET_CW,'t'},
-  {0,(uintptr_t) NULL}
+  {0,(int) NULL}
 };
 
 App LoadNormalApp(XApp xap,char* fName,char** pMsg,int* err) {

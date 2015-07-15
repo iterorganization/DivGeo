@@ -1,5 +1,4 @@
 #include "x_dg.h"
-#include <stdint.h>
 
 #define DLG_TOPOLOGY "dlgTopology"
 #define DLG_IMPORTTOPO "dlgImportTopology"
@@ -487,7 +486,7 @@ static void CbTopoSZSetBtn(Widget wg,XtPointer xtpD,XtPointer pcbs) {
   if (IsXmTextEmpty(dlg->wSZgps2)) gps2=-1;
   else gps2=GetXmTextInt(dlg->wSZgps2);
 
-  orient=(uintptr_t)GetOptionMenuValue(dlg->wSZorient);
+  orient=(int)GetOptionMenuValue(dlg->wSZorient);
   if (orient!=1) orient=-1; /* If the convertion pointer->negative int fails */
 
   if (gps1==MAXINT || gps2==MAXINT || gps2<-1) {
@@ -623,7 +622,7 @@ static void InitSZFromZone(TopologyDlg dlg,SurfaceZone sz) {
   if (sz!=NULL) if (sz->gpZone2<0) *buf=0; else sprintf(buf,"%d",sz->gpZone2);
   XmTextSetString(dlg->wSZgps2,buf);
 
-  if (sz!=NULL) SetOptionMenuValue(dlg->wSZorient,(XtPointer)(uintptr_t)sz->orient);
+  if (sz!=NULL) SetOptionMenuValue(dlg->wSZorient,(XtPointer)sz->orient);
 
   if (sz!=NULL)
     XmToggleButtonSetState(dlg->wSZClosed,sz->flags & SZF_LIMITBYSURFACE!=0,0);

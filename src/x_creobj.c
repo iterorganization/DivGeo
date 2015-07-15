@@ -1,5 +1,4 @@
 #include "x_dg.h"
-#include <stdint.h>
 
 /* ////////////////////////////////////////////////////////////////// */
 /* //                                                              // */
@@ -43,7 +42,7 @@ void CbCmCreateAt(Widget wg,XtPointer arg,XtPointer pcbs) {
 
   GetValues(wg,XmNuserData,&userData,NULL);
 
-  switch((uintptr_t)userData) {
+  switch((int)userData) {
     case T_NODE:
       OpenCreateNodeDlg(w);
       break;
@@ -458,7 +457,7 @@ static void DG_Init(DistrGraph dg,View w,Widget wDlg,
   dg->wLaw=wLaw;
   dg->wLawLabel=wLawLabel;
 
-  dg->toUpdate=(uintptr_t) NULL;
+  dg->toUpdate=(int) NULL;
   dg->bGraphDrawn=True;
 
   dg->bDragging=False;
@@ -628,7 +627,7 @@ static int DG_GetData(DistrGraph dg,int bShowErrors) {
 
   dg->count=dg->alpha[0]=dg->alpha[0]=-1;
 
-  dg->law=(uintptr_t)GetOptionMenuValue(dg->wLaw);
+  dg->law=(int)GetOptionMenuValue(dg->wLaw);
 
   dg->count=GetXmTextInt(dg->wCount);
   if (dg->count==MAXINT) dg->count=-1;
@@ -674,7 +673,7 @@ static int DG_GetData(DistrGraph dg,int bShowErrors) {
 static void ToDG_UpdateGraph(XtPointer xtpG,XtIntervalId* timer) {
   DistrGraph dg=(DistrGraph)xtpG;
 
-  dg->toUpdate=(uintptr_t) NULL;
+  dg->toUpdate=(int) NULL;
   DG_DrawGraph(dg,True);
 }
 
@@ -707,9 +706,9 @@ static void CbDG_NumbersChanged(Widget wg,XtPointer xtpG,XtPointer pcbs) {
 
   /* Remove the update timeout, if any */
 
-  if (dg->toUpdate!=(uintptr_t) NULL) {
+  if (dg->toUpdate!=(int) NULL) {
     XtRemoveTimeOut(dg->toUpdate);
-    dg->toUpdate=(uintptr_t) NULL;
+    dg->toUpdate=(int) NULL;
   }
 
   /* Add a new update timeout */
@@ -1205,7 +1204,7 @@ static void CSD_CreateSingle(CreateSurfaceDlg dlg) {
 
     /* By level - parse area, level */
 
-    area=(uintptr_t)GetOptionMenuValue(dlg->wArea);
+    area=(int)GetOptionMenuValue(dlg->wArea);
     level=GetXmTextDouble(dlg->wLevel);
 
     if (level==MAXDOUBLE) {
@@ -1268,7 +1267,7 @@ static void CSD_CreateSingle(CreateSurfaceDlg dlg) {
 }
 
 static void CSD_CreateMultiple(CreateSurfaceDlg dlg) {
-  int area=(uintptr_t)GetOptionMenuValue(dlg->wMArea);
+  int area=(int)GetOptionMenuValue(dlg->wMArea);
   double level1,level2,t,x,y,v;
   int i,r,cnt,carreMode;
   SurfaceEx sex;
@@ -1410,9 +1409,9 @@ static void CbCSD_CopyLevel(Widget wg,XtPointer xtpD,XtPointer pcbs) {
   }
 
   SetOptionMenuValue(dlg->wMArea,
-	 (XtPointer)(uintptr_t)area);
+      (XtPointer)area);
   sprintf(s,"%g",surfex->level);
-  switch ((uintptr_t)GetUserData(wg)) {
+  switch ((int)GetUserData(wg)) {
     case 1:
       XmTextSetString(dlg->wMLevel1,s);
       break;
@@ -1452,7 +1451,7 @@ static void CbCSD_PickSettings(Widget wg,XtPointer xtpD,XtPointer pcbs) {
     return;
   }
 
-  SetOptionMenuValue(dlg->wMArea,(XtPointer)(uintptr_t)area);
+  SetOptionMenuValue(dlg->wMArea,(XtPointer)area);
   if (!carreFlag) {
     sprintf(s,"%g",l1);XmTextSetString(dlg->wMLevel1,s);
     sprintf(s,"%g",l2);XmTextSetString(dlg->wMLevel2,s);
@@ -1460,7 +1459,7 @@ static void CbCSD_PickSettings(Widget wg,XtPointer xtpD,XtPointer pcbs) {
   sprintf(s,"%d",count+1);XmTextSetString(dlg->dg.wCount,s);
   sprintf(s,"%g",alpha);XmTextSetString(dlg->dg.wAlpha[0],s);
   sprintf(s,"%g",alpha2);XmTextSetString(dlg->dg.wAlpha[1],s);
-  SetOptionMenuValue(dlg->dg.wLaw,(XtPointer)(uintptr_t)law);
+  SetOptionMenuValue(dlg->dg.wLaw,(XtPointer)law);
   strcpy(dlg->oldCreatorId,GetSurfaceExCreatorId(surfex));
 
   CbDG_NumbersChanged(NULL,(XtPointer)&dlg->dg,NULL);
@@ -1481,7 +1480,7 @@ static void CbCSD_SelectArea(Widget wg,XtPointer xtpD,XtPointer pcbs) {
 
 static void CbCSD_MarkBoundingElem(Widget wg,XtPointer xtpD,XtPointer pcbs) {
   CreateSurfaceDlg dlg=(CreateSurfaceDlg)xtpD;
-  int area=(uintptr_t)GetOptionMenuValue(dlg->wMArea);
+  int area=(int)GetOptionMenuValue(dlg->wMArea);
   SurfaceZone sz;
 
   if (dlg->w->app==NULL) return;
@@ -1516,7 +1515,7 @@ static void DwCSD(Widget wg,View w,int evt,void*obj,void*udt) {
     for (xmsc=0,sz=AppSurfaceZone1st(w->app,&ix);sz!=NULL;sz=Next(&ix)) {
       if (!SurfaceZoneIsUsed(sz)) continue;
       xmsa[xmsc]=MakeXmString(GetSurfaceZoneDescription(sz));
-      values[xmsc]=(XtPointer)(uintptr_t)sz->zone;
+      values[xmsc]=(XtPointer)sz->zone;
       xmsc++;
     }
     SetOptionMenuItems(dlg->wArea,xmsc,xmsa,values);
@@ -1723,7 +1722,7 @@ static void CGPD_CreateSingle(CreateGridPointDlg dlg) {
 
   /* Parse area and value */
 
-  area=(uintptr_t)GetOptionMenuValue(dlg->wArea);
+  area=(int)GetOptionMenuValue(dlg->wArea);
 
   value=GetXmTextDouble(dlg->wValue);
   if (value==MAXDOUBLE) {
@@ -1757,7 +1756,7 @@ static void CGPD_CreateSingle(CreateGridPointDlg dlg) {
 }
 
 static void CGPD_CreateMultiple(CreateGridPointDlg dlg) {
-  int zone=(uintptr_t)GetOptionMenuValue(dlg->wMZone);
+  int zone=(int)GetOptionMenuValue(dlg->wMZone);
   int i,carreMode,r;
   double v;
   GridPointEx gpx;
@@ -1826,11 +1825,11 @@ static void CbCGPD_PickSettings(Widget wg,XtPointer xtpD,XtPointer pcbs) {
     return;
   }
 
-  SetOptionMenuValue(dlg->wMZone,(XtPointer)(uintptr_t)area);
+  SetOptionMenuValue(dlg->wMZone,(XtPointer)area);
   sprintf(s,"%d",count+1);XmTextSetString(dlg->dg.wCount,s);
   sprintf(s,"%g",alpha);XmTextSetString(dlg->dg.wAlpha[0],s);
   sprintf(s,"%g",alpha2);XmTextSetString(dlg->dg.wAlpha[1],s);
-  SetOptionMenuValue(dlg->dg.wLaw,(XtPointer)(uintptr_t)law);
+  SetOptionMenuValue(dlg->dg.wLaw,(XtPointer)law);
 
   CbDG_NumbersChanged(NULL,(XtPointer)&dlg->dg,NULL);
 }
@@ -1858,7 +1857,7 @@ static void DwCGPD(Widget wg,View w,int evt,void*obj,void*udt) {
     for (xmsc=0,gps=AppGridPointSeg1st(w->app,&ix);gps!=NULL;gps=Next(&ix)) {
       if (!GridPointSegIsUsed(gps)) continue;
       xmsa[xmsc]=MakeXmString(GetGridPointSegDescription(gps));
-      values[xmsc]=(XtPointer)(uintptr_t)gps->zone;
+      values[xmsc]=(XtPointer)gps->zone;
       xmsc++;
     }
     SetOptionMenuItems(dlg->wArea,xmsc,xmsa,values);

@@ -1,5 +1,4 @@
 #include "x_dg.h"
-#include <stdint.h>
 
 #define DLG_SETUP "dlgSetup"
 #define DLG_VARSETDEFLIST "dlgVarSetDefList"
@@ -653,7 +652,7 @@ static void ResetVarDefEditDlg(Widget wDlg) {
   NULL);
 
   XmTextSetString(dlg->wDescr,dlg->vd->descr);
-  SetOptionMenuValue(dlg->wType,(XtPointer)(uintptr_t)dlg->vd->varType);
+  SetOptionMenuValue(dlg->wType,(XtPointer)dlg->vd->varType);
 
   switch(dlg->vd->flags & VFM_MULTIPLE) {
     case VF_FORELEMS: wg=dlg->wOrgElems;break;
@@ -705,7 +704,7 @@ static void CbVarDefEditOk(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
   Index ix;
   int i,type,opt,err;
 
-  type=(uintptr_t)GetOptionMenuValue(dlg->wType);
+  type=(int)GetOptionMenuValue(dlg->wType);
   opt=0;
   GetValues(dlg->wOrg,XmNmenuHistory,&wg,NULL);
   if (wg==dlg->wOrgElems) opt|=VF_FORELEMS;
@@ -805,7 +804,7 @@ static void CbVarDefEditSensitive(Widget wg,XtPointer xtpDlg,XtPointer p) {
   VarDefEditDlg dlg=(VarDefEditDlg)xtpDlg;
   int type;
 
-  type=(uintptr_t)GetOptionMenuValue(dlg->wType);
+  type=(int)GetOptionMenuValue(dlg->wType);
   XtSetSensitive(dlg->wDefault,!(type & VTM_HASGROUP));
   XtSetSensitive(dlg->wDefaultLabel,!(type & VTM_HASGROUP));
 }
@@ -1336,7 +1335,7 @@ static void ResetMeshOptionsDlg(Widget wDlg) {
 
   assert(dlg!=NULL);
 
-  SetOptionMenuValue(dlg->wMode,(XtPointer)(uintptr_t)dlg->w->app->meshSlidingMode);
+  SetOptionMenuValue(dlg->wMode,(XtPointer)dlg->w->app->meshSlidingMode);
 
   sprintf(s,"%g",dlg->w->app->meshSlidingThreshold);
   XmTextSetString(dlg->wSlidingThreshold,s);
@@ -1363,7 +1362,7 @@ static void AcceptMeshOptionsDlg(Widget wDlg) {
   SetDoubleMeshBorderFlag(dlg->w->app,
       XmToggleButtonGetState(dlg->wSwDoubleBorder));
 
-  SetMeshSlidingMode(dlg->w->app,(uintptr_t)GetOptionMenuValue(dlg->wMode));
+  SetMeshSlidingMode(dlg->w->app,(int)GetOptionMenuValue(dlg->wMode));
 
   UndoMark(dlg->w->app);
   XtPopdown(XtParent(dlg->wDlg));

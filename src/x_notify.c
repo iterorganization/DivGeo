@@ -1,10 +1,9 @@
 #include "x_dg.h"
-#include <stdint.h>
 
 void DwNotifyUndoButton(Widget wg,View w,int evt,void* obj,void* d) {
   if (w->app==NULL) return;
 
-  switch ((uintptr_t)d) {
+  switch ((int)d) {
     case 0:
       SetSensitiveEx(wg,!!GroupCount(w->app->undoStack));
       break;
@@ -28,7 +27,7 @@ void DwNotifyIfExists(Widget wg,View w,int evt,void* obj,void* d) {
 
   if (w->app==NULL) return;
 
-  switch((uintptr_t)d) {
+  switch((int)d) {
     case T_MARKING:
       SetSensitiveEx(wg,!IsEmptyGroup(w->app->mark));
       break;
@@ -99,7 +98,7 @@ void DwNotifyIfNotExists(Widget wg,View w,int evt,void* obj,void* d) {
 
   if (w->app==NULL) return;
 
-  switch((uintptr_t)d) {
+  switch((int)d) {
     case T_MARKING:
       SetSensitiveEx(wg,IsEmptyGroup(w->app->mark));
       break;
@@ -166,7 +165,7 @@ void DwNotifyIfNotExists(Widget wg,View w,int evt,void* obj,void* d) {
 void DwNotifyShowFlags(Widget wg,View w,int evt,void* obj,void* d) {
   if (w->app==NULL) return;
 
-  switch ((uintptr_t)d) {
+  switch ((int)d) {
     case 0:
       SetSensitiveEx(wg,!!(w->showFlags & SHW_STRETCH));
       break;
