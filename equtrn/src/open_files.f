@@ -23,7 +23,7 @@
       open(2,file=filename)
       if(iargc().gt.2) then
          call getarg(3,filename)
-         open(3,file=filename)
+	 if(filename.ne.'') open(3,file=filename)
       endif
       return
       end
