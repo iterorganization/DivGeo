@@ -36,11 +36,12 @@ PROG_pb2dg   = pb2dg
 PROG_pt2dg   = pt2dg
 PROG_sst2dg  = sst2dg
 PROG_culham  = culham
+PROG_dg_symm_dg     = dg_symm_dg
 PROG_dg_minuspsi_dg = dg_minuspsi_dg
 PROG_shotfile2dg    = shotfile2dg
 PROG_jetppf2dg      = jetppf2dg
 
-ALL = ${PROG_cropequ} ${PROG_dg2dg} ${PROG_dg2ef} ${PROG_ef2dg} ${PROG_vr2dg} ${PROG_nk2dg} ${PROG_dg2vr} ${PROG_risepsi} ${PROG_prinequ} ${PROG_jt2dg} ${PROG_pb2dg} ${PROG_pt2dg}
+ALL = ${PROG_cropequ} ${PROG_dg2dg} ${PROG_dg2ef} ${PROG_ef2dg} ${PROG_vr2dg} ${PROG_nk2dg} ${PROG_dg2vr} ${PROG_risepsi} ${PROG_prinequ} ${PROG_jt2dg} ${PROG_pb2dg} ${PROG_pt2dg} ${PROG_dg_symm_dg}
 
 creq =  cropequ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
 dgdg =	dg2dg.o rdeqdg.o wreqdg.o rdeqlh.o double.o open_files.o
@@ -60,6 +61,7 @@ culham = culham.o rdefit.o wreqdg.o open_files.o double.o
 sstdg = sst2dg.o wreqdg.o open_files.o
 shotfile2dg = shotfile2dg.o wreqdg.o
 jetppf2dg = jetppf2dg.o wreqdg.o
+dgsymmdg = dg_symm_dg.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o
 
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
 include config/config.${HOST_NAME}.${COMPILER}
@@ -91,6 +93,7 @@ CULHAM = $(culham:%.o=$(OBJDIR)/%.o)
 SSTDG = $(sstdg:%.o=$(OBJDIR)/%.o)
 SHOTFILE2DG = $(shotfile2dg:%.o=$(OBJDIR)/%.o)
 JETPPF2DG = $(jetppf2dg:%.o=$(OBJDIR)/%.o)
+DGSYMMDG = $(dgsymmdg:%.o=$(OBJDIR)/%.o)
 
 $(OBJDIR)/%.o : %.f
 	${CPP} -P ${INCLUDE} $< > ${OBJDIR}/$*.f
@@ -153,6 +156,9 @@ ${OBJDIR}/${PROG_shotfile2dg}: $(SHOTFILE2DG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDWOS)
 
 ${OBJDIR}/${PROG_jetppf2dg}: $(JETPPF2DG)
+	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDFLUSH)
+
+${OBJDIR}/${PROG_dg_symm_dg}: $(DGSYMMDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDFLUSH)
 
 clean:
