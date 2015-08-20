@@ -162,7 +162,7 @@ ${OBJDIR}/${PROG_dg_symm_dg}: $(DGSYMMDG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDFLUSH)
 
 clean:
-	cd ${OBJDIR}; rm -rf *.o  *.f $(ALL) LISTOBJ dependencies*
+	cd ${OBJDIR}; rm -rf *.o *.f $(ALL) LISTOBJ dependencies*
 
 TAGS:	tags
 
@@ -186,9 +186,9 @@ ${OBJDIR}/dependencies:
 	${MAKE} listobj
 	${MAKE} depend
 
-include ${OBJDIR}/dependencies
-
-DOC:
+DOC: 
 	doxygen
+
+include ${OBJDIR}/dependencies
 
 

@@ -6,7 +6,7 @@
 =========================================================================================
 
 2008.07.21 DPC:
-Updated doxygen documemtation and added it to the SVN repository.
+Updated doxygen documentation and added it to the SVN repository.
 
 doxygen
 ( cd doxygen/latex/ ; make )
