@@ -33,3 +33,7 @@ builds/
  
 device/
 
+# Doxygen documentation
+
+equtrn/doxygen
+
