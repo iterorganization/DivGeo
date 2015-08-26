@@ -29,7 +29,7 @@ c... toroidal field in tesla, radius in m
       integer i, j
 c
 c***  Write the toroidal field and the corresponding radius...
-c*** -- now obsolette!
+c*** -- now obsolete!
 c
 c      write(3,*,err=99) 'Toroidal field in Tesla, radius in m'
 c      write(3,*,err=99) btf, rtf
@@ -42,9 +42,9 @@ c
       write(lun,*,err=99)
      /    '   km   :=  no. of grid points in vertical direction;'
       write(lun,*,err=99)
-     /    '   r    :=  radial   co-ordinates of grid points  [m];'
+     /    '   r    :=  radial   coordinates of grid points  [m];'
       write(lun,*,err=99)
-     /    '   z    :=  vertical co-ordinates of grid points  [m];'
+     /    '   z    :=  vertical coordinates of grid points  [m];'
       write(lun,*,err=99)
      /    '   psi  :=  flux per radiant at grid points     [Wb/rad];'
       write(lun,*,err=99)

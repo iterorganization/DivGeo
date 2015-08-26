@@ -55,7 +55,7 @@ c*** Parse the header lines
 
       go to 10
 c----------------------------------------------------------------------
-c*** Check the dimensions and determine r,z co-ordinates of the grid
+c*** Check the dimensions and determine r,z coordinates of the grid
 
  20   errenc=.false.
       if(nr.gt.ngpr .or. nr.le.1) then

@@ -13,7 +13,7 @@ c*** nxelm:   the maximum number of segments
 c*** eps:     tolerance in the alignment of the segment ends
       parameter (nxelm=500, eps=1.e-2)
 c
-c*** x1, y1, x2, y2 contain the co-ordinates of the edge points
+c*** x1, y1, x2, y2 contain the coordinates of the edge points
       real x1(nxelm),x2(nxelm),y1(nxelm),y2(nxelm)
 c
 c*** inext and iprvs are the references to the next and previous segment
