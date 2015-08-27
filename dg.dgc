@@ -1188,7 +1188,7 @@ spcs_gen
 Species
 text101 5
 A generic atomic species - should be one
-of H, D, T, He, C, Ne, or Ar
+of H, D, T, He, Be, C, N, Ne, or Ar
 All the ion species and the necessary 
 molecules and test ions are supplied 
 automatically.
