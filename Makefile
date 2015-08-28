@@ -59,7 +59,7 @@ neat:
 	/bin/rm -rf ${OBJDIR}/*.o ${OBJDIR}/*.bak
 
 tags:
-	rm -f TAGS ; etags src/*.c src/*.h
+	rm -f TAGS ; etags src/*.c src/*.h dg.dgc
 
 depend: ${OBJS:.o=.c}
 	-mkdir -p ${OBJDIR}

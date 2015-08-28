@@ -5,9 +5,9 @@ This file should not be modified manually.
 DG version:             2.01
 File format version:    114
 Creation time:          Fri Apr  1 14:38:31 2005
-Last Modified time:     Fri Dec  3 12:52:54 2010
+Last Modified time:     Fri Aug 28 09:52:54 2015
 
-Original filename:      /work/xbon/solps5.1_trunk/src/DivGeo/dg/dg.dgc
+Original filename:      /home/ITER/bonninx/SOLPS-ITER_1/modules/DivGeo/dg.dgc
 Radial cells:           1SOL 0OSR 0TPF 0OSL 0BPF 0Core 
 
 ------------------------------------------------------------------------
@@ -2479,7 +2479,7 @@ surfaces" which are not invalidated through either "Elements not for
 Eirene" in DG or by the ADDUSR routine, and the "non-default standard 
 surfaces" corresponding to the recycling strata.
 
-At the begining of the Eirene run, a data file with co-ordinates of the 
+At the begining of the Eirene run, a data file with coordinates of the
 end points of the segments where these data are set will be created for 
 every combination of the values of the selected variables found in the 
 Eirene input data. These files can then be used for plotting the surfaces
