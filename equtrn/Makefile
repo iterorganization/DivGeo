@@ -159,7 +159,7 @@ ${OBJDIR}/${PROG_jetppf2dg}: $(JETPPF2DG)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDFLUSH)
 
 ${OBJDIR}/${PROG_dg_symm_dg}: $(DGSYMMDG)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDFLUSH)
+	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 clean:
 	cd ${OBJDIR}; rm -rf *.o *.f $(ALL) LISTOBJ dependencies*
