@@ -30,6 +30,7 @@ PROG_dg2vr   = dg2vr
 PROG_nk2dg   = nk2dg
 PROG_nkn2dg  = nkn2dg
 PROG_risepsi = risepsi
+PROG_move_equ = move_equ #stefano carli, added september 18, 2015
 PROG_prinequ = prinequ
 PROG_jt2dg   = jt2dg
 PROG_pb2dg   = pb2dg
@@ -41,7 +42,8 @@ PROG_dg_minuspsi_dg = dg_minuspsi_dg
 PROG_shotfile2dg    = shotfile2dg
 PROG_jetppf2dg      = jetppf2dg
 
-ALL = ${PROG_cropequ} ${PROG_dg2dg} ${PROG_dg2ef} ${PROG_ef2dg} ${PROG_vr2dg} ${PROG_nk2dg} ${PROG_dg2vr} ${PROG_risepsi} ${PROG_prinequ} ${PROG_jt2dg} ${PROG_pb2dg} ${PROG_pt2dg} ${PROG_dg_symm_dg}
+ALL = ${PROG_cropequ} ${PROG_dg2dg} ${PROG_dg2ef} ${PROG_ef2dg} ${PROG_vr2dg} ${PROG_nk2dg} ${PROG_dg2vr} ${PROG_risepsi} ${PROG_prinequ} ${PROG_jt2dg} ${PROG_pb2dg} ${PROG_pt2dg} ${PROG_dg_symm_dg} ${PROG_move_equ}
+
 
 creq =  cropequ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
 dgdg =	dg2dg.o rdeqdg.o wreqdg.o rdeqlh.o double.o open_files.o
@@ -54,6 +56,7 @@ nkndg =  nkn2dg.o wreqdg.o rdeqnk2.o
 jtdg =	jt2dg.o rdeqjt.o wreqdg.o rdeqjh.o open_files.o
 dgvr =	dg2vr.o rdeqdg.o wreqvr.o rdeqlh.o open_files.o
 rsps =	risepsi.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
+mveq =	move_equ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o #stefano carli, added september 18, 2015
 preq =	prinequ.o rdeqdg.o rdeqlh.o
 pbdg =	pb2dg.o rdeqpb.o wreqdg.o open_files.o
 ptdg =	pt2dg.o
@@ -85,6 +88,7 @@ VRDG = $(vrdg:%.o=$(OBJDIR)/%.o)
 NKDG = $(nkdg:%.o=$(OBJDIR)/%.o)
 NKNDG = $(nkndg:%.o=$(OBJDIR)/%.o)
 RSPS = $(rsps:%.o=$(OBJDIR)/%.o)
+MVEQ = $(mveq:%.o=$(OBJDIR)/%.o) #stefano carli, added september 18, 2015
 PREQ = $(preq:%.o=$(OBJDIR)/%.o)
 JTDG = $(jtdg:%.o=$(OBJDIR)/%.o)
 PBDG = $(pbdg:%.o=$(OBJDIR)/%.o)
@@ -139,6 +143,9 @@ ${OBJDIR}/${PROG_jt2dg}: $(JTDG)
 
 ${OBJDIR}/${PROG_risepsi}: $(RSPS)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+
+${OBJDIR}/${PROG_move_equ}: $(MVEQ)
+	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) #stefano carli, added september 18, 2015
 
 ${OBJDIR}/${PROG_prinequ}: $(PREQ)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
