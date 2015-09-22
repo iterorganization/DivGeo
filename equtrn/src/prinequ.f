@@ -15,7 +15,7 @@ c***
 c*** The file is read from standard input and the result sent to the
 c*** standard output
 c=====================================================
-      parameter (ngpr=129, ngpz=257)
+#include "eqdim.inc"
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real*8 rcntc,btorc
       character date*9, page

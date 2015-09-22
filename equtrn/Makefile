@@ -30,7 +30,7 @@ PROG_dg2vr   = dg2vr
 PROG_nk2dg   = nk2dg
 PROG_nkn2dg  = nkn2dg
 PROG_risepsi = risepsi
-PROG_move_equ = move_equ #stefano carli, added september 18, 2015
+PROG_move_equ = move_equ
 PROG_prinequ = prinequ
 PROG_jt2dg   = jt2dg
 PROG_pb2dg   = pb2dg
@@ -56,7 +56,7 @@ nkndg =  nkn2dg.o wreqdg.o rdeqnk2.o
 jtdg =	jt2dg.o rdeqjt.o wreqdg.o rdeqjh.o open_files.o
 dgvr =	dg2vr.o rdeqdg.o wreqvr.o rdeqlh.o open_files.o
 rsps =	risepsi.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
-mveq =	move_equ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o #stefano carli, added september 18, 2015
+mveq =	move_equ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
 preq =	prinequ.o rdeqdg.o rdeqlh.o
 pbdg =	pb2dg.o rdeqpb.o wreqdg.o open_files.o
 ptdg =	pt2dg.o
@@ -88,7 +88,7 @@ VRDG = $(vrdg:%.o=$(OBJDIR)/%.o)
 NKDG = $(nkdg:%.o=$(OBJDIR)/%.o)
 NKNDG = $(nkndg:%.o=$(OBJDIR)/%.o)
 RSPS = $(rsps:%.o=$(OBJDIR)/%.o)
-MVEQ = $(mveq:%.o=$(OBJDIR)/%.o) #stefano carli, added september 18, 2015
+MVEQ = $(mveq:%.o=$(OBJDIR)/%.o)
 PREQ = $(preq:%.o=$(OBJDIR)/%.o)
 JTDG = $(jtdg:%.o=$(OBJDIR)/%.o)
 PBDG = $(pbdg:%.o=$(OBJDIR)/%.o)
@@ -145,7 +145,7 @@ ${OBJDIR}/${PROG_risepsi}: $(RSPS)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_move_equ}: $(MVEQ)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) #stefano carli, added september 18, 2015
+	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_prinequ}: $(PREQ)
 	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
@@ -174,7 +174,7 @@ clean:
 TAGS:	tags
 
 tags:
-	rm -f TAGS ; etags src/*.f
+	rm -f TAGS ; etags src/*.f src/*.inc
 
 depend: ${OBJS:.o=.f}
 	makedepend -f- ${INCLUDE} $^ | \

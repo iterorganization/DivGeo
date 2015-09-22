@@ -10,6 +10,7 @@ c*** Conversion of equilibrium file produced with PROTEUS into DG format
 c*** (courtesy Prof. O. de Barbieri)
 c=======================================================================
 c                                                                       
+#include "eqdim.inc"
 #include "pt2dg.inc"                                              
 c                                                                       
 c-----------------------------------------------------------------------
@@ -444,6 +445,7 @@ c     If the point is inside:  kerror=-1, otherwise kerror=+1.
 c                                                                       
 c-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 c                                                                       
+#include "eqdim.inc"
 #include "pt2dg.inc"                                              
 c                                                                
 c-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -522,6 +524,7 @@ c     Output quantities: ybpolr, ybpolz
 c                                                                       
 c-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 c                                                                       
+#include "eqdim.inc"
 #include "pt2dg.inc"                                              
 c
       dimension          zf(6),          zd(2,6),        zjac(2,2)
@@ -609,6 +612,7 @@ c     Writes the two (-R- & -Z-) components of Bpoloidal.
 c
 c-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 c                                                                       
+#include "eqdim.inc"
 #include "pt2dg.inc"                                              
 c                                                                
 c-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

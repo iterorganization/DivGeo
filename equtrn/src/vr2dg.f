@@ -14,7 +14,7 @@ c=====================================================
 c*** Translation of TdeV equilibrium data into dg compatible format
 c***
 c=====================================================
-      parameter (ngpr=1025, ngpz=1025)
+#include "eqdim.inc"
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real*8 rcntc,psilim,btorc
 c=====================================================

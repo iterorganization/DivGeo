@@ -14,10 +14,9 @@ c======================================================================
 c*** Translation of equilibrium data from P. Barabasci
 c*** into dg compatible format
 c======================================================================
-      parameter (ngpr=257, ngpz=513)
+#include "eqdim.inc"
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
-      real*8 rcntc,psilim,btorc,pi
-      parameter (pi=3.1415926535898)
+      real*8 rcntc,psilim,btorc
 c======================================================================
 c
       call open_files(' ')

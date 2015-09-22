@@ -18,7 +18,7 @@ c=====================================================
 c*** do arbitrary re-processing of the equilibrium
 c*** in this case symmetrize the equilibrium up-down
 c=====================================================
-      parameter (ngpr=1025, ngpz=1025)
+#include "eqdim.inc"
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real*8 rcntc,psilim,btorc,psisymm
       real*8 :: alpha=0.0d0

@@ -17,7 +17,7 @@ c
 c=====================================================
 c*** Shift of the magnetic flux by a specified increment
 c=====================================================
-      parameter (ngpr=257, ngpz=257)
+#include "eqdim.inc"
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real*8 rcntc,psilim,btorc,shift
       character*256 filename

@@ -23,8 +23,7 @@ c
 c=====================================================
 c*** Translation of shotfile equilibrium data into dg compatible format
 c=====================================================
-      parameter (pi=3.14159 26535 89793)
-      parameter (ngpr=257, ngpz=257, ngpf=257)
+#include "eqdim.inc"
       parameter (ndim=1000, NdGC=100) 
       real*8 gpr(ngpr),gpz(ngpz)
       real*8 pfmd(ngpr,ngpz)

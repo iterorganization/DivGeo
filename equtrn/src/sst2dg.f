@@ -16,11 +16,8 @@ c
 c=====================================================
 c*** Translation of efit equilibrium data into dg compatible format
 c=====================================================
-      parameter (pi=3.14159 26535 89793)
-      parameter (ngpr=257, ngpz=257, ngpf=257)
-      real*8 gpr(ngpr),gpz(ngpz),
-     1 pfl(ngpf),pc(ngpf),pcd(ngpf),pr(ngpf),prd(ngpf),q(ngpf),
-     2 apf(3),xpf(3)
+#include "eqdim.inc"
+      real*8 gpr(ngpr),gpz(ngpz)
       real*8 pfm(ngpr,ngpz)
       real*8 rcntc,btorc
       real*8 Bt,derivative(6)

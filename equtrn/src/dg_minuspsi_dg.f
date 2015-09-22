@@ -13,7 +13,7 @@ c
 c=====================================================
 c*** Change the sign of the flux
 c=====================================================
-      parameter (ngpr=1025, ngpz=1025)
+#include "eqdim.inc"
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real*8 rcntc,psilim,btorc,shift
       character*256 filename

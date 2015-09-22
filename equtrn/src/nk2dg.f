@@ -13,7 +13,7 @@ c
 c=====================================================
 c*** Translation of equilibrium data from Naka to dg compatible format
 c=====================================================
-      parameter (ngpr=257, ngpz=257)
+#include "eqdim.inc"
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real*8 rmin,zmin,rmax,zmax,delr,delz,psilim,btorc,rcntc,fg
 c=====================================================

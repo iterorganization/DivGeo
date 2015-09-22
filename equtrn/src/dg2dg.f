@@ -11,8 +11,7 @@ c
 c  version : 16.01.2001 16:55
 c
       implicit none
-      integer ngpr,ngpz
-      parameter (ngpr=1025, ngpz=1025)
+#include "eqdim.inc"
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real*8 rcntc,psilim,btorc
       integer nr,nz,iret
