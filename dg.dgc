@@ -208,9 +208,10 @@ EnumText102
 text101 0
 material
 Wall Material
-text101 2
+text101 3
 Chemical notation for the element of
 which the surface is made.
+Allowed values are: Be, C, Fe, SS, Mo, and W.
 Text -n+m-S-s-h-i 0 10
 EnumText102
 text101 0
