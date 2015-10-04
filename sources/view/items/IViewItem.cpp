@@ -11,6 +11,7 @@ void IViewItem::ReleaseComments()
 void IViewItem::UpdateComments()
 {
   foreach( ViewCommentItemPtr pCommentItem, comments ) {
+    pCommentItem->UpdateEndPosition();
     pCommentItem->UpdateGeometry();
     pCommentItem->UpdateDependentGeometry();
   }

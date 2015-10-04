@@ -856,6 +856,7 @@ void ViewScene::RemoveItem( IViewItemPtr _pItem )
     pSonnetDataItem = null;
   else return;
 
+  _pItem->UpdateComments();
   viewItemsWithText.removeOne( _pItem );
   viewItems.removeOne( _pItem );
 
@@ -869,8 +870,9 @@ bool ViewScene::RemoveMultiItemObject( IComponentPtr _pObject )
   if( _pObject->Type() == OT::MESH ) {
     foreach( IViewItemPtr pItem, vpMeshCellItems ) {
       ViewMeshCellItemPtr pCellItem = static_cast< ViewMeshCellItemPtr >( pItem );
-      viewItemsWithText.removeOne( pCellItem );
-      viewItems.removeOne( pCellItem );
+      pItem->UpdateComments();
+      viewItemsWithText.removeOne( pItem );
+      viewItems.removeOne( pItem );
       this->removeItem( pCellItem );
       delete pItem;
     }
@@ -878,17 +880,18 @@ bool ViewScene::RemoveMultiItemObject( IComponentPtr _pObject )
 
     foreach( IViewItemPtr pItem, vpMeshElementItems ) {
       ViewMeshElementItemPtr pElementItem = static_cast< ViewMeshElementItemPtr >( pItem );
-      viewItemsWithText.removeOne( pElementItem );
-      viewItems.removeOne( pElementItem );
+      pItem->UpdateComments();
+      viewItemsWithText.removeOne( pItem );
+      viewItems.removeOne( pItem );
       this->removeItem( pElementItem );
       delete pItem;
     }
     vpMeshElementItems.clear();
 
     foreach( IViewItemPtr pItem, vpMeshPointQuasiItems ) {
-      ViewMeshPointQuasiItemPtr pPointItem = static_cast< ViewMeshPointQuasiItemPtr >( pItem );
-      viewItemsWithText.removeOne( pPointItem );
-      viewItems.removeOne( pPointItem );
+      pItem->UpdateComments();
+      viewItemsWithText.removeOne( pItem );
+      viewItems.removeOne( pItem );
       //this->removeItem( pPointItem ); // Not a QGraphicsItem
       delete pItem;
     }

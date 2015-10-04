@@ -384,6 +384,7 @@ void ViewTopScene::RemoveItem( IViewItemPtr _pItem )
   else
     return;
 
+  _pItem->UpdateComments();
   viewItems.removeOne( _pItem );
   this->removeItem( GetGraphicsItem( _pItem ) );
 }
