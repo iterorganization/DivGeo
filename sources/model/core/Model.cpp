@@ -45,6 +45,7 @@ Model::Model(IModelAgentPtr _pAgent, const std::string& _crsName ):
   sender_name = "Model-";
   sender_name += title_name;
 
+  pStruct = new Structure( this );
   pVars = new VarsManager( this );
   pFlux = new FluxModel( this );
   pFlux->AddTopology();
@@ -56,6 +57,7 @@ Model::~Model()
 {
   pAgent->Clear();
   Release();
+  delete pStruct;
   delete pVars;
   delete pFlux;
 }
@@ -126,19 +128,12 @@ int Model::Release()
   if( pSonnetData != null ) delete pSonnetData;
 
   IComponentPtr pObj = null;
-  FOREACHOBJCONST( pObj, nodes )       delete pObj;
-  nodes.clear();
-  FOREACHOBJCONST( pObj, elements )    delete pObj;
-  elements.clear();
-  FOREACHOBJCONST( pObj, separators )  delete pObj;
-  separators.clear();
   FOREACHOBJCONST( pObj, sources )     delete pObj;
   sources.clear();
-  FOREACHOBJCONST( pObj, chords )      delete pObj;
-  chords.clear();
   FOREACHOBJCONST( pObj, comments )    delete pObj;
   comments.clear();
 
+  pStruct->Release();
   pVars->Release();
   pFlux->Release();
 

@@ -160,6 +160,15 @@ int Model::ReadObjects( Token _token, const char* _cpStr, FILE* _pFile, ulong& _
   case TKN::VarSets100:
     return pVars->ReadObjects( _token, _cpStr, _pFile, _rLine, _mode );
 
+  case TKN::Elems100:
+  case TKN::Nodes100:
+  case TKN::MarkedElems100:
+  case TKN::Separators101:
+  case TKN::MarkedSeparators104:
+  case TKN::Chords106:
+  case TKN::Chords115:
+  case TKN::MarkedChords110:
+    return pStruct->ReadObjects( _token, _cpStr, _pFile, _rLine, _mode );
 
   case TKN::Template100: {
     int angle;
@@ -189,53 +198,6 @@ int Model::ReadObjects( Token _token, const char* _cpStr, FILE* _pFile, ulong& _
     }
     else return DGFE::SYNTAX;
     break;
-  case TKN::Nodes100:
-    if( sscanf( _cpStr, "%s %u", sToken, &count ) == 2 ) {
-      REPEAT( count ) {
-        fgets( sLine, DG_LINE_LEN - 1, _pFile ); _rLine++;
-        if( sscanf( sLine, SCANFLT""SCANFLT, &pos.x, &pos.y ) == 2 )
-          AddNode( pos );
-        else
-          errorFlags |= DGFE::SYNTAX;
-      }
-    }
-    else return DGFE::SYNTAX;
-    break;
-  case TKN::Elems100:
-    if( sscanf( _cpStr, "%s %u", sToken, &count ) == 2 ) {
-      int id;
-      uint node1_id, node2_id;
-      REPEAT( count ) {
-        fgets( sLine, DG_LINE_LEN - 1, _pFile ); _rLine++;
-        if( sscanf( sLine, "%u %u %d", &node1_id, &node2_id, &id ) == 3 )
-        {
-          ElementPtr pElem = AddElem( dgtype_cast< NodePtr >( At( nodes, node1_id ) ),
-                                      dgtype_cast< NodePtr >( At( nodes, node2_id ) ) );
-          pElem->ChangeId( id );
-        }
-        else
-          errorFlags |= DGFE::SYNTAX;
-      }
-    }
-    else return DGFE::SYNTAX;
-    break;
-  case TKN::Separators101:
-    if( sscanf( _cpStr, "%s %u", sToken, &count ) == 2 ) {
-      int idNode;
-      REPEAT( count ) {
-        fgets( sLine, DG_LINE_LEN - 1, _pFile ); _rLine++;
-        if( sscanf( sLine, SCANFLT""SCANFLT"%u%d",
-                    &pos.x, &pos.y, &idNode, &id ) == 4 ) {
-          SeparatorPtr pSep = AddSeparator( pos,
-             dgtype_cast< NodePtr >( At( nodes, idNode ) ) );
-          pSep->ChangeId( id );
-        }
-        else
-          errorFlags |= DGFE::SYNTAX;
-      }
-    }
-    else return DGFE::SYNTAX;
-    break;
   case TKN::Sources104:
     if( sscanf( _cpStr, "%s %u", sToken, &count ) == 2 ) {
       REPEAT( count ) {
@@ -248,75 +210,13 @@ int Model::ReadObjects( Token _token, const char* _cpStr, FILE* _pFile, ulong& _
     }
     else return DGFE::SYNTAX;
     break;
-  case TKN::Chords115:
-    if( sscanf( _cpStr, "%s %u", sToken, &count ) == 2 ) {
-      REPEAT( count ) {
-        fgets( sLine, DG_LINE_LEN - 1, _pFile ); _rLine++;
-        if( sscanf( sLine, SCANFLT""SCANFLT""SCANFLT""SCANFLT""SCANFLT""SCANFLT,
-                    &pos.x, &pos.y, &pos.z,  &pos2.x, &pos2.y, &pos2.z ) == 6 )
-          AddChord( pos, pos2 );
-        else
-          errorFlags |= DGFE::SYNTAX;
-      }
-    }
-    else return DGFE::SYNTAX;
-    pos = 0.; pos2 = 0.;
-    break;
-  case TKN::Chords106:
-     if( sscanf( _cpStr, "%s %u", sToken, &count ) == 2 ) {
-       REPEAT( count ) {
-         fgets( sLine, DG_LINE_LEN - 1, _pFile ); _rLine++;
-         if( sscanf( sLine, SCANFLT""SCANFLT""SCANFLT""SCANFLT,
-                     &pos.x, &pos.y, &pos2.x, &pos2.y ) == 4 )
-           AddChord( pos, pos2 );
-         else
-           errorFlags |= DGFE::SYNTAX;
-       }
-     }
-     else return DGFE::SYNTAX;
-     break;
-  case TKN::MarkedElems100:
-    if( sscanf( _cpStr, "%s %u", sToken, &count ) == 2 ) {
-      REPEAT( count ) {
-        fgets( sLine, DG_LINE_LEN - 1, _pFile ); _rLine++;
-       if( sscanf( sLine, "%u", &id ) == 1 )
-         MarkObject( At( elements, id ) );
-       else
-         errorFlags |= DGFE::SYNTAX;
-      }
-    }
-    else return DGFE::SYNTAX;
-    break;
-  case TKN::MarkedSeparators104:
-    if( sscanf( _cpStr, "%s %u", sToken, &count ) == 2 ) {
-      REPEAT( count ) {
-        fgets( sLine, DG_LINE_LEN - 1, _pFile ); _rLine++;
-        if( sscanf( sLine, "%u", &id ) == 1 )
-          MarkObject( At( separators, id ) );
-        else
-          errorFlags |= DGFE::SYNTAX;
-      }
-    }
-    else return DGFE::SYNTAX;
-    break;
+
   case TKN::MarkedSources104:
     if( sscanf( _cpStr, "%s %u", sToken, &count ) == 2 ) {
       REPEAT( count ) {
         fgets( sLine, DG_LINE_LEN - 1, _pFile ); _rLine++;
         if( sscanf( sLine, "%u", &id ) == 1 )
           MarkObject( At( sources, id ) );
-        else
-          errorFlags |= DGFE::SYNTAX;
-      }
-    }
-    else return DGFE::SYNTAX;
-    break;
-  case TKN::MarkedChords110:
-    if( sscanf( _cpStr, "%s %u", sToken, &count ) == 2 ) {
-      REPEAT( count ) {
-        fgets( sLine, DG_LINE_LEN - 1, _pFile ); _rLine++;
-        if( sscanf( sLine, "%u", &id ) == 1 )
-          MarkObject( At( chords, id ) );
         else
           errorFlags |= DGFE::SYNTAX;
       }

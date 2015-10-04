@@ -25,10 +25,10 @@ QString ModelTree::AddBranchForModel( QTreeWidgetItem* _pItem, ModelPtr _pModel,
   SetChildData( _pItem, i++, _pModel->CarreOutputMode() ?
                   SM_GUI( GUI::MODEL_INFO::MODEL::CARRE ) :
                   SM_GUI( GUI::MODEL_INFO::MODEL::SONNET ) );
-  SetChildData( _pItem, i++, _pModel->Nodes(), _expand_depth ); /*branch*/
-  SetChildData( _pItem, i++, _pModel->Chords(), _expand_depth ); /*branch*/
-  SetChildData( _pItem, i++, _pModel->Elements(), _expand_depth ); /*branch*/
-  SetChildData( _pItem, i++, _pModel->Separators(), _expand_depth ); /*branch*/
+  SetChildData( _pItem, i++, _pModel->Struct()->Nodes(), _expand_depth ); /*branch*/
+  SetChildData( _pItem, i++, _pModel->Struct()->Chords(), _expand_depth ); /*branch*/
+  SetChildData( _pItem, i++, _pModel->Struct()->Elements(), _expand_depth ); /*branch*/
+  SetChildData( _pItem, i++, _pModel->Struct()->Separators(), _expand_depth ); /*branch*/
   SetChildData( _pItem, i++, _pModel->Sources(), _expand_depth ); /*branch*/
   SetChildData( _pItem, i++, _pModel->Vars()->VarSetDefs(), _expand_depth ); /*branch*/
   //SetChildData( _pItem, i++, _pModel->VarDefs(), _expand_depth ); /*branch*/

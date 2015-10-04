@@ -262,6 +262,7 @@ void StringsManager::StringsKeys()
   KEY( "mp_chain_too_short",    DG3::MP_CHAIN_IS_TOO_SHORT );
   KEY( "group_error",           DG3::GROUP_ERROR );
   KEY( "no_topology",           DG3::NO_TOPOLOGY );
+  KEY( "null_pointers",         DG3::NULL_POINTERS );
 
   KEY( "comment",               DG3::COMMENT );
 

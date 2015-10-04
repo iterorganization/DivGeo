@@ -247,7 +247,7 @@ int Topology::ReadObjects( Token _token, const char* _cpStr, FILE* _pFile, ulong
           if( pEquil != null ) {
             ElementPtr pElem = null;
             if( _mode == 0 ) { /* Project mode only */
-              pElem = pModel->FindElementByID( idElem );
+              pElem = pModel->Struct()->FindElementByID( idElem );
               //if( pEquil == null ) { errorFlags |= DGFE::NEQUIL; break; }
             }
             SurfaceZonePtr pSZ = AddSurfaceZone( id, idGPS1, idGPS2, orient, pElem );

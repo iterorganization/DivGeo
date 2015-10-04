@@ -7,7 +7,7 @@ Element::Element( ModelPtr _pModel, NodePtr _pN1, NodePtr _pN2 ):
   nodes[0] = null; 
   nodes[1] = DG_SHARE( _pN1 );
   nodes[2] = DG_SHARE( _pN2 );
-  id = pModel->GetNextElemId();
+  id = pModel->Struct()->GetNextElemId();
 }
 
 Element::~Element()
@@ -30,11 +30,11 @@ std::string Element::Description() const
 { return pModel->GetStr( STR::ELEM ); }
 
 std::string Element::ShortInfo() const
-{ return std::string( "[" ) + id + "]"; }
+{ return std::string( "[" ) << id << "]"; }
 
 std::string Element::DetailedInfo() const
-{ return Description() + " [" + id + "] "/* +
-      nodes[1]->Position().ToString() + " - " + nodes[2]->Position().ToString()*/; }
+{ return Description() << " [" << id << "] "/* <<
+      nodes[1]->Position().ToString() << " - " << nodes[2]->Position().ToString()*/; }
 
 double Element::DistToPoint(const Point &_crPnt, int*_pPosFlag ) const
 { return Point2VectorDist( nodes[1]->Position(), nodes[2]->Position(), _crPnt, _pPosFlag, null ); }
@@ -60,11 +60,15 @@ void Element::Delete()
 
   ActDelElem( pModel, this, DO_AT_ONCE );
 
-  if( pN1->IsEmpty() )
+  if( pN1->IsEmpty() ) {
     pN1->Delete();
+    pN1 = null;
+  }
 
-  if( pN2->IsEmpty() )
+  if( pN2->IsEmpty() ) {
     pN2->Delete();
+    pN2 = null;
+  }
 }
 
 void Element::ExcludeNode( NodePtr _pN )
@@ -446,15 +450,15 @@ int Element::Split( int _count )
 
   NodePtr pN0 = nodes[1];
   for( int i = 1; i < _count; i++ ) {
-    NodePtr pN = pModel->AddNode( nodes[1]->Position() +
+    NodePtr pN = pModel->Struct()->AddNode( nodes[1]->Position() +
               (nodes[2]->Position() - nodes[1]->Position()) * (double)i/_count );
     assert( pN != null );
 
-    ElementPtr pE = pModel->AddElem( pN0, pN );
+    ElementPtr pE = pModel->Struct()->AddElem( pN0, pN );
     pE->Mark( isMarked );
     pN0 = pN;
   }
-  ElementPtr pE = pModel->AddElem( pN0, nodes[2] );
+  ElementPtr pE = pModel->Struct()->AddElem( pN0, nodes[2] );
   pE->Mark( isMarked );
 
   Delete();

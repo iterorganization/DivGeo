@@ -42,10 +42,10 @@ DlgStatictics::DlgStatictics( ModelPtr _pModel, StringsManager* _pSM,
 
 void DlgStatictics::UpdateInfo()
 {
-  pLblNodes->setText( ToQString( pModel->NodesNum() ) );
-  pLblElems->setText( ToQString( pModel->ElementsNum() ) );
-  pLblSources->setText( ToQString( pModel->SourcesNum() ) );
-  pLblUnusedNumbers->setText( ToQString( (ulong)pModel->UnusedNodes().size() ) );
+  pLblNodes->setText( ToQString( pModel->Struct()->Nodes().size() ) );
+  pLblElems->setText( ToQString( pModel->Struct()->Elements().size() ) );
+  pLblSources->setText( ToQString( pModel->Sources().size() ) );
+  pLblUnusedNumbers->setText( ToQString( (ulong)pModel->Struct()->UnusedNodes().size() ) );
   FluxModelPtr pFlux = pModel->GetFluxModel();
   if( pFlux->HasEquil() ) {
     pLblSurfaces->setText( ToQString( pFlux->GetSurfacesStatsStr() ) );
@@ -55,6 +55,6 @@ void DlgStatictics::UpdateInfo()
     pLblSurfaces->setText( SM_MSG( ERR::NOEQUIL ) );
     pLblGridPoints->setText( SM_MSG( ERR::NOEQUIL ) );
   }
-  pLblSeparators->setText( ToQString( pModel->SeparatorsNum() ) );
-  pLblChords->setText( ToQString( pModel->ChordsNum() ) );
+  pLblSeparators->setText( ToQString( pModel->Struct()->Separators().size() ) );
+  pLblChords->setText( ToQString( pModel->Struct()->Chords().size() ) );
 }

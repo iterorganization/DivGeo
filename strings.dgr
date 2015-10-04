@@ -361,6 +361,7 @@ bad_surface           = "Bad surface"
 mp_chain_too_short    = "MeshPoint chain is too short"
 group_error           = "Var group error"
 no_topology           = "No topology"
+null_pointers         = "Null pointers"
 
 comment               = "comment" # Extention of str/ list
 

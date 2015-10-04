@@ -119,7 +119,7 @@ int Chord::Change( Point _p1, Point _p2 )
 int Chord::Extend( bool /*_topView*/ )
 {
   SENDER_NAME( "Chord::Extend" );
-  IComponentList elements = pModel->GetMarkedElements();
+  IComponentList elements = pModel->Struct()->GetMarkedElements();
 
   Point p0 = p1;
   Point K = p2 - p1;

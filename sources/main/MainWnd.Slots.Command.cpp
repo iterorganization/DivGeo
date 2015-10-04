@@ -14,7 +14,7 @@ void CMainWnd::slotConvertTemplate2Elements()
     return;
   }
 
-  pModel->AppendTemplate();
+  pModel->GetTemplate()->ConvertToElements( pModel->Struct() );
   slotChangeShowFlag( SHW::ELEMS, true );
   slotChangeShowFlag( SHW::IRRNODES, true );
   slotChangeShowFlag( SHW::NORMALS, true );
@@ -36,7 +36,7 @@ void CMainWnd::slotConvertElements2Chords()
     return;
   }
   IComponentPtr pElem_err = null;
-  int r = pModel->ConvertElemsToChords( marked, &pElem_err );
+  int r = pModel->Struct()->ConvertElemsToChords( marked, &pElem_err );
   if( r != 0 ) {
     pModel->ActionStack().Cancel();
     if( pElem_err != null )
@@ -64,7 +64,7 @@ void CMainWnd::slotConvertChords2Elements()
     return;
   }
   IComponentPtr pCh_err = null;
-  int r = pModel->ConvertChordsToElems( marked, &pCh_err );
+  int r = pModel->Struct()->ConvertChordsToElems( marked, &pCh_err );
   if( r != 0 ) {
     pModel->ActionStack().Cancel();
     if( pCh_err != null )
@@ -92,16 +92,9 @@ void CMainWnd::slotSimplifyFillGaps()
     return;
 
   int count = 0;
-  int r = pModel->GlueNodes( pDialog->Dist(), pDialog->MarkedOnly(), &count );
-  if( r != 0 ) {
-    pModel->ActionStack().Cancel();
-    pConsole->Send( WND_ERROR, FULL_SENDER, r );
-    return;
-  }
-  else {
-    pModel->ActionStack().Complete( "SimplifyFillGaps" );
-    pConsole->Send( STATUS_INFO, FULL_SENDER, DLG::GLUEPOINTS::MSG::ELEMS_ADDED, Arg( count ) ) ;
-  }
+  pModel->Struct()->GlueNodes( pDialog->Dist(), pDialog->MarkedOnly(), &count );
+  pModel->ActionStack().Complete( "SimplifyFillGaps" );
+  pConsole->Send( STATUS_INFO, FULL_SENDER, DLG::GLUEPOINTS::MSG::ELEMS_ADDED, Arg( count ) ) ;
 }
 void CMainWnd::slotSimplifyLineUpAllNormals()
 {
@@ -111,16 +104,9 @@ void CMainWnd::slotSimplifyLineUpAllNormals()
   ModelPtr pModel = pMV->CurrentModel();
 
   int count = 0;
-  int r = pModel->GlueNormals( false /*difference*/, &count );
-  if( r != 0 ) {
-    pModel->ActionStack().Cancel();
-    pConsole->Send( WND_ERROR, FULL_SENDER, r );
-    return;
-  }
-  else {
-    pModel->ActionStack().Complete( "SimplifyLineUpAllNormals" );
-    pConsole->Send( STATUS_INFO, FULL_SENDER, DLG::MSG::NORMALS_GROUPED, Arg( count ) ) ;
-  }
+  pModel->Struct()->GlueNormals( false /*difference*/, &count );
+  pModel->ActionStack().Complete( "SimplifyLineUpAllNormals" );
+  pConsole->Send( STATUS_INFO, FULL_SENDER, DLG::MSG::NORMALS_GROUPED, Arg( count ) ) ;
 }
 void CMainWnd::slotSimplifyLineUpMarkedNormals()
 {
@@ -130,16 +116,9 @@ void CMainWnd::slotSimplifyLineUpMarkedNormals()
   ModelPtr pModel = pMV->CurrentModel();
 
   int count = 0;
-  int r = pModel->GlueNormals( true /*difference*/, &count );
-  if( r != 0 ) {
-    pModel->ActionStack().Cancel();
-    pConsole->Send( WND_ERROR, FULL_SENDER, r );
-    return;
-  }
-  else {
-    pModel->ActionStack().Complete( "SimplifyLineUpMarkedNormals" );
-    pConsole->Send( STATUS_INFO, FULL_SENDER, DLG::MSG::NORMALS_GROUPED, Arg( count ) ) ;
-  }
+  pModel->Struct()->GlueNormals( true /*difference*/, &count );
+  pModel->ActionStack().Complete( "SimplifyLineUpMarkedNormals" );
+  pConsole->Send( STATUS_INFO, FULL_SENDER, DLG::MSG::NORMALS_GROUPED, Arg( count ) ) ;
 }
 void CMainWnd::slotSimplifyMergeSplitElements()
 {
@@ -154,17 +133,10 @@ void CMainWnd::slotSimplifyMergeSplitElements()
     return;
 
   int count = 0;
-  int r = pModel->GlueElems( pDialog->MaxDev(), pDialog->LenLimit(),
-                             pDialog->SplitLonger(), pDialog->MarkedOnly(), &count );
-  if( r != 0 ) {
-    pModel->ActionStack().Cancel();
-    pConsole->Send( WND_ERROR, FULL_SENDER, r );
-    return;
-  }
-  else {
-    pModel->ActionStack().Complete( "SimplifyMergeSplitElements" );
-    pConsole->Send( STATUS_INFO, FULL_SENDER, SM_DLG( DLG::GLUEELEMS::MSG::ELEMS_REMOVED ).arg( count ) ) ;
-  }
+  pModel->Struct()->GlueElems( pDialog->MaxDev(), pDialog->LenLimit(),
+                                       pDialog->SplitLonger(), pDialog->MarkedOnly(), &count );
+  pModel->ActionStack().Complete( "SimplifyMergeSplitElements" );
+  pConsole->Send( STATUS_INFO, FULL_SENDER, SM_DLG( DLG::GLUEELEMS::MSG::ELEMS_REMOVED ).arg( count ) ) ;
 }
 
 // Commands
@@ -174,7 +146,7 @@ void CMainWnd::slotRenumberElements()
   pConsole->Send( LOG_INFO, sender_name, SENDER );
 
   ModelPtr pModel = pMV->CurrentModel();
-  pModel->RenumberElements();
+  pModel->Struct()->RenumberElements();
   pModel->ActionStack().Complete( "RenumberElements" );
   pConsole->Send( STATUS_INFO, FULL_SENDER, DG3::ELEMENTS_RENUMBERED ) ;
 }

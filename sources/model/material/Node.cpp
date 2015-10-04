@@ -194,7 +194,7 @@ ElementPtr Node::JoinElements()
   ElementPtr elem[] = { elements.front(), *(++elements.begin()) };
   int offset = (elem[0]->Node(1) == elem[1]->Node(2)) ? 0 : 1;
 
-  ElementPtr pNewElement = pModel->AddElem( elem[1-offset]->Node(1), elem[offset]->Node(2) );
+  ElementPtr pNewElement = pModel->Struct()->AddElem( elem[1-offset]->Node(1), elem[offset]->Node(2) );
   if( elem[0]->IsMarked() || elem[1]->IsMarked() )
     pNewElement->Mark();
 

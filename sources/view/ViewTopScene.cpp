@@ -104,7 +104,7 @@ void ViewTopScene::Build( ulong sfs )
       vpChordRadialItems.clear();
     }
 
-    IComponentPtr FOREACHOBJCONST( pObject, pModel->Chords() ) {
+    IComponentPtr FOREACHOBJCONST( pObject, pModel->Struct()->Chords() ) {
       ViewChordRadialTopItemPtr pItem = new ViewChordRadialTopItem( pObject );
       pItem->SetSettingsManager( pPrefs );
       pItem->SetViewState( pState );
@@ -127,7 +127,7 @@ void ViewTopScene::Build( ulong sfs )
       vpChordItems.clear();
     }
 
-    FOREACHOBJCONST( pObject, pModel->Chords() ) {
+    FOREACHOBJCONST( pObject, pModel->Struct()->Chords() ) {
       ViewChordTopItemPtr pItem = new ViewChordTopItem( pObject );
       pItem->SetSettingsManager( pPrefs );
       pItem->SetViewState( pState );
@@ -148,7 +148,7 @@ void ViewTopScene::Build( ulong sfs )
       vpElementRadialItems.clear();
     }
 
-    IComponentPtr FOREACHOBJCONST( pObject, pModel->Elements() ) {
+    IComponentPtr FOREACHOBJCONST( pObject, pModel->Struct()->Elements() ) {
       ViewElementRadialTopItemPtr pItem = new ViewElementRadialTopItem( pObject );
       pItem->SetSettingsManager( pPrefs );
       pItem->SetViewState( pState );

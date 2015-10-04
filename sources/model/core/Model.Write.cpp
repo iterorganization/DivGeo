@@ -47,16 +47,16 @@ int Model::Save( const std::string& fName, FileMode mode ) const
   if( pMesh != null && !pMesh->FileName().empty() )
     fprintf( file, "Mesh:                   %s\n\n", pMesh->FileName().c_str() );
 
-  if( !elements.empty() )
-    fprintf( file, "Elements:               %u\n", (unsigned)elements.size() );
+  if( !pStruct->Elements().empty() )
+    fprintf( file, "Elements:               %u\n", (unsigned)pStruct->Elements().size() );
   if( pFlux->HasEquil() ) {
     if( pFlux->GetTopology()->HasSurfaceZones() )
       fprintf( file, "Radial cells:           %s\n", pFlux->GetSurfacesStatsStr().c_str() );
     if( pFlux->GetTopology()->HasGridPointSegs() )
       fprintf( file, "Poloidal Cells:         %s\n", pFlux->GetGridPointStatsStr().c_str() );
   }
-  if( !separators.empty() )
-    fprintf( file, "Separators:             %u\n", (unsigned)separators.size() );
+  if( !pStruct->Separators().empty() )
+    fprintf( file, "Separators:             %u\n", (unsigned)pStruct->Separators().size() );
   if( !sources.empty() )
     fprintf( file, "Sources:                %u\n", (unsigned)sources.size() );
 
@@ -128,66 +128,24 @@ int Model::WriteObjects( Token _token, FILE* _pFile, int _mode ) const
     }
     break;
 
+  case TKN::Elems100:
+  case TKN::Nodes100:
+  case TKN::MarkedElems100:
+  case TKN::Separators101:
+  case TKN::MarkedSeparators104:
+  case TKN::Chords106:
+  case TKN::Chords115:
+    return pStruct->WriteObjects( _token, _pFile, _mode );
+
   case TKN::SonnetData100: break; /* obsolete */
 
-  case TKN::Nodes100: {
-    fprintf( _pFile, "%s %u\n", sToken, (unsigned)nodes.size() );
-    FOREACHPTRCONST( NodePtr, pNode, nodes )
-      fprintf( _pFile, "%e %e\n", pNode->X(), pNode->Y() );
-    break;
-  }
-  case TKN::Elems100: {
-    fprintf( _pFile, "%s %d\n", sToken, (unsigned)elements.size() );
-    FOREACHPTRCONST( ElementPtr, pElem, elements )
-      fprintf( _pFile, "%u %u %d\n", (uint)IndexOf( nodes, pElem->Node(1) ),
-               (uint)IndexOf( nodes, pElem->Node(2) ), pElem->Id() );
-    break;
-  }
-  case TKN::Separators101: {
-    fprintf( _pFile, "%s %u\n", sToken, (unsigned)separators.size() );
-    FOREACHPTRCONST( SeparatorPtr, pSep, separators )
-      fprintf( _pFile, "%e %e %u %d\n", pSep->X(), pSep->Y(),
-               (uint)IndexOf( nodes, pSep->Node() ), pSep->Id() );
-    break;
-  }
   case TKN::Sources104: {
     fprintf( _pFile, "%s %u\n", sToken, (unsigned)sources.size() );
     FOREACHPTRCONST( SourcePtr, pSrc, sources )
       fprintf( _pFile, "%e %e\n", pSrc->X(), pSrc->Y() );
     break;
   }
-  case TKN::Chords106: break; /* obsolete */
-  case TKN::Chords115: {
-    fprintf( _pFile, "%s %u\n", sToken, (unsigned)chords.size() );
-    FOREACHPTRCONST( ChordPtr, pCh, chords ) {
-      Point p1 = pCh->Point_1();
-      Point p2 = pCh->Point_2();
-      fprintf( _pFile, "%e %e %e %e %e %e\n", p1.x, p1.y, p1.z,  p2.x, p2.y, p2.z );
-    }
-    break;
-  }
 
-  case TKN::MarkedElems100: {
-    markedNumber = 0;
-    IComponentPtr FOREACHOBJCONST( pObj, markedList )
-      if( pObj->Type() == OT::ELEMENT )
-        markedNumber++;
-    fprintf( _pFile, "%s %d\n", sToken, markedNumber );
-    FOREACHOBJCONST( pObj, markedList )
-      if( pObj->Type() == OT::ELEMENT )
-        fprintf( _pFile, "%u\n", (uint)IndexOf( elements, pObj ) );
-    break;
-  }
-  case TKN::MarkedSeparators104:
-    markedNumber = 0;
-    FOREACHOBJCONST( pObj, markedList )
-      if( pObj->Type() == OT::SEPARATOR )
-        markedNumber++;
-    fprintf( _pFile, "%s %d\n", sToken, markedNumber );
-    FOREACHOBJCONST( pObj, markedList )
-      if( pObj->Type() == OT::SEPARATOR )
-        fprintf( _pFile, "%u\n", (uint)IndexOf( separators, pObj ) );
-    break;
   case TKN::MarkedSources104:
     markedNumber = 0;
     FOREACHOBJCONST( pObj, markedList )
@@ -197,16 +155,6 @@ int Model::WriteObjects( Token _token, FILE* _pFile, int _mode ) const
     FOREACHOBJCONST( pObj, markedList )
       if( pObj->Type() == OT::SOURCE )
         fprintf( _pFile, "%u\n", (uint)IndexOf( sources, pObj ) );
-    break;
-  case TKN::MarkedChords110:
-    markedNumber = 0;
-    FOREACHOBJCONST( pObj, markedList )
-      if( pObj->Type() == OT::CHORD )
-        markedNumber++;
-    fprintf( _pFile, "%s %d\n", sToken, markedNumber );
-    FOREACHOBJCONST( pObj, markedList )
-      if( pObj->Type() == OT::CHORD )
-        fprintf( _pFile, "%u\n", (uint)IndexOf( chords, pObj ) );
     break;
 
   case TKN::MaxElemId101:
@@ -471,7 +419,7 @@ int Model::WriteElemsAsDgTemplate( const std::string& _fileName, bool _bMarked )
 
   fprintf( file, "DivGeo template file>>\n" );
 
-  const IComponentList* objects = _bMarked ? &markedList : &elements;
+  const IComponentList* objects = _bMarked ? &markedList : &pStruct->Elements();
   if( objects->empty() )
     return SendMessage( MT::WINDOW, AL::ERROR, SENDER, ERR::NO_MARKED_ELEMS );
 
@@ -500,7 +448,7 @@ int Model::WriteOutputFile( const std::string& _fileName ) const
   /* Determine the maximum element number actually used */
   int maxId = 0;
   for( int id = 0; id <= maxElemId; id++ ) {
-    if( FindObject( id ) == null )
+    if( pStruct->FindObject( id ) == null )
       continue;
     maxId = id;
   }
@@ -518,7 +466,7 @@ int Model::WriteOutputFile( const std::string& _fileName ) const
   SendProgress( 5 );
 
   for( int id = 0; id <= maxId; id++ ) {
-    IVarOriginPtr pObj = FindObject( id );
+    IVarOriginPtr pObj = pStruct->FindObject( id );
     if( pObj == null )
       zfprintf( file, " 0,0,0\n" );
     else {
@@ -547,7 +495,7 @@ int Model::WriteOutputFile( const std::string& _fileName ) const
 
   zfprintf( file, "p2\n" );
   for( int id = 0; id <= maxId; id++ ) {
-    IVarOriginPtr pObj = FindObject( id );
+    IVarOriginPtr pObj = pStruct->FindObject( id );
     if( pObj == null )
       zfprintf( file, " 1,1,1\n" );
     else {
@@ -577,19 +525,19 @@ int Model::WriteOutputFile( const std::string& _fileName ) const
 
   zfprintf( file, "misselem\n" );
   for( int id = 0; id <= maxId; id++ ) {
-    if( FindObject( id ) == null /*|| IsChordElem(obj)*/)
+    if( pStruct->FindObject( id ) == null /*|| IsChordElem(obj)*/)
       zfprintf( file, "  %d\n", id );
   }
 
   zfprintf( file, "sprtrs\n" );
   for( int id = 0; id <= maxId; id++ ) {
-    IVarOriginPtr pObj = FindObject( id );
+    IVarOriginPtr pObj = pStruct->FindObject( id );
     if( pObj != null && pObj->Type() == OT::SEPARATOR )
       zfprintf( file, "  %d\n", id );
   }
 
   zfprintf( file, "chords\n" );
-  FOREACHPTRCONST( ChordPtr, pCh, chords ) {
+  FOREACHPTRCONST( ChordPtr, pCh, pStruct->Chords() ) {
     Point p1 = pCh->Point_1();
     Point p2 = pCh->Point_2();
     zfprintf( file, "  %e, %e, %e, %e\n", p1.x, p1.y, p2.x, p2.y );
@@ -752,7 +700,7 @@ ulong Model::GetOutputValidationFlags() const
   pVars->GetOutputValidationFlags( outputFlags, valid_flags );
 
   if( HasAnyFlag( outputFlags, OF::CELLS) &&
-      !separators.empty() ) {
+      !pStruct->Separators().empty() ) {
     ComponentListContainerPtrArray* info = CreateCellsInfo( null, null );
     if( info != null ) {
       FreeContainersArray( *info );

@@ -34,9 +34,9 @@ void CViewWnd::slotSplitElement( QPoint position, EEventID eventid )
     }
     else {
       ElementPtr pElementO = dgtype_cast< ElementPtr >( pElementObj );
-      NodePtr pNode = pModel->AddNode( _C( mapToScene( position ) ) );
-      ElementPtr pElemA = pModel->AddElem( pElementO->Node(1), pNode );
-      ElementPtr pElemB = pModel->AddElem( pNode, pElementO->Node(2) );
+      NodePtr pNode = pModel->Struct()->AddNode( _C( mapToScene( position ) ) );
+      ElementPtr pElemA = pModel->Struct()->AddElem( pElementO->Node(1), pNode );
+      ElementPtr pElemB = pModel->Struct()->AddElem( pNode, pElementO->Node(2) );
 
       pElementO->Delete();
       pToolSplit->pElementItemO = null;

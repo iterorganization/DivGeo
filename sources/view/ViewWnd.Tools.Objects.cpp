@@ -132,7 +132,7 @@ void CViewWnd::slotAddElement( QPoint position, EEventID eventid )
     pTool = pToolAdd;
 
     emit ChangeShowFlag( SHW::ELEMS, true );
-    NodePtr pNode = pModel->AddNode( _C( mapToScene( position ) ) );
+    NodePtr pNode = pModel->Struct()->AddNode( _C( mapToScene( position ) ) );
     pNode->Highlight();
 
     pModel->Agent()->Update();
@@ -153,7 +153,7 @@ void CViewWnd::slotAddElement( QPoint position, EEventID eventid )
 
     NodePtr pNode = null;
     if( pToolAdd->pNodeFirstItem == null ) {
-      pNode = pModel->AddNode( _C( mapToScene( position ) ) );
+      pNode = pModel->Struct()->AddNode( _C( mapToScene( position ) ) );
       pNode->Highlight();
       pModel->Agent()->Update();
       pToolAdd->pNodeFirstItem = pScene->GetItem( pNode );

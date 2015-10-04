@@ -6,7 +6,7 @@ Separator::Separator( ModelPtr _pModel, Point _position, NodePtr _pN ):
 {
   position = _position;
   pNode = DG_SHARE( _pN );
-  id = pModel->GetNextElemId();
+  id = pModel->Struct()->GetNextElemId();
 }
 
 Separator::~Separator()

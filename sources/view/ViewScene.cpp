@@ -345,7 +345,7 @@ void ViewScene::Build( ulong sfs )
       vpElementItems.clear();
     }
 
-    IComponentPtr FOREACHOBJCONST( pObject, pModel->Elements() ) {
+    IComponentPtr FOREACHOBJCONST( pObject, pModel->Struct()->Elements() ) {
       ViewElementItemPtr pItem = new ViewElementItem( pObject );
       pItem->SetSettingsManager( pPrefs );
       pItem->SetViewState( pState );
@@ -368,7 +368,7 @@ void ViewScene::Build( ulong sfs )
       vpSeparatorItems.clear();
     }
 
-    IComponentPtr FOREACHOBJCONST( pObject, pModel->Separators() ) {
+    IComponentPtr FOREACHOBJCONST( pObject, pModel->Struct()->Separators() ) {
       ViewSeparatorItemPtr pItem = new ViewSeparatorItem( pObject );
       pItem->SetSettingsManager( pPrefs );
       pItem->SetViewState( pState );
@@ -411,7 +411,7 @@ void ViewScene::Build( ulong sfs )
       vpNodeItems.clear();
     }
 
-    IComponentPtr FOREACHOBJCONST( pObject, pModel->Nodes() ) {
+    IComponentPtr FOREACHOBJCONST( pObject, pModel->Struct()->Nodes() ) {
       ViewNodeItemPtr pItem = new ViewNodeItem( pObject );
       pItem->SetSettingsManager( pPrefs );
       pItem->SetViewState( pState );
@@ -432,7 +432,7 @@ void ViewScene::Build( ulong sfs )
       vpChordItems.clear();
     }
 
-    IComponentPtr FOREACHOBJCONST( pObject, pModel->Chords() ) {
+    IComponentPtr FOREACHOBJCONST( pObject, pModel->Struct()->Chords() ) {
       ViewChordItemPtr pItem = new ViewChordItem( pObject );
       pItem->SetSettingsManager( pPrefs );
       pItem->SetViewState( pState );

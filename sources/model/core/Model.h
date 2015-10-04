@@ -5,7 +5,7 @@
 #include "../../common/Includes.h"
 
 #include "../mesh/MeshDecl.h"
-#include "../sonnet/SonnetDecl.h"
+#include "../mesh/SonnetDecl.h"
 #include "../diagnostics/DiagnosticsDecl.h"
 #include "../flux/EquilDecl.h"
 #include "../flux/Topology.h"
@@ -17,11 +17,14 @@
 
 #include "ActionStack.h"
 
-#include "VarsManager.h"
+#include "../vars/VarsManager.h"
 class VarsManager;
 
 #include "../flux/FluxModel.h"
 class FluxModel;
+
+#include "../material/Structure.h"
+class Structure;
 
 class Model:
   public IValueHolder,
@@ -54,12 +57,13 @@ class Model:
   }
 
   DG_HIERARCHY_TABLE {
-    RegisterType( OT::NODE,       &nodes );
-    RegisterType( OT::ELEMENT,    &elements );
-    RegisterType( OT::SEPARATOR,  &separators );
     RegisterType( OT::SOURCE,     &sources );
-    RegisterType( OT::CHORD,      &chords );
     RegisterType( OT::COMMENT,    &comments );
+
+    RegisterType( OT::NODE,         pStruct );
+    RegisterType( OT::ELEMENT,      pStruct );
+    RegisterType( OT::SEPARATOR,    pStruct );
+    RegisterType( OT::CHORD,        pStruct );
 
     RegisterType( OT::MESH,         pMesh );
     RegisterType( OT::MESHCELL,     pMesh );
@@ -101,6 +105,7 @@ private:
 
   VarsManager* pVars;
   FluxModel* pFlux;
+  Structure* pStruct;
 
   std::string creationTime;
   std::string fileName;
@@ -114,12 +119,7 @@ private:
   IComponentList markedList;
   IComponentList highlightedList;
 
-  mutable IComponentList nodes_unused; /* for UnusedNodes() */
-  IComponentList nodes;
-  IComponentList elements;
-  IComponentList separators;
   IComponentList sources;
-  IComponentList chords;
   IComponentList comments;
 
   // Outer control vars
@@ -189,9 +189,6 @@ private:
   void WriteApp_File( FILE* _pFile ) const;
 
 public:
-  void DelObject( IComponentPtr obj );
-  IComponentPtr GetLockingObject( IComponentPtr pObject );
-
   /* Write data of target elements. Extracted from WriteTargetFile */
   void WriteTarget( FILE* _pFile, IVarItemListPtr _pTarget, GridPointSegPtr _pGPS ) const;
   /* Produce DG template file from elements */
@@ -215,6 +212,7 @@ public:
   /************************************************************
    * Subobjects manipulations
    ************************************************************/
+  void DelObject( IComponentPtr obj );
 
   void ExcludeMarked( IComponentPtr pObject ) { Remove( markedList, pObject ); ReleaseObject( pObject ); }
   void IncludeMarked( IComponentPtr pObject ) { markedList.push_back( pObject->GetPtr() ); }
@@ -241,7 +239,6 @@ public:
   /* Emit error message describing why an object is locked */
   void ShowLockReasonOf( IComponentPtr _pObject ) const;
 
-  IVarOriginPtr FindObject( int _id ) const;
   int GetObjectId(const IComponentPtr _pObj ) const;
 
   /* After action process changes in model */
@@ -255,11 +252,7 @@ public:
   int           DeleteSonnetData();
   ulong         AddTemplate( const std::string& _fName, Point _incr,
                              double angle, double scale );
-  NodePtr       AddNode( Point _pnt, bool checkIfExists = false );
-  ElementPtr    AddElem( NodePtr _pN1, NodePtr _pN2 );
-  SeparatorPtr  AddSeparator( Point _position, NodePtr pN );
   SourcePtr     AddSource( Point _position );
-  ChordPtr      AddChord( Point _p1, Point _p2, bool b3d = false );
   CommentPtr    AddComment(ObjectType _ot, const Point& _crPosEnd,
                            const Point& _crPos, const std::wstring& _crwsText,
                            int _parentScene);
@@ -278,32 +271,13 @@ public:
   /************************************************************
    * Sonnet, Template, Elements, Nodes
    ************************************************************/
-  int AppendTemplate();
   /* It is the caller's responsibility to delete result array. */
   ComponentListContainerPtrArray* CreateCellsInfo( int* pErr, IComponentPtr* ppObj ) const;
-
-  ElementPtr FindElementByID( int id ) const;
-  int ConvertChordsToElems( const IComponentList& _chords, IComponentPtr *ppErrObj );
-  int ConvertElemsToChords( const IComponentList &_elems, IComponentPtr *ppErrObj );
-  int ConvertTemplateToChords();
-
-  IComponentList GetMarkedElements();
-
-  /* Create elements between closest nodes pairs */
-  int GlueNodes(double _maxDist, bool _markedOnly, int* _prCount);
-  /* Merge elements forming an almost straight line */
-  int GlueElems( double _maxDist, double _maxLen,
-                 bool _cutLonger, bool _markedOnly, int* _prCount );
-  /* Force external normals of all adjacend elements into one dir */
-  int GlueNormals( bool _markedOnly, int* _prCount );
-  /* Renumber all elements and separators. Separators are renumbered first */
-  void RenumberElements();
 
   /************************************************************
    * Getters
    ************************************************************/
   const IComponentList& MarkedObjects() const { return markedList; }
-  const IComponentList& UnusedNodes() const;
 
   IModelAgent* Agent() const { return pAgent; }
 
@@ -326,38 +300,23 @@ public:
   const std::string& CreationTime() const { return creationTime; }
   CActionStack& ActionStack() { return actStack; }
 
-  ulong NodesNum()      const { return nodes.size(); }
-  ulong ElementsNum()   const { return elements.size(); }
-  ulong ChordsNum()     const { return chords.size(); }
-  ulong SeparatorsNum() const { return separators.size(); }
-  ulong SourcesNum()    const { return sources.size(); }
-
-  const IComponentList& Nodes()       const { return nodes; }
-  const IComponentList& Elements()    const { return elements; }
-  const IComponentList& Separators()  const { return separators; }
   const IComponentList& Sources()     const { return sources; }
-  const IComponentList& Chords()      const { return chords; }
   const IComponentList& Comments()    const { return comments; }
 
-  NodePtr FindNode( const Point& pnt ) const;
   SourcePtr FindSource( const Point& pnt ) const;
-  ChordPtr FindChord( const Point& p1, const Point& p2, bool checkOrder = true ) const;
-
-  IComponentPtr LockedNode() const;
 
   bool HasMesh( MeshPtr _pMesh )  const { return pMesh == _pMesh; }
   bool HasMesh()                  const { return pMesh != null; }
   bool HasTemplate()              const { return pTemplate != null; }
   bool HasSonnetData()            const { return pSonnetData != null; }
-  bool HasSeparators()            const { return !separators.empty(); }
 
   FluxModel* GetFluxModel()     const { return pFlux; }
   MeshPtr GetMesh()             const { return pMesh; }
   TemplatePtr GetTemplate()     const { return pTemplate; }
   SonnetDataPtr GetSonnetData() const { return pSonnetData; }
   VarsManager* Vars()           const { return pVars; }
+  Structure* Struct()           const { return pStruct; }
 
-  int GetNextElemId();
   int MaxElemId() const { return maxElemId; }
 
   bool HasTopology()                          const { return !topologyName.empty(); }

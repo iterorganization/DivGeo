@@ -76,7 +76,7 @@ void CMainWnd::slotCreatePoint()
   forever {
     if( pDialog->exec() != QDialog::Accepted )
       break;
-    IComponentPtr pNode = pModel->FindNode( pDialog->Position() );
+    IComponentPtr pNode = pModel->Struct()->FindNode( pDialog->Position() );
     if( pNode != null ) {
       pView->CurrentScene()->CreateLabelItem( pNode, SM_MSG( STR::ERRLABEL ) );
       pModel->Agent()->Update();
@@ -84,7 +84,7 @@ void CMainWnd::slotCreatePoint()
                 QStringList( QString::fromStdString( pNode->DetailedInfo() ) ) );
       continue; // try again
     }
-    pNode = pModel->AddNode( pDialog->Position() );
+    pNode = pModel->Struct()->AddNode( pDialog->Position() );
     pView->CurrentScene()->CreateLabelItem( pNode, SM_MSG( STR::NEWLABEL ) );
     slotChangeShowFlag( SHW::NODES, true );
     slotChangeShowFlag( SHW::IRRNODES, true );
@@ -115,7 +115,7 @@ void CMainWnd::slotCreateSource()
                 QStringList( QString::fromStdString( pSrc->DetailedInfo() ) ) );
       continue; // try again
     }
-    pSrc = pModel->AddNode( dialog.Position() );
+    pSrc = pModel->Struct()->AddNode( dialog.Position() );
     pView->CurrentScene()->CreateLabelItem( pSrc, SM_MSG( STR::NEWLABEL ) );
     slotChangeShowFlag( SHW::SOURCES, true );
     pModel->ActionStack().Complete( "CreateSource" );
@@ -141,7 +141,7 @@ void CMainWnd::slotCreateChord()
     Point p1 = pDialog->Position1();
     Point p2 = pDialog->Position2();
 
-    IComponentPtr pCh = pModel->FindChord( p1, p2, true );
+    IComponentPtr pCh = pModel->Struct()->FindChord( p1, p2, true );
     if( pCh != null ) {
       pView->CurrentScene()->CreateLabelItem( pCh, SM_MSG( STR::ERRLABEL ) );
       pModel->Agent()->Update();
@@ -149,7 +149,7 @@ void CMainWnd::slotCreateChord()
                 QStringList( QString::fromStdString( pCh->DetailedInfo() ) ));
       continue; // try again
     }
-    pCh = pModel->AddChord( p1, p2, true );
+    pCh = pModel->Struct()->AddChord( p1, p2, true );
     pView->CurrentScene()->CreateLabelItem( pCh, SM_MSG( STR::NEWLABEL ) );
     slotChangeShowFlag( SHW::CHORDS, true );
     pModel->ActionStack().Complete( "CreateChord" );
@@ -414,7 +414,7 @@ void CMainWnd::slotDeleteUnusedPoints()
   SENDER_NAME_Q( SM_LOG( LOG::MENU::EDIT::DELETE::UNUSED_POINTS ) );
   pConsole->Send( LOG_INFO, sender_name, SENDER );
   ModelPtr pModel = pMV->CurrentModel();
-  const IComponentList& objects = pModel->UnusedNodes();
+  const IComponentList& objects = pModel->Struct()->UnusedNodes();
   foreach( IComponentPtr pObject, objects ) {
     if( !DeleteObject( pObject ) )
       return;
@@ -444,7 +444,7 @@ void CMainWnd::slotDeleteElements()
   pConsole->Send( LOG_INFO, sender_name, SENDER );
 
   ModelPtr pModel = pMV->CurrentModel();
-  const IComponentList& crObjects = pModel->Elements();
+  const IComponentList& crObjects = pModel->Struct()->Elements();
   foreach( IComponentPtr pObject, crObjects ) {
     if( !DeleteObject( pObject ) )
       return;
@@ -474,7 +474,7 @@ void CMainWnd::slotDeleteChords()
   pConsole->Send( LOG_INFO, sender_name, SENDER );
 
   ModelPtr pModel = pMV->CurrentModel();
-  const IComponentList& objects = pModel->Chords();
+  const IComponentList& objects = pModel->Struct()->Chords();
   foreach( IComponentPtr pObject, objects ) {
     if( !DeleteObject( pObject ) )
       return;
@@ -518,7 +518,7 @@ void CMainWnd::slotDeleteSeparators()
   SENDER_NAME_Q( SM_LOG( LOG::MENU::EDIT::DELETE::SEPARATORS ) );
   pConsole->Send( LOG_INFO, sender_name, SENDER );
   ModelPtr pModel = pMV->CurrentModel();
-  const IComponentList& objects = pModel->Separators();
+  const IComponentList& objects = pModel->Struct()->Separators();
   foreach( IComponentPtr pObject, objects )
     pObject->Delete(); // Can not be locked as DeleteObject()
   pModel->ActionStack().Complete( "DeleteSeparators" );
@@ -652,13 +652,13 @@ void CMainWnd::slotMoveRotate()
       }
     }
     if( pDialog->ChangeElements() ) {
-      IComponentPtr pN = pModel->LockedNode();
+      IComponentPtr pN = pModel->Struct()->LockedNode();
       if( pN != null ) {
         pModel->ActionStack().Cancel();
         pModel->ShowLockReasonOf( pN );
         return; // leave dialog: smth is wrong in model
       }
-      const IComponentList& nodes = pModel->Nodes();
+      const IComponentList& nodes = pModel->Struct()->Nodes();
       if( !nodes.empty() ) {
         FOREACHPTRCONST( NodePtr, pN, nodes ) {
           if( r == DlgMoveRotate::r_move )
