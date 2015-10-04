@@ -5,11 +5,8 @@ QRectF ViewSeparatorItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewSeparatorItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewSeparatorItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   if( isMarked ) {
     painter->setPen( penMark );
     painter->drawLine( line );
@@ -47,9 +44,9 @@ void ViewSeparatorItem::paint( QPainter *painter, const QStyleOptionGraphicsItem
   BOUND_RECT( fullBoundingRect );
 }
 
-void ViewSeparatorItem::WritePostScriptData( QFile* _pFile )
+void ViewSeparatorItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewSeparatorItem::UpdateGeometry()

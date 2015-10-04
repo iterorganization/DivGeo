@@ -5,18 +5,15 @@ QRectF ViewSourceRadialTopItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewSourceRadialTopItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewSourceRadialTopItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   painter->setPen( penLine );
   painter->drawLines( lines );
 }
 
-void ViewSourceRadialTopItem::WritePostScriptData( QFile* _pFile )
+void ViewSourceRadialTopItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewSourceRadialTopItem::UpdateGeometry()

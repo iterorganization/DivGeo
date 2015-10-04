@@ -7,19 +7,16 @@ QRectF ViewLegendItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewLegendItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewLegendItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   painter->setMatrixEnabled( false );
   painter->drawPixmap( pixmapPos, pixmap );
   painter->setMatrixEnabled( true );
 }
 
-void ViewLegendItem::WritePostScriptData( QFile* _pFile )
+void ViewLegendItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewLegendItem::UpdateGeometry()

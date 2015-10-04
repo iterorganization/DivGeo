@@ -6,19 +6,16 @@ QRectF ViewChordTopItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewChordTopItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewChordTopItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   painter->setPen( penLine );
   painter->drawLine( topLine );
   //painter->drawRect( boundingRect() );
 }
 
-void ViewChordTopItem::WritePostScriptData( QFile* _pFile )
+void ViewChordTopItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewChordTopItem::UpdateGeometry()

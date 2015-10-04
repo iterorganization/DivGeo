@@ -6,11 +6,8 @@ QRectF ViewRadialGridItem::boundingRect() const
   return sceneRect;
 }
 
-void ViewRadialGridItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewRadialGridItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   sceneRect = scene()->sceneRect();
   QPolygonF viewPoly = pState->viewPoly;
   if( viewPoly.empty() )
@@ -148,9 +145,9 @@ void ViewRadialGridItem::paint( QPainter *painter, const QStyleOptionGraphicsIte
   }
 }
 
-void ViewRadialGridItem::WritePostScriptData( QFile* _pFile )
+void ViewRadialGridItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewRadialGridItem::UpdateGeometry()

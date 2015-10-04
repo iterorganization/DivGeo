@@ -32,8 +32,8 @@ public:
   virtual void SetVisible( bool visible ) { setVisible( visible ); }
 
   virtual QRectF boundingRect() const;
-  virtual void paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget );
-  virtual void WritePostScriptData( QFile* _pFile );
+  virtual void paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* );
+  virtual void WritePostScriptData( QFile* );
 
   virtual void UpdateGeometry();
   virtual void UpdateDependentGeometry();
@@ -42,6 +42,13 @@ public:
 
   void SetLinkedObject( IComponentPtr _pLinkedObject );
   IComponentPtr GetLinkedObject() const { return pLinkedObject; }
+  void UpdateEndPosition() {
+    if( pLinkedObject != null ) {
+      CommentPtr pComment = dgtype_cast< CommentPtr >( pObject );
+      Point pos_end = pLinkedObject->CentralPoint();
+      pComment->ChangePosEnd( pos_end );
+    }
+  }
 
 }* ViewCommentItemPtr;
 

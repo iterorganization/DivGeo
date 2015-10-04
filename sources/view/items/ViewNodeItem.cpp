@@ -5,11 +5,8 @@ QRectF ViewNodeItem::boundingRect() const
   return nodeBoundingRect;
 }
 
-void ViewNodeItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewNodeItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   if( !show )
     return;
   const QMatrix& mx = painter->worldMatrix();
@@ -28,9 +25,9 @@ void ViewNodeItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *ite
   nodeBoundingRect = mxInv.mapRect( nodeBoundingRect );
 }
 
-void ViewNodeItem::WritePostScriptData( QFile* _pFile )
+void ViewNodeItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewNodeItem::UpdateGeometry()

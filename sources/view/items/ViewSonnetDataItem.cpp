@@ -5,18 +5,15 @@ QRectF ViewSonnetDataItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewSonnetDataItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewSonnetDataItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   painter->setPen( pen );
   painter->drawLines( lines );
 }
 
-void ViewSonnetDataItem::WritePostScriptData( QFile* _pFile )
+void ViewSonnetDataItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewSonnetDataItem::UpdateGeometry()

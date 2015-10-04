@@ -6,19 +6,16 @@ QRectF ViewMeshRadialTopItem::boundingRect() const
 }
 
 
-void ViewMeshRadialTopItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewMeshRadialTopItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   painter->setPen( penLine );
   foreach( const QLineF& line, lines )
     painter->drawLine( line );
 }
 
-void ViewMeshRadialTopItem::WritePostScriptData( QFile* _pFile )
+void ViewMeshRadialTopItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewMeshRadialTopItem::UpdateGeometry()

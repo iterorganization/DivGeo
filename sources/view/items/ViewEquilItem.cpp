@@ -32,9 +32,9 @@ ViewEquilItem::ViewEquilItem(const IComponentPtr _pObject, NPoint _blockSize ):
   }
 }
 
-void ViewEquilItem::WritePostScriptData( QFile* _pFile )
+void ViewEquilItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewEquilItem::UpdateGeometry()
@@ -64,11 +64,8 @@ QRectF ViewEquilBlockItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewEquilBlockItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewEquilBlockItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   int prevValueSign = +1.;
   painter->setPen( pen_pos );
 
@@ -115,9 +112,9 @@ void ViewEquilBlockItem::paint( QPainter *painter, const QStyleOptionGraphicsIte
   }
 }
 
-void ViewEquilBlockItem::WritePostScriptData( QFile* _pFile )
+void ViewEquilBlockItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewEquilBlockItem::UpdateGeometry()

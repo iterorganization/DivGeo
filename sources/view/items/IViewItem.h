@@ -81,7 +81,7 @@ public:
   /* Access to QGraphicsItem::setVisible(bool) */
   virtual void SetVisible( bool visible ) = 0;
   /* Write object geometry data to PostScript file */
-  virtual void WritePostScriptData( QFile* _pFile ) = 0;
+  virtual void WritePostScriptData( QFile* ) = 0;
 
   /* Evaluate distance from item to given position */
   virtual double DistToPoint( QPointF _point ) const { UNUSED( _point ); return MAXDOUBLE; }
@@ -92,7 +92,7 @@ public:
    * Just returns a bounding rect that was built in UpdateGeometry() or paint() methods
   virtual QRectF boundingRect() const;
    * Paint geometry and sometimes build the bounding rect
-  virtual void paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget );
+  virtual void paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* );
    */
 
   /* Common initialization */

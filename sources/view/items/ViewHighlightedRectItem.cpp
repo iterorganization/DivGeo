@@ -7,18 +7,15 @@ QRectF ViewHighlightedRectItem::boundingRect() const
                  full_boundingRect.bottomRight() + QPointF( 1., 1. ) );
 }
 
-void ViewHighlightedRectItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewHighlightedRectItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   painter->setPen( pen );
   painter->drawPolygon( rect );
 }
 
-void ViewHighlightedRectItem::WritePostScriptData( QFile* _pFile )
+void ViewHighlightedRectItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewHighlightedRectItem::UpdateGeometry()

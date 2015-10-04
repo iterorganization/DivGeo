@@ -5,11 +5,8 @@ QRectF ViewGridPointExItem::boundingRect() const
   return QRectF( line.p1(), line.p2() );
 }
 
-void ViewGridPointExItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewGridPointExItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   if( !show )
     return;
 
@@ -19,9 +16,9 @@ void ViewGridPointExItem::paint( QPainter *painter, const QStyleOptionGraphicsIt
   //painter->drawRect( boundingRect() );
 }
 
-void ViewGridPointExItem::WritePostScriptData( QFile* _pFile )
+void ViewGridPointExItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewGridPointExItem::UpdateGeometry()

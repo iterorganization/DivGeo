@@ -5,20 +5,17 @@ QRectF ViewSurfaceExItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewSurfaceExItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewSurfaceExItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   painter->setPen( pen );
   painter->drawLines( lines );
 
   //painter->drawRect( boundingRect() );
 }
 
-void ViewSurfaceExItem::WritePostScriptData( QFile* _pFile )
+void ViewSurfaceExItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewSurfaceExItem::UpdateGeometry()

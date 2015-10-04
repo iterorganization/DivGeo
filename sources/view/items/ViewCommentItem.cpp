@@ -5,11 +5,8 @@ QRectF ViewCommentItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewCommentItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewCommentItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   QLineF line = QLineFromPoints( pos_end, position );
 
   painter->setPen( pen );
@@ -60,9 +57,9 @@ void ViewCommentItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *
   //painter->drawRect( boundingRect() );
 }
 
-void ViewCommentItem::WritePostScriptData( QFile* _pFile )
+void ViewCommentItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewCommentItem::UpdateGeometry()
@@ -71,12 +68,6 @@ void ViewCommentItem::UpdateGeometry()
   position = pComment->Position();
   pos_end = pComment->PosEnd();
   sText = QString::fromStdWString( pComment->Text() );
-  if( pLinkedObject != null ) {
-    pos_end = pLinkedObject->CentralPoint();
-    pComment->ChangePosEnd( pos_end );
-    /*sText = QString::fromStdString( pLinkedObject->DetailedInfo() ) +
-            "\n" + sText;*/
-  }
 
   UpdateComments();
 }

@@ -36,11 +36,8 @@ void ViewChordItem::Build3DGeometry()
 
 }
 
-void ViewChordItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewChordItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   if( showZProjection ) {
     if( p1.z != 0. || p2.z != 0. ) {
       if( isMarked ) {
@@ -94,9 +91,9 @@ void ViewChordItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *it
   //painter->drawRect( boundingRect() );
 }
 
-void ViewChordItem::WritePostScriptData( QFile* _pFile )
+void ViewChordItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewChordItem::UpdateGeometry()

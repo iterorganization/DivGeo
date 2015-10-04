@@ -5,11 +5,8 @@ QRectF ViewElementItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewElementItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewElementItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   BOUND_DECLARE;
   BOUND_QINIT( line.p1() );
   BOUND_QPOINT( line.p2() );
@@ -60,9 +57,9 @@ void ViewElementItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *
   }
 }
 
-void ViewElementItem::WritePostScriptData( QFile* _pFile )
+void ViewElementItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewElementItem::UpdateStyle()

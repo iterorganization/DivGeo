@@ -5,11 +5,8 @@ QRectF ViewLabelItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewLabelItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewLabelItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   QLineF line = QLineFromPoints( pos, pos + offset );
 
   painter->setPen( pen );
@@ -42,9 +39,9 @@ void ViewLabelItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *it
   //painter->drawRect( boundingRect() );
 }
 
-void ViewLabelItem::WritePostScriptData( QFile* _pFile )
+void ViewLabelItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewLabelItem::UpdateGeometry()

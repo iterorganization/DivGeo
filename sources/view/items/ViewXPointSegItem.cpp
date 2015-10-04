@@ -5,11 +5,8 @@ QRectF ViewXPointSegItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewXPointSegItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewXPointSegItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   painter->setPen( penPoly );
   painter->drawLines( polyLines );
 
@@ -22,9 +19,9 @@ void ViewXPointSegItem::paint( QPainter *painter, const QStyleOptionGraphicsItem
   //painter->drawRect( boundingRect() );
 }
 
-void ViewXPointSegItem::WritePostScriptData( QFile* _pFile )
+void ViewXPointSegItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewXPointSegItem::UpdateGeometry()

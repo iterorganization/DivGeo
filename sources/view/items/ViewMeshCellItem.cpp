@@ -5,11 +5,8 @@ QRectF ViewMeshCellItem::boundingRect() const
   return markBoundingRect;
 }
 
-void ViewMeshCellItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewMeshCellItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   const QMatrix& mx = painter->worldMatrix();
   QPointF centerT = mx.map( center );
 
@@ -35,9 +32,9 @@ void ViewMeshCellItem::paint( QPainter *painter, const QStyleOptionGraphicsItem 
   markBoundingRect = mxInv.mapRect( markBoundingRect );
 }
 
-void ViewMeshCellItem::WritePostScriptData( QFile* _pFile )
+void ViewMeshCellItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewMeshCellItem::UpdateGeometry()

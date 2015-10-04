@@ -6,11 +6,8 @@ QRectF ViewGridItem::boundingRect() const
   return sceneRect;
 }
 
-void ViewGridItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewGridItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   QFont font = painter->font();
   font.setPointSize( penText.width() );
   painter->setFont( font );
@@ -29,9 +26,9 @@ void ViewGridItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *ite
   painter->setWorldMatrixEnabled( true );
 }
 
-void ViewGridItem::WritePostScriptData( QFile* _pFile )
+void ViewGridItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewGridItem::UpdateGeometry()

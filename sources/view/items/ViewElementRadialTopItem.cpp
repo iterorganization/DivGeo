@@ -5,19 +5,16 @@ QRectF ViewElementRadialTopItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewElementRadialTopItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewElementRadialTopItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   painter->setPen( penLine );
   foreach( const QLineF& line, lines )
     painter->drawLine( line );
 }
 
-void ViewElementRadialTopItem::WritePostScriptData( QFile* _pFile )
+void ViewElementRadialTopItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewElementRadialTopItem::UpdateStyle()

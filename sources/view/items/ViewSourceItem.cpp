@@ -5,11 +5,8 @@ QRectF ViewSourceItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewSourceItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewSourceItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   if( isMarked ) {
     painter->setPen( penMark );
     painter->drawEllipse( markRect );
@@ -19,9 +16,9 @@ void ViewSourceItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *i
   painter->drawLines( lines, 5 );
 }
 
-void ViewSourceItem::WritePostScriptData( QFile* _pFile )
+void ViewSourceItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewSourceItem::UpdateGeometry()

@@ -5,18 +5,15 @@ QRectF ViewTemplateItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewTemplateItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewTemplateItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   painter->setPen( pen );
   painter->drawLines( lines );
 }
 
-void ViewTemplateItem::WritePostScriptData( QFile* _pFile )
+void ViewTemplateItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewTemplateItem::UpdateGeometry()

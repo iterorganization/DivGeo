@@ -7,11 +7,8 @@ QRectF ViewMeshElementItem::boundingRect() const
 }
 
 
-void ViewMeshElementItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewMeshElementItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   if( isMarked ) {
     painter->setPen( penMark );
     painter->drawLine( line );
@@ -21,9 +18,9 @@ void ViewMeshElementItem::paint( QPainter *painter, const QStyleOptionGraphicsIt
   painter->drawLine( line );
 }
 
-void ViewMeshElementItem::WritePostScriptData( QFile* _pFile )
+void ViewMeshElementItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 

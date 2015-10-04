@@ -6,11 +6,8 @@ QRectF ViewRotateToolItem::boundingRect() const
   return rect;
 }
 
-void ViewRotateToolItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewRotateToolItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   center = pState->center;
   QPointF centerT = painter->worldMatrix().map( center );
   QPointF end_0( 0., -50. );
@@ -33,9 +30,9 @@ void ViewRotateToolItem::paint( QPainter *painter, const QStyleOptionGraphicsIte
   rect = scene()->sceneRect(); //TODO: optimize
 }
 
-void ViewRotateToolItem::WritePostScriptData( QFile* _pFile )
+void ViewRotateToolItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewRotateToolItem::UpdateGeometry()

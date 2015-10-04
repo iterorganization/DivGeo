@@ -5,11 +5,8 @@ QRectF ViewXPointTestItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewXPointTestItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewXPointTestItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   /*if( !pState->editTopology )
     return;*/
 
@@ -22,9 +19,9 @@ void ViewXPointTestItem::paint( QPainter *painter, const QStyleOptionGraphicsIte
   //painter->drawRect( boundingRect() );
 }
 
-void ViewXPointTestItem::WritePostScriptData( QFile* _pFile )
+void ViewXPointTestItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewXPointTestItem::UpdateGeometry()

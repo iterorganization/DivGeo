@@ -6,20 +6,17 @@ QRectF ViewAxesItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewAxesItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewAxesItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   painter->setPen( pen );
   painter->drawLines( aLines, 3 );
 
   //painter->drawRect( boundingRect() );
 }
 
-void ViewAxesItem::WritePostScriptData( QFile* _pFile )
+void ViewAxesItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewAxesItem::UpdateGeometry()

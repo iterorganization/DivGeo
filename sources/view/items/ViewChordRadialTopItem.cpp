@@ -5,11 +5,8 @@ QRectF ViewChordRadialTopItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewChordRadialTopItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewChordRadialTopItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   painter->setPen( penLine );
   //painter->drawLine( topLine );
   foreach( const QLineF& line, lines )
@@ -18,9 +15,9 @@ void ViewChordRadialTopItem::paint( QPainter *painter, const QStyleOptionGraphic
   //painter->drawRect( boundingRect() );
 }
 
-void ViewChordRadialTopItem::WritePostScriptData( QFile* _pFile )
+void ViewChordRadialTopItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewChordRadialTopItem::UpdateGeometry()

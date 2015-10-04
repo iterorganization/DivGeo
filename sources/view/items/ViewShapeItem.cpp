@@ -5,11 +5,8 @@ QRectF ViewShapeItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewShapeItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewShapeItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   painter->setPen( pen );
 
   switch( shape ) {
@@ -29,9 +26,9 @@ void ViewShapeItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *it
   }
 }
 
-void ViewShapeItem::WritePostScriptData( QFile* _pFile )
+void ViewShapeItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewShapeItem::UpdateGeometry()

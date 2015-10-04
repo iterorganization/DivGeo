@@ -5,11 +5,8 @@ QRectF ViewGridPointSegItem::boundingRect() const
   return fullBoundingRect;
 }
 
-void ViewGridPointSegItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget )
+void ViewGridPointSegItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*, QWidget* )
 {
-  UNUSED(item);
-  UNUSED(widget);
-
   if( !pState->editTopology )
     return;
 
@@ -46,9 +43,9 @@ void ViewGridPointSegItem::paint( QPainter *painter, const QStyleOptionGraphicsI
   //painter->drawRect( boundingRect() );
 }
 
-void ViewGridPointSegItem::WritePostScriptData( QFile* _pFile )
+void ViewGridPointSegItem::WritePostScriptData( QFile* )
 {
-  UNUSED( _pFile ); //TODO: PostScript
+  //TODO: PostScript
 }
 
 void ViewGridPointSegItem::UpdateGeometry()
