@@ -9,7 +9,9 @@
 #include "../../common/mathlib.h"
 
 #include "EquilDecl.h"
-#include "../material/Element.h"
+
+class Element;
+typedef Element* ElementPtr;
 
 class SurfaceZone:
   public IComponent,
