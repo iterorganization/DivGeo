@@ -12,9 +12,9 @@
 #include "../../main/UserPreferences.h"
 #include "../Modes.h"
 
-#include "../../model/sonnet/SonnetDecl.h"
+#include "../../model/mesh/SonnetDecl.h"
 #include "../../model/flux/EquilDecl.h"
-#include "../../model/diagnostics/Chords.h"
+#include "../../model/material/Chords.h"
 
 #define BOUND_DECLARE Point dg__topLeft__, dg__bottomRight__;
 #define BOUND_INIT( point ) dg__topLeft__ = dg__bottomRight__ = (point);

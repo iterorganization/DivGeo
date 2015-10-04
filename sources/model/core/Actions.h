@@ -4,7 +4,7 @@
 #include "IAction.h"
 
 #include "../vars/VarsDecl.h"
-#include "../sonnet/SonnetDecl.h"
+#include "../mesh/SonnetDecl.h"
 #include "../diagnostics/DiagnosticsDecl.h"
 #include "../flux/EquilDecl.h"
 #include "../mesh/MeshDecl.h"

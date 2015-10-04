@@ -45,9 +45,9 @@ struct ObjectTypes
     SURFACEZONE  = 33,
     SURFACEEX    = 34,
     TOPOLOGY     = 35,
+    STRUCTURE    = 36,
 
     COMMENT      = 40,
-
     CONTAINER    = 50
   };
 

@@ -214,7 +214,7 @@ void CViewWnd::slotConnectPoints( QPoint position, EEventID eventid )
     pToolConnect->pNodeItemB = pNodeItem;
     pToolConnect->pNodeItemB->ModelObject()->Highlight();
     if( pToolConnect->pElementItem == null ) {
-      ElementPtr pElem = pModel->AddElem( pNodeA, pNodeB );
+      ElementPtr pElem = pModel->Struct()->AddElem( pNodeA, pNodeB );
       pElem->Highlight();
       pModel->Agent()->Update();
       pToolConnect->pElementItem = pScene->GetItem( pElem );

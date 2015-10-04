@@ -174,8 +174,8 @@ void CViewWnd::slotAddElement( QPoint position, EEventID eventid )
       pConsole->SetLoggingMode( LM::USUAL );
       pTool->SetMoved();
       NodePtr pNodeFirst = dgtype_cast< NodePtr >( pToolAdd->pNodeFirstItem->ModelObject() );
-      NodePtr pNodeSecond = pModel->AddNode( _C( mapToScene( position ) ) );
-      ElementPtr pElement = pModel->AddElem( pNodeFirst, pNodeSecond );
+      NodePtr pNodeSecond = pModel->Struct()->AddNode( _C( mapToScene( position ) ) );
+      ElementPtr pElement = pModel->Struct()->AddElem( pNodeFirst, pNodeSecond );
 
       pNodeSecond->Highlight();
       pElement->Highlight();
@@ -302,7 +302,7 @@ void CViewWnd::slotAddChords( QPoint position, EEventID eventid )
 
     if( pTool->pItem == null ) {
       pConsole->SetLoggingMode( LM::USUAL );
-      ChordPtr pChord = pModel->AddChord( pTool->position, _C( mapToScene( position ) ) );
+      ChordPtr pChord = pModel->Struct()->AddChord( pTool->position, _C( mapToScene( position ) ) );
       if( pChord == null ) {
         pConsole->SetLoggingMode( LM::COLLECT );
         break;
