@@ -55,15 +55,6 @@ DG_DEFINE_LIST(IVarItem)
 #endif
 
 /* Check if gPart is the part of gStructure */
-static bool CheckStructurePart( const IVarItemList& _crStructure, const IVarItemList& _crPart, IVarItemPtr* _ppErrObj ) {
-  FOREACH_CONST( IVarItemIterConst, it, _crPart ) {
-    if( !Contains( _crStructure, *it ) ) {
-      if( _ppErrObj != null )
-        *_ppErrObj = *it;
-      return false;
-    }
-  }
-  return true;
-}
+bool CheckStructurePart( const IVarItemList& _crStructure, const IVarItemList& _crPart, IVarItemPtr* _ppErrObj );
 
 #endif // IVARITEM_H
