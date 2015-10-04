@@ -1,0 +1,6 @@
+/.project
+*.orig
+*.rej
+*.user
+/release
+/debug
