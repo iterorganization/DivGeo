@@ -214,6 +214,5 @@ void SurfaceEx::Delete()
 {
   ChangeCreatorId( CreatorId() );
 
-  ActDelSurfaceEx actDelSX( pModel, this );
-  actDelSX.Do();
+  ActDelSurfaceEx( pModel, this, DO_AT_ONCE );
 }

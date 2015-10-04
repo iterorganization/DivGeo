@@ -38,8 +38,7 @@ void Template::Change( const TemplateParams& _tp )
 void Template::Delete()
 {
   ValidatePtr( pModel, "DelTemplate" );
-
-  ActDelTemplate act( pModel, this, DO_AT_ONCE );
+  ActDelTemplate( pModel, this, DO_AT_ONCE );
 }
 
 
