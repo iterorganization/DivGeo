@@ -298,7 +298,7 @@ void DlgVarsEdit::slotAcceptVar( int row )
       IVarItemPtr pErrObj = null;
       pModel->Vars()->CheckValue( val, pVD->VarDefType(), &pErrObj );
       if( pErrObj != null )
-        pView->CurrentScene()->CreateLabelItem( CastVarItem( pErrObj ), SM_MSG( STR::ERRLABEL ) );
+        pView->CurrentScene()->CreateLabelItem( CastVarItem< IComponent >( pErrObj ), SM_MSG( STR::ERRLABEL ) );
       pModel->ActionStack().Cancel();
       //pModel->UndoStack().Complete();
       pConsole->Send( WND_ERROR, SENDER, r );
@@ -481,7 +481,7 @@ void DlgVarsEdit::slotPopupDisplay()
     UPtr value = pModel->Vars()->GetVar( *it, pVD, pVS );
     assert( value.Type() == UPtr::STR );
     QString sDescr = QString::fromStdString( pModel->Vars()->GetVarValueDescr( pVD->VarDefType(), value ) );
-    pView->CurrentScene()->CreateLabelItem( CastVarOrigin( *it ), sDescr );
+    pView->CurrentScene()->CreateLabelItem( CastVarOrigin< IComponent >( *it ), sDescr );
   }
 
   pModel->ActionStack().Complete( "Vars:Popup" );
