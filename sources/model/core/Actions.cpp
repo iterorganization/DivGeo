@@ -336,8 +336,6 @@ namespace Actions
     if( pModel->HasSonnetData() )
       pModel->SendMessage( FATAL_ERROR, SENDER, DG3::ALREADY_HAS_SONNETDATA );
 
-    assert( !pModel->HasSeparators() );
-
     SonnetDataPtr pSD = dgtype_cast< SonnetDataPtr >( pObject );
 
     int retCode = 0;
