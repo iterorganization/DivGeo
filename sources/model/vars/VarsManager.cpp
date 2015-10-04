@@ -1,5 +1,9 @@
 #include "VarsManager.h"
 
+#include "../core/Model.h"
+
+/******************************************************************************/
+
 VarsManager::VarsManager( Model* _pModel ):
   pModel( _pModel )
 {
@@ -597,11 +601,11 @@ void VarsManager::GetVarOriginGroup( VarSetPtr pVS, VarDefPtr pVD,
   }
   else {
     if( forElements ) {
-      FOREACHPTRCONST( ElementPtr, pElem, pModel->Elements() )
+      FOREACHPTRCONST( ElementPtr, pElem, pModel->Struct()->Elements() )
         _rOrigins.push_back( pElem );
     }
     if( forSeparators ) {
-      FOREACHPTRCONST( SeparatorPtr, pSep, pModel->Separators() )
+      FOREACHPTRCONST( SeparatorPtr, pSep, pModel->Struct()->Separators() )
         _rOrigins.push_back( pSep );
     }
     if( forSources ) {
@@ -609,7 +613,7 @@ void VarsManager::GetVarOriginGroup( VarSetPtr pVS, VarDefPtr pVD,
         _rOrigins.push_back( pSrc );
     }
     if( forChords ) {
-      FOREACHPTRCONST( ChordPtr, pCh, pModel->Chords() )
+      FOREACHPTRCONST( ChordPtr, pCh, pModel->Struct()->Chords() )
         _rOrigins.push_back( pCh );
     }
   }

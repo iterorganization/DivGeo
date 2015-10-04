@@ -1,5 +1,7 @@
 #include "VarsManager.h"
 
+#include "../core/Model.h"
+
 /*******************************************************************************
  * Read
  ******************************************************************************/
@@ -24,7 +26,7 @@ bool VarsManager::ReadVars( FILE* _pFile, VarSetPtr _pVS )
     if( pVD->IsMultiple() ) {
 
       if( HasAnyFlag( pVD->Flags(), VF::FORELEMS ) ) {
-        FOREACHPTRCONST( ElementPtr, pElem, pModel->Elements() ) {
+        FOREACHPTRCONST( ElementPtr, pElem, pModel->Struct()->Elements() ) {
           UPtr val = ReadVar( _pFile, pVD->VarDefType() );
           if( val.IsNull() ) { err = true; continue; }
           SetVar( pElem, pVD, _pVS, val );
@@ -32,7 +34,7 @@ bool VarsManager::ReadVars( FILE* _pFile, VarSetPtr _pVS )
       }
 
       if( HasAnyFlag( pVD->Flags(), VF::FORSEPARATORS ) ) {
-        FOREACHPTRCONST( SeparatorPtr, pSep, pModel->Separators() ) {
+        FOREACHPTRCONST( SeparatorPtr, pSep, pModel->Struct()->Separators() ) {
           UPtr val = ReadVar( _pFile, pVD->VarDefType() );
           if( val.IsNull() ) { err = true; continue; }
           SetVar( pSep, pVD, _pVS, val );
@@ -48,7 +50,7 @@ bool VarsManager::ReadVars( FILE* _pFile, VarSetPtr _pVS )
       }
 
       if( HasAnyFlag( pVD->Flags(), VF::FORCHORDS ) ) {
-        FOREACHPTRCONST( ChordPtr, pChord, pModel->Chords() ) {
+        FOREACHPTRCONST( ChordPtr, pChord, pModel->Struct()->Chords() ) {
           UPtr val = ReadVar( _pFile, pVD->VarDefType() );
           if( val.IsNull() ) { err = true; continue; }
           SetVar( pChord, pVD, _pVS, val );
@@ -89,14 +91,14 @@ UPtr VarsManager::ReadVar( FILE* _pFile, VarType _vt )
       switch( ot ) {
       case OT::ELEMENT:
         if( sscanf( s, "%u", &i ) == 1 ) {
-          IComponentIterConst itElem = pModel->Elements().begin();
+          IComponentIterConst itElem = pModel->Struct()->Elements().begin();
           std::advance( itElem, i );
           pVarItem = dgtype_cast< ElementPtr >( (*itElem)->GetPtr() );
         }
         break;
       case OT::CHORD:
         if( sscanf( s, "%u", &i) == 1 ) {
-          IComponentIterConst itChord = pModel->Chords().begin();
+          IComponentIterConst itChord = pModel->Struct()->Chords().begin();
           std::advance( itChord, i );
           pVarItem = dgtype_cast< ElementPtr >( (*itChord)->GetPtr() );
         }
@@ -146,7 +148,7 @@ void VarsManager::WriteVar( FILE* _pFile, IVarOriginPtr _pOrigin, VarDefPtr _pVD
 
       FOREACH_CONST( IVarItemIterConst, itElem, objects ) {
         IComponentPtr pElem = dgtype_cast< ElementPtr >( *itElem );
-        fprintf( _pFile, "%u\n", (uint)IndexOf( pModel->Elements(), pElem ) );
+        fprintf( _pFile, "%u\n", (uint)IndexOf( pModel->Struct()->Elements(), pElem ) );
       }
     }
     else if( HasAnyFlag( _pVD->VarDefType(), VTF::HASCHORDS ) ) {
@@ -156,7 +158,7 @@ void VarsManager::WriteVar( FILE* _pFile, IVarOriginPtr _pOrigin, VarDefPtr _pVD
 
       FOREACH_CONST( IVarItemIterConst, itChord, objects ) {
         IComponentPtr pChord = dgtype_cast< ChordPtr >( *itChord );
-        fprintf( _pFile, "%u\n", (uint)IndexOf( pModel->Chords(), pChord ) );
+        fprintf( _pFile, "%u\n", (uint)IndexOf( pModel->Struct()->Chords(), pChord ) );
       }
     }
     else if( HasAnyFlag( _pVD->VarDefType(), VTF::HAS_MESH_OBJECTS ) ) {
@@ -210,12 +212,12 @@ void VarsManager::WriteVars( FILE* _pFile, IVarOriginPtr _pOrigin ) const
   FOREACHPTRCONST( VarDefPtr, pVD, pVSD->VarDefs() ) {
     if( _pOrigin->Type() == OT::VARSET && ( HasAnyFlag( pVD->Flags(), VF::MULTIPLE ) ) ) {
       if( HasAnyFlag( pVD->Flags(), VF::FORELEMS ) ) {
-        FOREACHPTRCONST( ElementPtr, pElem, pModel->Elements() )
+        FOREACHPTRCONST( ElementPtr, pElem, pModel->Struct()->Elements() )
           WriteVar( _pFile, pElem, pVD, pVS );
       }
 
       if( HasAnyFlag( pVD->Flags(), VF::FORSEPARATORS ) ) {
-        FOREACHPTRCONST( SeparatorPtr, pSep, pModel->Separators() )
+        FOREACHPTRCONST( SeparatorPtr, pSep, pModel->Struct()->Separators() )
           WriteVar( _pFile, pSep, pVD, pVS );
       }
 
@@ -225,7 +227,7 @@ void VarsManager::WriteVars( FILE* _pFile, IVarOriginPtr _pOrigin ) const
       }
 
       if( HasAnyFlag( pVD->Flags(), VF::FORCHORDS ) ) {
-        FOREACHPTRCONST( ChordPtr, pCh, pModel->Chords() );
+        FOREACHPTRCONST( ChordPtr, pCh, pModel->Struct()->Chords() );
           WriteVar( _pFile, pCh, pVD, pVS );
       }
     }
@@ -307,7 +309,7 @@ void VarsManager::OutputVars( FILE* _pFile, int _maxId ) const
           if( HasAnyFlag( pVD->Flags(), VF::FORELEMS | VF::FORSEPARATORS ) ) {
 
             for( int id = 0; id <= _maxId; id++ ) {
-              IVarOriginPtr pObj = pModel->FindObject( id );
+              IVarOriginPtr pObj = pModel->Struct()->FindObject( id );
               if( pObj != null ) {
                 if( pObj->Type() == OT::ELEMENT &&
                     !HasAnyFlag( pVD->Flags(), VF::FORELEMS ) )
@@ -325,7 +327,7 @@ void VarsManager::OutputVars( FILE* _pFile, int _maxId ) const
               OutputVar( _pFile, pOrigin, pVD, pVS );
             }
           if( HasAnyFlag( pVD->Flags(), VF::FORCHORDS ) )
-            FOREACH_CONST( IComponentIterConst, it, pModel->Chords() ) {
+            FOREACH_CONST( IComponentIterConst, it, pModel->Struct()->Chords() ) {
               IVarOriginPtr pOrigin = dgtype_cast< ChordPtr >( *it );
               OutputVar( _pFile, pOrigin, pVD, pVS );
             }
@@ -377,7 +379,7 @@ void VarsManager::OutputVar( FILE* _pFile, IVarOriginPtr _pOrigin, VarDefPtr _pV
       return;
     FOREACH_CONST( IVarItemIter, it, var.ListRef() ) {
       IComponentPtr pChord = dgtype_cast< ChordPtr >( *it );
-      zfprintf( _pFile, "  %d\n", IndexOf( pModel->Chords(), pChord ) + 1 );
+      zfprintf( _pFile, "  %d\n", IndexOf( pModel->Struct()->Chords(), pChord ) + 1 );
     }
   }
   else if( HasAnyFlag( _pVD->VarDefType(), VTF::HAS_MESH_OBJECTS ) ) {

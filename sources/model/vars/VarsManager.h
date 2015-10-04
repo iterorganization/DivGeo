@@ -2,9 +2,7 @@
 #define VARSMANAGER_H
 
 #include "../vars/VarsDecl.h"
-#include "IManager.h"
 
-//#include "Model.h"
 class Model;
 typedef Model* ModelPtr;
 
@@ -136,12 +134,25 @@ public:
 
 typedef VarsManager* VarsManagerPtr;
 
+// IComponentPtr to IVarOriginPtr and vice versa
+template< typename T_to, typename T_from >
+T_to* CastVarOrigin( T_from* _pObject ) {
+  switch( _pObject->Type() ) {
+  case OT::ELEMENT:     return dgtype_cast< ElementPtr >( _pObject ); break;
+  case OT::CHORD:       return dgtype_cast< ChordPtr >( _pObject ); break;
+  case OT::SOURCE:      return dgtype_cast< SourcePtr >( _pObject ); break;
+  case OT::SEPARATOR:   return dgtype_cast< SeparatorPtr >( _pObject ); break;
+  case OT::VARSET:      return dgtype_cast< VarSetPtr >( _pObject ); break;
+  case OT::VARSETDEF:   return dgtype_cast< VarSetDefPtr >( _pObject ); break;
+  default: return null; \
+  }
+}
 
-template< typename SPtr, typename DPtr >
-static void ConvertVarOriginList( const std::list< SPtr >& _crSrc, std::list< DPtr >& _rDest ) {
+template< typename T_from, typename T_to >
+void ConvertVarOriginList( const std::list< T_from* >& _crSrc, std::list< T_to* >& _rDest ) {
   _rDest.clear();
-  FOREACH_CONST( typename std::list< SPtr >::const_iterator, it, _crSrc ) {
-    DPtr pObject = null;
+  FOREACH_CONST( typename std::list< T_from* >::const_iterator, it, _crSrc ) {
+    T_to* pObject = null;
     switch( (*it)->Type() ) {
     case OT::ELEMENT:     pObject = dgtype_cast< ElementPtr >( *it ); break;
     case OT::CHORD:       pObject = dgtype_cast< ChordPtr >( *it ); break;
@@ -152,43 +163,27 @@ static void ConvertVarOriginList( const std::list< SPtr >& _crSrc, std::list< DP
   }
 }
 
-#define CASTVARITEM_BODY { \
-  switch( _pObject->Type() ) { \
-  case OT::ELEMENT:     return dgtype_cast< ElementPtr >( _pObject ); break; \
-  case OT::CHORD:       return dgtype_cast< ChordPtr >( _pObject ); break; \
-  case OT::MESHCELL:    return dgtype_cast< MeshCellPtr >( _pObject ); break; \
-  case OT::MESHELEMENT: return dgtype_cast< MeshElementPtr >( _pObject ); break; \
-  default: return null; \
-  } }
-static IComponentPtr CastVarItem( IVarItemPtr _pObject ) CASTVARITEM_BODY
-static IVarItemPtr CastVarItem( IComponentPtr _pObject ) CASTVARITEM_BODY
-#undef CASTVARITEM_BODY
+// IComponentPtr to IVarItemPtr and vice versa
+template< typename T_to, typename T_from >
+T_to* CastVarItem( T_from* _pObject ) {
+  switch( _pObject->Type() ) {
+  case OT::ELEMENT:     return dgtype_cast< ElementPtr >( _pObject ); break;
+  case OT::CHORD:       return dgtype_cast< ChordPtr >( _pObject ); break;
+  case OT::MESHCELL:    return dgtype_cast< MeshCellPtr >( _pObject ); break;
+  case OT::MESHELEMENT: return dgtype_cast< MeshElementPtr >( _pObject ); break;
+  default: return null;
+  }
+}
 
-template< typename SPtr, typename DPtr >
-static void ConvertVarItemList( const std::list< SPtr >& _crSrc, std::list< DPtr >& _rDest ) {
-  _rDest.clear();
-  FOREACH_CONST( typename std::list< SPtr >::const_iterator, it, _crSrc ) {
-    DPtr pObject = CastVarItem( *it );
+
+template< typename T_from, typename T_to >
+void ConvertVarItemList( const std::list< T_from* >& _crSrc, std::list< T_to* >& _rDest ) {
+_rDest.clear();
+  FOREACH_CONST( typename std::list< T_from* >::const_iterator, it, _crSrc ) {
+    T_to* pObject = CastVarItem< T_to >( *it );
     if( pObject != null )
       _rDest.push_back( pObject );
   }
 }
 
-#define CASTVARORIGIN_BODY { \
-  switch( _pObject->Type() ) { \
-  case OT::ELEMENT:     return dgtype_cast< ElementPtr >( _pObject ); break; \
-  case OT::CHORD:       return dgtype_cast< ChordPtr >( _pObject ); break; \
-  case OT::SOURCE:      return dgtype_cast< SourcePtr >( _pObject ); break; \
-  case OT::SEPARATOR:   return dgtype_cast< SeparatorPtr >( _pObject ); break; \
-  case OT::VARSET:      return dgtype_cast< VarSetPtr >( _pObject ); break; \
-  case OT::VARSETDEF:   return dgtype_cast< VarSetDefPtr >( _pObject ); break; \
-  default: return null; \
-  } }
-static IComponentPtr CastVarOrigin( IVarOriginPtr _pObject ) CASTVARORIGIN_BODY
-static IVarOriginPtr CastVarOrigin( IComponentPtr _pObject ) CASTVARORIGIN_BODY
-#undef CASTVARORIGIN_BODY
-
-
 #endif // VARSMANAGER_H
-
-#include "Model.h"

@@ -1,5 +1,7 @@
 #include "VarsManager.h"
 
+#include "../core/Model.h"
+
 /*****************************************************************************
  * Check
  *****************************************************************************/
@@ -44,7 +46,7 @@ int VarsManager::CheckVar( IComponentListPtr _pObjects, VarDefPtr _pVD, VarSetPt
   }
 
   if( HasAnyFlag( _pVD->Flags(), VF::FORELEMS ) ) {
-    FOREACHPTRCONST( ElementPtr, pElem, pModel->Elements() ) {
+    FOREACHPTRCONST( ElementPtr, pElem, pModel->Struct()->Elements() ) {
       UPtr val = GetVar( pElem, _pVD, _pVS );
       if( val.IsNull() )
         continue; //MB: error or not error?
@@ -59,7 +61,7 @@ int VarsManager::CheckVar( IComponentListPtr _pObjects, VarDefPtr _pVD, VarSetPt
   }
 
   if( HasAnyFlag( _pVD->Flags(), VF::FORSEPARATORS ) ) {
-    FOREACHPTRCONST( SeparatorPtr, pSep, pModel->Separators() ) {
+    FOREACHPTRCONST( SeparatorPtr, pSep, pModel->Struct()->Separators() ) {
       UPtr val = GetVar( pSep, _pVD, _pVS );
       int e = CheckValue( val, _pVD->VarDefType(), null );
       if( e != 0 ) {
