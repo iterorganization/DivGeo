@@ -10,6 +10,8 @@
 
 #include "MaterialDecl.h"
 
+class Structure;
+
 typedef struct OgrNode
 {
   int id;
@@ -64,7 +66,6 @@ private:
   Point drag;
 
   PointArray points;
-  PointIter itPoint_current;
   
 public:
   Template( ModelPtr _pModel, const std::string& _fName, const TemplateParams& _tp );
@@ -76,16 +77,16 @@ public:
   virtual std::string DetailedInfo() const;
   virtual std::string ShortInfo() const;
 
+  void ConvertToElements( Structure* _pStruct ) const;
+
   int LoadDgTemplateFile();
   int LoadOgrTemplateFile();
   int LoadHpglTemplateFile();
 
   int Load2ColumnsTemplateFile();
 
-  Point TransformPoint( Point _pnt ) const; // rotate and shift
-  void Points_Reset() { itPoint_current = points.begin(); }
-  bool Points_End() { return itPoint_current == points.end(); }
-  Point Points_Next( bool bTransformed = false );
+  Point TransformPoint( const Point& _pnt ) const; // rotate and shift
+  PointArray GetTransformedPoints() const;
 
   int GetNearestPoint( const Point& pos, Point* pt, Point* ps ) const;
   int PlaceByHandles( const Point& pa, const Point& p1, const Point& pb, const Point& p2 );

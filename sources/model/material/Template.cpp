@@ -281,14 +281,7 @@ int Template::LoadHpglTemplateFile()
   return 0;
 }
 
-Point Template::Points_Next( bool bTransformed )
-{
-  Point pnt = *itPoint_current;
-  itPoint_current++;
-  return bTransformed ? TransformPoint( pnt ) : pnt;
-}
-
-Point Template::TransformPoint( Point _pnt ) const
+Point Template::TransformPoint( const Point& _pnt ) const
 {
   return Point( (_pnt.x * cos( angle ) - _pnt.y * sin( angle )) * scale + incr.x,
                 (_pnt.x * sin( angle ) + _pnt.y * cos( angle )) * scale + incr.y );
@@ -370,4 +363,35 @@ int Template::PlaceByHandles( const Point& pa, const Point& p1, const Point& pb,
   Change( TemplateParams( p1 - fakeT.TransformPoint( xy ), fakeT.angle, fakeT.scale ) );
 
   return 0;
+}
+
+
+void Template::ConvertToElements( Structure* _pStruct ) const
+{
+  for( PointArray::const_iterator it = points.begin(), it_end = points.end(); it != it_end; it += 2 ) {
+    NodePtr pN1 = _pStruct->AddNode( *it );
+    NodePtr pN2 = _pStruct->AddNode( *it );
+    if( !pN1->IsConnectedWith( pN2 ) && pN1 != pN2 )
+      _pStruct->AddElem( pN1, pN2 );
+    else {
+      if( pN1->IsEmpty() ) {
+        pN1->Delete();
+        pN1 = null;
+      }
+      if( pN1 != pN2 && pN2->IsEmpty() ) {
+        pN2->Delete();
+        pN2 = null;
+      }
+    }
+  }
+}
+
+
+PointArray Template::GetTransformedPoints() const
+{
+  PointArray tpoints;
+  tpoints.reserve( points.size() );
+  FOREACH_CONST( PointIterConst, it, points )
+    tpoints.push_back( TransformPoint( *it ) );
+  return tpoints;
 }

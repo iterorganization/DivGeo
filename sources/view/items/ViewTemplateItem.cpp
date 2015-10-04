@@ -24,20 +24,18 @@ void ViewTemplateItem::UpdateGeometry()
   BOUND_DECLARE;
   bool firstIteration = true;
 
-  pTempl->Points_Reset();
-  while( !pTempl->Points_End() ) {
-    Point p1 = pTempl->TransformPoint( pTempl->Points_Next() );
-    Point p2 = pTempl->TransformPoint( pTempl->Points_Next() );
-    lines.push_back( QLineFromPoints( p1, p2 ) );
+  PointArray points = pTempl->GetTransformedPoints();
+  for( PointArray::const_iterator it = points.begin(), it_end = points.end(); it != it_end; it += 2 ) {
+    lines.push_back( QLineFromPoints( *it, *(it+1) ) );
 
     if( firstIteration ) {
-      BOUND_INIT( p1 );
+      BOUND_INIT( *it );
       firstIteration = false;
     }
     else
-      BOUND_POINT( p1 );
+      BOUND_POINT( *it );
 
-    BOUND_POINT( p2 );
+    BOUND_POINT( *(it+1) );
   }
   BOUND_RECT( fullBoundingRect );
 
