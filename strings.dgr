@@ -1,0 +1,1724 @@
+
+/msg/msg
+
+ok                     = "OK"
+exam_node              = "Point: (%1, %2) %3"
+exam_element           = "Element: \#%1, (%2, %3) - (%4, %5), length: %6"
+exam_surface           = "Surface: area: %1, level: %2, origin: (%3, %4), creator id: %5"
+exam_gridpoint         = "Grid point: area: %1, number: %2, value: %3, creator id: %4"
+template_loaded        = "Template loaded"
+template_removed       = "Template removed"
+equil_loaded           = "Equilibrium loaded"
+equil_removed          = "Equilibrium removed"
+new_file               = "New file ..."
+file_opened            = "Ok"
+file_saved             = "The file has been saved"
+sonnet_loaded          = "Mesh loaded"
+sonnet_removed         = "Mesh removed"
+xpoint_removed         = "X point removed"
+template_appended      = "Template appended"
+exam_separator         = "Separator: \#%1, number: %2"
+separators_added       = "Separators have been installed"
+separators_removed     = "Separators have been removed"
+renumbered             = "Elements and separators have been renumbered"
+output                 = "Output files have been created"
+exam_source            = "Source: (%1, %2)"
+canceled               = "Operation canceled"
+version                = "DivGeo version $(VERSION)"
+empty_nodes_removed    = "Unused points have been removed"
+elements_removed       = "Elements have been removed"
+sources_removed        = "Sources have been removed"
+surfaces_removed       = "Surfaces have been removed"
+gridpoints_removed     = "Grid points have been removed"
+about                  = "DivGeo version $(VERSION)"
+exam_chord             = "Chord: (%1, %2, %3) - (%4, %5, %6), length: %7, number: %8"
+chords_removed         = "Chords have been removed"
+all_vars_valid         = "All variables have valid values"
+some_vars_invalid      = "Some values are invalid. Use the dialog box to locate them."
+file_printed           = "Print command finished"
+working                = ""
+xpoints_found          = ""
+xpointsegs_found       = ""
+repos_handle_1         = "Moving the first template handle" # Used in TlRepos() only
+repos_handle_2         = "Moving the second template handle" # Used in TlRepos() only
+marked_removed         = "Marked object(s) have been removed" # Marked objects removed
+exam_mesh_cell         = "Mesh cell: \#%1 (%2, %3),  center: (%4, %5), field ratio: %6, %7, old ratio: %8"
+exam_mesh_element      = "Mesh element: (%1, %2) - (%3, %4), %5"
+exam_mesh_point        = "Mesh point: (%1, %2), index: (%3, %4)"
+exam_xpointtest        = "X Point: level: %1, center: (%2, %3), id: %4"
+exam_xpointseg         = "Separatrix Section: zone: \#%1 (%2), length: %3, level: %4"
+exam_surface_xy        = "Virtual surface: Level %1, origin: (%2, %3) %4"
+calculating_sz_bounds  = "Calculating bounds of equilibrium zones..." # For use in Add/MoveSurface tool
+file_autosaved         = ""
+no_bounding_elements   = "No bounding elements in this zone"
+no_marked_chords       = "No chords currently marked."
+
+/msg/err
+
+file_not_found         = "File not found: \"%1\""
+bad_file               = "Invalid file contents \"%1\""
+bad_file_type          = "Invalid file format \"%1\""
+out_of_equil           = "%1: Out of equilibrium"
+bad_targets            = "Invalid target(s)"
+no_targets             = "No target(s)"
+bad_xpoint             = "Invalid X point location"
+bad_file_version       = "Invalid version \"%1\""
+used_by                = "Object is locked by \"%1\""
+no_view                = "Internal error 1"
+no_xpoint              = "No X point defined"
+irregular              = "The point is irregular"
+no_equil               = "No equilibrium"
+no_nodes               = "No points"
+no_elements            = "No elements"
+invalid_numbers        = "Invalid numbers"
+min_max_varsets        = "Invalid MinMaxVarSets"
+bad_name               = "Bad name"
+duplicate_name         = "Duplicate name"
+closed                 = "Object is closed"
+broken                 = "Object is broken"
+fwrite                 = "File creation error \"%1\""
+no_structure           = "No structure"
+no_closed_surfaces     = "No closed surface(s)"
+template_included      = "Template already included"
+no_template            = "No template"
+single                 = "Multiple targets or structures not allowed"
+many_selected_elems    = "Only one element can be specified"
+mult_group             = "Variables of this scope may only contain text or numbers"
+no_sonnet              = "No mesh"
+no_config              = "Error loading configuration"
+nothing_to_do          = "Nothing to do!"
+already_exists         = "The object already exists: %1"
+invalid_area           = "Invalid zone or value"
+locked                 = "The object is locked"
+no_save_config         = "Use Options/Program setup menu to save configuration"
+empty_vars             = "Some variables have invalid or no values. Use the Commands|Check variables menu command to track them."
+empty_targets          = "No target(s)"
+empty_structure        = "No structure"
+bad_surfaces           = "Invalid or no surfaces"
+bad_grid_points        = "Invalid or no grid points"
+no_file_name           = "The current file has no name!"
+no_selection           = "No selection"
+min_target_elements    = "At least 2 elements required"
+wrong_type             = "Wrong object type for this variable"
+join_connected         = "Points already connected"
+bad_surface_origin     = "Bad surface origin"
+twisted_sonnet         = "Bad mesh"
+no_separators          = "No separators"
+sonnet_struct_ins      = "The mesh intersects the structure"
+separator_order        = "Wrong order of separators"
+internal_cells         = "Internal error 18"
+badcells               = "Bad cells"
+surface_target_ins     = "Surfaces must intersect with targets"
+bad_stretch_type       = "Objects of this type cannot be stretched"
+non_empty_node         = "The point has elements attached"
+not_structure_part     = "Element must be part of the structure"
+internal_gridpoint     = "Internal error 19"
+no_help                = "No help file"
+no_topic               = "Help topic not found"
+bad_mask               = "Bad directory mask in a DG...MASK variable"
+bad_structure          = "Bad structure"
+multiple_errors        = "Different errors in different values"
+pipe_create            = "Pipe creation error"
+fork                   = "Subprocess creation error"
+ps_view_size           = "Too small paper size or too big margin"
+bad_xpoint_seg         = "Bad separatrix segment. \# Unable to create a closed surface crossing the X Point rectangle."
+loop_not_found         = "Internal error 20. Try redefining the X point using a bigger rectangle."
+level_not_in_area      = "The specified level is impossible in the given area"
+level_not_found        = "Unable to find the specified level in the given area. \# Could not generate the preferences filename."
+no_preferences         = "Internal error 21"
+carre_surfaces         = "Some surfaces have been modified manually. Carre mode output not possible. Try using the 'Commands|Rebuild Carre objects' menu command. \# Starting level of a Carre surface !=0. Impossible."
+carre_xsurfaces        = "Internal error 25"
+carre_tangent          = "The structure has changed after surfaces were created. Carre mode output not possible. Try using the 'Commands|Rebuild Carre objects' menu command."
+carre_gridpoints       = "Some grid points have been modified manually. Carre mode output not possible. Try using the 'Commands|Rebuild Carre objects' menu command. \# CreatorId found ok during the check but bad during the write."
+carre_isurfaces        = "Internal error 23"
+carre_igridpoints      = "Internal error 24"
+carre_peak             = "Internal error 26. The line connecting X- and O-points must intersect the innermost surface in Carre mode."
+carre_inhibits         = "Operation impossible in Carre mode."
+carre_equal_levels     = "Levels must be different."
+carre_area1_surfaces   = "At least one surface in the main plasma required."
+carre_out_of_equil     = "The structure must pass through the equilibrium."
+carre_mode_needed      = "This operation is only possible in Carre mode."
+carre_broken_target    = "A part of the structure containing a target must be closed"
+carre_target_xstruct   = "Not the whole target is included in the structure"
+no_marked_elements     = "No marked elements"
+no_marked_chords       = "No marked chords"
+empty_template         = "The template is empty"
+repos_template_1       = "Use a different template point for the second handle" # To be used only in TlReposition
+repos_template_2       = "Drag the second handle to a different point" # To be used only in TlReposition
+flat_equil             = "The equilibrium is a horizontal plane at this point. Unable to create surfaces."
+duplicate_mesh_elem_no = "Duplicate cell numbers in the mesh file" # Duplicate element number in a pMesh file
+move_cut_mesh_point    = "Cannot move mesh points located on a cut" # Can't move a "cut" pMesh point
+mesh_no_equil          = "No equilibrium loaded. Cannot recalculate values for mesh cells." # Equilibrium reqd for pMesh operations
+mesh_out_of_equil      = "Some mesh points are outside of the equilibrium. Cannot recalculate values."
+del_marked_object_type = "Individual mesh cells or elements can not be deleted." # Deleting a marked pMesh element/cell
+mesh_element_dir       = "This variable must contain mesh elements of a different orientation." # Mesh element with a wrong orientation
+mesh_cell_find         = "Internal error 27" # Couldn't find the nearest pMesh cell
+bad_object_type        = "Incorrect object type" # For "export elements as template"
+mesh_hdr_no_lf         = "Missing last LF character in the mesh header." # Used in
+mesh_hdr_no_id         = "Missing \"   Element output:\" line in the first 10 lines of the mesh header." # CheckMeshHeaderString()
+equil_spline           = "Cannot calculate spline coefficients for the equilibrium. R- or Z- coordinates are probably not sorted." # In LoadEquil()
+bad_surface_zone_no    = "For level %1: Bad surface zone number: %2"
+bad_gridpoint_zone_no  = "For zone %1: Bad grid point zone number: %2" # test
+bad_gp_zone_lvl        = "For level %1 and zone %2: Bad grid point zone number: %3" # dg3
+fsopx1                 = "Internal error 28" # Out of equilibrium on a separatrix point
+out_of_surface_zone    = "Zone %1: The level is outside of the surface zone specified: %2 (limit is %3)"
+bad_surface_zone_1     = "Such surface zone is impossible or must have an opposite sign."
+no_surface_zone        = "%1: This point does not belong to any defined zone" # No surface zone at this location
+old_file_no_topology   = "This file was saved with an older version of DG and has no topology information."
+target_crossed_2x      = "A target intersects more than one separatrix segment" # A target crossed by several GridPointSegs
+target_not_crossed     = "A target doesn't intersect any separatrix segment" # A target not crossed by any segment
+surface_xy             = "Cannot output virtual surfaces." # Cannot output Point-defined surfaces
+no_elements_in_path    = "No elements in the path of this chord."
+
+/msg/str
+
+locked                 = " is now locked"
+unlocked               = ""
+error_label            = "Error"
+vsdefaults             = "Defaults"
+no_elements            = "Empty"
+many_elements          = "..."
+no_selection           = "No selection"
+diff                   = "Different old values"
+node                   = "point"
+element                = "element"
+surface                = "surface"
+gridpoint              = "grid point"
+separator              = "separator"
+equilibrium            = "equilibrium"
+template               = "template"
+sonnet                 = "mesh"
+xpoint                 = "the X point"
+new_label              = "New object"
+removed                = "Removed:"
+added                  = "Added:"
+changed                = "Changed:"
+vars_lost              = "Invalid values have been erased"
+description_changed    = "Description changed:"
+surface_area_0         = "mp"
+surface_area_1         = "sol"
+surface_area_2         = "pfr"
+gridpoint_area_0       = "mp"
+gridpoint_area_1       = "ilt"
+gridpoint_area_2       = "olt"
+output_file_name       = "Output file"
+structure_file_name    = "Structure file"
+targets_file_name      = "Targets file"
+help_changed           = "Help changed:"
+enum_changed           = "Enumeration changed:"
+source                 = "source"
+irregular_normals      = "Irregular(normals)"
+irregular_separators   = "Irregular(separator)"
+irregular_too_many     = "Irregular(many elements)"
+irregular_too_few      = "Irregular(few elements)"
+regular                = "Regular"
+dsurface_area_base     = ""
+dsurface_area_no_sign  = "Unknown area"
+dsurface_area_1        = "Main Plasma"
+dsurface_area_2        = "SOL"
+dsurface_area_3        = "Private Flux"
+dgridpoint_area_base   = ""
+dgridpoint_area_0      = "Main Chamber"
+dgridpoint_area_1      = "Inner Divertor"
+dgridpoint_area_2      = "Outer Divertor"
+chord                  = "chord"
+xpointtest             = "x point"
+xpointseg              = "zone of separatrix"
+mesh_cell_twisted      = "Twisted!"
+mesh_cell_bad_center   = "The center is outside!"
+mesh_element_cut       = "(Cut)"
+mesh_cell              = "mesh cell"
+mesh_element           = "mesh element"
+mesh_point             = "mesh point"
+mesh_cell_concave      = "Concave!"
+grid_segment           = "grid segment"
+surface_zone           = "surface zone"
+var                    = "var"
+vardef                 = "vardef"
+varset                 = "varset"
+varsetdef              = "varsetdef"
+
+/msg/fstr
+
+config_ext             = ".dgc"
+output_ext             = ".dgo"
+structure_ext          = ".str"
+target_ext             = ".trg"
+help_ext               = ".dgh"
+
+/msg/que
+
+with_geometry          = "The current file is not empty. Use anyway?"
+update_apps            = "Update other loaded files to the new configuration?"
+
+/msg/wrn
+
+no_equil               = "Equilibrium could not be loaded"
+no_template            = "Template could not be loaded"
+bad_type               = "Some variables have lost their values"
+syntax                 = "Some syntax errors occured"
+no_sonnet              = "The mesh could not be loaded"
+bad_target_1           = "Bad target 1 discarded"
+bad_target_2           = "Bad target 2 discarded"
+bad_structure          = "Bad structure discarded"
+bad_xpointtest         = "Bad X point discarded"
+mesh_fp                = "The mesh file has changed and cannot be updated."
+old_topology           = "This file was produced by DG v1.x. Please import a single-zero topology in order to see magnetic surfaces and grid points."
+old_surfaces_lost      = "Magnetic surfaces could not be converted"
+
+/msg/env
+
+config_file            = "\rDGCONFIG"
+load_mask              = "\rDGOPENMASK"
+save_mask              = "\rDGSAVEMASK"
+equil_mask             = "\rDGEQUILMASK"
+template_mask          = "\rDGTEMPLATEMASK"
+sonnet_mask            = "\rDGSONNETMASK"
+vars_file_set_mask     = "\rDG_VARS_FILE_SET_MASK"
+config_file_2          = "\rDG_CONFIG"
+load_mask_2            = "\rDG_OPEN_MASK"
+save_mask_2            = "\rDG_SAVE_MASK"
+equil_mask_2           = "\rDG_EQUIL_MASK"
+template_mask_2        = "\rDG_TEMPLATE_MASK"
+sonnet_mask_2          = "\rDG_MESH_MASK"
+
+/msg/dg3
+
+done = "DONE"
+fail = "FAIL"
+
+enabled = "enabled"
+disabled = "disabled"
+
+mode_on = "on"
+mode_off = "off"
+
+dg_file_syntax_error = "line %1: syntax error in section \"%2\"."
+
+wait = "Please, wait..."
+
+saving_dg_file        = "Saving DG file to \"%1\"..."
+saving_mesh_file      = "Saving mesh file to \"%1\"..."
+writing_output_file   = "Writing output file to \"%1\"..."
+writing_targets_file  = "Writing targets file to \"%1\"..."
+writing_templ_file    = "Writing template file to \"%1\"..."
+writing_struct_file   = "Writing structure file to \"%1\"..."
+writing_equil_file    = "Writing equilibrium file to \"%1\"..."
+writing_spline_file   = "Writing spline file to \"%1\"..."
+
+loading_dg_file       = "Loading DG project from \"%1\"..."
+loading_mesh_file     = "Loading mesh from \"%1\"..."
+loading_templ_file    = "Loading template from \"%1\"..."
+loading_equil_file    = "Loading equilibrium from \"%1\"..."
+loading_topology_file = "Loading topology from \"%1\"..."
+loading_sonnetdata    = "Loading sonnet data from \"%1\"..."
+
+actions_reverted      = "%1 actions reverted"
+new_model_created     = "New model %1 created"
+model_load_success    = "Model was loaded successfully"
+model_load_errors     = "Model was loaded with errors:"
+model_renamed         = "Model was renamed to \"%1\""
+elems_renumbered      = "Elements was renumbered"
+topology_success      = "Topology was loaded successfully"
+topology_errors       = "Topology loading errors:"
+
+view_created          = "View %1 created for model %2"
+view_closed           = "View %1 of model %2 closed"
+view_scale_changed    = "Scale changed to %1"
+view_angle_changed    = "Angle changed to %1"
+view_center_changed   = "Center changed to %1"
+view_stretch_mode     = "Stretch mode: %1"
+view_radial_grid      = "Radial grid: %1"
+view_colored_equil    = "Colored equilibrium: %1"
+view_scene            = "Scene selected: %1"
+view_state            = "Center %1, Scale %2, Angle %3 deg."
+
+wrong_undo_mode       = "Wrong undo mode"
+bad_file_name         = "Bad file name: %1"
+wrong_var_type        = "Wrong var object type"
+unknown_type          = "Unknown object type"
+wrong_varset          = "Wrong varset"
+multiple_vardefs      = "Multiple vardefs"
+same_nodes            = "The same nodes"
+nodes_connected       = "Connected nodes"
+model_is_locked       = "Model is locked"
+negative_updatelocks  = "UpdateLocks value is negative"
+object_is_locked      = "Object is locked"
+unknown_origin_type   = "Unknown origin type"
+sonnetdata_exists     = "Sonnetdata already exists"
+cannot_extend_hchord  = "Can't extend horizontal chord"
+level_problem         = "Some level problem"
+line_is_empty         = "Line is empty"
+value_out_of_range    = "Value is out of range: [%1, %2]"
+object_highlighted    = "Object is highlighted"
+wrong_node_state      = "Wrong node state"
+too_many_varsets      = "Too many varsets"
+locking_object_err    = "Object locking error"
+wrong_varsets_num     = "Wrong varsets number"
+node_has_elements     = "Node has elements"
+node_has_separators   = "Node has separators"
+bad_surface           = "Bad surface"
+mp_chain_too_short    = "MeshPoint chain is too short"
+group_error           = "Var group error"
+no_topology           = "No topology"
+
+comment               = "comment" # Extention of str/ list
+
+/msg/dg3/act
+
+added                 = "Object added: %1"
+deleted               = "Object removed: %1"
+changed               = "Object changed: %1%2"
+undomark              = "Undo mark"
+group                 = "In object %1 changed subobject %2: %3"
+include               = "included"
+exclude               = "excluded"
+marked                = "Mark: Object %1: %2"
+mark                  = "marked"
+unmark                = "unmarked"
+highlighted           = "Highlight: Object %1: %2"
+highlight             = "highlighted"
+unhighlight           = "unhighlighted"
+
+# menu
+
+/menu/file
+
+menu                   = "&File"
+new                    = "&New",                    "Create a new file"
+open                   = "&Open...",                "Open an existing file"
+recent.menu            = "&Recent"
+save                   = "Save...",                 "Save file in the current window"
+save_as                = "&Save as...",             "Save model with another name"
+save_copy              = "Save copy...",            "Copy model with another name"
+import.menu            = "&Import"
+import.template        = "&Template...",            "Import template"
+import.equilibrium     = "E&quilibrium...",         "Import equilibrium"
+import.mesh            = "Mes&h...",                "Import a pMesh"
+import.topology        = "To&pology...",            "Import topology from another file"
+import.sonnetgrid      = "Sonnet gri&d...",         "Import sonnet grid"
+export.menu            = "&Export"
+export.mesh            = "&Mesh...",                "Export the pMesh"
+export.element         = "&Element as Template...", "Export elements into template file"
+output                 = "Out&put...",              "Generate output files"
+print                  = "&Print...",               "Print the contents of this window"
+exit                   = "E&xit program",           "Close all windows"
+
+/menu/edit
+
+menu                   = "&Edit"
+undo                   = "&Undo",                  "Reverse the effect of the last operation"
+redo                   = "&Redo",                  "Reverse the effect of the undo operation"
+redo_all               = "Redo all",               "Redo a group of operations"
+clear_action_stack     = "&Clear action stack",    "Remove all actions in undo and redo stacks"
+mark_all_elements      = "&Mark all elements",     "Mark all elements"
+mark_all_separators    = "Mark all separator&s",   "Mark all separators"
+mark_all_chords        = "M&ark all chords",       "Mark all chords"
+unmark_all             = "Unmar&k all",            "Unmark everything"
+extend_chords          = "Extend chords",          "?"
+move_rotate            = "&Move//Rotate...",       "Move or rotate template or elements"
+
+/menu/edit/create
+
+menu                   = "&Create"
+point                  = "&Point",                 "Create a point at specific location"
+source                 = "Sour&ce",                "Create a source at specific location"
+chord                  = "C&hord",                 "Create a chord at specific location"
+surface                = "&Surface(s)",            "Create one or multiple surfaces"
+gridpoints             = "&Grid point(s)",         "Create one or multiple grid points"
+separators             = "Sepa&rators",            "Create separators between the structure and the sonnet grid"
+
+/menu/edit/delete
+
+menu                   = "&Delete"
+marked_objects         = "&Marked objects",        "Delete all marked objects"
+unused_points          = "Unused &points",         "Delete all points with no elements attached"
+virtual_surfaces       = "&Virtual surfaces",      "Delete all virtual surfaces"
+elements               = "&Elements",              "Delete all elements"
+sources                = "Sour&ces",               "Delete all sources"
+chords                 = "C&hords",                "Delete all chords"
+surfaces               = "&Surfaces",              "Delete all surfaces"
+gridpoints             = "&Grid points",           "Delete all grid points"
+separators             = "Sepa&rators",            "Delete all separators"
+equilibrium            = "E&quilibrium",           "Remove equilibrium"
+template               = "&Template",              "Remove template"
+mesh                   = "Mesh",                   "?"
+xpoint                 = "&X point",               "Remove X point"
+sonnetgrid             = "Sonnet gri&d",           "Remove sonnet grid"
+
+/menu/view
+
+menu                   = "&View"
+refresh                = "&Refresh",               "Redraw all objects"
+zoom_in                = "Zoom &In",               "Increase the zoom factor"
+zoom_out               = "Zoom &Out",              "Decrease the zoom factor"
+picture_view           = "&Picture view",          "Set the zoom factor to make all objects visible"
+selection_view         = "&Selection view",        "Set the zoom factor to make all marked objects visible"
+
+/menu/view/rotate
+
+menu                  = "&Rotate"
+increase_angle        = "&Increase angle",        "Rotate 1 degree counterclockwise"
+decrease_angle        = "&Decrease angle",        "Rotate 1 degree clockwise"
+set_angle             = "&Set angle...",          "Set the angle at which the view appears"
+rectify               = "&Rectify",               "Reset rotation angle"
+
+/menu/view/strshr
+
+menu                  = "S&tretch/Shrink"
+stretch_horizontal    = "S&tretch horizontal",    "Stretch the image in the x direction"
+stretch_vertical      = "St&retch vertical",      "Stretch the image in the y direction"
+shrink_horizontal     = "S&hrink horizontal",     "Compress the image in the x direction"
+shrink_vertical       = "Shr&ink vertical",       "Compress the image in the y direction"
+stretch               = "&Stretch...",            "Set view factors for x and y"
+justify               = "&Justify",               "Reset aspect ratio"
+
+/menu/view
+
+previous_view         = "Pre&vious view",         "Show the area previously visible"
+remove_labels         = "Remove &labels",         "Remove all labels"
+mesh_headers          = "&Mesh header...",        "Hide or display pMesh cell centers and other details"
+
+/menu/view/mode
+
+menu                  = "&Mode"
+stretch               = "&Stretch",               "Lock or unlock the aspect ratio"
+topdown_view          = "&Top-down view",         "Switch between poloidal//toroidal view"
+radial_grid           = "&Radial grid",           "Switch between square//radial grid"
+colored_equil         = "&Colored equilibrium",   "Switch between 2-color and gradient drawing of equilibrium"
+
+/menu/view/display
+
+menu                  = "&Display"
+nodes                 = "Points",                 "Hide or display points"
+irregular_nodes       = "Irregular points",       "Hide or display irregular points"
+elements              = "Elements",               "Hide or display elements"
+sources               = "Sources",                "Hide or display sources"
+chords                = "Chords",                 "Hide or display chords"
+chords3d              = "3dchords",               "No help"
+separators            = "Separators",             "Hide or display separators"
+normals               = "External normals",       "Hide or display external normals"
+numbers               = "Numbers",                "Hide or display numbers of elements"
+surfaces              = "Surfaces",               "Hide or display surfaces"
+gridpoints            = "Grid points",            "Hide or display grid points"
+xpoints               = "XPoints",                "Hide or display x-points"
+mesh                  = "Mesh",                   "Hide or display the pMesh"
+meshdetails           = "Mesh details",           "Hide or display pMesh cell centers or other details"
+equilibrium           = "Equilibrium",            "Hide or display equilibrium grid"
+template              = "Template",               "Hide or display template"
+axes                  = "Axes",                   "Hide or display axes"
+grid                  = "Grid",                   "Hide or display grid"
+sonnetgrid            = "Sonnet output",          "Hide or display sonnet grid"
+comments              = "Comments",               "Hide or display comments"
+
+/menu/commands
+
+menu                  = "&Commands"
+renumber_elements     = "Renumber elements",      "Renumber all elements and separators"
+check_variables       = "Check &variables",       "Check variables for invalid values"
+rebuild_carre_objects = "Rebuild &Carre objects", "Rebuild surfaces and grid points created in Carre mode"
+find_xpoints          = "&Find X Points",         "Find all X points"
+find_xpointsegs       = "&Find X Point segments", "Find all X point segments"
+edit_topology         = "&Edit topology...",      "Set up x points, separatrix segments, equilibrium zones"
+update_topology       = "&Update topology",       "Recalculate positions of topology elements"
+test                  = "&Test",                  "Menu item for internal tests"
+
+/menu/commands/convert
+
+menu                  = "&Convert"
+template_to_elements  = "Template to elements",   "Convert the template to a set of elements"
+elements_to_chords    = "Elements to chords",     "Convert marked elements to chords"
+chords_to_elements    = "Chords to elements",     "Convert marked chords to elements"
+
+/menu/commands/simplify
+
+menu                  = "&Simplify",              "Reduce the complexity of the drawing"
+fill_gaps             = "Fill ga&ps...",          "Create elements between unconnected points close to each other"
+lineup.menu           = "Li&ne up normals"
+lineup.all_normals    = "&All",                   "Turn external normals of all elements into one direction"
+lineup.marked_normals = "&Marked",                "Turn external normals of marked elements into one direction"
+merge_split_elements  = "M&erge/Split elements...", "Control the total number of elements"
+  
+/menu/variables
+
+menu                  = "V&ariables"
+general_surface_data  = "Genetal Surface Data",   ""
+structure             = "Structure",              ""
+global_eirene_data    = "Global Eirene data",     ""
+add.menu              = "Add"
+remove.menu           = "Delete"
+add_layer             = "&Add",                   "Create such layer"
+remove_layer          = "&Remove",                "Destroy this layer"
+display_layer         = "_pushbutton",            "Display this layer"
+
+/menu/options
+
+menu                  = "&Options"
+project_settings      = "&Project settings...",   "Set project specific parameters"
+output_mode           = "&Output mode...",        "Set options for producing the output file"
+mesh_editing          = "Mes&h editing...",       "Set options for pMesh editing"
+display_menu          = "Display &menu",          "Hide or display menu"
+display_toolbar       = "Display &toolbar",       "Hide or display toolbar"
+manual_refresh        = "Manual &refresh",        "Switch between automatic and manual refresh"
+save_interval         = "Save &interval...",      "Set interval between auto-saves"
+settings              = "&User preferences...",   "Set custom GUI parameters"
+setup.menu            = "&Setup"
+setup.variables       = "&Variables...",          "Setup variables and layers"
+setup.save            = "&Save...",               "Save this file as a configuration file"
+
+/menu/window
+
+menu                  = "&Window"
+hide_menu             = "&Hide menu",             "Enlarge the work area by hiding menu and toolbar"
+new_view              = "&New view",              "Open a new window with the same file"
+close                 = "&Close",                 "Close this window"
+statistics            = "Stat&istics",            "Display statistics about the current file"
+toolbox               = "&Toolbox",               "Display the toolbox"
+
+/menu/window/panels
+
+modelinfo             = "Model info panel"
+actioninfo            = "ActionStack panel"
+views                 = "Views info panel"
+console               = "Console"
+oldtools              = "Old style toolbar"
+tools                 = "Mouse tools panel"
+tb_view               = "View-toolbar"
+tb_edit               = "Edit-toolbar"
+
+/menu/help
+
+menu                  = "&Help"
+whats_new             = "&What's New",            "What's new in this version of DG?"
+manual                = "&Manual",                "Online version of the manual"
+using_help            = "Using &help",            "How to use the help system"
+on_main_window        = "On &main window",        "How to use the main window"
+about                 = "&About...",              "Display program version"
+
+/tools
+
+zoom_pan          = "&Zoom/Pan",              "Zoom/pan in the current file"
+mark              = "&Mark",                  "Mark elements or sources"
+examine           = "E&xamine",               "Display information about highlighted objects"
+rotate            = "Rotate",                 ""
+stretch           = "Stretch",                ""
+move              = "Mo&ve",                  "Move objects"
+delete            = "&Delete",                "Delete objects"
+add_element       = "Add element",            "Create elements"
+add_source        = "Add source",             "Create sources"
+add_chords        = "Add chord",              "Create chords"
+add_surface       = "Add surface",            "Create surfaces"
+add_gridpoint     = "Add grid point",         "Create grid points"
+split_element     = "Split element",          "Split element"
+join_elemenets    = "Join elements",          "Join elements"
+connect_points    = "Connect points",         "Create an element between two points"
+reposition        = "Reposition",             "Connect an element or a separator to another point"
+reverse_normals   = "Reverse normals",        "Change the direction of external normals"
+move_mesh_point   = "Move mesh points",       "Move mesh points"
+set_xpoint        = "Set X point",            "Set X point"
+adjust_chord      = "Adjust chord",           "Change Y coordinate of chord's end"
+extend_chord      = "Extend chord",           "Extend chord to nearest element"
+comments          = "Add/edit &comments",			"Add or edit comment field"
+
+# dialogs
+
+/dlg/btn
+
+ok                = "Ok"
+create            = "Create"
+save              = "Save"
+load              = "Load"
+import            = "Import"
+export            = "Export"
+yes               = "Yes"
+proceed           = "Proceed"
+apply             = "Apply"
+
+cancel            = "Cancel"
+close             = "Close"
+discard           = "Discard"
+no                = "No"
+
+help              = "Help"
+browse            = "..."
+
+/dlg/msg
+
+normals_grouped   = "%1 normal(s) have been reversed" #COUNT
+
+# common
+
+/dlg/model_close
+noviews           = "Model %1 has no views."
+unsaved           = "Model %1 has unsaved changes.\nDo you want to save it?"
+dontclose         = "Do not close"
+saveandclose      = "Save and close"
+closeunsaved      = "Close unsaved"
+
+/dlg/file_overwrite
+title             = "File %1 already exists"
+overwrite         = "Overwrite"
+selectanother     = "Select another file"
+
+/dlg/model_open
+title             = "File is opened"
+message           = "Another model has already loaded from this file. \n"
+                    "File will be duplicated with new name."
+same_name         = "New name can not be the same as old one."
+
+/dlg/session
+title             = "Recover session"
+message           = "Last session will be recovered:\n%1\nContinue?"
+
+/dlg/new_model
+title             = "Select configuration file"
+no_config         = "No configuration"
+use_config        = "Use configuration:"
+
+# menu > file
+
+/dlg/equil
+title             = "Equilibrium"
+filter            = "Equillibrium file (*.eq*)"
+help              = "Equilibrium... dialog box"
+
+/dlg/template
+title             = "Template"
+filter            = "Template file (*.ogr);;Any file(*)"
+help              = "Template... dialog box"
+
+/dlg/sonnet
+title             = "Mesh"
+filter            = "Sonnet file (*.sno)"
+help              = "Mesh... dialog box"
+
+/dlg/file_open
+title             = "Open"
+filter            = "DivGeo file (*.dg)"
+help              = "Open... dialog box"
+
+/dlg/file_save
+title             = "Save"
+filter            = "DivGeo file (*.dg);;DivGeo topology file (*.dgt)"
+help              = "Save... dialog box"
+
+/dlg/export_mesh
+title             = "Export mesh"
+filter            = "Sonnet file (*.sno)"
+help              = "Export mesh... dialog box"
+message           = "The mesh has been saved"
+
+/dlg/export_elems_as_template
+title             = "Export Elements as Template"
+filter            = "Template file (*.ogr)"
+help              = "Export Elements As Template... dialog box"
+label.all         = "Export all elements"
+label.marked      = "Export marked elements"
+message           = "The template has been written"
+
+/dlg/import_topo
+filter                = "DivGeo file (*.dg);;Any file(*)"
+title                 = "Import topology from"
+help                  = "Import topology... dialog box"
+label.detect_xpoints  = "Detect X Points"
+message               = "The selected topology has been applied"
+
+/dlg/app_unsaved
+title             = "Unsaved document"
+message           = "Save changes ?"
+help              = "Unsaved... dialog box"
+
+/dlg/mesh_unsaved
+title             = "Unsaved mesh"
+message           = "Export the mesh ?"
+help              = "Unsaved mesh... dialog box"
+
+/dlg/print
+title             = "Print..."
+help              = "Print... dialog box"
+btn.print         = ""
+/dlg/print/label
+command           = "Command:"
+file              = "To file:"
+width             = "Width(in)"
+height            = "Height(in)"
+margin            = "Margin(in)"
+fit               = "Fit to display the whole document"
+
+
+# menu > edit
+
+/dlg/create_node
+title             = "Create point at..."
+help              = "Create point at... dialog box"
+/dlg/create_node/label
+x                 = "X:"
+y                 = "Y:"
+
+/dlg/create_source
+title             = "Create source at..."
+help              = "Create source at... dialog box"
+/dlg/create_node/label
+x                 = "X:"
+y                 = "Y:"
+
+/dlg/create_surface
+title             = "Create surface(s)..."
+help              = "Create surface(s)... dialog box"
+multiple.title    = "Multiple"
+single.title      = "Single"
+/dlg/create_surface/multiple/label
+level1            = "Level 1:"
+level2            = "Level 2:"
+remove_old        = "Remove old surfaces"
+/dlg/create_surface/multiple/btn
+copy              = "<"
+mark_bound_elem   = "Mark bounding element"
+/dlg/create_surface/single
+by_level          = "By level"
+by_point          = "Through point"
+level             = "Level:"
+x                 = "X:"
+y                 = "Y:"
+/dlg/create_surface/area
+label             = "Area:"
+area1             = "Main Plasma"
+area2             = "SOL"
+area3             = "Private Flux"
+/dlg/create_surface/err
+equal_levels        = "Levels must be different"
+no_remembered_surf  = "No highlighted surface remembered.\n"
+                      "Highlight a surface with the Examine tool,\n"
+                      "then press the '<' button again."
+bad_creator_id      = "The surface last highlighted was not created using\n"
+                      "this dialog box.\n"
+                      "Highlight a surface created using this dialog box\n"
+                      "with the Examine tool, and press the '<<' button\n"
+                      "again."
+old_surf_not_found  = "No old surfaces have been found.\n"
+                      "Highlight a surface created using this dialog box\n"
+                      "with the Examine tool and press the '<<' button again,\n"
+                      "or disable 'Remove old surfaces'."
+# Obsolete - should never happen
+carre_old_surf      = "Internal error 22"
+non_carre_mode      = "The object selected has not been created\n"
+                      "in Carre mode. Either select an object\n"
+                      "created in Carre mode, or disable\n"
+                      "Carre mode before pressing the '<<'\n"
+                      "button."
+
+/dlg/create_gpoint
+title             = "Create grid point(s)..."
+help              = "Create grid point(s)... dialog box"
+multiple.title    = "Multiple"
+/dlg/create_gpoint/single
+title             = "Single"
+value             = "Value:"
+/dlg/create_gpoint/area
+label             = "Zone:"
+area0             = "Main chamber"
+area1             = "Inner divertor"
+area2             = "Outer divertor"
+/dlg/create_gpoint/err
+no_remembered_gpoint  = "No highlighted grid point remembered.\n"
+                        "Highlight a grid point with the Examine tool,\n"
+                        "then press the '<' button again."
+bad_creator_id        = "The grid point last highlighted was not created using\n"
+                        "this dialog box.\n"
+                        "Highlight a grid point created using this dialog box\n"
+                        "with the Examine tool, and press the '<<' button\n"
+                        "again."
+non_carre_mode        = "The object selected has not been created\n"
+                        "in Carre mode. Either select an object\n"
+                        "created in Carre mode, or disable\n"
+                        "Carre mode before pressing the '<<'\n"
+                        "button."
+
+/dlg/distr_graph/label
+count             = "Cells:"
+alpha1            = "Alpha:"
+alpha2            = "Alpha':"
+delta1            = "Delta1:"
+delta2            = "Delta2:"
+/dlg/distr_graph/btn
+copy              = "<<"
+reset             = "Reset"
+/dlg/distr_graph/law
+label             = "Law:"
+normal            = "Normal"
+flipped           = "Flipped"
+symmetric         = "Symmetric"
+twoalpha          = "Two-alpha"
+delta             = "Delta"
+/dlg/distr_graph/err
+count_bad_range   = "The value for \"Count\" must be an integer\n"
+                    "between %1 and %2." # MIN, MAX
+alpha1_bad_range  = "The value for \"Alpha\" resp. \"Delta1\" must be a\n"
+                    "positive real number."
+alpha2_bad_range  = "The value for \"Alpha'\" resp. \"Delta2\" must be a\n"
+                    "positive real number."
+bad_law           = "The curve may not have any local extrema"
+wrong_carre_law   = "The law in Carre mode must be set to 'Delta'"
+
+/dlg/create_chord
+title             = "Create chord at..."
+help              = "Create chord at... dialog box"
+/dlg/create_chord/cartesian
+label             = "Cartesian"
+x1                = "X1"
+y1                = "Y1"
+z1                = "Z1"
+x2                = "X2"
+y2                = "Y2"
+z2                = "Z2"
+/dlg/create_chord/cylindrical
+lable             = "Cylindrical"
+r1                = "R1"
+z1                = "Z1"
+phi1              = "PHI1"
+r2                = "R2"
+z2                = "Z2"
+phi2              = "PHI2"
+
+# menu > view
+
+/dlg/rot_move
+title             = "Move/Rotate"
+help              = "Move/Rotate... dialog box"
+err.bad_scale     = "'Scale' must be a positive real number."
+/dlg/rot_move/label
+x                 = "X offset"
+y                 = "Y offset"
+scale             = "Scale"
+elems             = "Elements"
+template          = "Template"
+/dlg/rot_move/btn
+move              = "Move"
+rotate            = "Rotate"
+
+/dlg/stretch
+title             = "Stretch/shrink view"
+btn.reset         = "Reset"
+/dlg/stretch/label
+x                 = "X factor:"
+y                 = "Y factor:"
+
+/dlg/set_angle
+title             = "Set rotation angle"
+label.angle       = "Enter the new angle in degrees:"
+
+/dlg/mesh_header
+title             = "Mesh header"
+help              = "Mesh header... dialog box"
+btn.change        = "Change"
+
+# menu > commands
+
+/dlg/glue_points
+title             = "Fill gaps"
+help              = "Fill gaps dialog box"
+msg_elems_added   = "%1 element(s) have been inserted" # COUNT
+err.bad_max_dist  = "The value for 'Threshold' must be a positive real number"
+/dlg/glue_points/label
+max_dist          = "Threshold:"
+millimeters       = "(mm)"
+marked_only       = "Marked only"
+
+/dlg/glue_elems
+title             = "Merge/Split elements"
+help              = "Merge/Split elements dialog box"
+msg_elems_removed = "%1 element(s) have been eliminated" # COUNT
+/dlg/glue_elems/err
+bad_max_dist      = "The value for 'Max deviation' must be a positive real number"
+bad_max_len       = "The value for 'Length limit' must be a positive real number"
+/dlg/glue_elems/label
+treshold          = "Max deviation:"
+millimeters       = "(mm)"
+marked_only       = "Marked only"
+max_len           = "Length limit:"
+cut_longer        = "Split longer elements"
+
+/dlg/topology
+title             = "Edit topology"
+help              = "Edit topology... dialog box"
+xpoints.title     = "X Points"
+sections.title    = "Sections"
+zones.title       = "Zones"
+name.title        = "Name"
+/dlg/topology/xpoints/label
+xpt_level         = "Level:"
+/dlg/topology/xpoints/btn
+detect_all        = "Detect All"
+change            = "Change"
+/dlg/topology/sections/label
+title             = "Separatrix sections"
+id                = "Section number:"
+short             = "Name:"
+long              = "Description:"
+used              = "Has grid points"
+targetcw          = "Reverse target"
+/dlg/topology/sections/btn
+detect_all        = "Detect All"
+change            = "Change"
+revert            = "Change direction"
+/dlg/topology/zones/label
+title             = "Equilibrium zones"
+id                = "Zone number:"
+short             = "Name:"
+long              = "Description:"
+gps1              = "Base separatrix section:"
+gps2              = "Limiting section:"
+orient            = "Orientation"
+left              = "Left"
+right             = "Right"
+closed            = "Has O point"
+/dlg/topology/zones/btn
+set               = "Set"
+add               = "Add New"
+delete            = "Delete"
+/dlg/topology/name
+lbl.title         = "Topology name:"
+btn.set           = "Set"
+/dlg/topology/err
+cur_object_gone       = "Please highlight the proper object with the Examine tool first."
+bad_xpt_level         = "Invalid number entered for the X Point level"
+bad_new_level         = "Impossible new X Point level."
+bad_xps_zone          = "\"Section number\" must be an integer number."
+dup_xps_zone          = "Duplicate section numbers not permitted."
+bad_szone             = "\"Zone number\" must be a nonnegative integer number."
+dup_szone             = "Duplicate zone numbers not permitted."
+sz_bad_gp_zone        = "Bad numbers for separatrix section(s) entered."
+sz_not_found_gp_zone  = "Separatrix section(s) with these number(s) not found."
+sz_bad_sign           = "\"Sign\" must be either \"1\" or \"-1\""
+bad_topo_name         = "The topology name must be a single word"
+/dlg/topology/msg
+xpt_level_adjusted    = "X point level has been adjusted."
+xseg_changed          = "The separatrix section has been changed."
+xseg_reverted         = "The separatrix section has been reverted."
+sz_changed            = "The equilibrium zone has been changed"
+topo_name_changed     = "The topology name has been changed"
+
+# menu > variables
+
+/dlg/vars_edit
+title             = "Variables" # ???
+help              = "Variables... dialog box"
+/dlg/vars_edit/err
+bad_scope     = "The scope of this variable does not permit comparisions"
+bad_number    = "The number entered is invalid."
+/dlg/vars_edit/label
+hold              = "Hold"
+message           = "Variables"
+old_value         = "Current value: %1"
+new_value         = "New value: %1"
+obj_match         = "%1 match(es)"
+/dlg/vars_edit/btn
+set_all           = "Set all"
+reset_all         = "Reset all"
+close             = "Close"
+help              = "Help"
+reset_var         = "Mark"
+set               = "Set"
+set_file          = "File..."
+var_help          = "Help"
+/dlg/vars_edit/vars_popup
+reset             = "Reset"
+reset_help        = "Restore the old value or selection"
+compare           = "Compare"
+display           = "Display values"
+display_help      = "Display values next to objects"
+values            = "List values"
+values_help       = "List all existing values of this variable"
+help              = "Help"
+help_help         = "Display help on this variable"
+/dlg/vars_edit/compare
+equal             = "Find equal"
+not_equal         = "Find not equal"
+gt                = "Find \">\""
+ge                = "Find \">=\""
+lt                = "Find \"<\""
+le                = "Find \"<=\""
+help              = "Compare values and mark matching objects"
+
+/dlg/vars_file_set
+title             = "Vars file"
+filter            = "DivGeo file (*.dg)"
+help              = "Vars file... dialog box"
+
+/dlg/invalid_vars
+title             = "Invalid values"
+help              = "Invalid values dialog box"
+btn.show          = "Show!"
+
+# menu > setup
+
+/dlg/vsd_list
+title             = "Layer types"
+help              = "Layer types dialog box"
+label.add         = "Add"
+label.modify      = "Modify"
+label.remove      = "Remove"
+label.cancel      = "Close"
+
+/dlg/vsd_create
+title             = "New layer type..."
+help              = "New layer type... dialog box"
+label_name        = "Name:"
+
+/dlg/vsd_edit
+help              = "Layer type options dialog box"
+title             = "Layer type options"
+title_ex          = "Layer type: %1" # NAME
+label.descr       = "Description:"
+label.min         = "MinLayers:"
+label.max         = "MaxLayers:"
+label.empty       = "Empty"
+
+/dlg/vd_create
+help              = "New variable... dialog box"
+title             = "New variable..."
+title_ex          = "New variable in %1..." # NAME
+label_name        = "Name:"
+
+/dlg/vd_edit
+help              = "Variable options dialog box"
+title             = "Variable options"
+title_ex          = "Variable: %1" # NAME
+type              = "Type:"
+scope             = "Scope:"
+/dlg/vd_edit/label
+descr             = "Description:"
+no_export         = "Do not export"
+layer             = "Layer label"
+default_value     = "Default value:"
+/dlg/vd_edit/type
+int               = "Integer"
+float             = "Real"
+text              = "Text"
+filename          = "Filename"
+elem              = "Element"
+elemset           = "Set of elements"
+target1           = "Target 1"
+target2           = "Target 2"
+structure         = "Structure"
+struct_part       = "Part of structure"
+chords            = "Set of chords"
+top_view          = "Set of top view elements"
+mesh_cells        = "Set of mesh cells"
+mesh_elems        = "Set of mesh elements"
+mesh_h_elems      = "Set of mesh elements(H)"
+mesh_v_elems      = "Set of mesh elements(V)"
+/dlg/vd_edit/scope
+with_varset       = "Layers"
+with_elems        = "Elements"
+with_source       = "Sources"
+with_chords       = "Chords"
+/dlg/vd_edit/btn
+edit_help         = "Edit help"
+remove            = "Remove"
+/dlg/vd_edit/err
+index_2nd         = "Only one layer laber per layer is permitted.\n"
+                    "The variable %1 (\"%2\") currently serves as the layer label."
+index_multiple    = "The scope for a layer label must be set to \"Layers\"."
+index_group       = "A layer label must have a textual type (Integer, Real or Text)."
+
+/dlg/setup_warning
+title             = "Warning"
+str_message       = "Wrong settings here may cause\n"
+                    "DG-related software to crash.\n"
+                    "Do not proceed unless you know\n"
+                    "what you are doing"
+help              = "Setup Warning dialog box"
+
+/dlg/save_config
+title             = "Save configuration"
+str_message       = "Filename: $(FILENAME)"
+help              = "Save configuration dialog box"
+
+/dlg/help_edit
+help              = "Help editor dialog box"
+title             = "Help editor"
+title_ex          = "Help for variable: %1" # NAME
+
+/dlg/output_mode
+help              = "Output mode dialog box"
+title             = "Output mode"
+/dlg/output_mode/label
+sonnet            = "Sonnet"
+carre             = "Carre"
+vars              = "Check variables"
+structure         = "Check structure"
+targets           = "Check targets"
+surfaces          = "Check surfaces"
+gridpoints        = "Check grid points"
+cells             = "Check cells"
+flags             = "    Output flags:"
+
+/dlg/settings
+title               = "User preferences"
+/dlg/settings/common
+title               = "Common settings"
+saveinterval        = "Autosave interval, sec"
+recent_length       = "Recent list max length"
+
+/dlg/settings/visual
+title               = "Visual settings"
+color               = "color"
+width               = "width"
+radius              = "radius"
+fontsize            = "font size"
+offset              = "offset"
+x                   = "X"
+y                   = "Y"
+background          = "background"
+label               = "Labels"
+tool                = "Tools"
+error               = "Error"
+sonnetdata          = "Sonnet data"
+separator           = "Separators"
+source              = "Sources"
+chord               = "Chord"
+template            = "Template"
+surface             = "Surfaces"
+xpointseg           = "XPoint segments"
+arrow_size          = "Arrow size"
+use_squares         = "Use squares"
+comment             = "Comment"
+
+/dlg/settings/visual/text_normal
+title               = "Text & normals"
+text                = "text"
+normal              = "normal"
+normal_len          = "normal length"
+
+/dlg/settings/visual/mark_hl
+title               = "Mark & highlight"
+mark                = "mark"
+highlight           = "highlight"
+
+/dlg/settings/visual/xpointtest
+title               = "XPoint"
+xpointtest          = "XPoint lines"
+xpt_bound           = "XPoint bounds"
+
+/dlg/settings/visual/xgpoint
+title               = "separatrix & GridPoints"
+xpoint              = "separatrix"
+gpoint              = "gridPoints"
+gpointlen           = "gridPoint length"
+
+/dlg/settings/visual/grid_axes
+title               = "Grid & axes"
+axes                = "axes"
+grid                = "grid"
+text                = "labels"
+
+/dlg/settings/visual/elem_node
+title               = "Nodes & elements"
+node                = "nodes"
+elem                = "elements"
+
+/dlg/settings/visual/equil
+title               = "Equilibrium"
+pos                 = "positive"
+neg                 = "negative"
+
+/dlg/settings/visual/mesh
+title               = "Mesh"
+element             = "element"
+irreg               = "irregular"
+irreg_hl            = "irregular highlighted"
+cellcenter          = "cell center"
+cc_length           = "cell center length"
+
+/dlg/comment_edit
+title               = "Edit comment text"
+linked_object       = "Linked object:"
+insert_descr        = "Insert info"
+
+/dlg/mesh_options
+help              = "Mesh editing dialog box"
+title             = "Mesh editing"
+/dlg/mesh_options/mode
+label             = "Slide along"
+surfaces          = "Magnetic surfaces"
+splines           = "Splines"
+/dlg/mesh_options/label
+slide             = "Margin:"
+border            = "Double border"
+/dlg/mesh_options/err
+bad_sliding_tresh = "'Margin' must be a positive real number"
+
+/dlg/save_interval
+title             = "Set auto-save interval"
+label.save        = "Number of minutes between saves:"
+
+/dlg/project_settings
+title             = "Project specific parameters"
+topology          = "Topology"
+/dlg/project_settings/sz_restr
+title             = "Surface zones restriction"
+b2carre           = "B2 Carre"
+b2eirene          = "B2-Eirene dg"
+targets           = "Target elements"
+tchains           = "Target chain"
+tpoints           = "Target ends"
+
+/dlg/about
+title             = "About"
+help              = "About... dialog box"
+text              = "DivGeo version %1 by Mikhail Buinevich \n\n"
+                    "Based on DivGeo version 2.1.1 \n"
+                    "written by Konstantin Kukushkin."
+
+/dlg/info
+title             = "Statistics"
+help              = "Statistics dialog box"
+/dlg/info/label
+node              = "Points"
+elems             = "Elements"
+unused            = "Unused numbers"
+sources           = "Sources"
+surfaces          = "R Cells"
+gridpoints        = "P Cells"
+separators        = "Separators"
+chords            = "Chords"
+
+/dlg/new_prefs_file
+title             = "New preferences file"
+help              = "New preferences file dialog box"
+text              = "A new preferences file has been created at \n"
+                    "\"%1\".\n"
+                    "You can press the Help button in order to\n"
+                    "learn more about the preferences file."
+
+/dlg/new_version
+title             = "New version of DG"
+help              = "New version dialog box"
+text              = "This version of DG is different from\n"
+                    "the version %1 you used the last time.\n\n"
+                    "Press OK to see what's new in this version."
+btn.win           = "What's New"
+
+/dlg/help
+title             = "Help"
+
+
+# GUI
+
+/gui/common
+
+yes               = "Yes"
+no                = "No"
+
+/gui/model_info
+
+not_loaded        = "not loaded"
+property          = "Property"
+value             = "Value"
+id                = "ID:"
+length            = "Length:"
+position          = "Position:"
+selected          = "Selected"
+no_selected       = "nothing"
+marked            = "Is marked:"
+vars              = "Variables:"
+vars_cont         = "Vars containing:"
+regular           = "Is regular:"
+
+/gui/model_info/model
+
+title             = "Model"
+name              = "Model name:"
+filename          = "File name:"
+creation_time     = "Creation time:"
+template_file     = "Template file name:"
+no_template       = "Template is not loaded"
+output_mode       = "Output mode:"
+carre_mode        = "Carre"
+sonnet_mode       = "Sonnet"
+node1             = "Node \#1:"
+node2             = "Node \#2:"
+point1            = "Point \#1:"
+point2            = "Point \#2:"
+intarget          = "Is in target:"
+bad_creatorid     = "Bad CreatorId"
+unchanged         = "Unchanged:"
+carremode         = "Carre mode:"
+listof            = "List of "
+emptylist         = "Empty list"
+empty             = "empty"
+is3d              = "Is 3D:"
+isend             = "Is end:"
+
+/gui/model_info/template
+
+incr              = "Incr:"
+scale             = "Scale:"
+angle             = "Angle:"
+
+/gui/model_info/topology
+
+title             = "Topology"
+filename          = "File name:"
+topology_name     = "Topology name:"
+name              = "Name:"
+descr             = "Description:"
+origin            = "Origin:"
+poloidal          = "Poloidal cells:"
+toroidal          = "Toroidal cells:"
+level             = "Level:"
+verticies         = "Verticies:"
+start             = "Start position:"
+end               = "End position:"
+zone              = "Zone:"
+isused            = "Is used:"
+dir               = "Direction:"
+dirtarget         = "Target direction:"
+crid              = "Creator ID:"
+isdrawn           = "Is drawn:"
+isok              = "Coordinates are ok:"
+gpzones           = "Poloidal zones:"
+zonesign          = "Zone sign:"
+orient            = "Orientation:"
+limited           = "Is limited by surfaces:"
+isclosed          = "Is closed:"
+derivative        = "Derivative:"
+virtual           = "virtual"
+innermost         = "Innermost element:"
+
+/gui/model_info/equil
+
+title             = "Equilibrium data"
+filename          = "File name:"
+size              = "Equil size:"
+value             = "Value (range):"
+
+/gui/model_info/mesh
+
+title             = "Sonnet mesh"
+filename          = "File name:"
+header            = "Header:"
+size              = "Mesh size:"
+sliding_mode      = "Sliding mode:"
+sliding_treshold  = "Sliding treshold:"
+double_border     = "Double border:"
+fingerprint       = "Fingerprint:"
+by_surfaces       = "by surfaces"
+by_splines        = "by splines"
+index             = "Index:"
+backup            = " backup:"
+changed           = "Is changed:"
+cutflag           = "Cut flag:"
+border            = "Is on border:"
+neighbours        = "Neighbours:"
+outermost         = "Outermost point:"
+number            = "Number:"
+center            = "Center:"
+ratio             = "Ratio:"
+vertical          = "Is vertical:"
+
+/gui/model_info/vars
+
+name              = "Name:"
+descr             = "Description:"
+help              = "Help:"
+enumvalues        = "Enum values:"
+minmaxsets        = "Min/max sets:"
+origin            = "Origin:"
+vartype           = "Type:"
+rowcolumn         = "Row/column:"
+multiple          = "Is multiple:"
+hasgroup          = "Has group:"
+flags             = "Flags:"
+typeflags         = "Type flags:"
+
+/gui/model_info/vars/vdflags
+
+noexport          = "NOEXPORT"
+forelems          = "FORELEMS"
+forseparators     = "FORSEPARATORS"
+forsources        = "FORSOURCES"
+forchords         = "FORCHORDS"
+layerindex        = "LAYERINDEX"
+
+/gui/model_info/vars/typeflags
+
+haselems          = "HASELEMS"
+lockgroup         = "LOCKGROUP"
+single            = "SINGLE"
+structpart        = "STRUCTPART"
+haschords         = "HASCHORDS"
+hasmesh           = "HASMESHOBJ"
+target            = "TARGET"
+filename          = "FILENAME"
+
+/gui/model_info/vars/types
+
+int               = "Int"
+float             = "Float"
+text              = "Text"
+filename          = "Filename"
+element           = "Element"
+elems             = "Elements"
+target1           = "Target1"
+target2           = "Target2"
+structure         = "Structure"
+structpart        = "StructPart"
+chords            = "SetOfChords"
+meshcells         = "SetOfMeshCells"
+meshelems         = "SetOfMeshElements"
+meshhelems        = "SetOfMeshElementsH"
+meshvelems        = "SetOfMeshElementsV"
+topview           = "TopViewObjects"
+
+/gui/model_info/type
+
+element           = "Element"
+separator         = "Separator"
+source            = "Source"
+chord             = "Chord"
+node              = "Node"
+meshpoint         = "MeshPoint"
+meshcell          = "MeshCell"
+meshelement       = "MeshElement"
+xpointtest        = "X-Point"
+xpointseg         = "X-Point segment"
+surfacezone       = "Surface zone"
+surfaceex         = "Surface"
+gridpointseg      = "Grid segment"
+gridpointex       = "Grid point"
+unknown           = "Unknown"
+container         = "2D set"
+var               = "Variable"
+varsetdef         = "VarSetDef"
+varset            = "VarSet"
+vardef            = "VarDef"
+template          = "Template"
+model             = "Model"
+mesh              = "Mesh"
+topology          = "Topology"
+equil             = "Equilibrium"
+
+/gui/model_info/actions
+
+undostack         = "Undo stack"
+redostack         = "Redo stack"
+change_value      = "Change value"
+change_group      = "Change group"
+mark_object       = "Mark "
+highlight_object  = "Highlight "
+add_object        = "Add "
+del_object        = "Delete "
+change_object     = "Change "
+parameter         = "Parameter:"
+value             = "Value:"
+action            = "Action:"
+
+/gui/view
+
+scene             = "Scene"
+center            = "Center"
+scale             = "Scale"
+angle             = "Angle"
+add               = "+ add view"
+
+
+/log/menu/file
+
+new                 = "Menu > File > New"
+open                = "Menu > File > Open"
+save                = "Menu > File > Save"
+save_as             = "Menu > File > SaveAs"
+save_copy           = "Menu > File > SaveCopy"
+output              = "Menu > File > Output"
+print               = "Menu > File > Print"
+exit                = "Menu > File > Exit"
+recent              = "Menu > File > Recent"
+
+/log/menu/file/import
+
+template            = "Menu > File > Import > Template"
+equilibrium         = "Menu > File > Import > Equilibrium"
+mesh                = "Menu > File > Import > Mesh"
+topology            = "Menu > File > Import > Topology"
+sonnetgrid          = "Menu > File > Import > SonnetGrid"
+
+/log/menu/file/export
+
+mesh                = "Menu > File > Export > Mesh"
+element             = "Menu > File > Export > ElementsAsTemplate"
+
+/log/menu/edit
+
+undo                = "Menu > Edit > Undo"
+redo                = "Menu > Edit > Redo"
+redo_all            = "Menu > Edit > RedoAll"
+clear_action_stack  = "Menu > Edit > ClearActionStack"
+mark_all_elements   = "Menu > Edit > MarkAllElements"
+mark_all_separators = "Menu > Edit > MarkAllSeparators"
+mark_all_chords     = "Menu > Edit > MarkAllChords"
+unmark_all          = "Menu > Edit > UnmarkAll"
+extend_chords       = "Menu > Edit > ExtendChords"
+move_rotate         = "Menu > Edit > MoveRotate"
+
+/log/menu/edit/create
+
+point               = "Menu > Edit > Create > Point"
+source              = "Menu > Edit > Create > Source"
+chord               = "Menu > Edit > Create > Chord"
+surface             = "Menu > Edit > Create > Surfaces"
+gridpoints          = "Menu > Edit > Create > GridPoints"
+separators          = "Menu > Edit > Create > Separator"
+
+/log/menu/edit/delete
+
+marked_objects      = "Menu > Edit > Delete > MarkedObjects"
+unused_points       = "Menu > Edit > Delete > UnusedPoints"
+virtual_surfaces    = "Menu > Edit > Delete > VirtualSurfaces"
+elements            = "Menu > Edit > Delete > Elements"
+sources             = "Menu > Edit > Delete > Sources"
+chords              = "Menu > Edit > Delete > Chords"
+surfaces            = "Menu > Edit > Delete > Surfaces"
+gridpoints          = "Menu > Edit > Delete > GridPoints"
+separators          = "Menu > Edit > Delete > Separators"
+equilibrium         = "Menu > Edit > Delete > Equilibrium"
+template            = "Menu > Edit > Delete > Template"
+mesh                = "Menu > Edit > Delete > Mesh"
+xpoint              = "Menu > Edit > Delete > XPoints"
+sonnetgrid          = "Menu > Edit > Delete > SonnetGrid"
+
+/log/menu/view
+
+refresh             = "Menu > View > Refresh"
+zoom_in             = "Menu > View > ZoomIn"
+zoom_out            = "Menu > View > ZoomOut"
+picture_view        = "Menu > View > PictureView"
+selection_view      = "Menu > View > SelectionView"
+previous_view       = "Menu > View > PreviousView"
+remove_labels       = "Menu > View > RemoveLabels"
+mesh_headers        = "Menu > View > MeshHeaders"
+display             = "Menu > View > Display > %1: %2"
+
+/log/menu/view/rotate
+
+increase_angle      = "Menu > View > Rotate > IncreaseAngle"
+decrease_angle      = "Menu > View > Rotate > DecreaseAngle"
+set_angle           = "Menu > View > Rotate > SetAngle"
+rectify             = "Menu > View > Rotate > Rectify"
+
+/log/menu/view/strshr
+
+stretch_horizontal  = "Menu > View > StretchShrink > StretchHorizontal"
+stretch_vertical    = "Menu > View > StretchShrink > StretchVertical"
+shrink_horizontal   = "Menu > View > StretchShrink > ShrinkHorizontal"
+shrink_vertical     = "Menu > View > StretchShrink > ShrinkVertical"
+stretch             = "Menu > View > StretchShrink > Stretch"
+justify             = "Menu > View > StretchShrink > Justyfy"
+
+/log/menu/view/mode
+
+stretch             = "Menu > View > Mode > Stretch"
+topdown_view        = "Menu > View > Mode > TopdownView"
+radial_grid         = "Menu > View > Mode > RadialGrid"
+colored_equil       = "Menu > View > Mode > ColoredEquil"
+
+/log/menu/commands
+
+renumber_elements     = "Menu > Commands > RenumberElements"
+check_variables       = "Menu > Commands > CheckVariables"
+rebuild_carre_objects = "Menu > Commands > RebuildCarreObjects"
+find_xpoints          = "Menu > Commands > FindXPoints"
+find_xpointsegs       = "Menu > Commands > FindXPointSegments"
+edit_topology         = "Menu > Commands > EditTopology"
+update_topology       = "Menu > Commands > UpdateTopology"
+
+/log/menu/commands/convert
+
+template_to_elements  = "Menu > Commands > Convert > TemplateToElements"
+elements_to_chords    = "Menu > Commands > Convert > ElementsToChords"
+chords_to_elements    = "Menu > Commands > Convert > ChordsToElements"
+
+/log/menu/commands/simplify
+
+fill_gaps             = "Menu > Commands > Simplify > FillGaps"
+merge_split_elements  = "Menu > Commands > Simplify > MergeSplitElements"
+lineup.all_normals    = "Menu > Commands > Simplify > LineUpNormals > All"
+lineup.marked_normals = "Menu > Commands > Simplify > LineUp > Marked"
+
+/log/menu/variables
+
+add_layer             = "Menu > Variables > AddLayer: %1"
+remove_layer          = "Menu > Variables > RemoveLayer: %1"
+display_layer         = "Menu > Variables > DisplayLayer: %1"
+general_surface_data  = "Menu > Variables > GeneralSurfaceData"
+structure             = "Menu > Variables > Structure"
+global_eirene_data    = "Menu > Variables > GlobalEireneData"
+
+/log/menu/options
+
+project_settings    = "Menu > Options > ProjectSettings"
+output_mode         = "Menu > Options > OutputMode"
+mesh_editing        = "Menu > Options > MeshEditing"
+settings            = "Menu > Options > UserPreferences"
+setup.variables     = "Menu > Options > Setup > Variables"
+setup.save          = "Menu > Options > Setup > Save"
+
+/log/menu/window
+
+new_view            = "Menu > Window > NewView"
+close               = "Menu > Window > CloseView"
+statistics          = "Menu > Window > Statistics"
+
+/log/menu/window/panels
+
+modelinfo           = "Menu > Window > Panels > ModelInfo"
+actioninfo          = "Menu > Window > Panels > ActionStackInfo"
+views               = "Menu > Window > Panels > Views"
+console             = "Menu > Window > Panels > Console"
+oldtools            = "Menu > Window > Panels > OldTools"
+tools               = "Menu > Window > Panels > Tools"
+tb_view             = "Menu > Window > Panels > ViewBar"
+tb_edit             = "Menu > Window > Panels > EditBar"
+
+/log/menu/help
+
+whats_new           = "Menu > Help > WhatIsNew"
+manual              = "Menu > Help > Manual"
+using_help          = "Menu > Help > UsingHelp"
+about               = "Menu > Help > About"
+
+/log/tools
+
+zoom_pan          = "ZoomPan"
+mark              = "Mark"
+examine           = "Examine"
+rotate            = "Rotate"
+stretch           = "Stretch"
+move              = "Move"
+delete            = "Delete"
+add_element       = "AddElement"
+add_source        = "AddSource"
+add_chords        = "AddChords"
+add_surface       = "AddSurface"
+add_gridpoint     = "AddGridPoint"
+split_element     = "SplitElement"
+join_elemenets    = "JoinElements"
+connect_points    = "ConnectPoints"
+reposition        = "Reposition"
+reverse_normals   = "ReverseNormals"
+move_mesh_point   = "MoveMeshPoint"
+set_xpoint        = "SetXPoint"
+adjust_chord      = "AdjustChord"
+extend_chord      = "ExtendChord"
+comments          = "Comments"
+
+tool              = "Tool %1"
+selected          = "selected for %1"
+pressed           = "PRESSED at (%1, %2)"
+shiftpressed      = "SHIFT+PRESSED at (%1, %2)"
+released          = "RELEASED at (%1, %2)"
+moved             = "MOVED to (%1, %2)"
+left_button       = "left mouse button"
+right_button      = "right mouse button"
+middle_button     = "middle mouse button"

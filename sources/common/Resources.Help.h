@@ -1,0 +1,15 @@
+#ifndef RESOURCES_HELP_H
+#define RESOURCES_HELP_H
+
+#include "Resources.Macro.h"
+
+ENUM_STRUCT( HELP )
+
+  ENUM( DG2_HELP, 1000 )
+    MAIN, MAIN_WINDOW,
+    MENU, DLG, TOOLS
+  END_ENUM
+
+END_ENUM_STRUCT
+
+#endif // RESOURCES_HELP_H

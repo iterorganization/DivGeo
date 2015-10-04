@@ -1,0 +1,65 @@
+#ifndef DGTOKENS_H
+#define DGTOKENS_H
+
+#include "../../common/Types.h"
+
+struct DgTokens
+{
+  enum EDgTokens
+  {
+    Equil100,
+    EquilHints114,
+    Template100,
+    Template110,
+    SonnetData100,
+    Mesh112,
+    MeshFingerprint112,
+    MeshPoint112,
+    Nodes100,
+    Elems100,
+    Surfaces100,
+    Surfaces108,
+    GridPoints100,
+    GridPoints108,
+    XPointsEx114,
+    GridPointSegs114,
+    SurfaceZones114,
+    SurfacesEx114,
+    GridPointsEx114,
+    Separators101,
+    Sources104,
+    Chords115,
+    Chords106,
+    MarkedElems100,
+    MarkedSeparators104,
+    MarkedSources104,
+    MarkedChords110,
+    MarkedMeshElements112,
+    MarkedMeshCells112,
+    VarSetDefs100,
+    VarDefs100,
+    VarSetDefs101,
+    VarDefs101,
+    VarDefs102,
+    VarSets100,
+    XPoint100,
+    MaxElemId101,
+    CreaTime101,
+    OutputMode109,
+    TopoName114,
+    ViewAttr103,
+    ViewAttr105,
+    ViewAttr115,
+    OutputFlags111,
+    MeshSlidingOptions112,
+    MeshFileHeader113,
+    Comments316,
+    Properties316
+  };
+
+static const _NameRec names[];
+};
+typedef DgTokens::EDgTokens Token;
+typedef DgTokens TKN;
+
+#endif // DGTOKENS_H
