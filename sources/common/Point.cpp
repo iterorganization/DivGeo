@@ -72,3 +72,44 @@ std::string Point::ToString( const std::string& _crsFormat ) const
   return ss.str();
 }
 
+Point operator* ( double k, const Point& p ) { return p * k; }
+Point operator/ ( double k, const Point& p ) { return Point( k / p.x, k / p.y, ( p.z != 0 ) ? k / p.z : 0. ); }
+Point fabs( const Point& p ) { return Point( fabs( p.x ), fabs( p.y ), fabs( p.z ) ); }
+Point signOf( const Point& p ) { return Point( dg_sign( p.x ), dg_sign( p.y ), dg_sign( p.z ) ); }
+Point Min( const Point& p1, const Point& p2 ) { return Point( p1.x < p2.x ? p1.x : p2.x, p1.y < p2.y ? p1.y : p2.y ); }
+Point Max( const Point& p1, const Point& p2 ) { return Point( p1.x > p2.x ? p1.x : p2.x, p1.y > p2.y ? p1.y : p2.y ); }
+double hypot( const Point& p ) { return hypot( p.x, p.y ); }
+
+PointIter dg__InitPair( PointIter itBegin, PointPtr pPnt2 )
+{
+  *pPnt2 = *itBegin;
+  return itBegin + 1;
+}
+
+bool dg__CheckPair( PointIter itCur, PointIter itEnd, PointPtr pPnt1, PointPtr pPnt2 )
+{
+  if( itCur != itEnd ) {
+    *pPnt1 = *pPnt2;
+    *pPnt2 = *itCur;
+    return true;
+  }
+  else
+    return false;
+}
+
+PointIterConst dg__InitPairConst( PointIterConst itBegin, PointPtr pPnt2 )
+{
+  *pPnt2 = *itBegin;
+  return itBegin + 1;
+}
+
+bool dg__CheckPairConst( PointIterConst itCur, PointIterConst itEnd, PointPtr pPnt1, PointPtr pPnt2 )
+{
+  if( itCur != itEnd ) {
+    *pPnt1 = *pPnt2;
+    *pPnt2 = *itCur;
+    return true;
+  }
+  else
+    return false;
+}

@@ -125,47 +125,18 @@ typedef std::vector< Point > PointArray;
 typedef PointArray::iterator PointIter;
 typedef PointArray::const_iterator PointIterConst;
 
-static Point operator* ( double k, const Point& p ) { return p * k; }
-static Point operator/ ( double k, const Point& p ) { return Point( k / p.x, k / p.y, ( p.z != 0 ) ? k / p.z : 0. ); }
-static Point fabs( const Point& p ) { return Point( fabs( p.x ), fabs( p.y ), fabs( p.z ) ); }
-static Point signOf( const Point& p ) { return Point( dg_sign( p.x ), dg_sign( p.y ), dg_sign( p.z ) ); }
-static Point Min( const Point& p1, const Point& p2 ) { return Point( p1.x < p2.x ? p1.x : p2.x, p1.y < p2.y ? p1.y : p2.y ); }
-static Point Max( const Point& p1, const Point& p2 ) { return Point( p1.x > p2.x ? p1.x : p2.x, p1.y > p2.y ? p1.y : p2.y ); }
-static double hypot( const Point& p ) { return hypot( p.x, p.y ); }
+Point operator* ( double k, const Point& p );
+Point operator/ ( double k, const Point& p );
+Point fabs( const Point& p );
+Point signOf( const Point& p );
+Point Min( const Point& p1, const Point& p2 );
+Point Max( const Point& p1, const Point& p2 );
+double hypot( const Point& p );
 
-static PointIter dg__InitPair( PointIter itBegin, PointPtr pPnt2 )
-{
-  *pPnt2 = *itBegin;
-  return itBegin + 1;
-}
-
-static bool dg__CheckPair( PointIter itCur, PointIter itEnd, PointPtr pPnt1, PointPtr pPnt2 )
-{
-  if( itCur != itEnd ) {
-    *pPnt1 = *pPnt2;
-    *pPnt2 = *itCur;
-    return true;
-  }
-  else
-    return false;
-}
-
-static PointIterConst dg__InitPairConst( PointIterConst itBegin, PointPtr pPnt2 )
-{
-  *pPnt2 = *itBegin;
-  return itBegin + 1;
-}
-
-static bool dg__CheckPairConst( PointIterConst itCur, PointIterConst itEnd, PointPtr pPnt1, PointPtr pPnt2 )
-{
-  if( itCur != itEnd ) {
-    *pPnt1 = *pPnt2;
-    *pPnt2 = *itCur;
-    return true;
-  }
-  else
-    return false;
-}
+PointIter dg__InitPair( PointIter itBegin, PointPtr pPnt2 );
+bool dg__CheckPair( PointIter itCur, PointIter itEnd, PointPtr pPnt1, PointPtr pPnt2 );
+PointIterConst dg__InitPairConst( PointIterConst itBegin, PointPtr pPnt2 );
+bool dg__CheckPairConst( PointIterConst itCur, PointIterConst itEnd, PointPtr pPnt1, PointPtr pPnt2 );
 
 #ifndef CURRENTITER
   #define CURRENTITER dg__it__
