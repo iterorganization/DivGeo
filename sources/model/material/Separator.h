@@ -8,7 +8,7 @@
 #include "../../common/Includes.h"
 #include "../../common/mathlib.h"
 
-#include "../sonnet/SonnetDecl.h"
+#include "../mesh/SonnetDecl.h"
 #include "../material/MaterialDecl.h"
 
 namespace Actions { class ActChangeSeparator; }

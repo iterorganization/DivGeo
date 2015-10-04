@@ -22,11 +22,11 @@ std::string Separator::Description() const
 { return pModel->GetStr( STR::SEPARATOR ); }
 
 std::string Separator::ShortInfo() const
-{ return std::string( "[" ) + id + "]"; }
+{ return std::string( "[" ) << id << "]"; }
 
 std::string Separator::DetailedInfo() const
-{ return Description() + ShortInfo() + " " +
-      position.ToString() + " - " + pNode->Position().ToString(); }
+{ return Description() << ShortInfo() << " " <<
+      position.ToString() << " - " << pNode->Position().ToString(); }
 
 double Separator::DistToPoint(const Point& _crPnt, int* _pPosFlag ) const
 { return Point2VectorDist( pNode->Position(), position, _crPnt, _pPosFlag, null ); }
