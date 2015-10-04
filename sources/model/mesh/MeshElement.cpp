@@ -36,7 +36,7 @@ std::string MeshElement::Description() const
 { return pModel->GetStr( STR::MESH_ELEMENT ); }
 
 std::string MeshElement::ShortInfo() const
-{ return ToStdString( GetID_1() ) + ":" + GetID_2(); }
+{ return ToStdString( GetID_1() ) << ":" << GetID_2(); }
 
 std::string MeshElement::DetailedInfo() const
 {

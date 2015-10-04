@@ -34,10 +34,10 @@ std::string GridPointEx::Description() const
 { return pModel->GetStr( STR::GRIDPOINT ); }
 
 std::string GridPointEx::ShortInfo() const
-{ return ToStdString( value ) + " " + position.ToString(); }
+{ return ToStdString( value ) << " " << position.ToString(); }
 
 std::string GridPointEx::DetailedInfo() const
-{ return Description() + " " /*+ ShortInfo()*/ + " @" + zone; }
+{ return Description() << " " /*<< ShortInfo()*/ << " @" << zone; }
 
 void GridPointEx::Delete()
 {

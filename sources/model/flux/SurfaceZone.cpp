@@ -42,10 +42,10 @@ std::string SurfaceZone::Description() const
 { return pModel->GetStr( STR::SURFACE_ZONE ); }
 
 std::string SurfaceZone::ShortInfo() const
-{ return shortName + " (" + zone + ")"; }
+{ return shortName << " (" << zone << ")"; }
 
 std::string SurfaceZone::DetailedInfo() const
-{ return Description() + " " + zone + "-" + shortName + " (" + longName + ")"; }
+{ return Description() << " " << zone << "-" << shortName << " (" << longName << ")"; }
 
 
 void SurfaceZone::Delete()

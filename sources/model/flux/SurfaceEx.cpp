@@ -44,7 +44,7 @@ std::string SurfaceEx::ShortInfo() const
 { return ToStdString( level ); }
 
 std::string SurfaceEx::DetailedInfo() const
-{ return Description() + " " + level + " (" + zone + ")"; }
+{ return Description() << " " << level << " (" << zone << ")"; }
 
 double SurfaceEx::DistToPoint( const Point& _crPnt, int* _pPosFlag ) const
 {

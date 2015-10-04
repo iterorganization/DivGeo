@@ -24,7 +24,7 @@ std::string XPointSeg::ShortInfo() const
 { return ToStdString( number ); }
 
 std::string XPointSeg::DetailedInfo() const
-{ return Description() + " [" + number + "] (" + startPos + " -> " + endPos + ")"; }
+{ return Description() << " [" << number << "] (" << startPos << " -> " << endPos << ")"; }
 
 double XPointSeg::DistToPoint( const Point& _crPnt, int* _pPosFlag ) const
 {

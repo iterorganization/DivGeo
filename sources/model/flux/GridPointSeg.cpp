@@ -41,10 +41,10 @@ std::string GridPointSeg::Description() const
 { return pModel->GetStr( STR::GRID_SEGMENT ); }
 
 std::string GridPointSeg::ShortInfo() const
-{ return shortName + " (" + zone + ")"; }
+{ return shortName << " (" << zone << ")"; }
 
 std::string GridPointSeg::DetailedInfo() const
-{ return Description() + " " + zone + "-" + shortName + " (" + longName + ")"; }
+{ return Description() << " " << zone << "-" << shortName << " (" << longName << ")"; }
 
 double GridPointSeg::DistToPointEx( Point pnt, double* pos ) const
 {

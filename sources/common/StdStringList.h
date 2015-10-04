@@ -24,60 +24,40 @@ namespace std
   };
 }
 
-static std::string operator + ( const std::string& str1, const std::string& str2 )
-{
-  std::string result( str1 );
-  result.append( str2 );
-  return result;
-}
-
-static std::string operator + ( const std::string& str1, const char* str2 )
-{
-  std::string result( str1 );
-  result.append( str2 );
-  return result;
-}
-
 template< typename T >
-static std::string operator + ( const std::string& str1, const T& _value )
+std::string operator << ( const std::string& str1, const T& _value )
 {
   std::stringstream ss;
   ss << str1 << _value;
   return ss.str();
 }
 
+/*template<>
+std::string operator + ( const std::string& str1, const std::string& str2 )
+{
+  std::string result( str1 );
+  result.append( str2 );
+  return result;
+}
+
+template<>
+std::string operator + ( const std::string& str1, const char* const & str2 )
+{
+  std::string result( str1 );
+  result.append( str2 );
+  return result;
+}*/
+
 typedef std::list< std::string > StdStringList;
 typedef StdStringList* StdStringListPtr;
 typedef StdStringList::iterator StdStringIter;
 typedef std::vector< std::string > StdStringArray;
 
-static std::string ToStdString( int v )
-{
-  char str[16];
-  int num = sprintf( str, "%d", v );
-  return std::string( str, num );
-}
-
-static std::string ToStdString( ulong v )
-{
-  char str[16];
-  int num = sprintf( str, "%lu", v );
-  return std::string( str, num );
-}
-
-static std::string ToStdString( double v )
-{
-  char str[16];
-  int num = sprintf( str, "%f", v );
-  return std::string( str, num );
-}
-
-
-static std::string ToStdString( uint v )
-{
-  char str[16];
-  int num = sprintf( str, "%u", v );
-  return std::string( str, num );
+template< typename T >
+std::string ToStdString( const T& _crv ) {
+  std::stringstream ss;
+  ss << _crv;
+  return ss.str();
 }
 
 #endif // STDSTRINGLIST_H

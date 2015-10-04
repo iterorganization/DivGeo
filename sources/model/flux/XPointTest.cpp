@@ -46,7 +46,7 @@ std::string XPointTest::ShortInfo() const
 { return ToStdString( id ); }
 
 std::string XPointTest::DetailedInfo() const
-{ return Description() + "[" + id + "] " + center.ToString(); }
+{ return Description() << "[" << id << "] " << center.ToString(); }
 
 IComponentPtr XPointTest::GetLockingObject()
 {

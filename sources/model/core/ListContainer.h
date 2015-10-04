@@ -27,7 +27,7 @@ public:
   // IObject implementation
   virtual std::string Description() const { return ""; }
   virtual std::string DetailedInfo() const { return ""; }
-  virtual std::string ShortInfo() const { return std::string( "[" ) + pList->size() + "]"; }
+  virtual std::string ShortInfo() const { return std::string( "[" ) << pList->size() << "]"; }
 };
 
 typedef ListContainer< IVarItem > VarItemListContainer;

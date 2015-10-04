@@ -16,11 +16,11 @@ std::string Template::Description() const
 { return pModel->GetStr( STR::TEMPLATE ); }
 
 std::string Template::ShortInfo() const
-{ return std::string( "\"" ) + fileName + "\""; }
+{ return std::string( "\"" ) << fileName << "\""; }
 
 std::string Template::DetailedInfo() const
-{ return Description() + " \"" + fileName + "\" " +
-      incr.ToString() + " x" + scale + ", " + angle*RAD2DEG + "deg"; }
+{ return Description() << " \"" << fileName << "\" " <<
+      incr.ToString() << " x" << scale << ", " << angle*RAD2DEG << "deg"; }
 
 void Template::SetDragStatus( int _dragStatus, Point _drag )
 {
