@@ -53,7 +53,7 @@ update: clean VERSION listobj depend all
 .PHONY: VERSION clean listobj update depend all neat tags force
 
 clean:
-	/bin/rm -rf ${OBJDIR}/*.o $(DG) ${OBJDIR}/*.bak src/git_version.h ${OBJDIR}/dependencies* ${OBJDIR}/LISTOBJ ${OBJDIR}/dg.dgc ${OBJDIR}/dg.dgh 
+	/bin/rm -rf ${OBJDIR}/*.o $(DG) ${OBJDIR}/*.bak src/git_version_DG.h ${OBJDIR}/dependencies* ${OBJDIR}/LISTOBJ ${OBJDIR}/dg.dgc ${OBJDIR}/dg.dgh
 
 neat:
 	/bin/rm -rf ${OBJDIR}/*.o ${OBJDIR}/*.bak
@@ -72,11 +72,11 @@ listobj:
 	@P=${OBJDIR}; cd src ; rm -f $${P}/LISTOBJ; touch $${P}/LISTOBJ; \
 	echo "OBJS =" *.c | sed -e 's/ [^ /]*\// /g' -e 's/\.c/.o/g' -e 's/res2fbr\.o//g' > $${P}/LISTOBJ
 
-VERSION: src/git_version.h
+VERSION: src/git_version_DG.h
 
-src/git_version.h: force
-	@echo "#define GIT_VERSION \"`git describe --dirty --always`\"" > src/git_version_new.h
-	@if cmp -s src/git_version_new.h src/git_version.h; then rm src/git_version_new.h; else mv src/git_version_new.h src/git_version.h; fi
+src/git_version_DG.h: force
+	@echo "#define GIT_VERSION_DG \"`git describe --dirty --always`\"" > src/git_version_new.h
+	@if cmp -s src/git_version_new.h src/git_version_DG.h; then rm src/git_version_new.h; else mv src/git_version_new.h src/git_version_DG.h; fi
 
 ${OBJDIR}/dependencies:
 	-mkdir -p ${OBJDIR}

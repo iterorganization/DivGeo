@@ -143,7 +143,7 @@ char* dgResources[]={
   "DivGeo.errMoveCutMeshPt:                Cannot move mesh points located on a cut\n",
   "DivGeo.errMeshNoEquil:                  No equilibrium loaded. Cannot recalculate values for mesh cells.\n",
   "DivGeo.errMeshOutOfEquil:               Some mesh points are outside of the equilibrium. Cannot recalculate values.\n",
-  "DivGeo.errDelMarkedObjectType:          Individual mesh cells or elements can not be deleted.\n",
+  "DivGeo.errDelMarkedObjectType:          Individual mesh cells or elements cannot be deleted.\n",
   "DivGeo.errMeshElementDir:               This variable must contain mesh elements of a different orientation.\n",
   "DivGeo.errMeshCellFind:                 Internal error 27\n",
   "DivGeo.errBadObjectType:                Incorrect object type\n",
@@ -168,7 +168,7 @@ char* dgResources[]={
   "\n",
   "DivGeo.wrnNoEquil:                      Equilibrium could not be loaded\n",
   "DivGeo.wrnNoTemplate:                   Template could not be loaded\n",
-  "DivGeo.wrnBadType:                   Some variables have lost their values\n",
+  "DivGeo.wrnBadType:                      Some variables have lost their values\n",
   "DivGeo.wrnSyntax:                       Some syntax errors occured\n",
   "DivGeo.wrnNoSonnet:                     The mesh could not be loaded\n",
   "DivGeo.wrnBadTarget1:                   Bad target 1; discarded\n",
@@ -177,7 +177,7 @@ char* dgResources[]={
   "DivGeo.wrnBadXpoint:                    Bad X point; discarded\n",
   "DivGeo.wrnMeshFingerprint:              The mesh file has changed and cannot be updated.\n",
   "DivGeo.wrnOldTopo:                      This file was produced by DG v1.x.\\n"
-  "Please import a single-zero topology in order to see\\n"
+  "Please import a single-null topology in order to see\\n"
   "magnetic surfaces and grid points.\\n\n",
   "DivGeo.wrnOldSurfacesLost:              Magnetic surfaces could not be converted\n",
   "\n",
@@ -187,7 +187,7 @@ char* dgResources[]={
   "DivGeo.msgTemplateLoaded:               Template loaded\n",
   "DivGeo.msgTemplateRemoved:              Template removed\n",
   "DivGeo.msgNewFile:                      New file ...\n",
-  "DivGeo.msgFileOpened:                   Ok\n",
+  "DivGeo.msgFileOpened:                   OK\n",
   "DivGeo.msgFileSaved:                    The file has been saved\n",
   "DivGeo.msgFileAutoSaved:                Auto-saving... done\n",
   "DivGeo.msgSonnetLoaded:                 Mesh loaded\n",
