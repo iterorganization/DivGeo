@@ -17,11 +17,13 @@ c-----------------------------------------------------------------------
 c                                                                       
       dimension lko(6)
       logical ex,exi
+      real*8 psib, btf, rtf
+      real*8 x1, x2, x3, y1, y2, y3
       dimension nrnz(2),rmnmx(2),zmnmx(2),btrt(2)
       character*256 in_mesh,in_psi,out_file,hlp_txt*8
       namelist/input/nrnz,rmnmx,zmnmx,btrt,in_mesh,in_psi,out_file
       data nrnz, rmnmx, zmnmx, btrt, in_mesh, in_psi, out_file  /
-     /	    2*0,  2*0.,  2*0., 2*0.,  ' '   , 	' ' , 	' '   	/
+     /      2*0,  2*0.,  2*0., 2*0.,  ' '   ,   ' ' ,   ' '     /
 c
 c                        -----------------------------------------------
 c      
@@ -37,9 +39,9 @@ c*** Input the parameters
       read(5,input,err=10,end=10)
       ex=.false.
  10   if(ex) then !{
-      	write(0,*) 'pt2dg:  error in the parameter file format.'
-      	write(0,*) '  	    It must conform to the NAMELIST input.'
-	stop
+        write(0,*) 'pt2dg:  error in the parameter file format.'
+        write(0,*) '        It must conform to the NAMELIST input.'
+        stop
       end if !}
 c      read(nparm,*) mpr,mpz,rmin,rmax,zmin,zmax,btf,rtf
 c      print *,mpr,mpz,rmin,rmax,zmin,zmax,btf,rtf
@@ -79,8 +81,8 @@ c*** check the parameters
         ex=.true.
       end if !}
       if(ex) then !{
-      	write(0,*) 'Please correct the parameter file!'
-	stop
+        write(0,*) 'Please correct the parameter file!'
+        stop
       end if  !}
 c*** Assign the parameters and check further
       mpr=nrnz(1)
@@ -110,8 +112,8 @@ c*** Assign the parameters and check further
         write(0,*) 'in_psi file not found:',in_psi
       end if !}
       if(ex) then !{
-      	write(0,*) 'Please correct the parameter file!'
-	stop
+        write(0,*) 'Please correct the parameter file!'
+        stop
       end if  !}
       write(0,*) '  - look OK'
 c*** Open the files
@@ -123,7 +125,7 @@ c*** Open the files
       open(nwreqdg,file=out_file,err=15)
       ex=.true.
  15   if(.not.ex) then !{
-      	write(0,*) 'Failed opening ',hlp_txt
+        write(0,*) 'Failed opening ',hlp_txt
       end if  !}
 cank}
 c      
