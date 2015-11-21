@@ -26,7 +26,7 @@ QString ModelTree::AddBranchForModel( QTreeWidgetItem* _pItem, ModelPtr _pModel,
   SetChildData( _pItem, i++, _pModel->CarreOutputMode() ?
                   SM_GUI( GUI::MODEL_INFO::MODEL::CARRE ) :
                   SM_GUI( GUI::MODEL_INFO::MODEL::SONNET ) );
-  SetChildData( _pItem, i++, ToQString( _pModel->GetUnusedNumbersCnt() ) );//1408
+  SetChildData( _pItem, i++, ToQString( _pModel->Struct()->UnusedNodes().size() ) );//1408
   SetChildData( _pItem, i++, _pModel->Struct()->Nodes(), _expand_depth ); /*branch*/
   SetChildData( _pItem, i++, _pModel->Struct()->Chords(), _expand_depth ); /*branch*/
   SetChildData( _pItem, i++, _pModel->Struct()->Elements(), _expand_depth ); /*branch*/
