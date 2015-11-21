@@ -131,11 +131,14 @@ HEADERS += \
     model/flux/EquilDecl.h \
     model/flux/Equil.h \
 \
+    model/material/MaterialDecl.h \
     model/material/Template.h \
     model/material/Node.h \
     model/material/Element.h \
     model/material/Element.t.hpp \
     model/material/Structure.h \
+    model/material/Chords.h \
+    model/material/Separator.h \
 \
     model/mesh/MeshPoint.h \
     model/mesh/MeshElement.h \
@@ -145,10 +148,6 @@ HEADERS += \
     model/mesh/Mesh.h \
     model/mesh/SonnetDecl.h \
     model/mesh/SonnetData.h \
-\
-    model/material/MaterialDecl.h \
-    model/material/Separator.h \
-    model/material/Chords.h \
 \
     model/vars/VarsManager.h \
     model/vars/VarSetDef.h \
