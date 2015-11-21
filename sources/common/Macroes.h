@@ -33,8 +33,14 @@
 #define FOREACH_NODECL( it, grp ) \
   for( it = (grp).begin(); (it) != (grp).end(); ++(it) )
 
+template< typename T >
+static void ERASE( typename T::iterator& _rit, T& _rgrp ) {
+  _rit = _rgrp.erase( _rit );
+  if( _rit != _rgrp.begin() )
+      --_rit;
+}
 #define ITERATOR dg__it__
-#define ERASE( it, grp ) (it) = --((grp).erase(it))
+//#define ERASE( it, grp ) (it) = --((grp).erase(it))
 #define ERASE_CURRENTPTR( grp ) ERASE( ITERATOR, grp )
 
 
