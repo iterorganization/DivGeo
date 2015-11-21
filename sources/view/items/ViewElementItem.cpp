@@ -27,10 +27,12 @@ void ViewElementItem::paint( QPainter *painter, const QStyleOptionGraphicsItem*,
     painter->setPen( penNormal );
     QLineF lineT = mx.map( line );
     QPointF invdif( lineT.y1() - lineT.y2(), lineT.x2() - lineT.x1() );
-    QPointF end = begin + invdif * normalLength;
+    QPointF end = begin + invdif;//1408
+    QLineF lineR = QLineF( begin, end );//1408
+    lineR.setLength( pPrefs->visual.normalLen );//1408
 
     painter->setWorldMatrixEnabled( false );
-    painter->drawLine( QLineF( begin, end ) );
+    painter->drawLine( lineR );//1408
     painter->setWorldMatrixEnabled( true );
 
     normalEnd = mxInv.map( end );
