@@ -7,6 +7,7 @@ ViewScene::ViewScene(ModelPtr _pModel, const QString &_name, SceneType _sceneTyp
   pTemplateItem( null ),
   pSonnetDataItem( null )
 {
+  this->setSceneRect( -sceneSize, -sceneSize, 2*sceneSize, 2*sceneSize ); //1408
   Build();
 }
 
@@ -113,6 +114,7 @@ void ViewScene::Build( ulong sfs )
     pEquilItem->SetViewState( pState );
     viewItems.push_back( pEquilItem );
     this->addItem( pEquilItem );
+    this->setSceneRect( this->sceneRect().united( pEquilItem->boundingRect() ) );//1408
 
     if( pLegendItem != null ) {
       viewItems.removeOne( pLegendItem );
@@ -139,6 +141,7 @@ void ViewScene::Build( ulong sfs )
     pTemplateItem->SetViewState( pState );
     viewItems.push_back( pTemplateItem );
     this->addItem( pTemplateItem );
+    this->setSceneRect( this->sceneRect().united( pTemplateItem->boundingRect() ) );//1408
   }
 
   if( pEquil != null ) {
@@ -163,6 +166,7 @@ void ViewScene::Build( ulong sfs )
         vpXPointTestItems.push_back( pItem );
         viewItems.push_back( pItem );
         this->addItem( pItem );
+        this->setSceneRect( this->sceneRect().united( pItem->boundingRect() ) );//1408
       }
     }
 
@@ -184,6 +188,7 @@ void ViewScene::Build( ulong sfs )
         vpXPointSegItems.push_back( pItem );
         viewItems.push_back( pItem );
         this->addItem( pItem );
+        this->setSceneRect( this->sceneRect().united( pItem->boundingRect() ) );//1408
       }
     }
 
@@ -207,6 +212,7 @@ void ViewScene::Build( ulong sfs )
         viewItems.push_back( pItem );
         viewItemsWithText.push_back( pItem );
         this->addItem( pItem );
+        this->setSceneRect( this->sceneRect().united( pItem->boundingRect() ) );//1408
       }
     }
 
@@ -231,6 +237,7 @@ void ViewScene::Build( ulong sfs )
         vpSurfaceExItems.push_back( pItem );
         viewItems.push_back( pItem );
         this->addItem( pItem );
+        this->setSceneRect( this->sceneRect().united( pItem->boundingRect() ) );//1408
       }
     }
 
@@ -252,6 +259,7 @@ void ViewScene::Build( ulong sfs )
         vpGridPointExItems.push_back( pItem );
         viewItems.push_back( pItem );
         this->addItem( pItem );
+        this->setSceneRect( this->sceneRect().united( pItem->boundingRect() ) );//1408
       }
     }
   }
@@ -276,6 +284,7 @@ void ViewScene::Build( ulong sfs )
         vpMeshCellItems.push_back( pItem );
         viewItems.push_back( pItem );
         this->addItem( pItem );
+        this->setSceneRect( this->sceneRect().united( pItem->boundingRect() ) );//1408
       }
     }
     if( HasAnyFlag( sfs, SHW::MESH ) ) {
@@ -296,6 +305,7 @@ void ViewScene::Build( ulong sfs )
         vpMeshElementItems.push_back( pItem );
         viewItems.push_back( pItem );
         this->addItem( pItem );
+        this->setSceneRect( this->sceneRect().united( pItem->boundingRect() ) );//1408
       }
 
       if( !vpMeshPointQuasiItems.empty() ) {
@@ -331,6 +341,7 @@ void ViewScene::Build( ulong sfs )
     pSonnetDataItem->SetViewState( pState );
     viewItems.push_back( pSonnetDataItem );
     this->addItem( pSonnetDataItem );
+    this->setSceneRect( this->sceneRect().united( pSonnetDataItem->boundingRect() ) );//1408
   }
 
   if( HasAnyFlag( sfs, SHW::ELEMS ) ) {
@@ -353,6 +364,7 @@ void ViewScene::Build( ulong sfs )
       viewItems.push_back( pItem );
       viewItemsWithText.push_back( pItem );
       this->addItem( pItem );
+      this->setSceneRect( this->sceneRect().united( pItem->boundingRect() ) );//1408
     }
   }
 
@@ -376,6 +388,7 @@ void ViewScene::Build( ulong sfs )
       viewItems.push_back( pItem );
       viewItemsWithText.push_back( pItem );
       this->addItem( pItem );
+      this->setSceneRect( this->sceneRect().united( pItem->boundingRect() ) );//1408
     }
   }
 
@@ -397,6 +410,7 @@ void ViewScene::Build( ulong sfs )
       vpSourceItems.push_back( pItem );
       viewItems.push_back( pItem );
       this->addItem( pItem );
+      this->setSceneRect( this->sceneRect().united( pItem->boundingRect() ) );//1408
     }
   }
 
@@ -418,6 +432,7 @@ void ViewScene::Build( ulong sfs )
       vpNodeItems.push_back( pItem );
       viewItems.push_back( pItem );
       this->addItem( pItem );
+      this->setSceneRect( this->sceneRect().united( pItem->boundingRect() ) );//1408
     }
   }
 
@@ -439,6 +454,7 @@ void ViewScene::Build( ulong sfs )
       vpChordItems.push_back( pItem );
       viewItems.push_back( pItem );
       this->addItem( pItem );
+      this->setSceneRect( this->sceneRect().united( pItem->boundingRect() ) );//1408
     }
   }
 
@@ -460,6 +476,7 @@ IViewItemPtr ViewScene::CreateItem( IComponentPtr _pObject )
     vpNodeItems.push_back( pItem );
     this->addItem( pNodeItem );
     pItem->SetVisible( HasAnyFlag( showFlags, SHW::NODES ) );
+    this->setSceneRect( this->sceneRect().united( pNodeItem->boundingRect() ) );//1408
     break;
   }
   case OT::ELEMENT: {
@@ -471,6 +488,7 @@ IViewItemPtr ViewScene::CreateItem( IComponentPtr _pObject )
     viewItemsWithText.push_back( pItem );
     this->addItem( pElementItem );
     pItem->SetVisible( HasAnyFlag( showFlags, SHW::ELEMS ) );
+    this->setSceneRect( this->sceneRect().united( pElementItem->boundingRect() ) );//1408
     break;
   }
   case OT::CHORD: {
@@ -481,6 +499,7 @@ IViewItemPtr ViewScene::CreateItem( IComponentPtr _pObject )
     vpChordItems.push_back( pItem );
     this->addItem( pChordItem );
     pItem->SetVisible( HasAnyFlag( showFlags, SHW::CHORDS ) );
+    this->setSceneRect( this->sceneRect().united( pChordItem->boundingRect() ) );//1408
     break;
   }
   case OT::SOURCE: {
@@ -489,6 +508,7 @@ IViewItemPtr ViewScene::CreateItem( IComponentPtr _pObject )
     vpSourceItems.push_back( pItem );
     this->addItem( pSourceItem );
     pItem->SetVisible( HasAnyFlag( showFlags, SHW::SOURCES ) );
+    this->setSceneRect( this->sceneRect().united( pSourceItem->boundingRect() ) );//1408
     break;
   }
   case OT::GRIDPOINTEX: {
@@ -497,6 +517,7 @@ IViewItemPtr ViewScene::CreateItem( IComponentPtr _pObject )
     vpGridPointExItems.push_back( pItem );
     this->addItem( pGPXItem );
     pItem->SetVisible( HasAnyFlag( showFlags, SHW::GRIDPOINTS ) );
+    this->setSceneRect( this->sceneRect().united( pGPXItem->boundingRect() ) );//1408
     break;
   }
   case OT::SURFACEEX: {
@@ -505,6 +526,7 @@ IViewItemPtr ViewScene::CreateItem( IComponentPtr _pObject )
     vpSurfaceExItems.push_back( pItem );
     this->addItem( pSXItem );
     pItem->SetVisible( HasAnyFlag( showFlags, SHW::SURFACES ) );
+    this->setSceneRect( this->sceneRect().united( pSXItem->boundingRect() ) );//1408
     break;
   }
   case OT::XPOINTTEST: {
@@ -513,6 +535,7 @@ IViewItemPtr ViewScene::CreateItem( IComponentPtr _pObject )
     vpXPointTestItems.push_back( pItem );
     this->addItem( pXPTItem );
     pItem->SetVisible( HasAnyFlag( showFlags, SHW::XPOINTTESTS ) );
+    this->setSceneRect( this->sceneRect().united( pXPTItem->boundingRect() ) );//1408
     break;
   }
   case OT::XPOINTSEG: {
@@ -521,6 +544,7 @@ IViewItemPtr ViewScene::CreateItem( IComponentPtr _pObject )
     vpXPointSegItems.push_back( pItem );
     this->addItem( pXPSItem );
     pItem->SetVisible( HasAnyFlag( showFlags, SHW::XPOINTSEGS ) );
+    this->setSceneRect( this->sceneRect().united( pXPSItem->boundingRect() ) );//1408
     break;
   }
   case OT::GRIDPOINTSEG: {
@@ -529,6 +553,7 @@ IViewItemPtr ViewScene::CreateItem( IComponentPtr _pObject )
     vpGridPointSegItems.push_back( pItem );
     this->addItem( pGPSItem );
     pItem->SetVisible( HasAnyFlag( showFlags, SHW::GRIDPOINTS ) );
+    this->setSceneRect( this->sceneRect().united( pGPSItem->boundingRect() ) );//1408
     break;
   }
   case OT::COMMENT: {
@@ -545,6 +570,7 @@ IViewItemPtr ViewScene::CreateItem( IComponentPtr _pObject )
     commentItems.push_back( pItem );
     this->addItem( pCommentItem );
     pItem->SetVisible( HasAnyFlag( showFlags, SHW::COMMENTS ) );
+    this->setSceneRect( this->sceneRect().united( pCommentItem->boundingRect() ) );//1408
     break;
   }
   case OT::MESH: {

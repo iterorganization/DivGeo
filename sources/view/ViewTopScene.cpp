@@ -12,6 +12,7 @@ ViewTopScene::ViewTopScene(ModelPtr _pModel, const QString &_name, SceneType _sc
       pRadialObjects = val.ListPtr();
   }
 
+  this->setSceneRect( -sceneSize, -sceneSize, 2*sceneSize, 2*sceneSize ); //1408
   Build();
 }
 
@@ -85,6 +86,7 @@ void ViewTopScene::Build( ulong sfs )
       vpSourceRadialItems.push_back( pItem );
       viewItems.push_back( pItem );
       this->addItem( pItem );
+      this->setSceneRect( this->sceneRect().united( pItem->boundingRect() ) );//1408
 
       IVarItemPtr pVarItem = dgtype_cast< SourcePtr >( pObject );
       pItem->SetVisible( pRadialObjects != null && Contains( *pRadialObjects, pVarItem ) );
@@ -111,6 +113,7 @@ void ViewTopScene::Build( ulong sfs )
       vpChordRadialItems.push_back( pItem );
       viewItems.push_back( pItem );
       this->addItem( pItem );
+      this->setSceneRect( this->sceneRect().united( pItem->boundingRect() ) );//1408
 
       IVarItemPtr pVarItem = dgtype_cast< ChordPtr >( pObject );
       pItem->SetVisible( pRadialObjects != null && Contains( *pRadialObjects, pVarItem ) );
@@ -134,6 +137,7 @@ void ViewTopScene::Build( ulong sfs )
       vpChordItems.push_back( pItem );
       viewItems.push_back( pItem );
       this->addItem( pItem );
+      this->setSceneRect( this->sceneRect().united( pItem->boundingRect() ) );//1408
     }
   }
 
@@ -155,6 +159,7 @@ void ViewTopScene::Build( ulong sfs )
       vpElementRadialItems.push_back( pItem );
       viewItems.push_back( pItem );
       this->addItem( pItem );
+      this->setSceneRect( this->sceneRect().united( pItem->boundingRect() ) );//1408
 
       IVarItemPtr pVarItem = dgtype_cast< ElementPtr >( pObject );
       pItem->SetVisible( pRadialObjects != null && Contains( *pRadialObjects, pVarItem ) );
@@ -174,6 +179,7 @@ void ViewTopScene::Build( ulong sfs )
     pMeshRadialItem->SetViewState( pState );
     viewItems.push_back( pMeshRadialItem );
     this->addItem( pMeshRadialItem );
+    this->setSceneRect( this->sceneRect().united( pMeshRadialItem->boundingRect() ) );//1408
 
     bool top = false;
     if( pRadialObjects != null ) {
@@ -199,6 +205,7 @@ IViewItemPtr ViewTopScene::CreateItem( IComponentPtr _pObject )
     pItem = pElementItem;
     vpElementRadialItems.push_back( pItem );
     this->addItem( pElementItem );
+    this->setSceneRect( this->sceneRect().united( pElementItem->boundingRect() ) );//1408
 
     IVarItemPtr pVarItem = dgtype_cast< ElementPtr >( _pObject );
     pItem->SetVisible( (pRadialObjects != null) &&
@@ -212,6 +219,7 @@ IViewItemPtr ViewTopScene::CreateItem( IComponentPtr _pObject )
     pItem = pChordRadialItem;
     vpChordRadialItems.push_back( pItem );
     this->addItem( pChordRadialItem );
+    this->setSceneRect( this->sceneRect().united( pChordRadialItem->boundingRect() ) );//1408
 
     IVarItemPtr pVarItem = dgtype_cast< ChordPtr >( _pObject );
     pItem->SetVisible( (pRadialObjects != null) &&
@@ -223,6 +231,7 @@ IViewItemPtr ViewTopScene::CreateItem( IComponentPtr _pObject )
     pItem = pChordItem;
     vpChordItems.push_back( pItem );
     this->addItem( pChordItem );
+    this->setSceneRect( this->sceneRect().united( pChordItem->boundingRect() ) );//1408
     pItem->SetVisible( HasAnyFlag( showFlags, SHW::CHORDS ) );
     break;
   }
@@ -231,6 +240,7 @@ IViewItemPtr ViewTopScene::CreateItem( IComponentPtr _pObject )
     pItem = pSourceItem;
     vpSourceRadialItems.push_back( pItem );
     this->addItem( pSourceItem );
+    this->setSceneRect( this->sceneRect().united( pSourceItem->boundingRect() ) );//1408
 
     IVarItemPtr pVarItem = dgtype_cast< SourcePtr >( _pObject );
     pItem->SetVisible( (pRadialObjects != null) &&
@@ -242,6 +252,7 @@ IViewItemPtr ViewTopScene::CreateItem( IComponentPtr _pObject )
     pMeshRadialItem = new ViewMeshRadialTopItem( _pObject );
     pItem = pMeshRadialItem;
     this->addItem( pMeshRadialItem );
+    this->setSceneRect( this->sceneRect().united( pMeshRadialItem->boundingRect() ) );//1408
 
     bool top = false;
     if( pRadialObjects != null ) {
@@ -267,6 +278,7 @@ IViewItemPtr ViewTopScene::CreateItem( IComponentPtr _pObject )
     commentItems.push_back( pItem );
     this->addItem( pCommentItem );
     pItem->SetVisible( HasAnyFlag( showFlags, SHW::COMMENTS ) );
+    this->setSceneRect( this->sceneRect().united( pCommentItem->boundingRect() ) );//1408
     break;
   }
   default:
