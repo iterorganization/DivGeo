@@ -2,5 +2,6 @@
 *.orig
 *.rej
 *.user
+*.pro.user*
 /release
 /debug
