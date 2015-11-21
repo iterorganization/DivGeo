@@ -114,8 +114,9 @@ void ModelInfo::UpdateContentModel( ModelPtr _pModel )
   pModelBranch->setText( 1, "" );
   pModelBranch->setDisabled( false );
   pModelBranch->setExpanded( true );
-
   AddBranchForModel( pModelBranch, pModel, 1 );
+  for( int c = 0; c < pModelBranch->childCount(); c++ )
+    pTree->collapseItem( pModelBranch->child( c ) ); //1408
 
   if( !_pModel->GetFluxModel()->HasTopology() ) {
     pTopologyBranch->setText( 1, str_not_loaded );
@@ -128,6 +129,8 @@ void ModelInfo::UpdateContentModel( ModelPtr _pModel )
     pTopologyBranch->setDisabled( false );
     pTopologyBranch->setExpanded( true );
     AddBranchForTopology( pTopologyBranch, pModel->GetFluxModel()->GetTopology(), 1 );
+    for( int c = 0; c < pTopologyBranch->childCount(); c++ )
+      pTree->collapseItem( pTopologyBranch->child( c ) ); //1408
   }
 
   if( !pModel->GetFluxModel()->HasEquil() ) {
@@ -141,6 +144,8 @@ void ModelInfo::UpdateContentModel( ModelPtr _pModel )
     pEquilBranch->setDisabled( false );
     pEquilBranch->setExpanded( true );
     AddBranchForEquil( pEquilBranch, pModel->GetFluxModel()->GetEquil(), 1 );
+    for( int c = 0; c < pEquilBranch->childCount(); c++ )
+      pTree->collapseItem( pEquilBranch->child( c ) ); //1408
   }
 
   if( !_pModel->HasMesh() ) {
@@ -154,5 +159,7 @@ void ModelInfo::UpdateContentModel( ModelPtr _pModel )
     pMeshBranch->setDisabled( false );
     pMeshBranch->setExpanded( true );
     AddBranchForMesh( pMeshBranch, pModel->GetMesh(), 1 );
+    for( int c = 0; c < pMeshBranch->childCount(); c++ )
+      pTree->collapseItem( pMeshBranch->child( c ) ); //1408
   }
 }
