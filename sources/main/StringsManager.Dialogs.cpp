@@ -519,6 +519,7 @@ void StringsManager::DialogsKeys()
   KEY( "title",               DLG::SETTINGS::COMMON::TITLE );
   KEY( "saveinterval",        DLG::SETTINGS::COMMON::SAVEINTERVAL );
   KEY( "recent_length",       DLG::SETTINGS::COMMON::RECENT_LENGTH );
+  KEY( "axislabels",          DLG::SETTINGS::COMMON::AXISLABELS );
   GROUP( "dlg/settings/visual" );
   KEY( "title",               DLG::SETTINGS::VISUAL::TITLE );
   KEY( "color",               DLG::SETTINGS::VISUAL::COLOR );

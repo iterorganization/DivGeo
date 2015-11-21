@@ -1161,6 +1161,7 @@ title               = "User preferences"
 title               = "Common settings"
 saveinterval        = "Autosave interval, sec"
 recent_length       = "Recent list max length"
+axislabels          = "Place axes labels always on border"
 
 /dlg/settings/visual
 title               = "Visual settings"
