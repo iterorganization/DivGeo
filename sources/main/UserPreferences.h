@@ -45,10 +45,12 @@ public:
   struct Common {
     ulong autosaveInterval_sec;
     ulong recentList_len;
+    bool axisLabelsAlwaysOnBorder;
 
     Common():
       autosaveInterval_sec( 5*60 ),
-      recentList_len( 10 ) {}
+      recentList_len( 10 ),
+      axisLabelsAlwaysOnBorder( false ) {}
   } common;
 
   struct Visual {

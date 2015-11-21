@@ -8,6 +8,7 @@ UserPreferences::UserPreferences( const QString& _crsProfileDir, const QString& 
   vTable.append( PR( "Common",            COM::TITLE,                 PR::PT::BEGIN ) ); vTable.last().updateAll = true;
   vTable.append( PR( "AutosaveInterval",  COM::SAVEINTERVAL,          PR::PT::INT,    QVariant::fromValue( (IntPtr)&common.autosaveInterval_sec ) ) << 0 << 86400 );
   vTable.append( PR( "RecentListLength",  COM::RECENT_LENGTH,         PR::PT::INT,    QVariant::fromValue( (IntPtr)&common.recentList_len ) ) << 0 << 50 );
+  vTable.append( PR( "AxesLabelsOnBorder",COM::AXISLABELS,            PR::PT::BOOL,   QVariant::fromValue( (BoolPtr)&common.axisLabelsAlwaysOnBorder ) ) );
   vTable.append( PR( PR::PT::END ) );
 
   typedef DLG::SETTINGS::VISUAL VIS;

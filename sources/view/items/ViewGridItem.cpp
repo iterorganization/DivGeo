@@ -87,7 +87,7 @@ void ViewGridItem::UpdateDependentGeometry()
     vVLines += line;
 
     QPointF zero( t, 0. );
-    if( viewPoly.containsPoint( zero, Qt::OddEvenFill ) ) {
+    if( viewPoly.containsPoint( zero, Qt::OddEvenFill ) && not border ) {
       vVLabels_pos    += zero;
       vVLabels_offset += QPointF( 2., 10. );
       vVLabels_text   += QString( "x'%1" ).arg( t );
@@ -119,7 +119,7 @@ void ViewGridItem::UpdateDependentGeometry()
     vVLines += line;
 
     QPointF zero( 0., t );
-    if( viewPoly.containsPoint( zero, Qt::OddEvenFill ) ) {
+    if( viewPoly.containsPoint( zero, Qt::OddEvenFill ) && not border ) {
       vVLabels_pos    += zero;
       vVLabels_offset += QPointF( 2., -2. );
       vVLabels_text   += QString( "y'%1" ).arg( t );
@@ -148,4 +148,5 @@ void ViewGridItem::UpdateStyle()
 {
   penLine = *pPrefs->visual.pens[ STYLE::GRID ];
   penText = *pPrefs->visual.pens[ STYLE::GRIDTEXT ];
+  border = pPrefs->common.axisLabelsAlwaysOnBorder;//1408
 }

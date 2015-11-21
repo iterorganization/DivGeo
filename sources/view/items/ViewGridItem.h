@@ -10,6 +10,7 @@ typedef class ViewGridItem:
   QPen penLine, penText;
   QFont font;
   QRectF sceneRect;
+  bool border;//1408
 
   QVector< QLineF > vHLines, vVLines;
   QVector< QPointF > vHLabels_pos, vVLabels_pos;
@@ -18,7 +19,8 @@ typedef class ViewGridItem:
 
 public:
   ViewGridItem():
-    IViewItem( null )
+    IViewItem( null ),
+    border( false )
   { Init(); font = QFont( "Arial", 10 ); setZValue( -1. ); }
 
   virtual void SetVisible( bool visible ) { setVisible( visible ); }
