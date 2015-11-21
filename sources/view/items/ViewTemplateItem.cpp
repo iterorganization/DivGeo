@@ -50,6 +50,6 @@ void ViewTemplateItem::UpdateDependentGeometry()
 void ViewTemplateItem::UpdateStyle()
 {
   bool isHighlighted = pObject->IsHighlighted();
-  setZValue( isHighlighted ? 1. : 0. );
+  setZValue( isHighlighted ? 1. : -0.1 );
   pen = *pPrefs->visual.pens[ isHighlighted ? STYLE::HIGHLIGHT : STYLE::TEMPLATE ];
 }
