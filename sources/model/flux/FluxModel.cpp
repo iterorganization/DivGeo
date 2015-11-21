@@ -36,7 +36,7 @@ int FluxModel::ReadObjects( Token _token, const char* _cpStr, FILE* _pFile, ulon
 
   switch( _token ) {
   case TKN::Equil100:
-    if( sscanf( _cpStr, "%s %s", sToken, sFileName ) == 2 ) {
+    if( sscanf( _cpStr, "%s %[^\r\n]", sToken, sFileName ) == 2 ) {//1408
       if( AddEquil( sFileName ) != 0 )
         /*if( AddEquil( SplitFilePath( sFileName )[1].c_str() ) != 0 )*/
           errorFlags |= DGFE::NOEQUIL;
