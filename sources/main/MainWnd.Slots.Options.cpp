@@ -10,6 +10,7 @@ void CMainWnd::slotProjectSettings()
   connect( pDialog, SIGNAL(sgnlHelp(int)), this, SLOT(slotDialogHelp(int)) );
   pDialog->exec();
   UpdateModelInfo();
+  pMV->CurrentView()->slotUpdateView();//1408
 }
 
 /*void CMainWnd::slotOutputMode()
@@ -45,7 +46,8 @@ void CMainWnd::slotSettings()
   connect( pDialog, SIGNAL(sgnlHelp(int)), this, SLOT(slotDialogHelp(int)) );
   if( pDialog->exec() == QDialog::Accepted )
     pMV->UpdateAllViewsStyle();
-
+  if( pMV->CurrentView() != null )
+    pMV->CurrentView()->slotUpdateView();//1408
 }
 
 // Options > Setup
