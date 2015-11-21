@@ -19,7 +19,7 @@ class DlgImportTopology:
   QPushButton* pBtnHelp;
 
 public:
-  DlgImportTopology( const StringsManager* pSM, QWidget* parent = 0, Qt::WindowFlags flags = 0 ):
+  DlgImportTopology( const StringsManager* pSM, const QString& _crsPath, QWidget* parent = 0, Qt::WindowFlags flags = 0 ):
     QFileDialog( parent, flags )
   {
     const QString& title = SM_DLG( DLG::IMPORTTOPO::TITLE );
@@ -30,6 +30,7 @@ public:
 
     setWindowTitle( title );
     setNameFilter( filter );
+    setDirectory( _crsPath );
 
     QGridLayout* pGrid = qobject_cast< QGridLayout* >( layout() );
     if( pGrid == NULL )

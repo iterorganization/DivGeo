@@ -63,6 +63,15 @@
 
 #define FOREACH_VIEW( name ) foreach( CViewWndPtr name, pMV->Views( pModel ) )
 
+
+struct LastPath {
+  QString sPathProject;
+  QString sPathTemplate;
+  QString sPathEquil;
+  QString sPathTopology;
+  QString sPathMesh;
+};
+
 class CMainWnd : public QMainWindow
 {
   Q_OBJECT
@@ -93,6 +102,8 @@ private:
 
   QString sProfileDir;
   UserPreferences userPrefs;
+
+  mutable LastPath lastPath;
 
   int ErrorCode;
   int highlightLocks;

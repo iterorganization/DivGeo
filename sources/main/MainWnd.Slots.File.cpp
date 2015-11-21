@@ -54,16 +54,17 @@ QString CMainWnd::SelectModelFile( ModelPtr _pModel ) const
 {
   const QString& sTitle = SM_DLG( DLG::FILESAVE::TITLE );
   const QString& sFilter = SM_DLG( DLG::FILESAVE::FILTER );
+  QString sPath = lastPath.sPathProject.isEmpty() ? QDir::currentPath() : lastPath.sPathProject;
 
   QString sFileName;
   forever {
-    sFileName = QFileDialog::getSaveFileName( (QWidget*)this, sTitle,
-                                              QDir::currentPath(), sFilter, null,
+    sFileName = QFileDialog::getSaveFileName( (QWidget*)this, sTitle, sPath, sFilter, null,
                                               QFileDialog::DontConfirmOverwrite );
     if( sFileName.isEmpty() )
       return "";
 
     QFileInfo fileInfo( sFileName );
+    lastPath.sPathProject = fileInfo.absolutePath();
 
     if( fileInfo.suffix().isEmpty() )
       sFileName += ".dg";
@@ -152,10 +153,12 @@ void CMainWnd::slotImportTemplate()
 
   const QString& title = SM_DLG( DLG::TEMPLATE::TITLE );
   const QString& filter = SM_DLG( DLG::TEMPLATE::FILTER );
+  QString sPath = lastPath.sPathTemplate.isEmpty() ? QDir::currentPath() : lastPath.sPathTemplate;//1408
 
-  QString fileName = QFileDialog::getOpenFileName( this, title, QDir::currentPath(), filter );
+  QString fileName = QFileDialog::getOpenFileName( this, title, sPath, filter );
   if( fileName.isEmpty() || !QFile::exists( fileName ) )
     return;
+  lastPath.sPathTemplate = QFileInfo( fileName ).absolutePath();//1408
 
   /*if( QFileInfo( fileName ).suffix() != "ogr" )
     return;      MB: v3.0.1406 */
@@ -190,10 +193,13 @@ void CMainWnd::slotImportEquilibrium()
 
   const QString& title = SM_DLG( DLG::EQUIL::TITLE );
   const QString& filter = SM_DLG( DLG::EQUIL::FILTER );
+  QString sPath = lastPath.sPathEquil.isEmpty() ? QDir::currentPath() : lastPath.sPathEquil;//1408
 
-  QString fileName = QFileDialog::getOpenFileName( this, title, QDir::currentPath(), filter );
+  QString fileName = QFileDialog::getOpenFileName( this, title, sPath, filter );
   if( fileName.isEmpty() || !QFile::exists( fileName ) )
     return;
+
+  lastPath.sPathEquil = QFileInfo( fileName ).absolutePath();//1408
 
   /*if( QFileInfo( fileName ).suffix() != "equ" )
     return;   MB: v3.0.1406 */
@@ -238,10 +244,13 @@ void CMainWnd::slotImportMesh()
 
   const QString& title = SM_DLG( DLG::SONNET::TITLE );
   const QString& filter = SM_DLG( DLG::SONNET::FILTER );
+  QString sPath = lastPath.sPathMesh.isEmpty() ? QDir::currentPath() : lastPath.sPathMesh;//1408
 
-  QString fileName = QFileDialog::getOpenFileName( this, title, QDir::currentPath(), filter );
+  QString fileName = QFileDialog::getOpenFileName( this, title, sPath, filter );
   if( fileName.isEmpty() || !QFile::exists( fileName ) )
     return;
+
+  lastPath.sPathMesh = QFileInfo( fileName ).absolutePath();//1408
 
   /*if( QFileInfo( fileName ).suffix() != "sno" )
     return;      MB: v3.0.1406 */
@@ -279,7 +288,8 @@ void CMainWnd::slotImportTopology()
     return;
   }
 
-  DlgImportTopology* pDialog = new DlgImportTopology( pSM, this );
+  QString sPath = lastPath.sPathTopology.isEmpty() ? QDir::currentPath() : lastPath.sPathTopology;//1408
+  DlgImportTopology* pDialog = new DlgImportTopology( pSM, sPath, this );
   connect( pDialog, SIGNAL(sgnlHelp(int)), this, SLOT(slotDialogHelp(int)) );
   QString fileName;
 
@@ -289,6 +299,8 @@ void CMainWnd::slotImportTopology()
     return;
   if( fileName.isEmpty() || !QFile::exists( fileName ) )
     return;
+
+  lastPath.sPathTopology = QFileInfo( fileName ).absolutePath();//1408
 
   /*if( QFileInfo( fileName ).suffix() != "dg" )
     return;         MB: v3.0.1406: SPV ask to make possible loading files without ext */
@@ -364,9 +376,10 @@ void CMainWnd::slotExportMesh()
 
   const QString& title = SM_DLG( DLG::EXPORT_MESH::TITLE );
   const QString& filter = SM_DLG( DLG::EXPORT_MESH::FILTER );
+  QString sPath = lastPath.sPathMesh.isEmpty() ? QDir::currentPath() : lastPath.sPathMesh;//1408
   //const char* csSuffix = "sno";
 
-  QFileDialog* pDialog = new QFileDialog( this, title, QDir::currentPath(), filter );
+  QFileDialog* pDialog = new QFileDialog( this, title, sPath, filter );
   //pDialog->setDefaultSuffix( csSuffix );
   if( pDialog->exec() != QDialog::Accepted )
     return;
@@ -376,6 +389,9 @@ void CMainWnd::slotExportMesh()
   QString fileName = fileNames.first();
   if( fileName.isEmpty() )
     return;
+
+  lastPath.sPathMesh = QFileInfo( fileName ).absolutePath();//1408
+
   /*if( QFileInfo( fileName ).suffix() != csSuffix )
     return;     MB: v3.0.1406 */
 
@@ -398,7 +414,8 @@ void CMainWnd::slotExportElements()
   pConsole->Send( LOG_INFO, sender_name, SM_LOG( LOG::MENU::FILE::EXPORT::ELEMENT ) );
 
   ModelPtr pModel = pMV->CurrentModel();
-  DlgExportElements* pDialog = new DlgExportElements( pSM, this );
+  QString sPath = lastPath.sPathTemplate.isEmpty() ? QDir::currentPath() : lastPath.sPathTemplate;//1408
+  DlgExportElements* pDialog = new DlgExportElements( pSM, sPath, this );
   connect( pDialog, SIGNAL(sgnlHelp(int)), this, SLOT(slotDialogHelp(int)) );
   QString fileName;
   if( pDialog->exec() == QDialog::Accepted )
@@ -407,6 +424,8 @@ void CMainWnd::slotExportElements()
     return;
   if( fileName.isEmpty() )
     return;
+
+  lastPath.sPathTemplate = QFileInfo( fileName ).absolutePath();//1408
 
   /*if( QFileInfo( fileName ).suffix() != "ogr" )
     return;      MB: v3.0.1406 */
