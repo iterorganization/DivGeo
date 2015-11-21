@@ -26,7 +26,7 @@ public:
   ~Chord() { FreeVars(); FreeContainers(); }
 
   /* IComponent implementation */
-  virtual void Delete();
+  virtual void    Delete();
   virtual double  DistToPoint( const Point& _crPnt, int* _pPosFlag ) const;
   virtual bool    InRectangle( const Point& _p1, const Point& _p2 ) const;
   virtual void    CalcExtens( Point* _pMin, Point* _pMax ) const;
