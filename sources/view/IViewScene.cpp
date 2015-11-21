@@ -99,9 +99,6 @@ void IViewScene::Clear()
 
 void IViewScene::Build( ulong sfs )
 {
-  const double sceneSize = 10000.; //TODO: model size can be more then this constant.
-  this->setSceneRect( -sceneSize, -sceneSize, 2*sceneSize, 2*sceneSize );
-
   if( HasAnyFlag( sfs, SHW::AXES ) ) {
     if( pAxesItemA == null ) {
       pAxesItemA = new ViewAxesItem( true );
@@ -185,6 +182,13 @@ void IViewScene::Build( ulong sfs )
 
   /*if( pParams != null )
     SetParameters( pParams );*/
+
+  /*QRectF sr = this->sceneRect();
+  sr.setLeft   ( sr.left()   - sceneSize );
+  sr.setRight  ( sr.right()  + sceneSize );
+  sr.setTop    ( sr.top()    - sceneSize );
+  sr.setBottom ( sr.bottom() + sceneSize );
+  this->setSceneRect( sr );*/ //TODO: rebuild grid and axis on this->sceneRectChanged(); signal
 }
 
 void IViewScene::UpdateHighlightRect( QPolygonF hr )

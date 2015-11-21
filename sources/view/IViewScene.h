@@ -64,6 +64,8 @@ protected:
 
   ViewItemsList commentItems;
 
+  static const double sceneSize = 20000.;
+
 public:
   IViewScene( const ModelPtr _pModel, const QString& _name, SceneType _sceneType,
               const UserPreferences* _pPrefs, QObject* parent ):
