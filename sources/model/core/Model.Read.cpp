@@ -172,7 +172,7 @@ int Model::ReadObjects( Token _token, const char* _cpStr, FILE* _pFile, ulong& _
 
   case TKN::Template100: {
     int angle;
-    if( sscanf( _cpStr, "%s "SCANFLT""SCANFLT"%d%s",
+    if( sscanf( _cpStr, "%s "SCANFLT""SCANFLT"%d%[^\r\n]",//1408
                 sToken, &incr.x, &incr.y, &angle, sFileName ) == 5 ) {
       if( AddTemplate( sFileName, incr, M_PI * angle / 2, 1 ) != 0 )
         errorFlags |= DGFE::NOTEMPL;
@@ -182,7 +182,7 @@ int Model::ReadObjects( Token _token, const char* _cpStr, FILE* _pFile, ulong& _
   }
   case TKN::Template110: {
     double angle, scale;
-    if( sscanf( _cpStr, "%s "SCANFLT""SCANFLT""SCANFLT""SCANFLT"%s",
+    if( sscanf( _cpStr, "%s "SCANFLT""SCANFLT""SCANFLT""SCANFLT"%[^\r\n]",//1408
                 sToken, &incr.x, &incr.y, &angle, &scale, sFileName ) == 6 ) {
       if( AddTemplate( sFileName, incr, angle, scale ) != 0 )
         errorFlags |= DGFE::NOTEMPL;
