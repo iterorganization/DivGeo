@@ -120,7 +120,8 @@ UPtr VarsManager::ReadVar( FILE* _pFile, VarType _vt )
       default: assert(0); break;
       }
 
-      upValue.ListRef().push_back( pVarItem );
+      if( pVarItem != null ) //1408
+        upValue.ListRef().push_back( pVarItem );
     }
     return upValue.Move();
   }
