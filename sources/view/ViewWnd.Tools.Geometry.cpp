@@ -86,6 +86,7 @@ void CViewWnd::slotSplitElement( QPoint position, EEventID eventid )
     pConsole->Send( STATUS_INFO, FULL_SENDER, "" );
     pModel->ActionStack().Complete( "Tool:SplitElement" );
     emit UpdateObjectInfo( pObjInfo );
+    emit UpdateModelInfo(); //1408
     delete pTool;
     pTool = null;
     break;
@@ -163,6 +164,7 @@ void CViewWnd::slotJoinElements( QPoint position, EEventID eventid )
     }
 
     pModel->ActionStack().Complete( "Tool:JoinElements" );
+    emit UpdateModelInfo(); //1408
     delete pTool;
     pTool = null;
     break;
@@ -243,7 +245,7 @@ void CViewWnd::slotConnectPoints( QPoint position, EEventID eventid )
     pModel->ActionStack().Complete( "ConnectPoints" );
     if( pToolConnect->pElementItem != null )
       emit UpdateObjectInfo( pToolConnect->pElementItem->ModelObject() );
-
+    emit UpdateModelInfo();//1408
     delete pTool;
     pTool = null;
     break;
@@ -502,6 +504,7 @@ void CViewWnd::slotReposition( QPoint position, EEventID eventid )
       pModel->ActionStack().Complete( "Tool:Reposition" );
     }
     emit UpdateObjectInfo( pObjInfo );
+    emit UpdateModelInfo(); //1408
     break;
   }
   }
@@ -660,6 +663,7 @@ void CViewWnd::slotReverseNormals( QPoint position, EEventID eventid )
       pConsole->Send( STATUS_INFO, FULL_SENDER, "" );
     }
     emit UpdateObjectInfo( pObjInfo );
+    emit UpdateModelInfo(); //1408
     break;
   }
   }
@@ -747,6 +751,7 @@ void CViewWnd::slotAdjustChord ( QPoint position, EEventID eventid )
       emit UpdateObjectInfo( pToolAdjust->pItem->ModelObject() );
     if( pToolAdjust->isPossible )
       pConsole->Send( STATUS_INFO, FULL_SENDER, "" );
+    emit UpdateModelInfo(); //1408
     delete pTool;
     pTool = null;
     break;
@@ -812,6 +817,7 @@ void CViewWnd::slotExtendChord ( QPoint position, EEventID eventid )
     pModel->ActionStack().Complete( "Tool:ExtendChord" );
     if( pTool->pItem != null )
       emit UpdateObjectInfo( pTool->pItem->ModelObject() );
+    emit UpdateModelInfo(); //1408
     delete pTool;
     pTool = null;
     break;

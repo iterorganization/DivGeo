@@ -110,6 +110,7 @@ void CViewWnd::slotDelete( QPoint position, EEventID eventid )
         pConsole->Send( STATUS_INFO, FULL_SENDER, "" );
       }
     }
+    emit UpdateModelInfo(); //1408
     delete pTool;
     pTool = null;
     break;
@@ -216,7 +217,7 @@ void CViewWnd::slotAddElement( QPoint position, EEventID eventid )
 
     if( pToolAdd->pElementItem != null )
       emit UpdateObjectInfo( pToolAdd->pElementItem->ModelObject() );
-
+    emit UpdateModelInfo(); //1408
     delete pTool;
     pTool = null;
     break;
@@ -265,6 +266,7 @@ void CViewWnd::slotAddSources( QPoint position, EEventID eventid )
     pModel->ActionStack().Complete( "Tool:AddSource" );
     pConsole->Send( STATUS_INFO, FULL_SENDER, "" );
     emit UpdateObjectInfo( pTool->pItem->ModelObject() );
+    emit UpdateModelInfo(); //1408
     delete pTool;
     pTool = null;
     break;
@@ -336,6 +338,7 @@ void CViewWnd::slotAddChords( QPoint position, EEventID eventid )
     pConsole->Send( STATUS_INFO, FULL_SENDER, "" );
     if( pTool->pItem != null )
       emit UpdateObjectInfo( pTool->pItem->ModelObject() );
+    emit UpdateModelInfo(); //1408
     delete pTool;
     pTool = null;
     break;
@@ -403,6 +406,7 @@ void CViewWnd::slotAddGridPoint( QPoint position, EEventID eventid )
     if( pTool->pItem != null )
       emit UpdateObjectInfo( pTool->pItem->ModelObject() );
     pConsole->Send( STATUS_INFO, FULL_SENDER, "" );
+    emit UpdateModelInfo(); //1408
     delete pTool;
     pTool = null;
     break;
@@ -556,7 +560,7 @@ void CViewWnd::slotAddSurface( QPoint position, EEventID eventid )
 
     if( pTool->isPossible && pTool->pItem != null )
       emit UpdateObjectInfo( pTool->pItem->ModelObject() );
-
+    emit UpdateModelInfo(); //1408
     delete pTool;
     pTool = null;
     break;
@@ -676,7 +680,7 @@ void CViewWnd::slotAddComment( QPoint position, EEventID eventid )
 
     if( pLinkedObject != null )
       emit UpdateObjectInfo( pLinkedObject );
-
+    emit UpdateModelInfo(); //1408
     delete pTool;
     pTool = null;
     break;

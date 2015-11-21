@@ -140,8 +140,9 @@ void CViewWnd::slotMark( QPoint position, EEventID eventid )
 
     pScene->UpdateHighlightRect();
     pModel->ActionStack().Complete( "Tool:Mark" );
-    emit UpdateObjectInfo( pTool->pItem->ModelObject() );
-
+    if( pTool->pItem != null ) //1408
+      emit UpdateObjectInfo( pTool->pItem->ModelObject() );
+    emit UpdateModelInfo(); //1408
     delete pTool;
     pTool = null;
     break;
@@ -223,7 +224,7 @@ void CViewWnd::slotExamine( QPoint position, EEventID eventid )
 
     if( pTool->pItem != null )
       emit UpdateObjectInfo( pTool->pItem->ModelObject() );
-
+    emit UpdateModelInfo(); //1408
     delete pTool;
     pTool = null;
     break;
@@ -491,6 +492,7 @@ void CViewWnd::slotMove( QPoint position, EEventID eventid )
     }
 
     emit UpdateObjectInfo( pTool->pItem->ModelObject() );
+    emit UpdateModelInfo(); //1408
     delete pTool;
     pTool = null;
     break;

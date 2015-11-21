@@ -179,7 +179,7 @@ void CViewWnd::slotMoveMeshPoint( QPoint position, EEventID eventid )
 
     /* Update information */
     emit UpdateObjectInfo( pTool->pItem == null ? null : pTool->pItem->ModelObject() );
-
+    emit UpdateModelInfo(); //1408
     delete pTool;
     pTool = null;
     break;
