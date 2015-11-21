@@ -14,6 +14,7 @@
 #include "../dialogs/DlgTopology.h"
 #include "../dialogs/DlgCreateSurface.h"
 #include "../dialogs/DlgCreateGridPoint.h"
+#include "../dialogs/DlgStatictics.h"
 #include "../common/StringConverters.h"
 #include "SessionData.h"
 #include "../common/IModelAgent.h"
@@ -48,6 +49,7 @@ class ModelViewProxy:
 
   DlgCreateSurface*   pCreateSurfaceDlg;
   DlgCreateGridPoint* pCreateGridPointDlg;
+  DlgStatictics*      pStatisticsDlg;//1408
 
   bool isSaved;
 
@@ -86,6 +88,7 @@ public:
 
   DlgCreateSurface* OpenCreateSurfacesDlg();
   DlgCreateGridPoint* OpenCreateGridPointsDlg();
+  DlgStatictics* OpenStatisticsDlg();//1408
   void ChangeOutputModeForDialogs( int _om );
 
 signals:
@@ -96,6 +99,7 @@ signals:
 public slots:
   void UpdateViewBranch(CViewWnd* pView );
   void UpdateViews( const UpdateInfo& _crUI = UpdateInfo() );
+  void UpdateStatistics();
 
   void slotCreateView() { CreateView(); }
   void slotCreateVarsEditDlg( VarSetPtr _pVS );

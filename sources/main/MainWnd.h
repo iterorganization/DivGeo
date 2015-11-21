@@ -225,8 +225,13 @@ public:
 public slots:
   void slotChangeShowFlag( ShowFlag sf, bool enable );
   void slotViewClosed( CViewWnd* _pView );
-  void UpdateModelInfo() { pModelInfo->UpdateContentModel( pMV->CurrentModel() );
-                           pModelInfo->UpdateContentSelected( null ); }
+  void UpdateModelInfo( bool _bClearSelection = false ) {
+    pModelInfo->UpdateContentModel( pMV->CurrentModel() );
+    if( _bClearSelection )
+      pModelInfo->UpdateContentSelected( null );
+    if( pMV->CurrentProxy() != null )
+      pMV->CurrentProxy()->UpdateStatistics();
+  } //1408
   void UpdateObjectInfo( IComponentPtr _pObject ) { pModelInfo->UpdateContentSelected( _pObject ); }
   void UpdateActionsInfo() { pActInfo->UpdateContent( pMV->CurrentModel() ); }
   void slotEnableUndoStack( bool enabled );

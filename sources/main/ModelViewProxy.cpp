@@ -17,6 +17,7 @@ ModelViewProxy::ModelViewProxy(ModelPtr _pModel, QTreeWidget* _pTree, ModelViewM
 
   pCreateSurfaceDlg( null ),
   pCreateGridPointDlg( null ),
+  pStatisticsDlg( null ),
 
   isSaved( false )
 {
@@ -96,6 +97,12 @@ void ModelViewProxy::UpdateViews( const UpdateInfo& _crUI )
     pView->viewport()->update();
 }
 
+void ModelViewProxy::UpdateStatistics()
+{
+  if( pStatisticsDlg != null )
+    pStatisticsDlg->UpdateInfo();
+}
+
 void ModelViewProxy::UpdateStyle()
 {
   foreach( IViewScenePtr pScene, scenes ) {
@@ -117,6 +124,8 @@ void ModelViewProxy::ShowAll( bool show )
     pCreateSurfaceDlg->setVisible( show );
   if( pCreateGridPointDlg != null )
     pCreateGridPointDlg->setVisible( show );
+  if( pStatisticsDlg != null )
+    pStatisticsDlg->setVisible( show );
 }
 
 void ModelViewProxy::UpdateScenes( ulong sfs )
@@ -416,6 +425,18 @@ DlgCreateGridPoint* ModelViewProxy::OpenCreateGridPointsDlg()
   pCreateGridPointDlg->show();
 
   return pCreateGridPointDlg;
+}
+
+DlgStatictics* ModelViewProxy::OpenStatisticsDlg()
+{
+  if( pStatisticsDlg != null )
+    pStatisticsDlg->deleteLater();
+
+  pStatisticsDlg = new DlgStatictics( pModel, pSM, pMainWnd );
+  connect( pStatisticsDlg, SIGNAL(sgnlHelp(int)), pMainWnd, SLOT(slotDialogHelp(int)) );
+  pStatisticsDlg->show();
+
+  return pStatisticsDlg;
 }
 
 void ModelViewProxy::ChangeOutputModeForDialogs( int _om )

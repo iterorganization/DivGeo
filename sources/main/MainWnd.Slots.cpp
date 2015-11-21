@@ -27,11 +27,8 @@ void CMainWnd::slotClose()
 
 void CMainWnd::slotStatistics()
 {
-  //TODO: make unmodal
   pConsole->Send( LOG_INFO, sender_name, SM_LOG( LOG::MENU::WINDOW::STATISTICS ) );
-  DlgStatictics* pDialog = new DlgStatictics( pMV->CurrentModel(), pSM, this );
-  connect( pDialog, SIGNAL(sgnlHelp(int)), this, SLOT(slotDialogHelp(int)) );
-  pDialog->exec();
+  pMV->CurrentProxy()->OpenStatisticsDlg();//1408
 }
 //void CMainWnd::slotToolbox() { }
 
