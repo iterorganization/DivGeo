@@ -3,12 +3,13 @@
 QString ModelTree::AddBranchForModel( QTreeWidgetItem* _pItem, ModelPtr _pModel,
                                       int _expand_depth, bool _rebuild )
 {
-  if( _rebuild || _pItem->childCount() != 10 ) {
+  if( _rebuild || _pItem->childCount() != 11 ) {
     Clear( _pItem );
     AddChild( _pItem, SM_GUI( GUI::MODEL_INFO::MODEL::NAME ) );
     AddChild( _pItem, SM_GUI( GUI::MODEL_INFO::MODEL::FILENAME ) );
     AddChild( _pItem, SM_GUI( GUI::MODEL_INFO::MODEL::CREATION_TIME ) );
     AddChild( _pItem, SM_GUI( GUI::MODEL_INFO::MODEL::OUTPUT_MODE ) );
+    AddChild( _pItem, SM_GUI( GUI::MODEL_INFO::MODEL::UNUSED_NUMS ) );
     AddChild( _pItem, TYPE_LABEL_MULT( GUI::MODEL_INFO::TYPE::NODE ) );
     AddChild( _pItem, TYPE_LABEL_MULT( GUI::MODEL_INFO::TYPE::CHORD ) );
     AddChild( _pItem, TYPE_LABEL_MULT( GUI::MODEL_INFO::TYPE::ELEMENT ) );
@@ -25,6 +26,7 @@ QString ModelTree::AddBranchForModel( QTreeWidgetItem* _pItem, ModelPtr _pModel,
   SetChildData( _pItem, i++, _pModel->CarreOutputMode() ?
                   SM_GUI( GUI::MODEL_INFO::MODEL::CARRE ) :
                   SM_GUI( GUI::MODEL_INFO::MODEL::SONNET ) );
+  SetChildData( _pItem, i++, ToQString( _pModel->GetUnusedNumbersCnt() ) );//1408
   SetChildData( _pItem, i++, _pModel->Struct()->Nodes(), _expand_depth ); /*branch*/
   SetChildData( _pItem, i++, _pModel->Struct()->Chords(), _expand_depth ); /*branch*/
   SetChildData( _pItem, i++, _pModel->Struct()->Elements(), _expand_depth ); /*branch*/

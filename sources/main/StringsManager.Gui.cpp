@@ -48,6 +48,7 @@ void StringsManager::GuiKeys()
   KEY( "empty",           GUI::MODEL_INFO::MODEL::EMPTY );
   KEY( "is3d",            GUI::MODEL_INFO::MODEL::IS3D );
   KEY( "isend",           GUI::MODEL_INFO::MODEL::ISEND );
+  KEY( "unused_nums",     GUI::MODEL_INFO::MODEL::UNUSED_NUMS );//1408
 
   GROUP( "gui/model_info/template" );
 

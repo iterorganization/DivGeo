@@ -1351,6 +1351,7 @@ emptylist         = "Empty list"
 empty             = "empty"
 is3d              = "Is 3D:"
 isend             = "Is end:"
+unused_nums       = "Unused numbers:"
 
 /gui/model_info/template
 
