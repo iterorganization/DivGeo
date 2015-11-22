@@ -402,7 +402,7 @@ void Model::WriteTarget( FILE* _pFile, IVarItemListPtr _pTarget, GridPointSegPtr
   ElementPtr pElem = dgtype_cast< ElementPtr >( _pTarget->front() );
   NodePtr pNode = pElem->Node(1+offset);
   zfprintf( _pFile, "  %e , %e\n", pNode->X(), pNode->Y() );
-  for( IVarItemIter dg__it__ = ++(*_pTarget).begin(), dg__it_end__ = (*_pTarget).end();
+  for( IVarItemIter dg__it__ = (*_pTarget).begin(), dg__it_end__ = (*_pTarget).end();//1410 ++begin removed
        dg__it__ != dg__it_end__; //TODO: need MACRO!
        ++dg__it__, pElem = (dg__it__ != dg__it_end__ ) ? dgtype_cast< ElementPtr >( *dg__it__ ) : null ) {
     pNode = pElem->Node(2-offset);
