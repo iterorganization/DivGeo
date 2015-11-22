@@ -18,6 +18,7 @@
 #include <QLabel>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QLineEdit>
 
 #include <QColorDialog>
 
@@ -63,11 +64,13 @@ private:
   QSignalMapper smChangeDValue;
   QSignalMapper smChangeCheck;
   QSignalMapper smChangeSelection;
+  QSignalMapper smChangeString;
 
 public:
   explicit PropertyTableWidget( StringsManager* _pSM, SettingsManager* _pSettings,
                                 bool _updateAll = false, QWidget *parent = 0);
 
+  void AddStringProperty( const QString& _crsName, QString* _pValue );
   void AddPenProperty(const QString& _crsName, QPen* _pValue, bool _bColorOnly = false );
   void AddFontProperty(const QString& _crsName, QPen* _pValue );
   void AddColorProperty( const QString& _crsName, QColor* _pValue );
@@ -85,6 +88,7 @@ signals:
   void sgnlPropertyChanged();
   
 public slots:
+  void slotChangeString( int _row );
   void slotChangeColor( int _row );
   void slotChangeValue( int _row );
   void slotChangeDValue( int _row );

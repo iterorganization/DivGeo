@@ -20,7 +20,7 @@ ModelViewManager::ModelViewManager( CMainWnd* _pMainWnd, const UserPreferences* 
   setMinimumWidth( 220 );
   setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea );
 
-  fileDialog.setNameFilter( "DG model (*.dg)" );
+  fileDialog.setNameFilter( QString( "DG model (%1)" ).arg( pPrefs->common.sExtFilterModel ) );
   fileDialog.setViewMode( QFileDialog::Detail );
   fileDialog.setDirectory( QApplication::applicationDirPath() );
   fileDialog.setDefaultSuffix( "dg" );

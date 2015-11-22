@@ -46,11 +46,21 @@ public:
     ulong autosaveInterval_sec;
     ulong recentList_len;
     bool axisLabelsAlwaysOnBorder;
+    QString sExtFilterModel;
+    QString sExtFilterTemplate;
+    QString sExtFilterMesh;
+    QString sExtFilterEquil;
+    QString sExtFilterTopology;
 
     Common():
       autosaveInterval_sec( 5*60 ),
       recentList_len( 10 ),
-      axisLabelsAlwaysOnBorder( false ) {}
+      axisLabelsAlwaysOnBorder( false ),
+      sExtFilterModel   ( "*.dg" ),
+      sExtFilterTemplate( "*.ogr" ),
+      sExtFilterMesh    ( "*.sno" ),
+      sExtFilterEquil   ( "*.eq*" ),
+      sExtFilterTopology( "*.dgt" ) {}
   } common;
 
   struct Visual {

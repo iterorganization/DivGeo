@@ -40,6 +40,12 @@ void SettingsManager::Save( const QString& _crsIniPath ) const
       settings.setValue( rProperty.sKey, pColor->name() );
       break;
     }
+    case PR::PT::STRING: {
+      QString* pStr = rProperty.dataPtr.value< QStringPtr >();
+      if( pStr == null ) break;
+      settings.setValue( rProperty.sKey, *pStr );
+      break;
+    }
     case PR::PT::INT:
     case PR::PT::LIST: {
       int* pInt = rProperty.dataPtr.value< IntPtr >();
@@ -120,6 +126,12 @@ void SettingsManager::Load()
       pColor->setNamedColor( sColor );
       break;
     }
+    case PR::PT::STRING: {
+      QString* pStr = rProperty.dataPtr.value< QStringPtr >();
+      if( pStr == null ) break;
+      *pStr = settings.value( rProperty.sKey, *pStr ).toString();
+      break;
+    }
     case PR::PT::INT:
     case PR::PT::LIST: {
       int* pInt = rProperty.dataPtr.value< IntPtr >();
@@ -176,6 +188,12 @@ void SettingsManager::Apply( ModelPtr _pModel )
     UPtr value;
 
     switch( rProperty.type ) {
+    case PR::PT::STRING: {
+      QString* pStr = rProperty.dataPtr.value< QStringPtr >();
+      if( pStr == null ) break;
+      value.SetValue( pStr->toStdString(), true );
+      break;
+    }
     case PR::PT::INT: {
       int* pInt = rProperty.dataPtr.value< IntPtr >();
       if( pInt == null ) break;
@@ -231,6 +249,12 @@ void SettingsManager::Retrieve()
     UPtr value = rProperty.pHolder->GetValue( rProperty.parameterId );
 
     switch( rProperty.type ) {
+    case PR::PT::STRING: {
+      QString* pStr = rProperty.dataPtr.value< QStringPtr >();
+      if( pStr == null ) break;
+      *pStr = QString::fromStdString( value.StringRef() );
+      break;
+    }
     case PR::PT::INT: {
       int* pInt = rProperty.dataPtr.value< IntPtr >();
       if( pInt == null ) break;

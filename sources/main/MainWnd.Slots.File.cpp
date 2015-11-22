@@ -53,7 +53,9 @@ void CMainWnd::slotOpen( QString _crsFilePath )
 QString CMainWnd::SelectModelFile( ModelPtr _pModel ) const
 {
   const QString& sTitle = SM_DLG( DLG::FILESAVE::TITLE );
-  const QString& sFilter = SM_DLG( DLG::FILESAVE::FILTER );
+  const QString& sFilter = SM_DLG( DLG::FILESAVE::FILTER )
+                           .arg( userPrefs.common.sExtFilterModel ) //1409
+                           .arg( userPrefs.common.sExtFilterTopology ); //1409
   QString sPath = lastPath.sPathProject.isEmpty() ? QDir::currentPath() : lastPath.sPathProject;
 
   QString sFileName;
@@ -152,7 +154,7 @@ void CMainWnd::slotImportTemplate()
   }
 
   const QString& title = SM_DLG( DLG::TEMPLATE::TITLE );
-  const QString& filter = SM_DLG( DLG::TEMPLATE::FILTER );
+  const QString& filter = SM_DLG( DLG::TEMPLATE::FILTER ).arg( userPrefs.common.sExtFilterTemplate );
   QString sPath = lastPath.sPathTemplate.isEmpty() ? QDir::currentPath() : lastPath.sPathTemplate;//1408
 
   QString fileName = QFileDialog::getOpenFileName( this, title, sPath, filter );
@@ -192,7 +194,7 @@ void CMainWnd::slotImportEquilibrium()
   }
 
   const QString& title = SM_DLG( DLG::EQUIL::TITLE );
-  const QString& filter = SM_DLG( DLG::EQUIL::FILTER );
+  const QString& filter = SM_DLG( DLG::EQUIL::FILTER ).arg( userPrefs.common.sExtFilterEquil );
   QString sPath = lastPath.sPathEquil.isEmpty() ? QDir::currentPath() : lastPath.sPathEquil;//1408
 
   QString fileName = QFileDialog::getOpenFileName( this, title, sPath, filter );
@@ -243,7 +245,7 @@ void CMainWnd::slotImportMesh()
   }
 
   const QString& title = SM_DLG( DLG::SONNET::TITLE );
-  const QString& filter = SM_DLG( DLG::SONNET::FILTER );
+  const QString& filter = SM_DLG( DLG::SONNET::FILTER ).arg( userPrefs.common.sExtFilterMesh );
   QString sPath = lastPath.sPathMesh.isEmpty() ? QDir::currentPath() : lastPath.sPathMesh;//1408
 
   QString fileName = QFileDialog::getOpenFileName( this, title, sPath, filter );
@@ -289,7 +291,7 @@ void CMainWnd::slotImportTopology()
   }
 
   QString sPath = lastPath.sPathTopology.isEmpty() ? QDir::currentPath() : lastPath.sPathTopology;//1408
-  DlgImportTopology* pDialog = new DlgImportTopology( pSM, sPath, this );
+  DlgImportTopology* pDialog = new DlgImportTopology( pSM, userPrefs.common.sExtFilterModel, userPrefs.common.sExtFilterTopology, sPath, this );
   connect( pDialog, SIGNAL(sgnlHelp(int)), this, SLOT(slotDialogHelp(int)) );
   QString fileName;
 
@@ -375,7 +377,7 @@ void CMainWnd::slotExportMesh()
   }
 
   const QString& title = SM_DLG( DLG::EXPORT_MESH::TITLE );
-  const QString& filter = SM_DLG( DLG::EXPORT_MESH::FILTER );
+  const QString& filter = SM_DLG( DLG::EXPORT_MESH::FILTER ).arg( userPrefs.common.sExtFilterMesh );
   QString sPath = lastPath.sPathMesh.isEmpty() ? QDir::currentPath() : lastPath.sPathMesh;//1408
   //const char* csSuffix = "sno";
 
@@ -415,7 +417,7 @@ void CMainWnd::slotExportElements()
 
   ModelPtr pModel = pMV->CurrentModel();
   QString sPath = lastPath.sPathTemplate.isEmpty() ? QDir::currentPath() : lastPath.sPathTemplate;//1408
-  DlgExportElements* pDialog = new DlgExportElements( pSM, sPath, this );
+  DlgExportElements* pDialog = new DlgExportElements( pSM, userPrefs.common.sExtFilterTemplate, sPath, this );
   connect( pDialog, SIGNAL(sgnlHelp(int)), this, SLOT(slotDialogHelp(int)) );
   QString fileName;
   if( pDialog->exec() == QDialog::Accepted )

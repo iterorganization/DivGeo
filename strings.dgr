@@ -680,45 +680,45 @@ use_config        = "Use configuration:"
 
 /dlg/equil
 title             = "Equilibrium"
-filter            = "Equillibrium file (*.eq*)"
+filter            = "Equillibrium file (%1);;Any file(*)"
 help              = "Equilibrium... dialog box"
 
 /dlg/template
 title             = "Template"
-filter            = "Template file (*.ogr);;Any file(*)"
+filter            = "Template file (%1);;Any file(*)"
 help              = "Template... dialog box"
 
 /dlg/sonnet
 title             = "Mesh"
-filter            = "Sonnet file (*.sno)"
+filter            = "Sonnet file (%1);;Any file(*)"
 help              = "Mesh... dialog box"
 
 /dlg/file_open
 title             = "Open"
-filter            = "DivGeo file (*.dg)"
+filter            = "DivGeo file (%1);;Any file(*)"
 help              = "Open... dialog box"
 
 /dlg/file_save
 title             = "Save"
-filter            = "DivGeo file (*.dg);;DivGeo topology file (*.dgt)"
+filter            = "DivGeo file (%1);;DivGeo topology file (%2)"
 help              = "Save... dialog box"
 
 /dlg/export_mesh
 title             = "Export mesh"
-filter            = "Sonnet file (*.sno)"
+filter            = "Sonnet file (%1);;Any file(*)"
 help              = "Export mesh... dialog box"
 message           = "The mesh has been saved"
 
 /dlg/export_elems_as_template
 title             = "Export Elements as Template"
-filter            = "Template file (*.ogr)"
+filter            = "Template file (%1);;Any file(*)"
 help              = "Export Elements As Template... dialog box"
 label.all         = "Export all elements"
 label.marked      = "Export marked elements"
 message           = "The template has been written"
 
 /dlg/import_topo
-filter                = "DivGeo file (*.dg);;Any file(*)"
+filter                = "DivGeo file (%1);;DivGeo topology file (%2);;Any file(*)"
 title                 = "Import topology from"
 help                  = "Import topology... dialog box"
 label.detect_xpoints  = "Detect X Points"
@@ -1162,6 +1162,11 @@ title               = "Common settings"
 saveinterval        = "Autosave interval, sec"
 recent_length       = "Recent list max length"
 axislabels          = "Place axes labels always on border"
+extmodel            = "Model file extensions"
+exttempl            = "Template file extensions"
+exttopo             = "Topology file extensions"
+extequil            = "Equilibrium file extensions"
+extmesh             = "Mesh file extensions"
 
 /dlg/settings/visual
 title               = "Visual settings"

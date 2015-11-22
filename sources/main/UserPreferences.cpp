@@ -9,6 +9,11 @@ UserPreferences::UserPreferences( const QString& _crsProfileDir, const QString& 
   vTable.append( PR( "AutosaveInterval",  COM::SAVEINTERVAL,          PR::PT::INT,    QVariant::fromValue( (IntPtr)&common.autosaveInterval_sec ) ) << 0 << 86400 );
   vTable.append( PR( "RecentListLength",  COM::RECENT_LENGTH,         PR::PT::INT,    QVariant::fromValue( (IntPtr)&common.recentList_len ) ) << 0 << 50 );
   vTable.append( PR( "AxesLabelsOnBorder",COM::AXISLABELS,            PR::PT::BOOL,   QVariant::fromValue( (BoolPtr)&common.axisLabelsAlwaysOnBorder ) ) );
+  vTable.append( PR( "ExtFilterModel",    COM::EXTMODEL,              PR::PT::STRING, QVariant::fromValue( (QStringPtr)&common.sExtFilterModel ) ) );
+  vTable.append( PR( "ExtFilterTemplate", COM::EXTTEMPL,              PR::PT::STRING, QVariant::fromValue( (QStringPtr)&common.sExtFilterTemplate ) ) );
+  vTable.append( PR( "ExtFilterTopology", COM::EXTTOPO,               PR::PT::STRING, QVariant::fromValue( (QStringPtr)&common.sExtFilterTopology ) ) );
+  vTable.append( PR( "ExtFilterEquil",    COM::EXTEQUIL,              PR::PT::STRING, QVariant::fromValue( (QStringPtr)&common.sExtFilterEquil ) ) );
+  vTable.append( PR( "ExtFilterMesh",     COM::EXTMESH,               PR::PT::STRING, QVariant::fromValue( (QStringPtr)&common.sExtFilterMesh ) ) );
   vTable.append( PR( PR::PT::END ) );
 
   typedef DLG::SETTINGS::VISUAL VIS;

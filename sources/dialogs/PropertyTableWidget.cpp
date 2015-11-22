@@ -34,7 +34,10 @@ PropertyTableWidget::PropertyTableWidget(StringsManager* _pSM,
            this,            SLOT(slotChangeCheck(int)) );
   connect( &smChangeSelection,  SIGNAL(mapped(int)),
            this,                SLOT(slotChangeSelection(int)) );
+  connect( &smChangeString, SIGNAL(mapped(int)),
+           this,            SLOT(slotChangeString(int)) );
 }
+
 
 void PropertyTableWidget::SetupPreview( PreviewType _pt )
 {
@@ -334,6 +337,25 @@ void PropertyTableWidget::UpdatePreview()
   pLbl->setPixmap( *pPixmap );
 }
 
+void PropertyTableWidget::AddStringProperty( const QString& _crsName, QString* _pValue )
+{
+  int row = rowCount();
+  setRowCount( row + 1 );
+  setFixedHeight( (row + 1) * row_height );
+
+  QTableWidgetItem* pLineItem = new QTableWidgetItem();
+  pLineItem->setText( _crsName );
+  pLineItem->setData( Qt::UserRole, QVariant::fromValue( _pValue ) );
+  this->setItem( row, 0, pLineItem );
+
+  QLineEdit* pLe = new QLineEdit();
+  pLe->setFixedHeight( row_height-2 );
+  pLe->setText( *_pValue );
+  connect( pLe, SIGNAL(textEdited(QString)), &smChangeString, SLOT(map()) );
+  smChangeString.setMapping( (QObject*)pLe, row );
+  this->setCellWidget( row, 1, pLe );
+}
+
 void PropertyTableWidget::AddPenProperty( const QString& _crsName, QPen* _pValue,
                                           bool _bColorOnly )
 {
@@ -506,6 +528,21 @@ void PropertyTableWidget::AddFlagsProperty( const QString& _crsName, int* _pValu
     }
     flag <<= 1;
   }
+}
+
+
+void PropertyTableWidget::slotChangeString( int _row )
+{
+  QTableWidgetItem* pItem = item( _row, 0 );
+  int userType = pItem->data( Qt::UserRole ).userType();
+  const int strType = QMetaType::type( "QStringPtr" );
+  QLineEdit* pLe = qobject_cast< QLineEdit* >( cellWidget( _row, 1 ) );
+  if( userType != strType )
+    return;
+  QString* pValue = pItem->data( Qt::UserRole ).value< QStringPtr >();
+  *pValue = pLe->text();
+  //UpdatePreview();
+  emit sgnlPropertyChanged();
 }
 
 void PropertyTableWidget::slotChangeColor( int _row )

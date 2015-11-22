@@ -19,12 +19,14 @@
 #include "../common/Point.h"
 
 #include <QMetaType>
+typedef QString* QStringPtr;
 typedef QColor* QColorPtr;
 typedef QPen* QPenPtr;
 typedef NPoint* NPointPtr;
 typedef int* IntPtr;
 typedef bool* BoolPtr;
 typedef float* FloatPtr;
+Q_DECLARE_METATYPE( QStringPtr )
 Q_DECLARE_METATYPE( QColorPtr )
 Q_DECLARE_METATYPE( QPenPtr )
 Q_DECLARE_METATYPE( NPointPtr )
@@ -58,7 +60,8 @@ public:
         BOOL,   // CheckBox
         NPOINT, // X and Y INT properties
         LIST,   // ComboBox. Additional data: codes of item strings
-        FLAGS   // Group of CheckBoxes. Additional data: strings
+        FLAGS,  // Group of CheckBoxes. Additional data: strings
+        STRING  // LineEdit
       };
     };
     typedef SPropertyTypes PT;

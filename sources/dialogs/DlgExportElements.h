@@ -21,11 +21,11 @@ class DlgExportElements:
   QPushButton* pBtnHelp;
 
 public:
-  DlgExportElements( const StringsManager* pSM, const QString& _crsPath, QWidget* parent = 0, Qt::WindowFlags flags = 0 ):
+  DlgExportElements( const StringsManager* pSM, const QString& _crsExt, const QString& _crsPath, QWidget* parent = 0, Qt::WindowFlags flags = 0 ):
     QFileDialog( parent, flags )
   {
     const QString& title = SM_DLG( DLG::EXPORT_ELEMS_TEMPLATE::TITLE );
-    const QString& filter = SM_DLG( DLG::EXPORT_ELEMS_TEMPLATE::FILTER );
+    const QString& filter = SM_DLG( DLG::EXPORT_ELEMS_TEMPLATE::FILTER ).arg( _crsExt );
     const QString& labelMarked = SM_DLG( DLG::EXPORT_ELEMS_TEMPLATE::LBL::MARKED );
     const QString& labelAll = SM_DLG( DLG::EXPORT_ELEMS_TEMPLATE::LBL::ALL );
 

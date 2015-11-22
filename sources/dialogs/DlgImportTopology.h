@@ -19,11 +19,11 @@ class DlgImportTopology:
   QPushButton* pBtnHelp;
 
 public:
-  DlgImportTopology( const StringsManager* pSM, const QString& _crsPath, QWidget* parent = 0, Qt::WindowFlags flags = 0 ):
+  DlgImportTopology( const StringsManager* pSM, const QString& _crsExtDg, const QString& _crsExtTopo, const QString& _crsPath, QWidget* parent = 0, Qt::WindowFlags flags = 0 ):
     QFileDialog( parent, flags )
   {
     const QString& title = SM_DLG( DLG::IMPORTTOPO::TITLE );
-    const QString& filter = SM_DLG( DLG::IMPORTTOPO::FILTER );
+    const QString& filter = SM_DLG( DLG::IMPORTTOPO::FILTER ).arg( _crsExtDg ).arg( _crsExtTopo );
     const QString& label = SM_DLG( DLG::IMPORTTOPO::LBL::DETECT_XPNT );
 
     setOption( QFileDialog::DontUseNativeDialog, true );

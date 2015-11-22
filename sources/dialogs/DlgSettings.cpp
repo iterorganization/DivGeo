@@ -20,7 +20,7 @@ DlgSettings::DlgSettings( ModelPtr _pModel, StringsManager* _pSM,
   pTree->setTextElideMode( Qt::ElideRight );
   pTree->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
   pTree->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-  pTree->setColumnWidth( 0, 250 );
+  pTree->setColumnWidth( 0, 300 );
   pTree->header()->hide();
   pTree->setStyleSheet( QString( "QTreeWidget, QTableWidget {background-color:%1}" )
                         .arg( palette().window().color().name() ) );
@@ -101,6 +101,12 @@ void DlgSettings::RebuildTree()
         pTable->SetupPreview( previewType );
       if( depth == 0 )
         pBranch = null;
+      break;
+    }
+    case SettingsManager::PR::PT::STRING: {
+      QString* pStr = rProperty.dataPtr.value< QStringPtr >();
+      if( pStr == null ) break;
+      pTable->AddStringProperty( sName, pStr );
       break;
     }
     case SettingsManager::PR::PT::PEN: {

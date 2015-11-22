@@ -520,6 +520,11 @@ void StringsManager::DialogsKeys()
   KEY( "saveinterval",        DLG::SETTINGS::COMMON::SAVEINTERVAL );
   KEY( "recent_length",       DLG::SETTINGS::COMMON::RECENT_LENGTH );
   KEY( "axislabels",          DLG::SETTINGS::COMMON::AXISLABELS );
+  KEY( "extmodel",            DLG::SETTINGS::COMMON::EXTMODEL );
+  KEY( "exttempl",            DLG::SETTINGS::COMMON::EXTTEMPL );
+  KEY( "exttopo",             DLG::SETTINGS::COMMON::EXTTOPO );
+  KEY( "extequil",            DLG::SETTINGS::COMMON::EXTEQUIL );
+  KEY( "extmesh",             DLG::SETTINGS::COMMON::EXTMESH );
   GROUP( "dlg/settings/visual" );
   KEY( "title",               DLG::SETTINGS::VISUAL::TITLE );
   KEY( "color",               DLG::SETTINGS::VISUAL::COLOR );
