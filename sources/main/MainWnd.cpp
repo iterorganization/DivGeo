@@ -300,7 +300,7 @@ int CMainWnd::CreateMenuBar()
   CreateAction( pMenu,     MENU::EDIT::MOVE_ROTATE,                 SLOT(slotMoveRotate()) );
 
   pMenu = pMenuBar->addMenu( CreateMenu( MENU::VIEW::TITLE ) )->menu();
-  CreateAction( pMenu,     MENU::VIEW::REFRESH,                     SLOT(slotRefresh()),                    false, -1, -1, QKeySequence(CTRL+Key_R) );
+  CreateAction( pMenu,     MENU::VIEW::REFRESH,                     SLOT(slotRefresh()),                    false );
   CreateAction( pMenu,     MENU::VIEW::ZOOM_IN,                     SLOT(slotZoomIn()),                     false, -1, -1, QKeySequence(CTRL+Key_I) );
   CreateAction( pMenu,     MENU::VIEW::ZOOM_OUT,                    SLOT(slotZoomOut()),                    false, -1, -1, QKeySequence(CTRL+Key_O) );
   CreateAction( pMenu,     MENU::VIEW::PICTURE_VIEW,                SLOT(slotPictureView()),                false, 3, 4, QKeySequence(CTRL+Key_P) );
