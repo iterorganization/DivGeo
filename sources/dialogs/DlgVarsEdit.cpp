@@ -33,7 +33,7 @@ DlgVarsEdit::DlgVarsEdit(VarSetPtr _pVS, ModelPtr _pModel, CViewWndPtr _pView,
   QHBoxLayout* pLoButtons = new QHBoxLayout();
   pLoMain->addLayout( pLoButtons );
 
-  QPushButton* pBtnCollapse = new QPushButton( "+" );
+  pBtnCollapse = new QPushButton( "▲" ); //1411
   pBtnCollapse->setCheckable( true );
   pBtnCollapse->setChecked( false );
   pBtnCollapse->setFixedWidth( 20 );
@@ -198,10 +198,12 @@ void DlgVarsEdit::slotCollapse( bool b )
   int new_height;
   if( !b ) {
     new_height = 73 + vars[ 0 ]->rowCount() * vars[ 0 ]->rowHeight(0);
+    pBtnCollapse->setText( "▲" ); //1411
     pLlStatus->setVisible( true );
   }
   else {
     new_height = 44;
+    pBtnCollapse->setText( "▼" ); //1411
     pLlStatus->setVisible( false );
   }
   this->setFixedHeight( new_height );

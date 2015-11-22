@@ -35,6 +35,7 @@ class DlgVarsEdit : public QDialog
 
   QPushButton* pBtnSetAll;
   QPushButton* pBtnResetAll;
+  QPushButton* pBtnCollapse; //1411
 
   QSignalMapper* pSmHelp;
   QSignalMapper* pSmValue;
