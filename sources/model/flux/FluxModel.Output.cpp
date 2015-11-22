@@ -291,11 +291,11 @@ void FluxModel::Carre_WriteGridPoints( FILE* _pFile, const IComponentList& _rCre
 
   zfprintf( _pFile, "dltp1\n" );
   for( ulong c = 0; c < table_size; c++ )
-    zfprintf( _pFile, "  %e\n", vDelta1[0] );
+    zfprintf( _pFile, "  %e\n", vDelta1[c] ); //1409 index fixed
   zfprintf( _pFile, "dltpn\n" );
   for( ulong c = 0; c < table_size; c++ )
-    zfprintf( _pFile, "  %e\n", vDelta2[0] );
+    zfprintf( _pFile, "  %e\n", vDelta2[c] ); //1409
   zfprintf( _pFile, "nptseg\n" );
   for( ulong c = 0; c < table_size; c++ )
-    zfprintf( _pFile, "  %d\n", vCount[0] + 2 );
+    zfprintf( _pFile, "  %d\n", vCount[c] ); //1409
 }
