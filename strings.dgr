@@ -1024,7 +1024,7 @@ help              = "Help"
 reset_var         = "Mark"
 set               = "Set"
 set_file          = "File..."
-var_help          = "Help"
+var_help          = "?" #1411 was "Help"
 /dlg/vars_edit/vars_popup
 reset             = "Reset"
 reset_help        = "Restore the old value or selection"
