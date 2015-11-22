@@ -404,7 +404,7 @@ int Model::ReadApp_File(FILE* f, const std::string& _fName, int* ef )
     }
     int result = ReadObjects( (Token)token, sLine.c_str(), f, lines );
     *ef |= result;
-    if( result != 0 )
+    if( result == DGFE::SYNTAX ) //1410
       SendMessage( LOG_WIP_WARN, SENDER, DG3::DG_FILE_SYNTAX_ERROR,
                    ARG( lines + linesExt) + psToken );
   }
