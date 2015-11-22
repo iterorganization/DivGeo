@@ -309,7 +309,7 @@ void VarsManager::OutputVars( FILE* _pFile, int _maxId ) const
         else {
           if( HasAnyFlag( pVD->Flags(), VF::FORELEMS | VF::FORSEPARATORS ) ) {
 
-            for( int id = 0; id <= _maxId; id++ ) {
+            for( int id = 1; id <= _maxId; id++ ) { //1410 0 -> 1
               IVarOriginPtr pObj = pModel->Struct()->FindObject( id );
               if( pObj != null ) {
                 if( pObj->Type() == OT::ELEMENT &&
