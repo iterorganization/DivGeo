@@ -250,7 +250,7 @@ void ModelViewManager::RemoveModel( ModelViewProxy* _pProxy )
   pCurrentProxy = null;
   pTree->setCurrentItem( null );
   pTree->clearSelection();
-  pMainWnd->UpdateModelInfo();
+  pMainWnd->UpdateModelInfo( true );
   pMainWnd->UpdateObjectInfo( null );
 }
 
@@ -268,6 +268,7 @@ void ModelViewManager::SelectCurrentView( CViewWndPtr _pSelectedView )
     if( pCurrentProxy != null )
       pCurrentProxy->ShowAll( false );
     pSelectedProxy->ShowAll( true );
+    pMainWnd->UpdateModelInfo( true );
   }
   else { // same model, another view
     if( pCurrentView != null &&

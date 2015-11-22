@@ -9,7 +9,7 @@ void CMainWnd::slotProjectSettings()
                                           SM_DLG( DLG::PRJSETTINGS::TITLE ), this );
   connect( pDialog, SIGNAL(sgnlHelp(int)), this, SLOT(slotDialogHelp(int)) );
   pDialog->exec();
-  UpdateModelInfo();
+  UpdateModelInfo( true );
   pMV->CurrentView()->slotUpdateView();//1408
 }
 
@@ -21,7 +21,7 @@ void CMainWnd::slotProjectSettings()
   connect( pDialog, SIGNAL(sgnlHelp(int)), this, SLOT(slotDialogHelp(int)) );
   pDialog->exec();
   pMV->CurrentProxy()->ChangeOutputModeForDialogs( pModel->OutputMode() );
-  UpdateModelInfo();
+  UpdateModelInfo( true );
 }
 void CMainWnd::slotMeshEditing()
 {
@@ -30,7 +30,7 @@ void CMainWnd::slotMeshEditing()
   DlgMeshOptions* pDialog = new DlgMeshOptions( pModel->GetMesh(), pModel, pSM, pConsole, this );
   connect( pDialog, SIGNAL(sgnlHelp(int)), this, SLOT(slotDialogHelp(int)) );
   pDialog->exec();
-  UpdateModelInfo();
+  UpdateModelInfo( true );
 }*/
 
 //void CMainWnd::slotDisplayMenu() { }

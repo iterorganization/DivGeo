@@ -301,7 +301,7 @@ void ModelViewProxy::SaveModelAs( const QString& _crsName, bool _bCopy )
 
     pMainWnd->AddToRecentList( _crsName );
   }
-  pMainWnd->UpdateModelInfo();
+  pMainWnd->UpdateModelInfo( true );
 }
 
 void ModelViewProxy::slotCreateVarsEditDlg( VarSetPtr _pVS )

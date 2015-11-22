@@ -155,7 +155,7 @@ void CMainWnd::slotAtStart()
 
   pMV->UpdateAllViewsGeometry();
 
-  UpdateModelInfo();
+  UpdateModelInfo( true );
 }
 
 void CMainWnd::slotDialogHelp( int _code )

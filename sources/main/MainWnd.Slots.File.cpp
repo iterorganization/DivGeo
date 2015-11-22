@@ -21,7 +21,7 @@ void CMainWnd::slotNew()
   if( pDialog->exec() == QDialog::Accepted ) {
     sPath = pDialog->Path();
     pMV->NewModel( sPath );
-    UpdateModelInfo();
+    UpdateModelInfo( true );
     pMV->CurrentModel()->Agent()->Clear();
   }
 }
@@ -47,7 +47,7 @@ void CMainWnd::slotOpen( QString _crsFilePath )
     AddToRecentList( ToQString( pModel->FileName() ) );
   }
 
-  UpdateModelInfo();
+  UpdateModelInfo( true );
 }
 
 QString CMainWnd::SelectModelFile( ModelPtr _pModel ) const
@@ -275,7 +275,7 @@ void CMainWnd::slotImportMesh()
   mapMenuActions.value( MENU::VIEW::MESH_HEADER )->setEnabled( pModel->HasMesh() );
   //mapMenuActions.value( MENU::OPTIONS::MESH_EDITING )->setEnabled( pModel->HasMesh() );
 
-  UpdateModelInfo();
+  UpdateModelInfo( true );
 }
 
 
@@ -408,7 +408,7 @@ void CMainWnd::slotExportMesh()
     pModel->ActionStack().Complete( "ExportMesh" );
   }
 
-  UpdateModelInfo();
+  UpdateModelInfo( true );
 }
 
 
@@ -443,7 +443,7 @@ void CMainWnd::slotExportElements()
     pModel->ActionStack().Complete( "ExportElements" );
   }
 
-  UpdateModelInfo();
+  UpdateModelInfo( true );
 }
 
 
