@@ -137,7 +137,7 @@ void CViewWnd::slotMoveMeshPoint( QPoint position, EEventID eventid )
       DoSlideMeshPoint( pToolMove, position_t );
 
     SetExamineMsg( pMP );
-    pModel->Agent()->Update();
+    pModel->Agent()->Update( false ); //1409 false
     break;
   }
   case RELEASED:

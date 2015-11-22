@@ -72,7 +72,7 @@ void CViewWnd::slotDelete( QPoint position, EEventID eventid )
       pTool->pItem = pItem;
 
       SelectItem();
-      pModel->Agent()->Update();
+      pModel->Agent()->Update( false ); //1409 false
     }
     break;
   }
@@ -189,7 +189,7 @@ void CViewWnd::slotAddElement( QPoint position, EEventID eventid )
     else {
       NodePtr pNodeSecond = dgtype_cast< NodePtr >( pToolAdd->pNodeSecondItem->ModelObject() );
       pNodeSecond->Change( _C( mapToScene( position ) ) );
-      pModel->Agent()->Update();
+      pModel->Agent()->Update( false ); //1409 false
     }
 
     SetExamineMsg( pToolAdd->pElementItem->ModelObject() );
@@ -254,7 +254,7 @@ void CViewWnd::slotAddSources( QPoint position, EEventID eventid )
       break;
     SourcePtr pSource = dgtype_cast< SourcePtr >( pTool->pItem->ModelObject() );
     pSource->Change( _C( mapToScene( position ) ) );
-    pModel->Agent()->Update();
+    pModel->Agent()->Update( false ); //1409 false
     SetExamineMsg( pSource );
     break;
   }
@@ -310,7 +310,7 @@ void CViewWnd::slotAddChords( QPoint position, EEventID eventid )
         break;
       }
       pChord->Highlight();
-      pModel->Agent()->Update();
+      pModel->Agent()->Update( false ); //1409 false
       pToolAdd->pItem = pScene->GetItem( pChord );
       pConsole->SetLoggingMode( LM::COLLECT );
     }
@@ -321,7 +321,7 @@ void CViewWnd::slotAddChords( QPoint position, EEventID eventid )
         pChord->Change( pChord->Point_1(), position_t );
       else
         pChord->Change( pChord->Point_1(), position_t.SwapYZ() );
-      pModel->Agent()->Update();
+      pModel->Agent()->Update( false ); //1409 false
     }
     SetExamineMsg( pTool->pItem->ModelObject() );
     break;
@@ -376,7 +376,7 @@ void CViewWnd::slotAddGridPoint( QPoint position, EEventID eventid )
     emit ChangeShowFlag( SHW::GRIDPOINTS, true );
     GridPointExPtr pGPX = pModel->GetFluxModel()->AddGridPointEx( zone, value );
     pGPX->Highlight();
-    pModel->Agent()->Update();
+    pModel->Agent()->Update( false ); //1409 false
     pTool->pItem = pScene->GetItem( pGPX );
     SetExamineMsg( pGPX );
     break;
@@ -541,7 +541,7 @@ void CViewWnd::slotAddSurface( QPoint position, EEventID eventid )
       else
         pConsole->Send( STATUS_INFO, FULL_SENDER, result );
     }
-    pModel->Agent()->Update();
+    pModel->Agent()->Update( false ); //1409 false
     break;
   }
   case RELEASED:
@@ -655,7 +655,7 @@ void CViewWnd::slotAddComment( QPoint position, EEventID eventid )
     }
 
     pModel->Agent()->AddToUpdate( pComment, UT::UPDATE );
-    pModel->Agent()->Update();
+    pModel->Agent()->Update( false ); //1409 false
     break;
   }
   case RELEASED:

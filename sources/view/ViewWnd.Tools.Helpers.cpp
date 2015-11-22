@@ -130,7 +130,7 @@ void CViewWnd::slotMark( QPoint position, EEventID eventid )
       pToolMark->pFirstItem->ModelObject()->Mark( pToolMark->include );
     }
 
-    pModel->Agent()->Update();
+    pModel->Agent()->Update( false ); //1409 false
     break;
   }
   case RELEASED:
@@ -207,7 +207,7 @@ void CViewWnd::slotExamine( QPoint position, EEventID eventid )
 
     pItem->ModelObject()->Highlight();
     SetExamineMsg( pItem->ModelObject() );
-    pModel->Agent()->Update();
+    pModel->Agent()->Update( false ); //1409 false
     break;
   }
   case RELEASED:
@@ -459,7 +459,7 @@ void CViewWnd::slotMove( QPoint position, EEventID eventid )
       pItem->UpdateStyle();
     }*/
 
-    pModel->Agent()->Update();
+    pModel->Agent()->Update( false ); //1409 false
     break;
   }
   case RELEASED:

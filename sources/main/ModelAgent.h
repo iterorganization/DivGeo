@@ -32,11 +32,11 @@ public:
   virtual std::string GetString( ulong _code, const char* _cpsDictionary ) const;
   virtual void AddToUpdate( IComponentPtr _pObject, UpdateType _ut, bool _delayed = true );
   virtual void AddToUpdate( const IComponentList& _crList, UpdateType _ut, bool _delayed = true );
-  virtual void Update();
+  virtual void Update( bool _force = true ); //1409 force
   virtual void Clear();
 
 signals:
-  void UpdateViews( const UpdateInfo& _crUI );
+  void UpdateViews( const UpdateInfo& _crUI, bool _force ); //1409
 };
 
 #endif // MODELAGENT_H

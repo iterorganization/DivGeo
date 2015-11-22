@@ -51,6 +51,9 @@ class ModelViewProxy:
   DlgCreateGridPoint* pCreateGridPointDlg;
   DlgStatictics*      pStatisticsDlg;//1408
 
+  QTimer upTimer; //1409
+  bool upEnabled;  //1409
+
   bool isSaved;
 
 public:
@@ -98,7 +101,7 @@ signals:
 
 public slots:
   void UpdateViewBranch(CViewWnd* pView );
-  void UpdateViews( const UpdateInfo& _crUI = UpdateInfo() );
+  void UpdateViews( const UpdateInfo& _crUI = UpdateInfo(), bool _force = true ); //1409 force
   void UpdateStatistics();
 
   void slotCreateView() { CreateView(); }
@@ -106,6 +109,9 @@ public slots:
   void slotCloseVarsEditDlg( QWidget* _pWgt );
   void OpenTopologyDialog();
   void slotCloseTopologyDlg();
+
+private slots: //1409
+  void slotEnableUpdate();
 };
 typedef ModelViewProxy* ModelViewProxyPtr;
 

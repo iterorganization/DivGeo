@@ -233,7 +233,7 @@ ModelViewProxyPtr ModelViewManager::AddModel( ModelPtr _pModel, ModelAgent* _pAg
   connect( pProxy, SIGNAL(ViewSelected(CViewWndPtr)), this, SIGNAL(ViewSelected(CViewWndPtr)) );
   connect( pProxy, SIGNAL(DeleteProxy(ModelViewProxy*)), this, SLOT(RemoveModel(ModelViewProxy*)) );
 
-  connect( _pAgent, SIGNAL(UpdateViews(UpdateInfo)), pProxy, SLOT(UpdateViews(UpdateInfo)) );
+  connect( _pAgent, SIGNAL(UpdateViews(UpdateInfo, bool)), pProxy, SLOT(UpdateViews(UpdateInfo, bool)) );
 
   pTree->addTopLevelItem( pProxy->ModelItem() );
   pTree->expandAll();

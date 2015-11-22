@@ -60,7 +60,7 @@ void CViewWnd::slotSplitElement( QPoint position, EEventID eventid )
     NodePtr pNode = dgtype_cast< NodePtr >( pToolSplit->pNodeItem->ModelObject() );
     pNode->Change( _C( mapToScene( position ) ) );
     SetExamineMsg( pNode );
-    pModel->Agent()->Update();
+    pModel->Agent()->Update( false ); //1409 false
     break;
   }
   case RELEASED:
@@ -143,7 +143,7 @@ void CViewWnd::slotJoinElements( QPoint position, EEventID eventid )
 
     pToolJoin->isPossible = (pNode->CheckJoinPossibility() != 0 );
     SetExamineMsg( pNode );
-    pModel->Agent()->Update();
+    pModel->Agent()->Update( false ); //1409 false
     break;
   }
   case RELEASED:
@@ -218,13 +218,13 @@ void CViewWnd::slotConnectPoints( QPoint position, EEventID eventid )
     if( pToolConnect->pElementItem == null ) {
       ElementPtr pElem = pModel->Struct()->AddElem( pNodeA, pNodeB );
       pElem->Highlight();
-      pModel->Agent()->Update();
+      pModel->Agent()->Update( false ); //1409 false
       pToolConnect->pElementItem = pScene->GetItem( pElem );
     }
     else {
       ElementPtr pElement = dgtype_cast< ElementPtr >( pToolConnect->pElementItem->ModelObject() );
       pElement->Change( 2, pNodeB );
-      pModel->Agent()->Update();
+      pModel->Agent()->Update( false ); //1409 false
     }
     SetExamineMsg( pToolConnect->pElementItem->ModelObject() );    
     break;
@@ -417,7 +417,7 @@ void CViewWnd::slotReposition( QPoint position, EEventID eventid )
         pToolRepos->pNodeItem_first->ModelObject()->Highlight();
       }
     }
-    pModel->Agent()->Update();
+    pModel->Agent()->Update( false ); //1409 false
     break;
   }
   case RELEASED:
@@ -636,7 +636,7 @@ void CViewWnd::slotReverseNormals( QPoint position, EEventID eventid )
       pChord->Change( pChord->Point_2(), pChord->Point_1() );
     }
 
-    pModel->Agent()->Update();
+    pModel->Agent()->Update( false ); //1409 false
     break;
   }
   case RELEASED:
@@ -736,7 +736,7 @@ void CViewWnd::slotAdjustChord ( QPoint position, EEventID eventid )
         SetExamineMsg( pChord );
     }
 
-    pModel->Agent()->Update();
+    pModel->Agent()->Update( false ); //1409 false
     break;
   }
   case RELEASED:
@@ -800,7 +800,7 @@ void CViewWnd::slotExtendChord ( QPoint position, EEventID eventid )
     pTool->pItem->ModelObject()->Highlight( false );
     pTool->pItem = pItem;
     pTool->pItem->ModelObject()->Highlight();
-    pModel->Agent()->Update();
+    pModel->Agent()->Update( false ); //1409 false
     break;
   }
   case RELEASED:

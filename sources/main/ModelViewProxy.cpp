@@ -19,6 +19,8 @@ ModelViewProxy::ModelViewProxy(ModelPtr _pModel, QTreeWidget* _pTree, ModelViewM
   pCreateGridPointDlg( null ),
   pStatisticsDlg( null ),
 
+  upEnabled( true ),
+
   isSaved( false )
 {
   QString model_str = QString( "Model-%1" ).arg( ToQString( _pModel->Name() ) );
@@ -47,6 +49,9 @@ ModelViewProxy::ModelViewProxy(ModelPtr _pModel, QTreeWidget* _pTree, ModelViewM
   connect( pTopScene, SIGNAL(message(MessageType,AlarmLevel,QString,ulong,QStringList)),
            pConsole,  SLOT(Send(MessageType,AlarmLevel,QString,ulong,QStringList)) );
   scenes.push_back( pTopScene );
+
+  connect( &upTimer,  SIGNAL(timeout()), this, SLOT(slotEnableUpdate()) ); //1409
+  upTimer.start( 10 );
 
   connect( &smDialogs,  SIGNAL(mapped(QWidget*)),
            this,        SLOT(slotCloseVarsEditDlg(QWidget*)) );
@@ -79,10 +84,12 @@ bool ModelViewProxy::SetCurrentView( CViewWndPtr _pView )
   return true;
 }
 
-void ModelViewProxy::UpdateViews( const UpdateInfo& _crUI )
+void ModelViewProxy::UpdateViews( const UpdateInfo& _crUI, bool _force ) //1409 force
 {
-  pMainWnd->UpdateModelInfo();
-  pMainWnd->UpdateActionsInfo();
+  if( not upEnabled && not _force )
+    return;
+  //1408 pMainWnd->UpdateModelInfo( true ); too slow
+  //1408 pMainWnd->UpdateActionsInfo();
 
   if( !_crUI.isEmpty ) {
     foreach( IViewScenePtr pScene, scenes ) {
@@ -95,6 +102,12 @@ void ModelViewProxy::UpdateViews( const UpdateInfo& _crUI )
 
   foreach( CViewWndPtr pView, mapViews.keys() )
     pView->viewport()->update();
+
+  //1409
+  foreach( DlgVarsEdit* pDialog, mapVarEditDlgs.values() )
+    pDialog->slotResetAll( false ); // with no view update to avoid recursive call
+
+  upEnabled = false;
 }
 
 void ModelViewProxy::UpdateStatistics()
@@ -144,7 +157,7 @@ CViewWndPtr ModelViewProxy::CreateView()
   pView->setAttribute( Qt::WA_DeleteOnClose );
 
   connect( pView, SIGNAL(UpdateViewState(CViewWnd*)), this, SLOT(UpdateViewBranch(CViewWnd*)) );
-  connect( pView, SIGNAL(UpdateViews(UpdateInfo) ),   this, SLOT(UpdateViews(UpdateInfo)) );
+  connect( pView, SIGNAL(UpdateViews(UpdateInfo, bool) ),   this, SLOT(UpdateViews(UpdateInfo, bool)) );//1409 bool
 
   foreach( IViewScenePtr pScene, scenes ) {
     pView->AddScene( pScene->Type(), pScene );
@@ -355,6 +368,11 @@ void ModelViewProxy::slotCloseTopologyDlg()
   pTopologyView->SetTopologyDialog( null );
   pTopologyView = null;
   pCurrentView->viewport()->update();
+}
+
+void ModelViewProxy::slotEnableUpdate()
+{
+  upEnabled = true;
 }
 
 void ModelViewProxy::LoadSessionData( const SessionModelRecord& _crSMR )

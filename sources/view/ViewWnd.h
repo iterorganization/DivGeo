@@ -57,6 +57,8 @@ private:
   SurfaceExPtr pLastExaminedSX;
   GridPointExPtr pLastExaminedGPX;
 
+  QTimer upTimer;
+
   // Flags
   ulong showFlags; // ShowFlags register
   ulong updateFlag; // TODO: ?
@@ -113,7 +115,7 @@ signals:
   /* Model object has been selected */
   void ObjectSelected( IComponentPtr _pObject );
   /* Request to update all views of this model */
-  void UpdateViews( const UpdateInfo& _crUI = UpdateInfo() );
+  void UpdateViews( const UpdateInfo& _crUI = UpdateInfo(), bool _force = true );
 
   /*********************************************
    MOUSE TOOLS 

@@ -57,9 +57,9 @@ void ModelAgent::AddToUpdate( const IComponentList& _crList, UpdateType _ut, boo
     Update();
 }
 
-void ModelAgent::Update()
+void ModelAgent::Update( bool _force ) //1409 force
 {
-  emit UpdateViews( updateInfo );
+  emit UpdateViews( updateInfo, _force );
   updateInfo.Clear();
 }
 

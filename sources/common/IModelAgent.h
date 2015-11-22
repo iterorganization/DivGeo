@@ -111,7 +111,7 @@ public:
   /* Update */
   virtual void AddToUpdate( IComponentPtr _pObject, UpdateType _ut, bool _delayed = true ) = 0;
   virtual void AddToUpdate( const IComponentList& _crList, UpdateType _ut, bool _delayed = true ) = 0;
-  virtual void Update() = 0;
+  virtual void Update( bool _force = true ) = 0; //1409 force
   virtual void Clear() = 0;
 };
 
