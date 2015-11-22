@@ -30,10 +30,10 @@ std::string VarSet::Description() const
   ss << pVarSetDef->Descr();
   if( pVD != null ) {
     UPtr val = pModel->Vars()->GetVar( this, pVD, null );
-    ss << " " << val.IsNull() ? "null" : val.StringRef();
+    ss << " " << (val.IsNull() ? "null" : val.StringRef()); //1411 ()
   }
   else if( pVarSetDef->VarSetsNum() > 1 )
-    ss << " #" << pVarSetDef->IndexOf( this );
+    ss << " #" << pVarSetDef->IndexOf( this ) + 1; //1411 index from '1'
 
   return ss.str();
 }

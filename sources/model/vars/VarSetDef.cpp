@@ -227,3 +227,21 @@ VarPtr VarSetDef::GetVar( VarDefInPtr _inpVD, VarSetInPtr _inpVS ) const
       return (*itV);
   return null;
 }
+
+std::string VarSetDef::GetLayerLabel( VarSetPtr _pVS ) const //1411
+{
+  VarDefPtr pVD_layer = null;
+  FOREACHPTRCONST( VarDefPtr, pVD, varDefs ) {
+    if( HasAnyFlag( pVD->Flags(), VF::LAYERINDEX ) ) {
+      pVD_layer = pVD;
+      break;
+    }
+  }
+  if( pVD_layer == null )
+    return "";
+  VarPtr pV = _pVS->GetVar( pVD_layer, null );
+  if( pV == null )
+    return "";
+  const UPtr& value = pV->Value();
+  return value.ToString();
+}

@@ -131,6 +131,7 @@ public:
 
   /* Getters */
 
+  std::string GetLayerLabel( VarSetPtr _pVS ) const; //1411
   const VarSetDefData& GetData() const { return data; }
   bool IsEqualTo( VarSetDefPtr _pVSD ) const { return data == _pVSD->data; }
 

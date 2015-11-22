@@ -40,7 +40,9 @@ QAction* CMainWnd::CreateAction( QMenu* _pMenu, VarSetDefPtr _pVSD, VarAction _v
 
     ulong c = 1;
     FOREACHPTRCONST( VarSetPtr, pVS, _pVSD->VarSets() ) {
-      QString sVsNumber = QString( "#%1" ).arg( c++ );
+      QString sVsLabel = QString::fromStdString( _pVSD->GetLayerLabel( pVS ) );
+      QString sVsNumber = sVsLabel.isEmpty() ? QString( "#%1" ).arg( c ) : sVsLabel;
+      c++;
       pResult = CreateAction( pSubMenu, sVsdName + sVsNumber, sVsNumber, _va );
       pResult->setData( (_va == VA::ADD) ? QVariant::fromValue( _pVSD ) :
                                            QVariant::fromValue( pVS ) );
