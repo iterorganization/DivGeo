@@ -2,7 +2,7 @@
 #define CREATEPOINT_H
 
 #include <QDialog>
-#include <QDoubleSpinBox>
+#include "DoubleSpinBoxExt.h" //1409
 #include <QLabel>
 #include <QPushButton>
 #include <QVBoxLayout>
@@ -18,8 +18,8 @@ class DlgCreatePoint: public QDialog
 
   StringsManager* pSM;
 
-  QDoubleSpinBox* pSbX;
-  QDoubleSpinBox* pSbY;
+  DoubleSpinBoxExt /*1409*/* pSbX;
+  DoubleSpinBoxExt /*1409*/* pSbY;
 
   QLabel* pLbX;
   QLabel* pLbY;

@@ -18,7 +18,7 @@ DlgGlueElems::DlgGlueElems( StringsManager* _pSM, Console* _pConsole,
   pLbMaxDev->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
   pLoGrid->addWidget( pLbMaxDev, 0, 0, 1, 1 );
 
-  pSbMaxDev = new QDoubleSpinBox();
+  pSbMaxDev = new DoubleSpinBoxExt /*1409*/();
   pSbMaxDev->setDecimals( 5 );
   pSbMaxDev->setRange( 1e-7, 1e7 );
   pSbMaxDev->setSingleStep( 1. );
@@ -33,7 +33,7 @@ DlgGlueElems::DlgGlueElems( StringsManager* _pSM, Console* _pConsole,
   pLbLenLimit->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
   pLoGrid->addWidget( pLbLenLimit, 1, 0, 1, 1 );
 
-  pSbLenLimit= new QDoubleSpinBox();
+  pSbLenLimit= new DoubleSpinBoxExt /*1409*/();
   pSbLenLimit->setDecimals( 5 );
   pSbLenLimit->setRange( 1e-7, 1e7 );
   pSbLenLimit->setSingleStep( 1. );

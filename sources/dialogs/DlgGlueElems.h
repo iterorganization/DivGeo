@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QLabel>
-#include <QDoubleSpinBox>
+#include "DoubleSpinBoxExt.h" //1409
 #include <QCheckBox>
 #include <QPushButton>
 
@@ -21,10 +21,10 @@ class DlgGlueElems : public QDialog
   Console* pConsole;
 
   QLabel* pLbMaxDev;
-  QDoubleSpinBox* pSbMaxDev;
+  DoubleSpinBoxExt /*1409*/* pSbMaxDev;
   QLabel* pLbMM1;
   QLabel* pLbLenLimit;
-  QDoubleSpinBox* pSbLenLimit;
+  DoubleSpinBoxExt /*1409*/* pSbLenLimit;
   QLabel* pLbMM2;
   QCheckBox* pChSplitLonger;
   QCheckBox* pChMarked;

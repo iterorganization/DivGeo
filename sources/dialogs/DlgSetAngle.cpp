@@ -14,7 +14,7 @@ DlgSetAngle::DlgSetAngle( double currentRad, StringsManager* _pSM, Console* _pCo
   pLbAngle->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
   pLoMain->addWidget( pLbAngle );
 
-  pSbAngle = new QDoubleSpinBox();
+  pSbAngle = new DoubleSpinBoxExt /*1409*/();
   pSbAngle->setDecimals( 3 );
   pSbAngle->setRange( -1e7, 1e7 );
   pSbAngle->setSingleStep( 1. );

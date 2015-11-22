@@ -12,7 +12,7 @@ DlgCreatePoint::DlgCreatePoint( StringsManager* _pSM,
   QGridLayout* pLoGrid = new QGridLayout( this );
   pLoMain->addLayout( pLoGrid );
 
-  pSbX = new QDoubleSpinBox();
+  pSbX = new DoubleSpinBoxExt /*1409*/();
   pSbX->setDecimals( 5 );
   pSbX->setRange( -100000, 100000 );
   pSbX->setSingleStep( 1. );
@@ -21,7 +21,7 @@ DlgCreatePoint::DlgCreatePoint( StringsManager* _pSM,
   pLbX->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
   pLoGrid->addWidget( pLbX, 0, 0, 1, 1 );
 
-  pSbY = new QDoubleSpinBox();
+  pSbY = new DoubleSpinBoxExt /*1409*/();
   pSbY->setDecimals( 5 );
   pSbY->setRange( -100000, 100000 );
   pSbY->setSingleStep( 1. );

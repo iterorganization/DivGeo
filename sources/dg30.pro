@@ -189,7 +189,8 @@ HEADERS += \
     dialogs/DlgNewModel.h \
     dialogs/DlgProgress.h \
     dialogs/DlgCommentEdit.h \
-    dialogs/PropertyTableWidget.h
+    dialogs/PropertyTableWidget.h \
+    dialogs/DoubleSpinBoxExt.h
 
 
 SOURCES += \
@@ -297,6 +298,7 @@ SOURCES += \
     dialogs/DlgVarHelp.cpp \
     dialogs/DlgNewModel.cpp \
     dialogs/DlgCommentEdit.cpp \
+    dialogs/DoubleSpinBoxExt.cpp \
 \
     model/core/Model.Write.cpp \
     model/core/Model.Read.cpp \

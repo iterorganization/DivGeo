@@ -17,7 +17,7 @@ DlgStretch::DlgStretch( const Point& _current, double _min, double _max,
   QGridLayout* pLoGrid = new QGridLayout( this );
   pLoMain->addLayout( pLoGrid );
 
-  pSbX = new QDoubleSpinBox();
+  pSbX = new DoubleSpinBoxExt /*1409*/();
   pSbX->setDecimals( 5 );
   pSbX->setRange( minScale, maxScale );
   pSbX->setSingleStep( 1. );
@@ -26,7 +26,7 @@ DlgStretch::DlgStretch( const Point& _current, double _min, double _max,
   pLbX->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
   pLoGrid->addWidget( pLbX, 0, 0, 1, 1 );
 
-  pSbY = new QDoubleSpinBox();
+  pSbY = new DoubleSpinBoxExt /*1409*/();
   pSbY->setDecimals( 5 );
   pSbY->setRange( minScale, maxScale );
   pSbY->setSingleStep( 1. );

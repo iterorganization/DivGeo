@@ -13,7 +13,7 @@ DlgMoveRotate::DlgMoveRotate( StringsManager* _pSM, Console* _pConsole,
   QGridLayout* pLoGrid = new QGridLayout( this );
   pLoMain->addLayout( pLoGrid );
 
-  pSbX = new QDoubleSpinBox();
+  pSbX = new DoubleSpinBoxExt /*1409*/();
   pSbX->setDecimals( 5 );
   pSbX->setRange( -1e7, 1e7 );
   pSbX->setSingleStep( 1. );
@@ -22,7 +22,7 @@ DlgMoveRotate::DlgMoveRotate( StringsManager* _pSM, Console* _pConsole,
   pLbX->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
   pLoGrid->addWidget( pLbX, 0, 0, 1, 1 );
 
-  pSbY = new QDoubleSpinBox();
+  pSbY = new DoubleSpinBoxExt /*1409*/();
   pSbY->setDecimals( 5 );
   pSbY->setRange( -1e7, 1e7 );
   pSbY->setSingleStep( 1. );
@@ -31,7 +31,7 @@ DlgMoveRotate::DlgMoveRotate( StringsManager* _pSM, Console* _pConsole,
   pLbY->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
   pLoGrid->addWidget( pLbY, 1, 0, 1, 1 );
 
-  pSbScale = new QDoubleSpinBox();
+  pSbScale = new DoubleSpinBoxExt /*1409*/();
   pSbScale->setDecimals( 5 );
   pSbScale->setRange( 1e-5, 1e7 );
   pSbScale->setValue( 1. );

@@ -35,7 +35,7 @@ DlgCreateSurface::DlgCreateSurface(StringsManager* _pSM, Console* _pConsole,
   pLbAreaS->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
   pLoByLevel->addWidget( pLbAreaS, 0, 0, 1, 1 );
 
-  pSbValue = new QDoubleSpinBox();
+  pSbValue = new DoubleSpinBoxExt /*1409*/();
   pSbValue->setDecimals( 5 );
   pSbValue->setRange( -1000, 1000 );
   pSbValue->setSingleStep( 0.001 );
@@ -53,7 +53,7 @@ DlgCreateSurface::DlgCreateSurface(StringsManager* _pSM, Console* _pConsole,
   pTabsSingle->addTab( pTabByPoint, SM_DLG( DLG::CREATE_SURFACE::SINGLE::BY_POINT ) );
   QGridLayout* pLoByPoint = new QGridLayout( pTabByPoint );
 
-  pSbX = new QDoubleSpinBox();
+  pSbX = new DoubleSpinBoxExt /*1409*/();
   pSbX->setDecimals( 5 );
   pSbX->setRange( -100000, 100000 );
   pSbX->setSingleStep( 1. );
@@ -62,7 +62,7 @@ DlgCreateSurface::DlgCreateSurface(StringsManager* _pSM, Console* _pConsole,
   pLbX->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
   pLoByPoint->addWidget( pLbX, 0, 0, 1, 1 );
 
-  pSbY = new QDoubleSpinBox();
+  pSbY = new DoubleSpinBoxExt /*1409*/();
   pSbY->setDecimals( 5 );
   pSbY->setRange( -100000, 100000 );
   pSbY->setSingleStep( 1. );
@@ -91,7 +91,7 @@ DlgCreateSurface::DlgCreateSurface(StringsManager* _pSM, Console* _pConsole,
   pLbAreaM->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
   pLoMult->addWidget( pLbAreaM, 1, 0, 1, 1 );
 
-  pSbLevel1 = new QDoubleSpinBox();
+  pSbLevel1 = new DoubleSpinBoxExt /*1409*/();
   pSbLevel1->setDecimals( 5 );
   pSbLevel1->setRange( -1000, 1000 );
   pSbLevel1->setSingleStep( 0.01 );
@@ -105,7 +105,7 @@ DlgCreateSurface::DlgCreateSurface(StringsManager* _pSM, Console* _pConsole,
   pBtnCopyL1->setFixedWidth( 24 );
   pLoMult->addWidget( pBtnCopyL1, 2, 2, 1, 1 );
 
-  pSbLevel2 = new QDoubleSpinBox();
+  pSbLevel2 = new DoubleSpinBoxExt /*1409*/();
   pSbLevel2->setDecimals( 5 );
   pSbLevel2->setRange( -1000, 1000 );
   pSbLevel2->setSingleStep( 0.01 );
@@ -128,7 +128,7 @@ DlgCreateSurface::DlgCreateSurface(StringsManager* _pSM, Console* _pConsole,
   pLbCount->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
   pLoMult->addWidget( pLbCount, 4, 0, 1, 1 );
 
-  pSbAlpha1 = new QDoubleSpinBox();
+  pSbAlpha1 = new DoubleSpinBoxExt /*1409*/();
   pSbAlpha1->setDecimals( 5 );
   pSbAlpha1->setRange( 1e-05, 1000 );
   pSbAlpha1->setSingleStep( 0.01 );
@@ -137,7 +137,7 @@ DlgCreateSurface::DlgCreateSurface(StringsManager* _pSM, Console* _pConsole,
   pLbAlpha1->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
   pLoMult->addWidget( pLbAlpha1, 5, 0, 1, 1 );
 
-  pSbAlpha2 = new QDoubleSpinBox();
+  pSbAlpha2 = new DoubleSpinBoxExt /*1409*/();
   pSbAlpha2->setDecimals( 5 );
   pSbAlpha2->setRange( 1e-05, 1000 );
   pSbAlpha2->setSingleStep( 0.01 );

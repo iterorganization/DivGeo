@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QLabel>
-#include <QDoubleSpinBox>
+#include "DoubleSpinBoxExt.h" //1409
 #include <QCheckBox>
 #include <QPushButton>
 
@@ -21,7 +21,7 @@ class DlgGluePoints : public QDialog
   Console* pConsole;
 
   QLabel* pLbDist;
-  QDoubleSpinBox* pSbDist;
+  DoubleSpinBoxExt /*1409*/* pSbDist;
   QLabel* pLbMM;
   QCheckBox* pChMarked;
 

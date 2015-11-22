@@ -18,7 +18,7 @@ DlgGluePoints::DlgGluePoints( StringsManager* _pSM, Console* _pConsole,
   pLbDist->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
   pLoFirst->addWidget( pLbDist );
 
-  pSbDist = new QDoubleSpinBox();
+  pSbDist = new DoubleSpinBoxExt /*1409*/();
   pSbDist->setDecimals( 5 );
   pSbDist->setRange( 1e-7, 1e7 );
   pSbDist->setSingleStep( 1. );

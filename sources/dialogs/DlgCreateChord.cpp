@@ -1,7 +1,7 @@
 #include "DlgCreateChord.h"
 
 #define DLGCHORD_GRID_WIDGET( name, lo, row, rm ) \
-  pSb##name = new QDoubleSpinBox(); \
+  pSb##name = new DoubleSpinBoxExt /*1409*/(); \
   pSb##name->setDecimals( 5 ); \
   pSb##name->setRange( -100000, 100000 ); \
   pSb##name->setSingleStep( 1. ); \

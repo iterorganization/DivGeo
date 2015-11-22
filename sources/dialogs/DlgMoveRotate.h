@@ -2,7 +2,7 @@
 #define DLGMOVEROTATE_H
 
 #include <QDialog>
-#include <QDoubleSpinBox>
+#include "DoubleSpinBoxExt.h" //1409
 #include <QLabel>
 #include <QPushButton>
 #include <QVBoxLayout>
@@ -24,9 +24,9 @@ class DlgMoveRotate: public QDialog
   StringsManager* pSM;
   Console* pConsole;
 
-  QDoubleSpinBox* pSbX;
-  QDoubleSpinBox* pSbY;
-  QDoubleSpinBox* pSbScale;
+  DoubleSpinBoxExt /*1409*/* pSbX;
+  DoubleSpinBoxExt /*1409*/* pSbY;
+  DoubleSpinBoxExt /*1409*/* pSbScale;
 
   QLabel* pLbX;
   QLabel* pLbY;

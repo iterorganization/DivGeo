@@ -9,7 +9,7 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QSpinBox>
-#include <QDoubleSpinBox>
+#include "DoubleSpinBoxExt.h" //1409
 #include <QSpacerItem>
 
 #include "../main/StringsManager.h"
@@ -38,7 +38,7 @@ class DlgCreateGridPoint:
 
   /* single */
   QComboBox*      pCbZoneS;
-  QDoubleSpinBox* pSbValue;
+  DoubleSpinBoxExt /*1409*/* pSbValue;
 
   /* multiple */
   QLabel*         pLbZoneM;
@@ -46,9 +46,9 @@ class DlgCreateGridPoint:
   QLabel*         pLbCount;
   QSpinBox*       pSbCount;
   QLabel*         pLbAlpha1;
-  QDoubleSpinBox* pSbAlpha1;
+  DoubleSpinBoxExt /*1409*/* pSbAlpha1;
   QLabel*         pLbAlpha2;
-  QDoubleSpinBox* pSbAlpha2;
+  DoubleSpinBoxExt /*1409*/* pSbAlpha2;
   QLabel*         pLbLaw;
   QComboBox*      pCbLaw;
 

@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QLabel>
-#include <QDoubleSpinBox>
+#include "DoubleSpinBoxExt.h" //1409
 #include <QCheckBox>
 #include <QPushButton>
 
@@ -21,7 +21,7 @@ class DlgSetAngle : public QDialog
   Console* pConsole;
 
   QLabel* pLbAngle;
-  QDoubleSpinBox* pSbAngle;
+  DoubleSpinBoxExt /*1409*/* pSbAngle;
 
   QPushButton* pBtnOk;
   QPushButton* pBtnCancel;

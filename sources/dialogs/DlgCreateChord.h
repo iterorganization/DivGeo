@@ -2,7 +2,7 @@
 #define CREATECHORD_H
 
 #include <QDialog>
-#include <QDoubleSpinBox>
+#include "DoubleSpinBoxExt.h" //1409
 #include <QLabel>
 #include <QPushButton>
 #include <QVBoxLayout>
@@ -25,12 +25,12 @@ class DlgCreateChord: public QDialog
   QWidget* pTabCart;
   QWidget* pTabCyl;
 
-  QDoubleSpinBox* pSbX1;
-  QDoubleSpinBox* pSbY1;
-  QDoubleSpinBox* pSbZ1;
-  QDoubleSpinBox* pSbX2;
-  QDoubleSpinBox* pSbY2;
-  QDoubleSpinBox* pSbZ2;
+  DoubleSpinBoxExt /*1409*/* pSbX1;
+  DoubleSpinBoxExt /*1409*/* pSbY1;
+  DoubleSpinBoxExt /*1409*/* pSbZ1;
+  DoubleSpinBoxExt /*1409*/* pSbX2;
+  DoubleSpinBoxExt /*1409*/* pSbY2;
+  DoubleSpinBoxExt /*1409*/* pSbZ2;
 
   QLabel* pLbX1;
   QLabel* pLbY1;
@@ -39,12 +39,12 @@ class DlgCreateChord: public QDialog
   QLabel* pLbY2;
   QLabel* pLbZ2;
 
-  QDoubleSpinBox* pSbR1;
-  QDoubleSpinBox* pSbZ1r;
-  QDoubleSpinBox* pSbP1;
-  QDoubleSpinBox* pSbR2;
-  QDoubleSpinBox* pSbZ2r;
-  QDoubleSpinBox* pSbP2;
+  DoubleSpinBoxExt /*1409*/* pSbR1;
+  DoubleSpinBoxExt /*1409*/* pSbZ1r;
+  DoubleSpinBoxExt /*1409*/* pSbP1;
+  DoubleSpinBoxExt /*1409*/* pSbR2;
+  DoubleSpinBoxExt /*1409*/* pSbZ2r;
+  DoubleSpinBoxExt /*1409*/* pSbP2;
 
   QLabel* pLbR1;
   QLabel* pLbZ1r;

@@ -1,4 +1,5 @@
 #include "PropertyTableWidget.h"
+#include "DoubleSpinBoxExt.h"
 
 PropertyTableWidget::PropertyTableWidget(StringsManager* _pSM,
                SettingsManager* _pSettings, bool _updateAll, QWidget *parent ):
@@ -410,7 +411,7 @@ void PropertyTableWidget::AddRangedProperty(
   pLineItem->setData( Qt::UserRole, QVariant::fromValue( _pValue ) );
   this->setItem( row, 0, pLineItem );
 
-  QDoubleSpinBox* pSb = new QDoubleSpinBox();
+  DoubleSpinBoxExt /*1409*/* pSb = new DoubleSpinBoxExt /*1409*/();
   pSb->setFixedSize( 50, row_height-2 );
   pSb->setRange( _minValue, _maxValue );
   pSb->setValue( *_pValue );
@@ -550,7 +551,7 @@ void PropertyTableWidget::slotChangeDValue( int _row )
   QTableWidgetItem* pItem = item( _row, 0 );
   int userType = pItem->data( Qt::UserRole ).userType();
   const int floatType = QMetaType::type( "FloatPtr" );
-  QDoubleSpinBox* pSb = qobject_cast< QDoubleSpinBox* >( cellWidget( _row, 1 ) );
+  DoubleSpinBoxExt /*1409*/* pSb = qobject_cast< DoubleSpinBoxExt /*1409*/* >( cellWidget( _row, 1 ) );
   if( userType != floatType )
     return;
   float* pValue = pItem->data( Qt::UserRole ).value< FloatPtr >();

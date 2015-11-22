@@ -9,7 +9,7 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QSpinBox>
-#include <QDoubleSpinBox>
+#include "DoubleSpinBoxExt.h" //1409
 #include <QSpacerItem>
 #include <QSignalMapper>
 #include <QCheckBox>
@@ -44,23 +44,23 @@ class DlgCreateSurface:
 
   /* single */
   QComboBox*      pCbAreaS;
-  QDoubleSpinBox* pSbValue;
-  QDoubleSpinBox* pSbX;
-  QDoubleSpinBox* pSbY;
+  DoubleSpinBoxExt /*1409*/* pSbValue;
+  DoubleSpinBoxExt /*1409*/* pSbX;
+  DoubleSpinBoxExt /*1409*/* pSbY;
 
   /* multiple */
   QLabel*         pLbAreaM;
   QComboBox*      pCbAreaM;
   QLabel*         pLbLevel1;
-  QDoubleSpinBox* pSbLevel1;
+  DoubleSpinBoxExt /*1409*/* pSbLevel1;
   QLabel*         pLbLevel2;
-  QDoubleSpinBox* pSbLevel2;
+  DoubleSpinBoxExt /*1409*/* pSbLevel2;
   QLabel*         pLbCount;
   QSpinBox*       pSbCount;
   QLabel*         pLbAlpha1;
-  QDoubleSpinBox* pSbAlpha1;
+  DoubleSpinBoxExt /*1409*/* pSbAlpha1;
   QLabel*         pLbAlpha2;
-  QDoubleSpinBox* pSbAlpha2;
+  DoubleSpinBoxExt /*1409*/* pSbAlpha2;
   QLabel*         pLbLaw;
   QComboBox*      pCbLaw;
   QCheckBox*      pChRemoveOld;

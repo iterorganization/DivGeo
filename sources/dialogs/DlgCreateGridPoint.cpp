@@ -27,7 +27,7 @@ DlgCreateGridPoint::DlgCreateGridPoint(StringsManager* _pSM, Console* _pConsole,
   pLbZoneS->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
   pLoSingle->addWidget( pLbZoneS, 0, 0, 1, 1 );
 
-  pSbValue = new QDoubleSpinBox();
+  pSbValue = new DoubleSpinBoxExt /*1409*/();
   pSbValue->setDecimals( 5 );
   pSbValue->setRange( -1000, 1000 );
   pSbValue->setSingleStep( 0.001 );
@@ -64,7 +64,7 @@ DlgCreateGridPoint::DlgCreateGridPoint(StringsManager* _pSM, Console* _pConsole,
   pLbCount->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
   pLoMult->addWidget( pLbCount, 2, 0, 1, 1 );
 
-  pSbAlpha1 = new QDoubleSpinBox();
+  pSbAlpha1 = new DoubleSpinBoxExt /*1409*/();
   pSbAlpha1->setDecimals( 5 );
   pSbAlpha1->setRange( 1e-05, 1000 );
   pSbAlpha1->setSingleStep( 0.01 );
@@ -73,7 +73,7 @@ DlgCreateGridPoint::DlgCreateGridPoint(StringsManager* _pSM, Console* _pConsole,
   pLbAlpha1->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
   pLoMult->addWidget( pLbAlpha1, 3, 0, 1, 1 );
 
-  pSbAlpha2 = new QDoubleSpinBox();
+  pSbAlpha2 = new DoubleSpinBoxExt /*1409*/();
   pSbAlpha2->setDecimals( 5 );
   pSbAlpha2->setRange( 1e-05, 1000 );
   pSbAlpha2->setSingleStep( 0.01 );
