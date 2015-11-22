@@ -89,7 +89,7 @@ typedef struct ToolMark:
   ulong flags;
 
   ToolMark( const Point& _position, bool _isShifted = false ):
-    ToolBase( _isShifted ),
+    ToolBase( _position, _isShifted ),
     pos( _position ),
     pFirstItem( null ),
     include( false ),
