@@ -88,7 +88,7 @@ DlgVdEdit::DlgVdEdit( VarDefPtr _pVD, ModelPtr _pModel,
 
   pChLayer = new QCheckBox( SM_DLG( DLG::VARDEFEDIT::LBL::LAYER ) );
   pLoMain->addWidget( pChLayer );
-  pChExport->setChecked( HasAnyFlag( pVD->Flags(), VF::LAYERINDEX ) );
+  pChLayer->setChecked( HasAnyFlag( pVD->Flags(), VF::LAYERINDEX ) ); //1411 pointer bug
 
   /* Bottom buttons */
   QHBoxLayout* pLoButtons = new QHBoxLayout();
