@@ -162,11 +162,11 @@ void CViewWnd::FitToSceneRect( QRectF _rect )
   if( state.inStretchMode ) {
     double maxRelScale = dg_max( relScale.x, relScale.y );
     if( maxRelScale != 0. )
-      SetScale( state.scale / maxRelScale );
+      SetScale( state.scale / maxRelScale, false ); //1409 false
   }
   else {
     if( relScale.x != 0. && relScale.y != 0. )
-      SetScale( state.scale / relScale );
+      SetScale( state.scale / relScale, false ); //1409 false
   }
 }
 

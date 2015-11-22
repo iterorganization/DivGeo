@@ -417,7 +417,10 @@ QRectF IViewScene::GroupBoundingRect( const IComponentList& _objects )
   return br;
 }
 
-void IViewScene::AddViewState( const ViewStateRecord& vsr ) { stackUndo.append( vsr ); }
+void IViewScene::AddViewState( const ViewStateRecord& vsr ) {
+  stackUndo.append( vsr );
+  stackRedo.clear();//1409
+}
 
 
 ViewStateRecord IViewScene::UndoViewChange()

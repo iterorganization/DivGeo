@@ -49,6 +49,7 @@ void CViewWnd::slotZoomPan( QPoint position, EEventID eventid )
         break;
     ToolTransformViewPtr pToolTransform = static_cast< ToolTransformViewPtr >( pTool );
 
+    SaveState(); //1409
     if( pTool->isMoved && !pTool->isShifted ) { // Zoom in selected region
       Point pos = _C( NearestScenePosition( position ) );
       Point viewSize( rect().width(), rect().height() );
@@ -56,16 +57,16 @@ void CViewWnd::slotZoomPan( QPoint position, EEventID eventid )
       Point zoomFactorOld = state.scale;
 
       SetCenter( mapToScene( _C( (pos + pToolTransform->position) / 2. ) ) );
-      SetScale( zoomFactorOld * viewSize / hiRectSize );
+      SetScale( zoomFactorOld * viewSize / hiRectSize, false ); //1409 false
     }
     else if( !pTool->isMoved && pTool->isShifted ) { // Zoom out
       Point zoomFactorOld = state.scale;
 
       SetCenter( mapToScene( _C( position ) ) );
-      SetScale( zoomFactorOld * Point( 0.5 ) );
+      SetScale( zoomFactorOld * Point( 0.5 ), false ); //1409 false
     }
     else { // Shift view center with selection (shift+press+move) or without (click)
-      SaveState();
+      //SaveState(); //1409 commented
       SetCenter( mapToScene( NearestScenePosition( position ) ) );
       ApplyTransform();
     }
