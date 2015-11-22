@@ -204,7 +204,7 @@ int FluxModel::Carre_WriteInnermostSurface( FILE* _pFile ) const
       if( pSX->CoordsOk() &&
           pSX->Zone() == pSZ->Zone() &&
           (pSX2 == null ||
-           fabs( pSX->Level() - 1. ) > fabs( pSX2->Level() - 1. ) ) )
+           fabs( pSX->Level() - level ) > fabs( pSX2->Level() - level ) ) ) //1410 '1.' -> 'level'
         pSX2 = pSX;
     }
 
