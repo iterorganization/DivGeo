@@ -2,7 +2,7 @@
 
 DlgVdHelpEdit::DlgVdHelpEdit( VarDefPtr _pVD, StringsManager* _pSM,
                               QWidget *parent) :
-  QDialog(parent),
+  QDialog( parent, Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint ), //1411
   pVD( _pVD ),
   pSM( _pSM )
 {

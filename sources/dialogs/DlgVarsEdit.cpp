@@ -14,7 +14,9 @@ VarDefPtr DlgVarsEdit::RetrieveVarDef( NPoint _index ) const
 DlgVarsEdit::DlgVarsEdit(VarSetPtr _pVS, ModelPtr _pModel, CViewWndPtr _pView,
                          Console* _pConsole, StringsManager* _pSM,
                          QWidget *parent):
-  QDialog(parent),
+  QDialog( parent,  Qt::WindowSystemMenuHint |
+                    Qt::WindowCloseButtonHint |
+                    Qt::WindowMinimizeButtonHint ), //1411
   pSM( _pSM ),
   pModel( _pModel ),
   pView( _pView ),

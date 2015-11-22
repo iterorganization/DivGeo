@@ -3,7 +3,7 @@
 DlgVsdEdit::DlgVsdEdit( VarSetDefPtr _pVSD, ModelPtr _pModel,
                         StringsManager* _pSM, Console* _pConsole,
                         QWidget *parent) :
-  QDialog(parent),
+  QDialog( parent, Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint ), //1411
   pVSD( _pVSD ),
   pModel( _pModel ),
   pSM( _pSM ),
