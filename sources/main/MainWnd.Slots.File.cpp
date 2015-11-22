@@ -130,7 +130,8 @@ void CMainWnd::slotSaveAs()
   pConsole->Send( LOG_INFO, sender_name, SM_LOG( LOG::MENU::FILE::SAVEAS ) );
 
   QString sFileName = SelectModelFile( pMV->CurrentProxy()->GetModel() );
-  pMV->CurrentProxy()->SaveModelAs( sFileName );
+  if( not sFileName.isEmpty() ) //1409
+    pMV->CurrentProxy()->SaveModelAs( sFileName );
 }
 
 void CMainWnd::slotSaveCopy()
@@ -138,7 +139,8 @@ void CMainWnd::slotSaveCopy()
   pConsole->Send( LOG_INFO, sender_name, SM_LOG( LOG::MENU::FILE::SAVECOPY ) );
 
   QString sFileName = SelectModelFile( pMV->CurrentProxy()->GetModel() );
-  pMV->CurrentProxy()->SaveModelAs( sFileName, true );
+  if( not sFileName.isEmpty() ) //1409
+    pMV->CurrentProxy()->SaveModelAs( sFileName, true );
 }
 
 void CMainWnd::slotImportTemplate()
