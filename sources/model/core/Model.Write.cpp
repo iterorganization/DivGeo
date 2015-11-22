@@ -470,7 +470,7 @@ int Model::WriteOutputFile( const std::string& _fileName ) const
 
   SendProgress( 5 );
 
-  for( int id = 0; id <= maxId; id++ ) {
+  for( int id = 1; id <= maxId; id++ ) { //1410 0 -> 1
     IVarOriginPtr pObj = pStruct->FindObject( id );
     if( pObj == null )
       zfprintf( file, " 0,0,0\n" );
@@ -499,7 +499,7 @@ int Model::WriteOutputFile( const std::string& _fileName ) const
   SendProgress( 20 );
 
   zfprintf( file, "p2\n" );
-  for( int id = 0; id <= maxId; id++ ) {
+  for( int id = 1; id <= maxId; id++ ) { //1410 0 -> 1
     IVarOriginPtr pObj = pStruct->FindObject( id );
     if( pObj == null )
       zfprintf( file, " 1,1,1\n" );
@@ -529,13 +529,13 @@ int Model::WriteOutputFile( const std::string& _fileName ) const
   SendProgress( 35 );
 
   zfprintf( file, "misselem\n" );
-  for( int id = 0; id <= maxId; id++ ) {
+  for( int id = 1; id <= maxId; id++ ) { //1410 0 -> 1
     if( pStruct->FindObject( id ) == null /*|| IsChordElem(obj)*/)
       zfprintf( file, "  %d\n", id );
   }
 
   zfprintf( file, "sprtrs\n" );
-  for( int id = 0; id <= maxId; id++ ) {
+  for( int id = 1; id <= maxId; id++ ) { //1410 0 -> 1
     IVarOriginPtr pObj = pStruct->FindObject( id );
     if( pObj != null && pObj->Type() == OT::SEPARATOR )
       zfprintf( file, "  %d\n", id );
