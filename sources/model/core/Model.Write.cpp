@@ -617,10 +617,12 @@ int Model::WriteStructureFile( const std::string& _fileName ) const
 
   /* Calculate the number of rings */
   ulong num = 0;
-  FOREACHVARITEMCONST( ElementPtr, pElem0, *pList ) {
-    ElementPtr pElem1 = pElem0->GetNextElem( pList, 1 );
+  ElementPtr pElem0 = null; // 1409 and for{} to fix wrong number of rings
+  FOREACHVARITEMCONST( ElementPtr, pElem, *pList ) {
+    ElementPtr pElem1 = pElem->GetNextElem( pList, 1 );
     if( pElem1 != pElem0 || pElem1 == null )
       num++;
+    pElem0 = pElem;
     /* if (GetNextElem(e,v->val,1)!=e0 ||) i++; */
   }
 
@@ -630,7 +632,7 @@ int Model::WriteStructureFile( const std::string& _fileName ) const
   SendProgress( 10 );
 
   /* ix will be used for ring separation and ix1 for element output */
-  ElementPtr pElem = null;
+  pElem = null; //1409
   IVarItemIter itElem = pList->begin();
   IVarItemIter itElem1 = pList->begin();
   pElem0 = dgtype_cast< ElementPtr >( pList->front() );
@@ -659,7 +661,7 @@ int Model::WriteStructureFile( const std::string& _fileName ) const
     pElem = (itElem == pList->end()) ? null : dgtype_cast< ElementPtr >( *itElem ); /* Will be NULL for the last ring */
 
     /* Write to file */
-    zfprintf( file, "%d\n", (num_ring == 1 && CarreOutputMode()) ? (index + 5) : (index + broken));
+    zfprintf( file, "%d\n", (num_ring == 1 && not CarreOutputMode()) ? (index + 5) : (index + broken));//1410 not carre
 
 
     /* Write nodes */
@@ -675,7 +677,7 @@ int Model::WriteStructureFile( const std::string& _fileName ) const
       zfprintf( file, "  %e , %e\n", pElem00->Node(2)->X(), pElem00->Node(2)->Y() );
 
     /* Write the bounding rectangle for the outermost ring */
-    if( num_ring == 1 && CarreOutputMode() ) {
+    if( num_ring == 1 && not CarreOutputMode() ) { //1409: not carre
       pElem = dgtype_cast< ElementPtr >( pList->front() );
       zfprintf( file, "  %e , %e\n", pElem->Node(1)->X(), pElem->Node(1)->Y() );
       zfprintf( file, "  %e , %e\n", pmax.x, pmax.y );
