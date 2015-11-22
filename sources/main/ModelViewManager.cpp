@@ -268,23 +268,22 @@ void ModelViewManager::SelectCurrentView( CViewWndPtr _pSelectedView )
     if( pCurrentProxy != null )
       pCurrentProxy->ShowAll( false );
     pSelectedProxy->ShowAll( true );
+    pCurrentProxy = pSelectedProxy;
     pMainWnd->UpdateModelInfo( true );
   }
-  else { // same model, another view
+  else if( pCurrentView != _pSelectedView /*1411*/) { // same model, another view
     if( pCurrentView != null &&
         pCurrentView->TopologyDialog() != null )
       pCurrentView->TopologyDialog()->hide();
     if( _pSelectedView->TopologyDialog() != null )
       _pSelectedView->TopologyDialog()->show();
+    QTreeWidgetItem* pViewItem = pCurrentProxy->ViewItem( _pSelectedView );
+    pCurrentProxy->SetCurrentView( _pSelectedView );
+    pTree->setCurrentItem( pViewItem );
+    pTree->clearSelection();
+    pViewItem->setSelected( true );
   }
-
-  pCurrentProxy = pSelectedProxy;
-  QTreeWidgetItem* pViewItem = pCurrentProxy->ViewItem( _pSelectedView );
-  pCurrentProxy->SetCurrentView( _pSelectedView );
-  pTree->setCurrentItem( pViewItem );
-  pTree->clearSelection();
-  pViewItem->setSelected( true );
-  pMainWnd->UpdateModelInfo();
+  //1411 update instructions moved to if-else-if
 }
 
 ModelViewProxyPtr ModelViewManager::GetProxy( CViewWndPtr _pView ) const
