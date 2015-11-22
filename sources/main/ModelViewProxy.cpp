@@ -108,6 +108,7 @@ void ModelViewProxy::UpdateViews( const UpdateInfo& _crUI, bool _force ) //1409 
     pDialog->slotResetAll( false ); // with no view update to avoid recursive call
 
   upEnabled = false;
+  pMainWnd->UpdateVarsMenu(); //1411
 }
 
 void ModelViewProxy::UpdateStatistics()

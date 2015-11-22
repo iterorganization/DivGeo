@@ -200,11 +200,12 @@ private:
   int CreateMenuBar();
   void CreateOldToolBar();
   void CreateToolBars();
-  void UpdateVarsMenu();
+  void UpdateMenu( CViewWndPtr _pView );
 
   void LoadRecentList();
   void SaveRecentList() const;
 public:
+  void UpdateVarsMenu();
   void AddToRecentList( const QString& _crsFilePath );
 
   /**********************************************

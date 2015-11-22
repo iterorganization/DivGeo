@@ -62,6 +62,7 @@ void CMainWnd::slotSetupVariables()
   DlgVsdList* pDialog = new DlgVsdList( pMV->CurrentModel(), pSM, pConsole, this );
   connect( pDialog, SIGNAL(sgnlHelp(int)), this, SLOT(slotDialogHelp(int)) );
   pDialog->exec();
+  UpdateVarsMenu();//1411
 }
 
 void CMainWnd::slotSetupSave()

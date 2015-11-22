@@ -206,6 +206,7 @@ void CMainWnd::slotNewView( CViewWndPtr _pView )
            this,    SLOT(slotEnableUndoStack(bool)) );
 
   QMdiSubWindow* pSubWnd = pMdiArea->addSubWindow( (QWidget*)_pView );
+  UpdateMenu( _pView ); //1411
 
   pSubWnd->activateWindow();
   pSubWnd->setWindowState( Qt::WindowMaximized );
@@ -525,6 +526,41 @@ void CMainWnd::slotActiveSubWndChanged( QMdiSubWindow* _pSubWnd )
 
 void CMainWnd::slotActiveViewChanged( CViewWndPtr _pView )
 {
+  if( _pView == null )
+      UpdateMenu( _pView );
+  else {
+    // Find subwindow
+    QMdiSubWindow* pSubWindow = null;
+    foreach( QMdiSubWindow* pSW, pMdiArea->subWindowList() )
+      if( qobject_cast< CViewWndPtr >( pSW->widget() ) == _pView ) {
+        pSubWindow = pSW;
+        break; //1411
+      }
+    if( pSubWindow == null )
+      return;
+
+    QMdiSubWindow* pCurrentSubWindow = pMdiArea->activeSubWindow();
+    // Check if the subwindow is in focus
+    if( pCurrentSubWindow != pSubWindow ) { // 1411  {}
+      pMdiArea->setActiveSubWindow( pSubWindow );
+
+      // Update MV-manager tree
+      if( pMV->CurrentView() != _pView ) {
+        QString current_str = QString( "Current model: %1, view: %2" )
+                              .arg( ToQString( _pView->GetModel()->Name() ) )
+                              .arg( _pView->TitleName() );
+
+        pConsole->Send( LOG_INFO, sender_name, current_str );
+        pMV->SelectCurrentView( _pView );
+      }
+      UpdateModelInfo( true );
+      UpdateActionsInfo();
+    } //1411 {}
+    UpdateMenu( _pView );
+  }
+}
+
+void CMainWnd::UpdateMenu( CViewWndPtr _pView ) {
   if( _pView == null ) {
     pButton_L->setEnabled( false );
     pButton_M->setEnabled( false );
@@ -553,28 +589,6 @@ void CMainWnd::slotActiveViewChanged( CViewWndPtr _pView )
     pToolBar_Edit->setEnabled( false );
   }
   else {
-    // Find subwindow
-    QMdiSubWindow* pSubWindow = null;
-    foreach( QMdiSubWindow* pSW, pMdiArea->subWindowList() )
-      if( qobject_cast< CViewWndPtr >( pSW->widget() ) == _pView )
-        pSubWindow = pSW;
-    if( pSubWindow == null )
-      return;
-
-    // Check if the subwindow is in focus
-    if( pMdiArea->activeSubWindow() != pSubWindow )
-      pMdiArea->setActiveSubWindow( pSubWindow );
-
-    // Update MV-manager tree
-    if( pMV->CurrentView() != _pView ) {
-      QString current_str = QString( "Current model: %1, view: %2" )
-              .arg( ToQString( _pView->GetModel()->Name() ) )
-              .arg( _pView->TitleName() );
-
-      pConsole->Send( LOG_INFO, sender_name, current_str );
-      pMV->SelectCurrentView( _pView );
-    }
-
     // Enable or disable menus, tools and flags
     pButton_L->setEnabled( true );
     pButton_M->setEnabled( true );
@@ -664,9 +678,6 @@ void CMainWnd::slotActiveViewChanged( CViewWndPtr _pView )
     pToolBar_View->setEnabled( true );
     pToolBar_Edit->setEnabled( true );
   }
-
-  UpdateModelInfo();
-  UpdateActionsInfo();
 }
 
 QStringList CMainWnd::GetLoadErrFlagsDescription( int errFlags )
