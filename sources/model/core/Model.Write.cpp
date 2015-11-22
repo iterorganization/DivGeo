@@ -302,7 +302,12 @@ int Model::WriteTargetsFile( const std::string& _fileName ) const
   }
 
   /* Output the equilibrium filename */
-  zfprintf( file, "# equil %s\n", fileName.c_str() );
+  if( pFlux->HasEquil() ) //1410
+    zfprintf( file, "# equil %s\n", pFlux->GetEquil()->FileName().c_str() );//1410 equil filename
+
+  /* Output the mesh filename */
+  if( HasMesh() )
+    zfprintf( file, "# mesh %s\n", pMesh->FileName().c_str() );//1410 mesh filename from dg2.1.1
 
   /* Output the topology name */
   zfprintf( file, "# topo %s\n", TopologyName().c_str() );
