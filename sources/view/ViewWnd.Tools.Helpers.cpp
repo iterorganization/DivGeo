@@ -224,7 +224,7 @@ void CViewWnd::slotExamine( QPoint position, EEventID eventid )
 
     if( pTool->pItem != null )
       emit UpdateObjectInfo( pTool->pItem->ModelObject() );
-    emit UpdateModelInfo(); //1408
+    //emit UpdateModelInfo(); //1408 1411 -- disabled
     delete pTool;
     pTool = null;
     break;
