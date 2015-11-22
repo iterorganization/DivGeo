@@ -65,7 +65,7 @@ signals:
   void sgnlVarHelp( const QString& _crsTitle, const QString& _crsText );
 
 public slots:
-  void slotResetAll( bool _viewUpdate = true ); //1409
+  void slotResetAll( bool _viewUpdate = false ); //1409, 1411 true -> false
 
 private slots:
   void slotHelp() { emit sgnlHelp( DLG::VARSEDIT::DIALOG ); }
@@ -74,7 +74,8 @@ private slots:
   void slotVarHelp( int _index );
   void slotEdited( int _index );
   void slotOnClick( int _index );
-  void slotResetVar( int _index, bool _viewUpdate = true ); //1409
+  void slotMarkVar( int _index ); //1411
+  void slotResetVar( int _index, bool _viewUpdate = false ); //1409, 1411 true -> false
   void slotAcceptVar( int _index );
 
   void slotPopupReset();

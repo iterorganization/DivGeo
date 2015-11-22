@@ -81,6 +81,12 @@ DlgVarsEdit::DlgVarsEdit(VarSetPtr _pVS, ModelPtr _pModel, CViewWndPtr _pView,
   pLoButtons->addWidget( pBtnHelp );
   connect( pBtnHelp, SIGNAL(clicked()), this, SLOT(slotHelp()) );
 
+  // Find max index 1411
+  FOREACHPTRCONST( VarDefPtr, pVDa, pVS->VSD()->VarDefs() ) {
+    varsSize.x = dg_max( varsSize.x, pVDa->Row()+1 );
+    varsSize.y = dg_max( varsSize.y, pVDa->Column()+1 );
+  }
+
   /* Prepare vars tables */
   QHBoxLayout* pLoVars = new QHBoxLayout();
   pLoMain->addLayout( pLoVars );
@@ -92,6 +98,10 @@ DlgVarsEdit::DlgVarsEdit(VarSetPtr _pVS, ModelPtr _pModel, CViewWndPtr _pView,
     vars[ c ]->verticalHeader()->hide();
     vars[ c ]->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     vars[ c ]->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    vars[ c ]->horizontalHeader()->setSectionResizeMode( 0, QHeaderView::Stretch ); //1411
+    vars[ c ]->horizontalHeader()->setSectionResizeMode( 2, QHeaderView::Stretch ); //1411
+    vars[ c ]->setSelectionBehavior( QAbstractItemView::SelectRows ); //1411
+    vars[ c ]->setSelectionMode( QAbstractItemView::NoSelection ); //1411
     pLoVars->addWidget( vars[ c ] );
   }
 
@@ -100,7 +110,7 @@ DlgVarsEdit::DlgVarsEdit(VarSetPtr _pVS, ModelPtr _pModel, CViewWndPtr _pView,
   pSmValue = new QSignalMapper( this );
   connect( pSmValue, SIGNAL(mapped(int)), this, SLOT(slotEdited(int)) );
   pSmReset = new QSignalMapper( this );
-  connect( pSmReset, SIGNAL(mapped(int)), this, SLOT(slotResetVar(int)) );
+  connect( pSmReset, SIGNAL(mapped(int)), this, SLOT(slotMarkVar(int)) );
   pSmAccept = new QSignalMapper( this );
   connect( pSmAccept, SIGNAL(mapped(int)), this, SLOT(slotAcceptVar(int)) );
   pSmClick = new QSignalMapper( this );
@@ -112,7 +122,8 @@ DlgVarsEdit::DlgVarsEdit(VarSetPtr _pVS, ModelPtr _pModel, CViewWndPtr _pView,
 
   /* Fill vars table with items and widgets */
   FOREACHPTRCONST( VarDefPtr, pVD, pVS->VSD()->VarDefs() ) {
-    NPoint index;
+    NPoint index = pVD->Index(); //1411 all row indecies switched to VD index
+    std::swap( index.x, index.y );
     // Name
     QString name = QString::fromStdString( pVD->Descr() );
     QTableWidgetItem* pItem = new QTableWidgetItem( name );
@@ -170,6 +181,8 @@ DlgVarsEdit::DlgVarsEdit(VarSetPtr _pVS, ModelPtr _pModel, CViewWndPtr _pView,
 
   for( int c = 0; c < varsSize.y; c++ ) {
     vars[ c ]->resizeColumnsToContents();
+    vars[ c ]->setColumnWidth( 1, 50 ); //1411
+    vars[ c ]->setColumnWidth( 3, 70 ); //1411
 
     for( int r = 0; r < varsSize.x; r++ )
       vars[ c ]->setRowHeight( r, h );
@@ -275,6 +288,18 @@ void DlgVarsEdit::slotOnClick( int _index )
   }
 }
 
+void DlgVarsEdit::slotMarkVar( int _index )
+{
+  slotResetVar( _index, true );
+  NPoint index( _index & 0xFFFF, _index >> 16 );
+  VarDefPtr pVD = RetrieveVarDef( index );
+  if( pVD == null )
+    return;
+  UPtr value = pModel->Vars()->GetVarEx( pVS, pVD );
+  QString str_value = ToQString( pModel->Vars()->GetVarValueDescr( pVD->VarDefType(), value ) );
+  pLlStatus->setText( pSM->GetString( DG3::OLD_VALUE, "msg" ).arg( str_value ) );
+}
+
 void DlgVarsEdit::slotResetVar( int _index, bool _viewUpdate )
 {
   NPoint index( _index & 0xFFFF, _index >> 16 );
@@ -315,7 +340,7 @@ void DlgVarsEdit::slotResetVar( int _index, bool _viewUpdate )
     }
   }
 
-  if( reset ) {
+  if( reset && not pVD->HasGroup()) { //1411
     /* Disable reset and set buttons */
     QWidget* pWgt = vars[ index.y ]->cellWidget( index.x, 3 );
     QPushButton* pBtnSet = qobject_cast< QPushButton* >( pWgt );
