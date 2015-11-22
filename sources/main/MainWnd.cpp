@@ -626,7 +626,7 @@ void CMainWnd::UpdateMenu( CViewWndPtr _pView ) {
     //mapMenuActions.value( MENU::OPTIONS::MESH_EDITING )->setEnabled( meshExists );
 
     for( QMap< ShowFlag, QAction* >::iterator it = mapViewOptions.begin(),
-                                           itEnd = mapViewOptions.end();
+         itEnd = mapViewOptions.end();
          it != itEnd; ++it )
       it.value()->setChecked( _pView->HasShowFlag( it.key() ) );
 
