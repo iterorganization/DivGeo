@@ -1,8 +1,10 @@
 #include "DlgVarsEdit.h"
 
-VarDefPtr DlgVarsEdit::RetrieveVarDef( int row ) const
+VarDefPtr DlgVarsEdit::RetrieveVarDef( NPoint _index ) const
 {
-  QTableWidgetItem* pItem = pVars->item( row, 0 );
+  QTableWidgetItem* pItem = vars[ _index.y ]->item( _index.x, 0 );
+  if( pItem == null )
+    return null;
   QVariant qv = pItem->data( Qt::UserRole );
   if( qv.isNull() || qv.userType() != QMetaType::type( "VarDefPtr" ) )
     return null;
@@ -18,7 +20,9 @@ DlgVarsEdit::DlgVarsEdit(VarSetPtr _pVS, ModelPtr _pModel, CViewWndPtr _pView,
   pView( _pView ),
   pConsole( _pConsole ),
   pVS( _pVS ),
-  changed_num( 0 )
+  changed_num( 0 ),
+  varsSize( 0 ),
+  resetEnabled( true )
 {
   QString title = QString::fromStdString( pVS->Description() );
   this->setWindowTitle( title );
@@ -75,13 +79,19 @@ DlgVarsEdit::DlgVarsEdit(VarSetPtr _pVS, ModelPtr _pModel, CViewWndPtr _pView,
   pLoButtons->addWidget( pBtnHelp );
   connect( pBtnHelp, SIGNAL(clicked()), this, SLOT(slotHelp()) );
 
-  /* Prepare vars table */
-  pVars = new QTableWidget( pVS->VSD()->VarDefsNum(), 4 );
-  pVars->horizontalHeader()->hide();
-  pVars->verticalHeader()->hide();
-  pVars->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-  pVars->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-  pLoMain->addWidget( pVars );
+  /* Prepare vars tables */
+  QHBoxLayout* pLoVars = new QHBoxLayout();
+  pLoMain->addLayout( pLoVars );
+
+  vars.resize( varsSize.y );
+  for( int c = 0; c < varsSize.y; c++ ) {
+    vars[ c ] = new QTableWidget( varsSize.x, 4 );
+    vars[ c ]->horizontalHeader()->hide();
+    vars[ c ]->verticalHeader()->hide();
+    vars[ c ]->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    vars[ c ]->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    pLoVars->addWidget( vars[ c ] );
+  }
 
   pSmHelp = new QSignalMapper( this );
   connect( pSmHelp, SIGNAL(mapped(int)), this, SLOT(slotVarHelp(int)) );
@@ -91,110 +101,143 @@ DlgVarsEdit::DlgVarsEdit(VarSetPtr _pVS, ModelPtr _pModel, CViewWndPtr _pView,
   connect( pSmReset, SIGNAL(mapped(int)), this, SLOT(slotResetVar(int)) );
   pSmAccept = new QSignalMapper( this );
   connect( pSmAccept, SIGNAL(mapped(int)), this, SLOT(slotAcceptVar(int)) );
+  pSmClick = new QSignalMapper( this );
+  connect( pSmClick, SIGNAL(mapped(int)), this, SLOT(slotOnClick(int)) );
 
   const QString& str_help = SM_DLG( DLG::VARSEDIT::BTN::VAR_HELP );
   const QString& str_mark = SM_DLG( DLG::VARSEDIT::BTN::MARK );
   const QString& str_set = SM_DLG( DLG::VARSEDIT::BTN::SET );
 
   /* Fill vars table with items and widgets */
-  ulong row = 0;
   FOREACHPTRCONST( VarDefPtr, pVD, pVS->VSD()->VarDefs() ) {
+    NPoint index;
+    // Name
     QString name = QString::fromStdString( pVD->Descr() );
     QTableWidgetItem* pItem = new QTableWidgetItem( name );
     pItem->setFlags( Qt::ItemIsEnabled );
     pItem->setData( Qt::UserRole, QVariant::fromValue( pVD ) );
-    pVars->setItem( row, 0, pItem );
+    vars[ index.y ]->setItem( index.x, 0, pItem );
 
+    // Help
     QTableWidgetItem* pItem1 = new QTableWidgetItem();
     pItem1->setFlags( Qt::ItemIsEnabled );
-    pVars->setItem( row, 1, pItem1 );
+    vars[ index.y ]->setItem( index.x, 1, pItem1 );
     if( !pVD->Help().empty() ) {
       QPushButton* pBtnVarHelp = new QPushButton( str_help );
       pBtnVarHelp->adjustSize();
       connect( pBtnVarHelp, SIGNAL(clicked()), pSmHelp, SLOT(map()) );
-      pSmHelp->setMapping( pBtnVarHelp, row );
-      pVars->setCellWidget( row, 1, pBtnVarHelp );
+      pSmHelp->setMapping( pBtnVarHelp, index.x + (index.y << 16) );
+      vars[ index.y ]->setCellWidget( index.x, 1, pBtnVarHelp );
     }
 
+    // Value / Reset
     QTableWidgetItem* pItem2 = new QTableWidgetItem();
     pItem2->setFlags( Qt::ItemIsEnabled );
-    pVars->setItem( row, 2, pItem2 );
+    vars[ index.y ]->setItem( index.x, 2, pItem2 );
     if( !pVD->HasGroup() ) {
-      connect( pVars, SIGNAL(itemClicked(QTableWidgetItem*)),
-               this, SLOT(slotOnClick(QTableWidgetItem*)) );
+      //connect( vars[ index.y ], SIGNAL(itemClicked(QTableWidgetItem*)),
+      //         this, SLOT(slotOnClick(QTableWidgetItem*)) );
       if( !HasAnyFlag( pVD->VarDefType(), VTF::FILENAME ) ) {
         QLineEdit* pLeValue = new QLineEdit();
-        pSmValue->setMapping( pLeValue, row );
+        pSmValue->setMapping( pLeValue, index.x + (index.y << 16) );
         connect( pLeValue, SIGNAL( textEdited(QString)), pSmValue, SLOT(map()) );
-        pVars->setCellWidget( row, 2, pLeValue );
+        vars[ index.y ]->setCellWidget( index.x, 2, pLeValue );
       }
     }
     else {
       QPushButton* pBtnVarReset = new QPushButton( str_mark );
       pBtnVarReset->adjustSize();
-      pVars->setCellWidget( row, 2, pBtnVarReset );
-      pSmReset->setMapping( pBtnVarReset, row );
+      vars[ index.y ]->setCellWidget( index.x, 2, pBtnVarReset );
+      pSmReset->setMapping( pBtnVarReset, index.x + (index.y << 16) );
       connect( pBtnVarReset, SIGNAL(clicked()), pSmReset, SLOT(map()) );
-
     }
 
+    // Set
     QTableWidgetItem* pItem3 = new QTableWidgetItem();
     pItem3->setFlags( Qt::ItemIsEnabled );
-    pVars->setItem( row, 3, pItem3 );
+    vars[ index.y ]->setItem( index.x, 3, pItem3 );
     QPushButton* pBtnVarSet = new QPushButton( str_set );
     pBtnVarSet->adjustSize();
-    pVars->setCellWidget( row, 3, pBtnVarSet );
-    pSmAccept->setMapping( pBtnVarSet, row );
+    vars[ index.y ]->setCellWidget( index.x, 3, pBtnVarSet );
+    pSmAccept->setMapping( pBtnVarSet, index.x + (index.y << 16) );
     connect( pBtnVarSet, SIGNAL(clicked()), pSmAccept, SLOT(map()) );
-    row++;
   }
 
-  pVars->resizeColumnsToContents();
-  pVars->resizeRowsToContents();
+  vars[ 0 ]->resizeRowsToContents();
+  int h = vars[ 0 ]->rowHeight( 0 );
+
+  for( int c = 0; c < varsSize.y; c++ ) {
+    vars[ c ]->resizeColumnsToContents();
+
+    for( int r = 0; r < varsSize.x; r++ )
+      vars[ c ]->setRowHeight( r, h );
+  }
+
+  pLlStatus = new QLabel();
+  pLoMain->addWidget( pLlStatus );
 
   /* hack: resize to table contents */
-  int contents_width = 0;
+  /*int contents_width = 0;
   for( int c = 0; c < 4; c++ )
     contents_width += pVars->columnWidth(c);
-  int contents_height = pVars->rowCount() * pVars->rowHeight(0);
-  setFixedSize( contents_width + 24, contents_height + 52 );
+  setMinimumSize( contents_width + 24, contents_height + 52 );*/
+  int contents_height = vars[ 0 ]->rowCount() * vars[ 0 ]->rowHeight(0);
+  setFixedHeight( contents_height + 73 );
+
+  vars[ 0 ]->selectRow( 0 );
 
   slotResetAll();
 }
 
 void DlgVarsEdit::slotCollapse( bool b )
 {
-  pVars->setVisible( !b );
-  int new_height = 52;
-  if( !b )
-    new_height += pVars->rowCount() * pVars->rowHeight(0);
+  for( int c = 0; c < varsSize.y; c++ )
+    vars[ c ]->setVisible( !b );
+  int new_height;
+  if( !b ) {
+    new_height = 73 + vars[ 0 ]->rowCount() * vars[ 0 ]->rowHeight(0);
+    pLlStatus->setVisible( true );
+  }
+  else {
+    new_height = 44;
+    pLlStatus->setVisible( false );
+  }
   this->setFixedHeight( new_height );
 }
 
 void DlgVarsEdit::slotAcceptAll()
 {
-  for( int r = 0; r < pVars->rowCount(); r++ )
-    slotAcceptVar( r );
+  for( int x = 0; x < varsSize.x; x++ )
+    for( int y = 0; y < varsSize.y; y++ )
+      slotAcceptVar( x + (y << 16) );
 }
 
-void DlgVarsEdit::slotResetAll()
+void DlgVarsEdit::slotResetAll( bool _viewUpdate )
 {
-  for( int r = 0; r < pVars->rowCount(); r++ )
-    slotResetVar( r );
+  if( resetEnabled ) {
+    for( int x = 0; x < varsSize.x; x++ )
+      for( int y = 0; y < varsSize.y; y++ )
+        slotResetVar( x + (y << 16), _viewUpdate );
+  }
+  else
+    resetEnabled = true;
+
 }
 
-void DlgVarsEdit::slotVarHelp( int row )
+void DlgVarsEdit::slotVarHelp( int _index )
 {
-  VarDefPtr pVD = RetrieveVarDef( row );
+  VarDefPtr pVD = RetrieveVarDef( NPoint( _index & 0xFFFF, _index >> 16 ) );
   QString sName = QString::fromStdString( pVD->Descr() );
   QString sHelp = QString::fromStdString( pVD->Help() );
   emit sgnlVarHelp( sName, sHelp );
 }
 
-void DlgVarsEdit::slotEdited( int row )
+void DlgVarsEdit::slotEdited( int _index )
 {
   /* Enable reset and set buttons */
-  QPushButton* pBtnSet = qobject_cast< QPushButton* >( pVars->cellWidget( row, 3 ) );
+  NPoint index( _index & 0xFFFF, _index >> 16 );
+  QWidget* pWgt = vars[ index.y ]->cellWidget( index.x, 3 );
+  QPushButton* pBtnSet = qobject_cast< QPushButton* >( pWgt );
   pBtnSet->setEnabled( true );
 
   changed_num++;
@@ -202,26 +245,38 @@ void DlgVarsEdit::slotEdited( int row )
     pBtnResetAll->setEnabled( true );
   if( pBtnSetAll != null )
     pBtnSetAll->setEnabled( true );
+
+  VarDefPtr pVD = RetrieveVarDef( index );
+  if( pVD == null )
+    return;
+  UPtr value = pModel->Vars()->GetVarEx( pVS, pVD );
+  QString str_value = ToQString( pModel->Vars()->GetVarValueDescr( pVD->VarDefType(), value ) );
+  pLlStatus->setText( pSM->GetString( DG3::OLD_VALUE, "msg" ).arg( str_value ) );
 }
 
-void DlgVarsEdit::slotOnClick( QTableWidgetItem* pItem )
+void DlgVarsEdit::slotOnClick( int _index )
 {
-  if( pItem->column() == 2 ) {
+  NPoint index( _index & 0xFFFF, _index >> 16 );
+  if( index.y == 2 ) {
     /* using FileDialog */
-    VarDefPtr pVD = RetrieveVarDef( pItem->row() );
+    VarDefPtr pVD = RetrieveVarDef( index );
     if( HasAnyFlag( pVD->VarDefType(), VTF::FILENAME ) ) {
       QString title = SM_DLG( DLG::VARSFILESET::TITLE );
       QString filter = SM_MSG( ENV::VARSFILESETMASK );
       QString fileName = QFileDialog::getOpenFileName(
                            this, title, QDir::currentPath(), filter );
+      QTableWidgetItem* pItem = vars[ index.y ]->item( index.x, 2 );
       pItem->setText( fileName );
     }
   }
 }
 
-void DlgVarsEdit::slotResetVar( int row )
+void DlgVarsEdit::slotResetVar( int _index, bool _viewUpdate )
 {
-  VarDefPtr pVD = RetrieveVarDef( row );
+  NPoint index( _index & 0xFFFF, _index >> 16 );
+  VarDefPtr pVD = RetrieveVarDef( index );
+  if( pVD == null )
+    return;
 
   /* Reset var string */
   UPtr value = pModel->Vars()->GetVarEx( pVS, pVD );
@@ -229,23 +284,28 @@ void DlgVarsEdit::slotResetVar( int row )
   bool reset = false;
 
   if( pVD->HasGroup() ) {
-    assert( value.Type() == UPtr::LIST );
-    pModel->UnmarkAll();
-    pModel->MarkGroup( value.ListRef() );
-    pModel->ActionStack().Complete( "Vars:Reset" );
+    if( _viewUpdate ) {
+      assert( value.Type() == UPtr::LIST );
+      pModel->UnmarkAll();
+      pModel->MarkGroup( value.ListRef() );
+      resetEnabled = false;
+      pModel->ActionStack().Complete( "Vars:Reset" );
+    }
   }
   else {
-    QString str_value = QString::fromStdString( pModel->Vars()->GetVarValueDescr( pVD->VarDefType(), value ) );
+    QString str_value = ToQString( pModel->Vars()->GetVarValueDescr( pVD->VarDefType(), value ) );
     if( !HasAnyFlag( pVD->VarDefType(), VTF::FILENAME ) ) {
-      QLineEdit* pLeValue = qobject_cast< QLineEdit* >( pVars->cellWidget( row, 2 ) );
+      QWidget* pWgt = vars[ index.y ]->cellWidget( index.x, 2 );
+      QLineEdit* pLeValue = qobject_cast< QLineEdit* >( pWgt );
       if( pLeValue != null && str_value != pLeValue->text() ) {
         pLeValue->setText( str_value );
         reset = true;
       }
     }
     else {
-      if( str_value != pVars->item( row, 2 )->text() ) {
-        pVars->item( row, 2 )->setText( str_value );
+      QTableWidgetItem* pItem = vars[ index.y ]->item( index.x, 2 );
+      if( str_value != pItem->text() ) {
+        pItem->setText( str_value );
         reset = true;
       }
     }
@@ -253,7 +313,8 @@ void DlgVarsEdit::slotResetVar( int row )
 
   if( reset ) {
     /* Disable reset and set buttons */
-    QPushButton* pBtnSet = qobject_cast< QPushButton* >( pVars->cellWidget( row, 3 ) );
+    QWidget* pWgt = vars[ index.y ]->cellWidget( index.x, 3 );
+    QPushButton* pBtnSet = qobject_cast< QPushButton* >( pWgt );
     pBtnSet->setDisabled( true );
 
     changed_num--;
@@ -263,14 +324,20 @@ void DlgVarsEdit::slotResetVar( int row )
     }
   }
 
-  pModel->ActionStack().Complete( "Vars:Reset" );
+  if( _viewUpdate ) {
+    resetEnabled = false;
+    pModel->ActionStack().Complete( "Vars:Reset" );
+  }
 }
 
-void DlgVarsEdit::slotAcceptVar( int row )
+void DlgVarsEdit::slotAcceptVar( int _index )
 {
   SENDER_NAME_Q( "DlgVarsEdit::slotAcceptVar" );
 
-  VarDefPtr pVD = RetrieveVarDef( row );
+  NPoint index( _index & 0xFFFF, _index >> 16 );
+  VarDefPtr pVD = RetrieveVarDef( index );
+  if( pVD == null )
+    return;
 
   int r = 0;
   /* Check locks */
@@ -287,7 +354,8 @@ void DlgVarsEdit::slotAcceptVar( int row )
       val.SetValue( objects, true );
     }
     else {
-      QLineEdit* pLeValue = qobject_cast< QLineEdit* >( pVars->cellWidget( row, 2 ) );
+      QWidget* pWgt = vars[ index.y ]->cellWidget( index.x, 2 );
+      QLineEdit* pLeValue = qobject_cast< QLineEdit* >( pWgt );
       QString sText = (pLeValue != null) ? pLeValue->text() : "";
       val.SetValue( sText.toStdString(), true );
     }
@@ -307,18 +375,36 @@ void DlgVarsEdit::slotAcceptVar( int row )
 
   /* Success */
   if( r == 0 ) {
+    /* disable local set button */
+    QWidget* pWgt = vars[ index.y ]->cellWidget( index.x, 3 );
+    if( not pVD->HasGroup() ) { //1411
+      QPushButton* pBtnSet = qobject_cast< QPushButton* >( pWgt );
+      pBtnSet->setDisabled( true );
+    }
+    else {
+      UPtr value = pModel->Vars()->GetVarEx( pVS, pVD );
+      QString str_value = ToQString( pModel->Vars()->GetVarValueDescr( pVD->VarDefType(), value ) );
+      pLlStatus->setText( pSM->GetString( DG3::NEW_VALUE, "msg" ).arg( str_value ) );
+    }
+    /* Disable common reset and set buttons */
+    slotResetVar( _index );
+    /* Update all */
+    resetEnabled = false;
     pModel->ActionStack().Complete( "Vars:Accept" );
-    slotResetVar( row );
   }
 }
 
 void DlgVarsEdit::contextMenuEvent( QContextMenuEvent* _pCME )
 {
-  QTableWidgetItem* pItem = pVars->itemAt( _pCME->pos() - pVars->pos() );
+  QTableWidgetItem* pItem = null;
+  int c = 0;
+  for( ; c < varsSize.y; c++ )
+    if( (pItem = vars[ c ]->itemAt( _pCME->pos() - vars[ c ]->pos() )) != null )
+      break;
   if( pItem == null )
     return _pCME->accept();
 
-  current_row = pItem->row();
+  currentIndex = NPoint( pItem->row(), c );
 
   QMenu menu( this );
   QAction* pAct = menu.addAction( SM_DLG( DLG::VARSEDIT::VARS_POPUP::RESET ),
@@ -350,7 +436,7 @@ void DlgVarsEdit::contextMenuEvent( QContextMenuEvent* _pCME )
 }
 
 
-void DlgVarsEdit::slotPopupReset() { slotResetVar( current_row ); }
+void DlgVarsEdit::slotPopupReset() { slotResetVar( currentIndex.x + (currentIndex.y << 16) ); }
 
 void DlgVarsEdit::slotPopupCompareEQ() { Compare( EQ ); }
 void DlgVarsEdit::slotPopupCompareNE() { Compare( NE ); }
@@ -361,15 +447,19 @@ void DlgVarsEdit::slotPopupCompareLE() { Compare( LE ); }
 void DlgVarsEdit::Compare( CompareOperator _co )
 {
   SENDER_NAME_Q( "DlgVarsEdit::Compare" );
-  VarDefPtr pVD = RetrieveVarDef( current_row );
-  QTableWidgetItem* pItem = pVars->item( current_row, 2 );
+  VarDefPtr pVD = RetrieveVarDef( currentIndex );
+  if( pVD == null )
+    return;
+
+  QTableWidgetItem* pItem = vars[ currentIndex.y ]->item( currentIndex.x, 2 );
 
   if( !pVD->IsMultiple() ) {
     pConsole->Send( WND_ERROR, SENDER, DLG::VARSEDIT::ERR::BAD_SCOPE );
     return;
   }
 
-  QLineEdit* pLeValue = qobject_cast< QLineEdit* >( pVars->cellWidget( current_row, 2 ) );
+  QWidget* pWgt = vars[ currentIndex.y ]->cellWidget( currentIndex.x, 2 );
+  QLineEdit* pLeValue = qobject_cast< QLineEdit* >( pWgt );
   QString sText = (pLeValue != null) ? pLeValue->text() : "";
   const char* caValue = sText.toUtf8().data();
 
@@ -465,7 +555,9 @@ void DlgVarsEdit::Compare( CompareOperator _co )
 void DlgVarsEdit::slotPopupDisplay()
 {
   SENDER_NAME_Q( "DlgVarsEdit::slotPopupDisplay" );
-  VarDefPtr pVD = RetrieveVarDef( current_row );
+  VarDefPtr pVD = RetrieveVarDef( currentIndex );
+  if( pVD == null )
+    return;
 
   if( !pVD->IsMultiple() ) {
     pConsole->Send( WND_ERROR, SENDER, DLG::VARSEDIT::ERR::BAD_SCOPE );
@@ -480,7 +572,7 @@ void DlgVarsEdit::slotPopupDisplay()
   FOREACH_CONST( IVarOriginIter, it, origins ) {
     UPtr value = pModel->Vars()->GetVar( *it, pVD, pVS );
     assert( value.Type() == UPtr::STR );
-    QString sDescr = QString::fromStdString( pModel->Vars()->GetVarValueDescr( pVD->VarDefType(), value ) );
+    QString sDescr = ToQString( pModel->Vars()->GetVarValueDescr( pVD->VarDefType(), value ) );
     pView->CurrentScene()->CreateLabelItem( CastVarOrigin< IComponent >( *it ), sDescr );
   }
 

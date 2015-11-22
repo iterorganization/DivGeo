@@ -214,8 +214,8 @@ ENUM_STRUCT( DG3 )
   VIEW_COLORED_EQUIL,
   VIEW_SCENE,                 COMMENT,
   VIEW_CENTER_CHANGED,
-  VIEW_STATE,
-
+  VIEW_STATE,                 NEW_VALUE,
+                              OLD_VALUE,
   ACT_ADDED,
   ACT_DELETED,
   ACT_CHANGED,

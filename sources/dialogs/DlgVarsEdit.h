@@ -31,7 +31,7 @@ class DlgVarsEdit : public QDialog
   VarSetPtr pVS;
 
   QCheckBox* pChHold;
-  QTableWidget* pVars;
+  QVector< QTableWidget* > vars;
 
   QPushButton* pBtnSetAll;
   QPushButton* pBtnResetAll;
@@ -40,10 +40,14 @@ class DlgVarsEdit : public QDialog
   QSignalMapper* pSmValue;
   QSignalMapper* pSmReset;
   QSignalMapper* pSmAccept;
+  QSignalMapper* pSmClick;
+
+  QLabel* pLlStatus;
 
   ulong changed_num;
-
-  ulong current_row;
+  NPoint currentIndex;
+  NPoint varsSize;
+  bool resetEnabled;
 
 public:
   explicit DlgVarsEdit(VarSetPtr _pVS, ModelPtr _pModel, CViewWndPtr _pView,
@@ -59,16 +63,18 @@ signals:
   void sgnlHelp( int _code );
   void sgnlVarHelp( const QString& _crsTitle, const QString& _crsText );
 
+public slots:
+  void slotResetAll( bool _viewUpdate = true ); //1409
+
 private slots:
   void slotHelp() { emit sgnlHelp( DLG::VARSEDIT::DIALOG ); }
   void slotCollapse( bool b );
   void slotAcceptAll();
-  void slotResetAll();
-  void slotVarHelp( int row );
-  void slotEdited( int row );
-  void slotOnClick( QTableWidgetItem* pItem );
-  void slotResetVar( int row );
-  void slotAcceptVar( int row );
+  void slotVarHelp( int _index );
+  void slotEdited( int _index );
+  void slotOnClick( int _index );
+  void slotResetVar( int _index, bool _viewUpdate = true ); //1409
+  void slotAcceptVar( int _index );
 
   void slotPopupReset();
   void slotPopupCompareEQ();
@@ -80,7 +86,7 @@ private slots:
   void slotPopupDisplay();
 
 private:
-  VarDefPtr RetrieveVarDef( int row ) const;
+  VarDefPtr RetrieveVarDef( NPoint _index ) const;
   void Compare( CompareOperator _co );
 };
 

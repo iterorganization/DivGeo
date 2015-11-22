@@ -266,6 +266,9 @@ void StringsManager::StringsKeys()
 
   KEY( "comment",               DG3::COMMENT );
 
+  KEY( "new_value",             DG3::NEW_VALUE );
+  KEY( "old_value",             DG3::OLD_VALUE );
+
   GROUP( "msg/dg3/act" );
 
   KEY( "added",                 DG3::ACT_ADDED );

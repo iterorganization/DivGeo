@@ -365,6 +365,9 @@ null_pointers         = "Null pointers"
 
 comment               = "comment" # Extention of str/ list
 
+new_value             = "New value: %1" #1411
+old_value             = "Old value: %1" #1411
+
 /msg/dg3/act
 
 added                 = "Object added: %1"
