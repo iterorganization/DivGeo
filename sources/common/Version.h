@@ -3,7 +3,7 @@
 
 #define DG_VERSION_MAJOR 3
 #define DG_VERSION_MINOR 0
-#define DG_VERSION_BUILD 1409
+#define DG_VERSION_BUILD 1410
 #define DG_VERSION_REV 0
 
 #define QU(x) #x
