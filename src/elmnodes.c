@@ -348,7 +348,7 @@ int IsIrregularNode(Node n,Group g) {
 
 /* Count: # of intermediate points to produce */
 
-Node SplitElem(App a,Elem e,int count,int* pErr)  {
+Node SplitElem(App a,Elem e,int count,int* pErr) {
   Node n0,n=NULL;
   int i,isMarked;
   Elem e1;

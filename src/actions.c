@@ -1394,7 +1394,7 @@ int ActLockAppUpdate(App a,LockAppUpdateRec ar) {
     if (ar->updateLocks && !ur->updateLocks) {
       ClearView(w);FlushView(w);
     }
-    if (!ar->updateLocks && ur->updateLocks)  {
+    if (!ar->updateLocks && ur->updateLocks) {
       RepaintView(w);
     }
   }
