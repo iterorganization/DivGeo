@@ -278,7 +278,7 @@ int CMainWnd::CreateMenuBar()
   CreateAction( pSubMenu,  MENU::EDIT::CREATE::GRIDPOINTS,          SLOT(slotCreateGridPoints()) );
 /*CreateAction( pSubMenu,  MENU::EDIT::CREATE::SEPARATORS,          SLOT(slotCreateSeparators()) );*//*2.0*/
   pSubMenu = pMenu->addMenu( CreateMenu( MENU::EDIT::DELETE::TITLE ) )->menu();
-  CreateAction( pSubMenu,  MENU::EDIT::DELETE::MARKED_OBJECTS,      SLOT(slotDeleteMarkedObjects()) );/*2.1*/
+  CreateAction( pSubMenu,  MENU::EDIT::DELETE::MARKED_OBJECTS,      SLOT(slotDeleteMarkedObjects()),       false, -1, -1, QKeySequence(CTRL+Key_D) );/*2.1*/
   pSubMenu->addSeparator();
   CreateAction( pSubMenu,  MENU::EDIT::DELETE::UNUSED_POINTS,       SLOT(slotDeleteUnusedPoints()) );
   CreateAction( pSubMenu,  MENU::EDIT::DELETE::VIRTUAL_SURFACES,    SLOT(slotDeleteVirtualSurfaces()) );/*2.1*/
