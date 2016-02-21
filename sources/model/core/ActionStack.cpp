@@ -188,6 +188,8 @@ void CActionStack::Cancel()
 void CActionStack::Complete( const std::string& _crsDescr )
 {
   ActHighLevel* pAct = static_cast< ActHighLevel* >( undoStack.front() );
+  if( pAct == null )
+    pAct = new ActHighLevel( pModel, _crsDescr );
   pAct->SetComplete( _crsDescr );
   pModel->ProcessChanges();
   pModel->Agent()->Update();

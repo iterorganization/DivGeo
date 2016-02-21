@@ -109,6 +109,7 @@ void ModelViewProxy::UpdateViews( const UpdateInfo& _crUI, bool _force ) //1409 
 
   upEnabled = false;
   pMainWnd->UpdateVarsMenu(); //1411
+  pMainWnd->UpdateActionsInfo();
 }
 
 void ModelViewProxy::UpdateStatistics()
