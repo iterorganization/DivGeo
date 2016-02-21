@@ -302,6 +302,8 @@ void DlgVarsEdit::slotMarkVar( int _index )
 
 void DlgVarsEdit::slotResetVar( int _index, bool _viewUpdate )
 {
+  static const QString& scrsNosel = SM_MSG( STR::NOSEL );
+
   NPoint index( _index & 0xFFFF, _index >> 16 );
   VarDefPtr pVD = RetrieveVarDef( index );
   if( pVD == null )
@@ -311,6 +313,7 @@ void DlgVarsEdit::slotResetVar( int _index, bool _viewUpdate )
   UPtr value = pModel->Vars()->GetVarEx( pVS, pVD );
 
   bool reset = false;
+  bool set = false; // enabling SET button while holding value
 
   if( pVD->HasGroup() ) {
     if( _viewUpdate ) {
@@ -326,16 +329,26 @@ void DlgVarsEdit::slotResetVar( int _index, bool _viewUpdate )
     if( !HasAnyFlag( pVD->VarDefType(), VTF::FILENAME ) ) {
       QWidget* pWgt = vars[ index.y ]->cellWidget( index.x, 2 );
       QLineEdit* pLeValue = qobject_cast< QLineEdit* >( pWgt );
-      if( pLeValue != null && str_value != pLeValue->text() ) {
-        pLeValue->setText( str_value );
-        reset = true;
+      QString str_current = pLeValue->text();
+      if( pLeValue != null && str_value != str_current ) {
+        if( pChHold->isChecked() and not value.IsNOSEL() and str_current != scrsNosel )
+          set = true;
+        else {
+          pLeValue->setText( str_value );
+          reset = true;
+        }
       }
     }
     else {
       QTableWidgetItem* pItem = vars[ index.y ]->item( index.x, 2 );
-      if( str_value != pItem->text() ) {
-        pItem->setText( str_value );
-        reset = true;
+      QString str_current = pItem->text();
+      if( str_value != str_current ) {
+        if( pChHold->isChecked() and not value.IsNOSEL() and str_current != scrsNosel )
+          set = true;
+        else {
+          pItem->setText( str_value );
+          reset = true;
+        }
       }
     }
   }
@@ -351,6 +364,13 @@ void DlgVarsEdit::slotResetVar( int _index, bool _viewUpdate )
       pBtnResetAll->setDisabled( true );
       pBtnSetAll->setDisabled( true );
     }
+  }
+
+  if( set ) {
+    /* Enable set button */
+    QWidget* pWgt = vars[ index.y ]->cellWidget( index.x, 3 );
+    QPushButton* pBtnSet = qobject_cast< QPushButton* >( pWgt );
+    pBtnSet->setEnabled( true );
   }
 
   if( _viewUpdate ) {
