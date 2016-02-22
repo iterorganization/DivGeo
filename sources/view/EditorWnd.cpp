@@ -4,6 +4,7 @@
 #include <QTreeView>
 #include <QLayout>
 #include <QCloseEvent>
+#include <QFocusEvent>
 
 EditorWnd::EditorWnd( const QString& _crFilename, QWidget* _pParent ):
     QWidget( _pParent ),
@@ -15,9 +16,15 @@ EditorWnd::EditorWnd( const QString& _crFilename, QWidget* _pParent ):
   setWindowTitle( QString( "Editor - %1" ).arg( filename ) );
 }
 
-void EditorWnd::closeEvent( QCloseEvent* pe )
+void EditorWnd::closeEvent( QCloseEvent* _pe )
 {
   emit EditorClosed();
   //TODO: save file
-  pe->accept();
+  _pe->accept();
+}
+
+void EditorWnd::focusInEvent( QFocusEvent* _pe )
+{
+  emit EditorInFocus( this ); // Recursive call!!!
+  _pe->accept();
 }

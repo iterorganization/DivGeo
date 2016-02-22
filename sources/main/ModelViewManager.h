@@ -84,6 +84,7 @@ public:
   SessionData* GetSessionData() { return &session; }
 
 signals:
+  void EditorSelected( EditorWnd* pEditor );
   void ViewSelected( CViewWndPtr pView );
   void ViewCreated( CViewWndPtr pView );
   

@@ -215,10 +215,16 @@ bool ModelViewManager::ModelIsLoaded( const QString& _crsPath ) const
 void ModelViewManager::SelectionChanged( QTreeWidgetItem* current, int )
 {
   QVariant qv = current->data( 0, Qt::UserRole );
-  if( qv.isNull() ||
-      qv.userType() != QMetaType::type( "CViewWndPtr" ) )
+  if( qv.isNull() )
     return;
-  emit ViewSelected( qv.value< CViewWndPtr >() );
+  if( qv.userType() == QMetaType::type( "CViewWndPtr" ) )
+    emit ViewSelected( qv.value< CViewWndPtr >() );
+  else if( qv.userType() == QMetaType::type( "EditorWndPtr" ) ) {
+    emit EditorSelected( qv.value< EditorWndPtr >() );
+    pTree->setCurrentItem( current );
+    pTree->clearSelection();
+    current->setSelected( true );
+  }
 }
 
 ModelViewProxyPtr ModelViewManager::AddModel( ModelPtr _pModel, ModelAgent* _pAgent )
@@ -257,8 +263,7 @@ void ModelViewManager::RemoveModel( ModelViewProxy* _pProxy )
 void ModelViewManager::SelectCurrentView( CViewWndPtr _pSelectedView )
 {
   CViewWndPtr pCurrentView = (pCurrentProxy == null) ? null : pCurrentProxy->CurrentView();
-  if( pCurrentView == _pSelectedView )
-    return;
+  if( pCurrentView != _pSelectedView ) {
   ModelViewProxyPtr pSelectedProxy = proxies.value( _pSelectedView->GetModel(), null );
   if( _pSelectedView  == null || pSelectedProxy == null || !pSelectedProxy->HasView( _pSelectedView ) )
     return;
@@ -278,6 +283,8 @@ void ModelViewManager::SelectCurrentView( CViewWndPtr _pSelectedView )
     if( _pSelectedView->TopologyDialog() != null )
       _pSelectedView->TopologyDialog()->show();
   }
+  }
+
   QTreeWidgetItem* pViewItem = pCurrentProxy->ViewItem( _pSelectedView );
   pCurrentProxy->SetCurrentView( _pSelectedView );
   pTree->setCurrentItem( pViewItem );

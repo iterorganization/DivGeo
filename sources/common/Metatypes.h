@@ -5,6 +5,7 @@
 
 #include "../model/core/Model.h"
 #include "../view/ViewWnd.h"
+#include "../view/EditorWnd.h"
 
 Q_DECLARE_METATYPE( VarSetDefPtr )
 Q_DECLARE_METATYPE( VarDefPtr )
@@ -19,6 +20,7 @@ Q_DECLARE_METATYPE( VarListPtr )
 
 Q_DECLARE_METATYPE( ModelPtr )
 Q_DECLARE_METATYPE( CViewWndPtr )
+Q_DECLARE_METATYPE( EditorWndPtr )
 
 Q_DECLARE_METATYPE( SurfaceZonePtr )
 

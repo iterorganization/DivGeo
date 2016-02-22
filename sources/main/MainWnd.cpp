@@ -73,6 +73,8 @@ CMainWnd::CMainWnd( const QStringList& _crArgs, Console* _pConsoleWindow,
   this->addDockWidget( Qt::RightDockWidgetArea, pMV );
   connect( pMV, SIGNAL(ViewSelected(CViewWndPtr)),
            this, SLOT(slotActiveViewChanged(CViewWndPtr)) );
+  connect( pMV, SIGNAL(EditorSelected(EditorWnd*)),
+           this, SLOT(slotActiveEditorChanged(EditorWnd*)) );
   connect( pMV, SIGNAL(ViewCreated(CViewWndPtr)),
            this, SLOT(slotNewView(CViewWndPtr)) );
 
@@ -223,6 +225,9 @@ void CMainWnd::slotNewView( CViewWndPtr _pView )
 }
 
 void CMainWnd::slotNewEditor( EditorWnd* _pEditor ) {
+  connect( _pEditor,  SIGNAL(EditorInFocus(EditorWnd*)),
+           this,      SLOT(slotActiveEditorChanged(EditorWnd*)) );
+
   QMdiSubWindow* pSubWnd = pMdiArea->addSubWindow( (QWidget*)_pEditor );
   pSubWnd->activateWindow();
   pSubWnd->setWindowState( Qt::WindowMaximized );
@@ -567,6 +572,7 @@ void CMainWnd::slotActiveViewChanged( CViewWndPtr _pView )
     QMdiSubWindow* pCurrentSubWindow = pMdiArea->activeSubWindow();
     // Check if the subwindow is in focus
     if( pCurrentSubWindow != pSubWindow ) { // 1411  {}
+      pMV->SelectCurrentView( _pView );
       pMdiArea->setActiveSubWindow( pSubWindow );
 
       // Update MV-manager tree
@@ -576,7 +582,6 @@ void CMainWnd::slotActiveViewChanged( CViewWndPtr _pView )
                               .arg( _pView->TitleName() );
 
         pConsole->Send( LOG_INFO, sender_name, current_str );
-        pMV->SelectCurrentView( _pView );
       }
       UpdateModelInfo( true );
       UpdateActionsInfo();

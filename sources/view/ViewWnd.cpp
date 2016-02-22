@@ -334,7 +334,7 @@ void CViewWnd::closeEvent( QCloseEvent* pe )
 
 void CViewWnd::focusInEvent( QFocusEvent* pe )
 {
-  emit ViewInFocus( this );
+  emit ViewInFocus( this ); // recursive call!!! but... it works
   pe->accept();
 }
 

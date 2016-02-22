@@ -17,6 +17,7 @@ ModelViewProxy::ModelViewProxy(ModelPtr _pModel, QTreeWidget* _pTree, ModelViewM
   id_view( 0 ),
 
   pEditor( null ),
+  pEditorItem( null ),
   pCreateSurfaceDlg( null ),
   pCreateGridPointDlg( null ),
   pStatisticsDlg( null ),
@@ -417,14 +418,27 @@ void ModelViewProxy::OpenEditor() {
     pEditor = new EditorWnd( ToQString( pModel->FileName() ) );
     connect( pEditor, &EditorWnd::EditorClosed, this, &ModelViewProxy::CloseEditor );
     pMainWnd->slotNewEditor( pEditor );
+
+    // Add view tree item
+    pEditorItem = new QTreeWidgetItem();
+    pEditorItem->setFlags( Qt::ItemIsSelectable );
+    pEditorItem->setData( 0, Qt::UserRole, QVariant::fromValue( pEditor ) );
+    pEditorItem->setText( 0, "editor" ); //TODO: resource
+    pModelItem->insertChild( pModelItem->childCount() - 1, pEditorItem );
   }
   else
     pMainWnd->slotActiveEditorChanged( pEditor );
+
+  pTree->setCurrentItem( pEditorItem );
+  pTree->clearSelection();
+  pEditorItem->setSelected( true );
 }
 
 void ModelViewProxy::CloseEditor()
 {
   pEditor = null;
+  delete pEditorItem;
+  pEditorItem = null;
   SelectNextView();
 }
 

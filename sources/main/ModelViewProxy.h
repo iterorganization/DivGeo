@@ -49,6 +49,7 @@ class ModelViewProxy:
   QSignalMapper       smDialogs;
 
   EditorWnd*          pEditor;
+  QTreeWidgetItem*    pEditorItem;
   DlgCreateSurface*   pCreateSurfaceDlg;
   DlgCreateGridPoint* pCreateGridPointDlg;
   DlgStatictics*      pStatisticsDlg;//1408
