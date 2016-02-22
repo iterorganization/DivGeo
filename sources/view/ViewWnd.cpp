@@ -332,6 +332,12 @@ void CViewWnd::closeEvent( QCloseEvent* pe )
   pe->accept();
 }
 
+void CViewWnd::focusInEvent( QFocusEvent* pe )
+{
+  emit ViewInFocus( this );
+  pe->accept();
+}
+
 void CViewWnd::LoadSessionData( const SessionViewRecord& _crSVR )
 {
   //move( _crSVR.window_position );

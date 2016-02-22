@@ -197,6 +197,8 @@ void CMainWnd::slotNewView( CViewWndPtr _pView )
            this,    SLOT(slotChangeShowFlag(ShowFlag,bool)) );
   connect( _pView,  SIGNAL(ViewClosed(CViewWnd*)),
            this,    SLOT(slotViewClosed(CViewWnd*)) );
+  connect( _pView,  SIGNAL(ViewInFocus(CViewWnd*)),
+           this,    SLOT(slotActiveViewChangedP(CViewWnd*)) );
 
   /* Update info */
   connect( _pView,  SIGNAL(UpdateModelInfo()),

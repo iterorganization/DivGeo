@@ -116,6 +116,8 @@ signals:
   void ObjectSelected( IComponentPtr _pObject );
   /* Request to update all views of this model */
   void UpdateViews( const UpdateInfo& _crUI = UpdateInfo(), bool _force = true );
+  /* View is in focus now */
+  void ViewInFocus( CViewWnd* pView );
 
   /*********************************************
    MOUSE TOOLS 
@@ -130,6 +132,7 @@ private:
   virtual void resizeEvent          ( QResizeEvent *pe );
   virtual void paintEvent           ( QPaintEvent* pe );
   virtual void closeEvent           ( QCloseEvent* pe );
+  virtual void focusInEvent         ( QFocusEvent* pe );
 
 private slots:
   void mousePress();

@@ -277,12 +277,13 @@ void ModelViewManager::SelectCurrentView( CViewWndPtr _pSelectedView )
       pCurrentView->TopologyDialog()->hide();
     if( _pSelectedView->TopologyDialog() != null )
       _pSelectedView->TopologyDialog()->show();
-    QTreeWidgetItem* pViewItem = pCurrentProxy->ViewItem( _pSelectedView );
-    pCurrentProxy->SetCurrentView( _pSelectedView );
-    pTree->setCurrentItem( pViewItem );
-    pTree->clearSelection();
-    pViewItem->setSelected( true );
   }
+  QTreeWidgetItem* pViewItem = pCurrentProxy->ViewItem( _pSelectedView );
+  pCurrentProxy->SetCurrentView( _pSelectedView );
+  pTree->setCurrentItem( pViewItem );
+  pTree->clearSelection();
+  pViewItem->setSelected( true );
+
   //1411 update instructions moved to if-else-if
 }
 

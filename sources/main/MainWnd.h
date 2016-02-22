@@ -248,6 +248,9 @@ public slots:
   **********************************************/
 public slots:
   void slotActiveEditorChanged( EditorWnd* _pEditor );
+  void slotActiveViewChangedP( CViewWnd* _pView ) {
+    slotActiveViewChanged( _pView );
+  }
 
 private slots:
   void slotActiveSubWndChanged( QMdiSubWindow* pSubWnd );
