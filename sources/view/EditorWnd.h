@@ -11,6 +11,9 @@ class EditorWnd: public QWidget {
   QTreeView* ptw;
   QString filename;
 
+signals:
+  void EditorClosed();
+
 public:
   explicit EditorWnd( const QString& _crFilename, QWidget* _pParent = 0 );
 

@@ -17,6 +17,7 @@ EditorWnd::EditorWnd( const QString& _crFilename, QWidget* _pParent ):
 
 void EditorWnd::closeEvent( QCloseEvent* pe )
 {
+  emit EditorClosed();
   //TODO: save file
   pe->accept();
 }

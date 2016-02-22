@@ -546,6 +546,7 @@ public:
   }
 };
 
+typedef QList< QMdiSubWindow* > WndList;
 
 void CMainWnd::slotActiveViewChanged( CViewWndPtr _pView )
 {
@@ -553,8 +554,11 @@ void CMainWnd::slotActiveViewChanged( CViewWndPtr _pView )
       UpdateMenu( _pView );
   else {
     // Find subwindow
-    QList< QMdiSubWindow* > wnds = pMdiArea->subWindowList();
-    QMdiSubWindow* pSubWindow = *std::find_if( wnds.begin(), wnds.end(), CbFindSubWindow( _pView ) );
+    WndList wnds = pMdiArea->subWindowList();
+    WndList::iterator it = std::find_if( wnds.begin(), wnds.end(), CbFindSubWindow( _pView ) );
+    if( it == wnds.end() )
+      return;
+    QMdiSubWindow* pSubWindow = *it;
     if( pSubWindow == null )
       return;
 
@@ -584,8 +588,11 @@ void CMainWnd::slotActiveEditorChanged( EditorWnd* _pEditor ) {
   if( _pEditor == null )
     return;
 
-  QList< QMdiSubWindow* > wnds = pMdiArea->subWindowList();
-  QMdiSubWindow* pSubWindow = *std::find_if( wnds.begin(), wnds.end(), CbFindSubWindow( _pEditor ) );
+  WndList wnds = pMdiArea->subWindowList();
+  WndList::iterator it = std::find_if( wnds.begin(), wnds.end(), CbFindSubWindow( _pEditor ) );
+  if( it == wnds.end() )
+    return;
+  QMdiSubWindow* pSubWindow = *it;
   if( pSubWindow == null )
     return;
 

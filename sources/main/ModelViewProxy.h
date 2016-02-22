@@ -91,7 +91,6 @@ public:
   SessionModelRecord SaveSessionData() const;
   void UpdateViewsGeometry();
 
-  void OpenEditor();
   DlgCreateSurface* OpenCreateSurfacesDlg();
   DlgCreateGridPoint* OpenCreateGridPointsDlg();
   DlgStatictics* OpenStatisticsDlg();//1408
@@ -112,9 +111,14 @@ public slots:
   void slotCloseVarsEditDlg( QWidget* _pWgt );
   void OpenTopologyDialog();
   void slotCloseTopologyDlg();
+  void OpenEditor();
+  void CloseEditor();
 
 private slots: //1409
   void slotEnableUpdate();
+
+private:
+  void SelectNextView();
 };
 typedef ModelViewProxy* ModelViewProxyPtr;
 

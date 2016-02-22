@@ -242,11 +242,7 @@ void ModelViewProxy::RemoveView( CViewWndPtr _pView )
     }
   }
 
-  pCurrentView = mapViews.begin().key();
-  QTreeWidgetItem* pViewItem = mapViews.value( pCurrentView );
-  pTree->setCurrentItem( pViewItem );
-  pTree->clearSelection();
-  pViewItem->setSelected( true );
+  SelectNextView();
 }
 
 void ModelViewProxy::UpdateModelName()
@@ -379,6 +375,15 @@ void ModelViewProxy::slotEnableUpdate()
   upEnabled = true;
 }
 
+void ModelViewProxy::SelectNextView()
+{
+  pCurrentView = mapViews.begin().key();
+  QTreeWidgetItem* pViewItem = mapViews.value( pCurrentView );
+  pTree->setCurrentItem( pViewItem );
+  pTree->clearSelection();
+  pViewItem->setSelected( true );
+}
+
 void ModelViewProxy::LoadSessionData( const SessionModelRecord& _crSMR )
 {
   if( !_crSMR.IsOk() )
@@ -410,10 +415,17 @@ void ModelViewProxy::UpdateViewsGeometry()
 void ModelViewProxy::OpenEditor() {
   if( pEditor == null ) {
     pEditor = new EditorWnd( ToQString( pModel->FileName() ) );
+    connect( pEditor, &EditorWnd::EditorClosed, this, &ModelViewProxy::CloseEditor );
     pMainWnd->slotNewEditor( pEditor );
   }
   else
     pMainWnd->slotActiveEditorChanged( pEditor );
+}
+
+void ModelViewProxy::CloseEditor()
+{
+  pEditor = null;
+  SelectNextView();
 }
 
 SessionModelRecord ModelViewProxy::SaveSessionData() const
