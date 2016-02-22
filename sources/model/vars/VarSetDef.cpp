@@ -84,8 +84,10 @@ VarDefPtr VarSetDef::AddVarDef( const std::string& _crsName, const std::string& 
 VarSetPtr VarSetDef::AddVarSet()
 {
   SENDER_NAME( "VarSetDef::AddVarSet" );
-  if( data.maxVarSets <= varSets.size() )
-    pModel->SendMessage( FATAL_ERROR, SENDER, DG3::TOO_MANY_VARSETS );
+  if( data.maxVarSets <= varSets.size() ) {
+    pModel->SendMessage( WND_ERROR, SENDER, DG3::TOO_MANY_VARSETS );
+    return null;
+  }
 
   VarSetPtr pVS = new VarSet( pModel );
   pVS->SetVarSetDef( this );
