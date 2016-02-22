@@ -1,4 +1,5 @@
 #include "MainWnd.h"
+#include "../view/EditorWnd.h"
 
 CMainWnd::CMainWnd( const QStringList& _crArgs, Console* _pConsoleWindow,
                    StringsManager* _pSM, HelpManager* _pHM,
@@ -219,6 +220,13 @@ void CMainWnd::slotNewView( CViewWndPtr _pView )
   _pView->FitToModel();
 }
 
+void CMainWnd::slotNewEditor( EditorWnd* _pEditor ) {
+  QMdiSubWindow* pSubWnd = pMdiArea->addSubWindow( (QWidget*)_pEditor );
+  pSubWnd->activateWindow();
+  pSubWnd->setWindowState( Qt::WindowMaximized );
+  pSubWnd->show();
+}
+
 CMainWnd::~CMainWnd()
 {
 
@@ -252,6 +260,8 @@ int CMainWnd::CreateMenuBar()
   CreateAction( pSubMenu,  MENU::FILES::IMPORT::MESH,               SLOT(slotImportMesh()) );/*2.1*/
   CreateAction( pSubMenu,  MENU::FILES::IMPORT::TOPOLOGY,           SLOT(slotImportTopology()) );/*2.1*/
   //CreateAction( pSubMenu,  MENU::FILES::IMPORT::SONNETGRID,         SLOT(slotImportSonnetGrid()) );/*2.0 the same as ImportMesh?*/
+  pMenu->addSeparator();
+  CreateAction( pMenu,     MENU::FILES::EDITOR,                     SLOT(slotEditor()) );
   pMenu->addSeparator();
   CreateAction( pMenu,     MENU::FILES::OUTPUT,                     SLOT(slotOutput()) )->setEnabled( false );
   pMenu->addSeparator();
@@ -524,18 +534,27 @@ void CMainWnd::slotActiveSubWndChanged( QMdiSubWindow* _pSubWnd )
   slotActiveViewChanged( pView );
 }
 
+
+class CbFindSubWindow {
+  QWidget* pWgt;
+public:
+  CbFindSubWindow( QWidget* _pWgt ):
+    pWgt( _pWgt ) {}
+
+  bool operator()( QMdiSubWindow* _pWnd ) const {
+    return _pWnd->widget() == pWgt;
+  }
+};
+
+
 void CMainWnd::slotActiveViewChanged( CViewWndPtr _pView )
 {
   if( _pView == null )
       UpdateMenu( _pView );
   else {
     // Find subwindow
-    QMdiSubWindow* pSubWindow = null;
-    foreach( QMdiSubWindow* pSW, pMdiArea->subWindowList() )
-      if( qobject_cast< CViewWndPtr >( pSW->widget() ) == _pView ) {
-        pSubWindow = pSW;
-        break; //1411
-      }
+    QList< QMdiSubWindow* > wnds = pMdiArea->subWindowList();
+    QMdiSubWindow* pSubWindow = *std::find_if( wnds.begin(), wnds.end(), CbFindSubWindow( _pView ) );
     if( pSubWindow == null )
       return;
 
@@ -558,6 +577,20 @@ void CMainWnd::slotActiveViewChanged( CViewWndPtr _pView )
     } //1411 {}
     UpdateMenu( _pView );
   }
+}
+
+
+void CMainWnd::slotActiveEditorChanged( EditorWnd* _pEditor ) {
+  if( _pEditor == null )
+    return;
+
+  QList< QMdiSubWindow* > wnds = pMdiArea->subWindowList();
+  QMdiSubWindow* pSubWindow = *std::find_if( wnds.begin(), wnds.end(), CbFindSubWindow( _pEditor ) );
+  if( pSubWindow == null )
+    return;
+
+  if( pSubWindow != pMdiArea->activeSubWindow() )
+    pMdiArea->setActiveSubWindow( pSubWindow );
 }
 
 void CMainWnd::UpdateMenu( CViewWndPtr _pView ) {

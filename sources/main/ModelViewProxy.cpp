@@ -1,5 +1,6 @@
 #include "ModelViewProxy.h"
 #include "MainWnd.h"
+#include "../view/EditorWnd.h"
 
 ModelViewProxy::ModelViewProxy(ModelPtr _pModel, QTreeWidget* _pTree, ModelViewManager* _pManager,
                                CMainWnd* _pMainWnd, const UserPreferences* _pPrefs,
@@ -15,6 +16,7 @@ ModelViewProxy::ModelViewProxy(ModelPtr _pModel, QTreeWidget* _pTree, ModelViewM
   pCurrentView( null ),
   id_view( 0 ),
 
+  pEditor( null ),
   pCreateSurfaceDlg( null ),
   pCreateGridPointDlg( null ),
   pStatisticsDlg( null ),
@@ -403,6 +405,15 @@ void ModelViewProxy::UpdateViewsGeometry()
       pView->slotUpdateView();
     }
   }
+}
+
+void ModelViewProxy::OpenEditor() {
+  if( pEditor == null ) {
+    pEditor = new EditorWnd( ToQString( pModel->FileName() ) );
+    pMainWnd->slotNewEditor( pEditor );
+  }
+  else
+    pMainWnd->slotActiveEditorChanged( pEditor );
 }
 
 SessionModelRecord ModelViewProxy::SaveSessionData() const

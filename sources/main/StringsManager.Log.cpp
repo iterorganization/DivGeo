@@ -15,6 +15,7 @@ void StringsManager::LogKeys()
   KEY( "print",               LOG::MENU::FILE::PRINT );
   KEY( "exit",                LOG::MENU::FILE::EXIT );
   KEY( "recent",              LOG::MENU::FILE::RECENT );
+  KEY( "editor",              LOG::MENU::FILE::EDITOR );
 
   GROUP( "log/menu/file/import" );
 

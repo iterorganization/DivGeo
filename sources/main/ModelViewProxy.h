@@ -22,6 +22,7 @@
 typedef QMap< CViewWndPtr, QTreeWidgetItem* > ViewMap;
 
 class ModelViewManager;
+class EditorWnd;
 
 class ModelViewProxy:
     public QObject
@@ -47,6 +48,7 @@ class ModelViewProxy:
   ulong               id_view;
   QSignalMapper       smDialogs;
 
+  EditorWnd*          pEditor;
   DlgCreateSurface*   pCreateSurfaceDlg;
   DlgCreateGridPoint* pCreateGridPointDlg;
   DlgStatictics*      pStatisticsDlg;//1408
@@ -89,6 +91,7 @@ public:
   SessionModelRecord SaveSessionData() const;
   void UpdateViewsGeometry();
 
+  void OpenEditor();
   DlgCreateSurface* OpenCreateSurfacesDlg();
   DlgCreateGridPoint* OpenCreateGridPointsDlg();
   DlgStatictics* OpenStatisticsDlg();//1408

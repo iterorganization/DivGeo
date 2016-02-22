@@ -1,5 +1,6 @@
 #include "MainWnd.h"
 #include <QMessageBox>
+#include "../view/EditorWnd.h"
 
 const char* CMainWnd::scpDefaultDgcFileName = "config.dgc";
 
@@ -530,4 +531,10 @@ void CMainWnd::slotExit()
 {
   pConsole->Send( LOG_INFO, sender_name, SM_LOG( LOG::MENU::FILE::EXIT ) );
   this->close();
+}
+
+
+void CMainWnd::slotEditor() {
+  pConsole->Send( LOG_INFO, sender_name, SM_LOG( LOG::MENU::FILE::EDITOR ) );
+  pMV->CurrentProxy()->OpenEditor();
 }

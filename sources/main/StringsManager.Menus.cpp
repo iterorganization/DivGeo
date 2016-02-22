@@ -15,6 +15,7 @@ void StringsManager::MenusKeys()
   KEY( "output",                MENU::FILES::OUTPUT );
   KEY( "print",                 MENU::FILES::PRINT );
   KEY( "exit",                  MENU::FILES::EXIT );
+  KEY( "editor",                MENU::FILES::EDITOR );
   KEY( "recent.menu",           MENU::FILES::RECENT::TITLE );
 
   GROUP( "menu/file/import" );

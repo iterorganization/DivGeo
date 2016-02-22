@@ -237,6 +237,7 @@ public slots:
   void UpdateActionsInfo() { pActInfo->UpdateContent( pMV->CurrentModel() ); }
   void slotEnableUndoStack( bool enabled );
   void slotNewView( CViewWndPtr _pView );
+  void slotNewEditor( EditorWnd* _pEditor );
   void slotAtStart();
   void slotSelect( int id );
   void slotDialogHelp(int _code );
@@ -245,8 +246,10 @@ public slots:
   /**********************************************
    MENU SLOTS
   **********************************************/
-private slots:
+public slots:
+  void slotActiveEditorChanged( EditorWnd* _pEditor );
 
+private slots:
   void slotActiveSubWndChanged( QMdiSubWindow* pSubWnd );
   void slotActiveViewChanged( CViewWndPtr _pView );
 
@@ -269,6 +272,7 @@ private slots:
   void slotOutput();
   void slotPrint();
   void slotExit();
+  void slotEditor();
 
   // Edit
   void slotUndo();

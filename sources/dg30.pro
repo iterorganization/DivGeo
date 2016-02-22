@@ -29,7 +29,9 @@ HEADERS += \
     main/ModelTree.h \
     main/ActionStackInfo.h \
     main/ModelAgent.h \
+    main/DgDataModel.h \
 \
+    view/EditorWnd.h \
     view/ViewWnd.h \
     view/ToolData.h \
     view/Modes.h \
@@ -192,7 +194,6 @@ HEADERS += \
     dialogs/PropertyTableWidget.h \
     dialogs/DoubleSpinBoxExt.h
 
-
 SOURCES += \
     main/main.cpp \
     main/MainWnd.Tools.cpp \
@@ -224,6 +225,7 @@ SOURCES += \
     main/ModelTree.Branches.cpp \
     main/ActionStackInfo.cpp \
     main/ModelAgent.cpp \
+    main/DgDataModel.cpp \
 \
     view/ViewWnd.Draw.cpp \
     view/ViewWnd.cpp \
@@ -231,6 +233,7 @@ SOURCES += \
     view/ViewParameters.cpp \
     view/IViewScene.cpp \
     view/ViewTopScene.cpp \
+    view/EditorWnd.cpp \
     view/ViewWnd.Mouse.cpp \
     view/ViewWnd.Tools.Geometry.cpp \
     view/ViewWnd.Tools.Helpers.cpp \
@@ -372,9 +375,7 @@ SOURCES += \
     model/vars/VarSet.cpp \
     model/vars/VarDef.cpp \
     model/vars/VarConst.cpp \
-    model/vars/Var.cpp \
-
-
+    model/vars/Var.cpp
 
 OTHER_FILES += \
     dg.rc \
