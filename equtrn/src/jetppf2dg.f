@@ -68,36 +68,36 @@ C
       iarg=iargc()
       write(*,*) 'iarg',iarg
       if(iarg.ge.2) then
-	call getarg(1,arg)
-	read(arg,*) nshot
-	call getarg(2,arg)
-	read(arg,*) tshot
-	if(iarg.ge.3) call getarg(3,dda)
-	if(iarg.ge.4) call getarg(4,ppfuid)
-	if(iarg.ge.5) then
-	  call getarg(5,arg)
-	  read(arg,*) nseq
-	endif
+        call getarg(1,arg)
+        read(arg,*) nshot
+        call getarg(2,arg)
+        read(arg,*) tshot
+        if(iarg.ge.3) call getarg(3,dda)
+        if(iarg.ge.4) call getarg(4,ppfuid)
+        if(iarg.ge.5) then
+          call getarg(5,arg)
+          read(arg,*) nseq
+        endif
       else
-	write(*,*) '1st arg == shot number'
-	write(*,*) '2nd arg == time'
-	write(*,*) '[3rd arg == DDA (EFIT)]'
-	write(*,*) '[4th arg == PPFUID (???)]'
-	write(*,*) '[5th arg == edition (0)]'
-	stop
+        write(*,*) '1st arg == shot number'
+        write(*,*) '2nd arg == time'
+        write(*,*) '[3rd arg == DDA (EFIT)]'
+        write(*,*) '[4th arg == PPFUID (???)]'
+        write(*,*) '[5th arg == edition (0)]'
+        stop
       endif
       write(*,*) 'PPFUID=',ppfuid,' DDA=',dda,
      &     ' SHOT=',nshot,' TIME=',tshot
       write(filename,'(i5,''.'',i5,''.'',a6,''.'',a4,''.'',i2,''.eq'')')
      1 nshot,nint(tshot*1000),ppfuid,dda,nseq
       do i=1,11
-	if(filename(i:i).eq.' ') filename(i:i)='0'
+        if(filename(i:i).eq.' ') filename(i:i)='0'
       enddo
       do i=25,26
-	if(filename(i:i).eq.' ') filename(i:i)='0'
+        if(filename(i:i).eq.' ') filename(i:i)='0'
       enddo
       do i=12,lnblnk(filename)
-	if(filename(i:i).eq.' ') filename(i:i)='_'
+        if(filename(i:i).eq.' ') filename(i:i)='_'
       enddo
 C
 C-----------------------------------------------------------------------
@@ -196,11 +196,12 @@ C
       DO J=1,NZ
         Z(J) = Z(J)*CONV
       ENDDO
-      DO J=1,NZ
-        DO I=1,NR
-          PSI(I,J)=PSI(I,J)   !!! *TWOPI
-        ENDDO
-      ENDDO
+cdpc 2 pi conversion not necessary at JET
+c     DO J=1,NZ
+c       DO I=1,NR
+c         PSI(I,J)=PSI(I,J)*TWOPI
+c       ENDDO
+c     ENDDO
 C
 C.. Ouput
 C
