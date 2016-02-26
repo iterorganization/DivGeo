@@ -198,7 +198,7 @@ C
       ENDDO
       DO J=1,NZ
         DO I=1,NR
-          PSI(I,J)=PSI(I,J)*TWOPI
+          PSI(I,J)=PSI(I,J)   !!! *TWOPI
         ENDDO
       ENDDO
 C
