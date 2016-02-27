@@ -13,7 +13,7 @@ class TreeItem;
 
 class IToken {
 public:
-  virtual bool Load( const QStringList& _crStr ) = 0;
+  virtual bool Load( const QStringList& _crStr, unsigned& _rLine ) = 0;
   virtual void Save( QFile& _rFile ) = 0;
   virtual ~IToken() {}
 };
@@ -27,7 +27,7 @@ protected:
 
 public:
   TokenBase( TreeItem* _pParent );
-  virtual bool Load( const QStringList& );
+  virtual bool Load( const QStringList&, unsigned& _rLine );
   virtual void Save( QFile& _rFile );
 };
 

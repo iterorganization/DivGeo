@@ -2,9 +2,10 @@
 
 namespace dm {
 
-TreeItem::TreeItem( TreeItem* _pParent, const QString& _crName, const QString& _crValue ):
+TreeItem::TreeItem( TreeItem* _pParent, unsigned _line, const QString& _crName, const QString& _crValue ):
   name( _crName ),
   value( _crValue ),
+  line( _line ),
   children(),
   pParentItem( _pParent ) {}
 
@@ -17,8 +18,8 @@ TreeItem* TreeItem::AppendChild( TreeItem* _pChild ) {
   return _pChild;
 }
 
-TreeItem* TreeItem::AppendChild( const QString& _crName, const QString& _crValue ) {
-  TreeItem* pChild = new TreeItem( this, _crName, _crValue );
+TreeItem* TreeItem::AppendChild( unsigned _line, const QString& _crName, const QString& _crValue ) {
+  TreeItem* pChild = new TreeItem( this, _line, _crName, _crValue );
   children.append( pChild );
   return pChild;
 }
@@ -36,14 +37,19 @@ int TreeItem::ColumnCount() const {
 }
 
 QVariant TreeItem::Data( int _column ) const {
-  return _column == 0 ? name : value;
+  switch( _column ) {
+  case 0: return name;
+  case 1: return line == LINE_TECHNIC ? "" : QString( "%1" ).arg( line );
+  default: return value;
+  }
 }
 
 void TreeItem::SetData( int _column, const QVariant& _crValue ) {
-  if( _column == 0 )
-    name = _crValue.toString();
-  else
-    value = _crValue.toString();
+  switch( _column ) {
+  case 0: name = _crValue.toString(); break;
+  //case 1: line = _crValue.toString(); break;
+  case 2: value = _crValue.toString(); break;
+  }
 }
 
 int TreeItem::Row() const {

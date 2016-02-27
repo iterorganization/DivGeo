@@ -10,14 +10,17 @@ namespace dm {
 void DgDataModel::Load() {
   if( status == NOTEXISTS )
     return;
-  TreeItem* pHeader = pRoot->AppendChild( "header" );
+  unsigned line = 0;
+
+  TreeItem* pHeader = pRoot->AppendChild( line, "header" );
   while( true ) {
     QString str( file.readLine() );
     int colon = str.indexOf( ':' );
     if( colon != -1 )
-      pHeader->AppendChild( str.left( colon ), str.mid( colon + 1 ).trimmed() );
+      pHeader->AppendChild( line, str.left( colon ), str.mid( colon + 1 ).trimmed() );
     else
-      pHeader->AppendChild( "", str.trimmed() );
+      pHeader->AppendChild( line, "", str.trimmed() );
+    line++;
     if( str.left( 5 ) == "-----" )
       break; // end of header
   }
@@ -26,7 +29,8 @@ void DgDataModel::Load() {
   while( not file.atEnd() ) {
     QString str( file.readLine() );
     if( str.trimmed().isEmpty() ) {
-      pRoot->AppendChild( "" );
+      pRoot->AppendChild( line, "" );
+      line++;
       continue;
     }
 
@@ -34,8 +38,9 @@ void DgDataModel::Load() {
     words.last() = words.last().trimmed();
 
     if( words.first() == "DgFile" ) {
-      pRoot->AppendChild( words.first(), words.value( 1 ) )
-          ->AppendChild( "", "{\n; For compatibility\n}" );
+      pRoot->AppendChild( line, words.first(), words.value( 1 ) )
+          ->AppendChild( line, "", "{\n; For compatibility\n}" );
+      line += 3;
       continue;
     }
 
@@ -44,6 +49,7 @@ void DgDataModel::Load() {
       int token = Name2Int( words.first().toUtf8().data(), TKN::names );
       if( token == -1 ) {
         //root.AppendChild( "syntax error" );
+        line++;
         continue;
       }
 
@@ -99,7 +105,7 @@ void DgDataModel::Load() {
       default: break;
       }
     }
-    if( pToken != null and pToken->Load( words ) ) {
+    if( pToken != null and pToken->Load( words, line ) ) {
       delete pToken;
       pToken = null;
     }

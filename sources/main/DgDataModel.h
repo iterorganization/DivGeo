@@ -10,7 +10,7 @@ class TreeItem;
 
 class DgDataModel: public QAbstractItemModel
 {
-  static const int COLUMNS_COUNT = 2;
+  static const int COLUMNS_COUNT = 3;
   QFile file;
   enum {
     NOTEXISTS,

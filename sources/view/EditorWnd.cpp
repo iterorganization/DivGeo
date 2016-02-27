@@ -5,6 +5,7 @@
 #include <QLayout>
 #include <QCloseEvent>
 #include <QFocusEvent>
+#include <QHeaderView>
 
 EditorWnd::EditorWnd( const QString& _crFilename, QWidget* _pParent ):
     QWidget( _pParent ),
@@ -14,7 +15,10 @@ EditorWnd::EditorWnd( const QString& _crFilename, QWidget* _pParent ):
   QHBoxLayout* pLo = new QHBoxLayout( this );
   pLo->addWidget( ptw );
   ptw->setModel( pmodel );
+  ptw->header()->moveSection( 1, 0 );
   pmodel->Load();
+  ptw->resizeColumnToContents( 0 );
+  ptw->resizeColumnToContents( 1 );
   setWindowTitle( QString( "Editor - %1" ).arg( filename ) );
 }
 

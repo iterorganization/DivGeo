@@ -5,13 +5,13 @@ namespace dm {
 
 DgDataModel::DgDataModel( const QString& _crFilename ):
   file( _crFilename ),
-  pRoot( new TreeItem( 0, "/" ) ) {
-  TreeItem* pFileinfo = pRoot->AppendChild( "fileinfo" );
-  pFileinfo->AppendChild( "filename", _crFilename );
+  pRoot( new TreeItem( 0, TreeItem::LINE_TECHNIC, "/" ) ) {
+  TreeItem* pFileinfo = pRoot->AppendChild( TreeItem::LINE_TECHNIC, "fileinfo" );
+  pFileinfo->AppendChild( TreeItem::LINE_TECHNIC, "filename", _crFilename );
 
   if( not file.exists() ) {
     status = NOTEXISTS;
-    pFileinfo->AppendChild( "status", "not exists" );
+    pFileinfo->AppendChild( TreeItem::LINE_TECHNIC, "status", "not exists" );
     return;
   }
 
@@ -26,11 +26,11 @@ DgDataModel::DgDataModel( const QString& _crFilename ):
   if( file.isWritable() ) {
     status = READWRITE;
     flags |= QFile::WriteOnly;
-    pFileinfo->AppendChild( "status", "read & write" );
+    pFileinfo->AppendChild( TreeItem::LINE_TECHNIC, "status", "read & write" );
   }
   else {
     status = READONLY;
-    pFileinfo->AppendChild( "status", "read only" );
+    pFileinfo->AppendChild( TreeItem::LINE_TECHNIC, "status", "read only" );
   }
 }
 
