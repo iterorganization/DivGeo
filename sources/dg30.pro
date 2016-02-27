@@ -30,6 +30,10 @@ HEADERS += \
     main/ActionStackInfo.h \
     main/ModelAgent.h \
     main/DgDataModel.h \
+    main/DgDataModel.Token.h \
+    main/DgDataModel.Tree.h \
+    main/DgDataModel.Token.hpp \
+    main/DgDataModel.TokenNames.h \
 \
     view/EditorWnd.h \
     view/ViewWnd.h \
@@ -226,6 +230,9 @@ SOURCES += \
     main/ActionStackInfo.cpp \
     main/ModelAgent.cpp \
     main/DgDataModel.cpp \
+    main/DgDataModel.Load.cpp \
+    main/DgDataModel.Tree.cpp \
+    main/DgDataModel.TokenNames.cpp \
 \
     view/ViewWnd.Draw.cpp \
     view/ViewWnd.cpp \

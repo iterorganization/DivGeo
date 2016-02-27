@@ -2,7 +2,7 @@
 #define EDITORWND_H
 
 #include <QWidget>
-
+namespace dm { class DgDataModel; }
 class QTreeView;
 class QCloseEvent;
 class QFocusEvent;
@@ -12,6 +12,7 @@ class EditorWnd: public QWidget {
 
   QTreeView* ptw;
   QString filename;
+  dm::DgDataModel* pmodel;
 
 signals:
   void EditorClosed();
@@ -19,6 +20,7 @@ signals:
 
 public:
   explicit EditorWnd( const QString& _crFilename, QWidget* _pParent = 0 );
+  ~EditorWnd();
 
   void closeEvent( QCloseEvent* _pe );
   void focusInEvent( QFocusEvent* _pe );

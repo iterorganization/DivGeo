@@ -4,6 +4,10 @@
 #include <QAbstractItemModel>
 #include <QFile>
 
+namespace dm {
+
+class TreeItem;
+
 class DgDataModel: public QAbstractItemModel
 {
   static const int COLUMNS_COUNT = 2;
@@ -15,38 +19,11 @@ class DgDataModel: public QAbstractItemModel
     OPENFAIL,
   } status;
 
-  class TreeItem {
-    QString                name;
-    QString               value;
-    QList< TreeItem* > children;
-    TreeItem*       pParentItem;
-
-  public:
-    TreeItem( TreeItem* _pParent, const QString& _crName, const QString& _crValue = "" );
-    ~TreeItem();
-
-    void Load();
-    void Save() const;
-
-    void     AppendChild( TreeItem* _pChild );
-    void     AppendChild( const QString& _crName, const QString& _crValue = "" );
-    TreeItem*      Child( int _row );
-    int       ChildCount() const;
-    int      ColumnCount() const;
-    QVariant        Data( int _column ) const;
-    void         SetData( int _column, const QVariant& _crValue );
-    int              Row() const;
-    TreeItem* ParentItem();
-    void           Clear();
-    void         SetName( const QString& _crName );
-    void        SetValue( const QString& _crValue );
-
-  };
-
-  TreeItem root;
+  TreeItem* pRoot;
 
 public:
   DgDataModel( const QString& _crFilename );
+  ~DgDataModel();
 
   virtual QModelIndex   index( int _row, int _column,
                                const QModelIndex& _crParent = QModelIndex() ) const Q_DECL_OVERRIDE;
@@ -61,6 +38,10 @@ public:
 
   void Load();
   void Save() const;
+
+  bool IsReadonly() const { return status != READWRITE; }
 };
+
+} // namespace dm
 
 #endif // DGDATAMODEL_H

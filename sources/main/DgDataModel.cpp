@@ -1,97 +1,41 @@
 #include "DgDataModel.h"
+#include "DgDataModel.Tree.h"
 
-DgDataModel::TreeItem::TreeItem( TreeItem* _pParent, const QString& _crName, const QString& _crValue ):
-  name( _crName ),
-  value( _crValue ),
-  children(),
-  pParentItem( _pParent ) {}
-
-DgDataModel::TreeItem::~TreeItem() {
-  Clear();
-}
-
-void DgDataModel::TreeItem::AppendChild( DgDataModel::TreeItem* _pChild ) {
-  children.append( _pChild );
-}
-
-void DgDataModel::TreeItem::AppendChild( const QString& _crName, const QString& _crValue ) {
-  children.append( new TreeItem( this, _crName, _crValue ) );
-}
-
-DgDataModel::TreeItem* DgDataModel::TreeItem::Child( int _row ) {
-  return children.value( _row );
-}
-
-int DgDataModel::TreeItem::ChildCount() const {
-  return children.count();
-}
-
-int DgDataModel::TreeItem::ColumnCount() const {
-  return COLUMNS_COUNT;
-}
-
-QVariant DgDataModel::TreeItem::Data( int _column ) const {
-  return _column == 0 ? name : value;
-}
-
-void DgDataModel::TreeItem::SetData( int _column, const QVariant& _crValue ) {
-  if( _column == 0 )
-    name = _crValue.toString();
-  else
-    value = _crValue.toString();
-}
-
-int DgDataModel::TreeItem::Row() const {
-  if( pParentItem != 0 )
-    return pParentItem->children.indexOf( const_cast< TreeItem* >( this ) );
-  return 0;
-}
-
-DgDataModel::TreeItem* DgDataModel::TreeItem::ParentItem() {
-  return pParentItem;
-}
-
-void DgDataModel::TreeItem::Clear() {
-  qDeleteAll( children );
-}
-
-void DgDataModel::TreeItem::SetName( const QString& _crName ) {
-  name = _crName;
-}
-
-void DgDataModel::TreeItem::SetValue( const QString& _crValue ) {
-  value = _crValue;
-}
-
-/******************************************************************************/
+namespace dm {
 
 DgDataModel::DgDataModel( const QString& _crFilename ):
   file( _crFilename ),
-  root( 0, "/" ) {
-  root.AppendChild( "filename", _crFilename );
+  pRoot( new TreeItem( 0, "/" ) ) {
+  TreeItem* pFileinfo = pRoot->AppendChild( "fileinfo" );
+  pFileinfo->AppendChild( "filename", _crFilename );
 
   if( not file.exists() ) {
     status = NOTEXISTS;
-    root.AppendChild( "status", "not exists" );
+    pFileinfo->AppendChild( "status", "not exists" );
     return;
   }
 
   QFile::OpenMode flags = QFile::Text | QFile::ReadOnly;
-  if( file.isWritable() ) {
-    status = READWRITE;
-    flags |= QFile::WriteOnly;
-    root.AppendChild( "status", "read & write" );
-  }
-  else {
-    status = READONLY;
-    root.AppendChild( "status", "read only" );
-  }
 
   if( not file.open( flags ) ) {
     status = OPENFAIL;
-    root.Child( 1 )->SetValue( "opening failed" );
+    pFileinfo->Child( 1 )->SetValue( "opening failed" );
     return;
   }
+
+  if( file.isWritable() ) {
+    status = READWRITE;
+    flags |= QFile::WriteOnly;
+    pFileinfo->AppendChild( "status", "read & write" );
+  }
+  else {
+    status = READONLY;
+    pFileinfo->AppendChild( "status", "read only" );
+  }
+}
+
+DgDataModel::~DgDataModel() {
+  delete pRoot;
 }
 
 QModelIndex DgDataModel::index( int _row, int _column, const QModelIndex& _crParent ) const {
@@ -101,7 +45,7 @@ QModelIndex DgDataModel::index( int _row, int _column, const QModelIndex& _crPar
   TreeItem* pParentItem;
 
   if( not _crParent.isValid() )
-    pParentItem = const_cast< TreeItem* >( &root );
+    pParentItem = const_cast< TreeItem* >( pRoot );
   else
     pParentItem = static_cast< TreeItem* >( _crParent.internalPointer() );
 
@@ -119,7 +63,7 @@ QModelIndex DgDataModel::parent( const QModelIndex& _crIndex ) const {
   TreeItem* pChildItem = static_cast< TreeItem* >( _crIndex.internalPointer() );
   TreeItem* pParentItem = pChildItem->ParentItem();
 
-  if( pParentItem == &root )
+  if( pParentItem == pRoot )
     return QModelIndex();
 
   return createIndex( pParentItem->Row(), 0, pParentItem );
@@ -131,7 +75,7 @@ int DgDataModel::rowCount( const QModelIndex& _crParent ) const {
     return 0;
 
   if( not _crParent.isValid() )
-    pParentItem = const_cast< TreeItem* >( &root );
+    pParentItem = const_cast< TreeItem* >( pRoot );
   else
     pParentItem = static_cast< TreeItem* >( _crParent.internalPointer() );
 
@@ -170,15 +114,18 @@ bool DgDataModel::setData( const QModelIndex& _crIndex, const QVariant& _crValue
 Qt::ItemFlags DgDataModel::flags( const QModelIndex& _crIndex ) const {
   if( not _crIndex.isValid() )
     return 0;
-  return QAbstractItemModel::flags( _crIndex );
-}
 
-void DgDataModel::Load() {
-  root.Clear();
+  Qt::ItemFlags f = Qt::ItemIsEnabled;//QAbstractItemModel::flags( _crIndex );
 
-  //TODO:
+  TreeItem* pItem = static_cast< TreeItem* >( _crIndex.internalPointer() );
+  if( pItem->ParentItem() == pRoot and _crIndex.row() == 0 ) {}
+  else if( status == READWRITE )
+    f |= Qt::ItemIsEditable;
+  return f;
 }
 
 void DgDataModel::Save() const {
   //TODO:
 }
+
+} // namespace dm

@@ -9,11 +9,17 @@
 EditorWnd::EditorWnd( const QString& _crFilename, QWidget* _pParent ):
     QWidget( _pParent ),
     ptw( new QTreeView() ),
-    filename( _crFilename ) {
+    filename( _crFilename ),
+    pmodel( new dm::DgDataModel( _crFilename ) ) {
   QHBoxLayout* pLo = new QHBoxLayout( this );
   pLo->addWidget( ptw );
-  ptw->setModel( new DgDataModel( _crFilename ) );
+  ptw->setModel( pmodel );
+  pmodel->Load();
   setWindowTitle( QString( "Editor - %1" ).arg( filename ) );
+}
+
+EditorWnd::~EditorWnd() {
+  delete pmodel;
 }
 
 void EditorWnd::closeEvent( QCloseEvent* _pe )
