@@ -48,8 +48,7 @@ void DgDataModel::Load() {
 
       int token = Name2Int( words.first().toUtf8().data(), TKN::names );
       if( token == -1 ) {
-        //root.AppendChild( "syntax error" );
-        line++;
+        pRoot->AppendChild( line++, "syntax error" );
         continue;
       }
 

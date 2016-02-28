@@ -29,6 +29,10 @@ public:
   TokenBase( TreeItem* _pParent );
   virtual bool Load( const QStringList&, unsigned& _rLine );
   virtual void Save( QFile& _rFile );
+
+  void LoadPoint2d( TreeItem* _pItem, const QString& _crLabel, const QString& _crX, const QString& _crY, unsigned _line );
+  void LoadPoint3d( TreeItem* _pItem, const QString& _crLabel, const QString& _crX, const QString& _crY, const QString& _crZ, unsigned _line );
+  void LoadCreator( TreeItem* _pItem, const QString& _crStr, unsigned _line );
 };
 
 } // namespace dm
