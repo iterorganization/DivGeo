@@ -7,9 +7,9 @@ LD_MSCL ?= -L${MSCL_ROOT} -lmscl
 
 FC	     = gfortran
 ifdef SOLPS_DEBUG
-FFLAGS	 = -g -C -fdefault-real-8
+FFLAGS	 = -g -C
 else
-FFLAGS	 = -O3 -fdefault-real-8
+FFLAGS	 = -O3
 endif
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP	     = /lib/cpp -traditional
