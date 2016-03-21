@@ -190,7 +190,7 @@ c     ,                                iprvs(j),inext(j),prvs(j),next(j)
                   prvs(i)=.false.
                   free(i)=prvs(i).or.next(i)
 c
-c*** change the orientation of the chain accending from j
+c*** change the orientation of the chain ascending from j
 c
                   k=j
 c                  if(bbb) write(0,*) '*50: start. k ='

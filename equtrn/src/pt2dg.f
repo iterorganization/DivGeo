@@ -53,7 +53,7 @@ c*** check the parameters
         ex=.true.
       end if !}
       if(rmnmx(1).ge.rmnmx(2)) then !{
-        write(0,*) 'rmnmx must be accending: ',rmnmx
+        write(0,*) 'rmnmx must be ascending: ',rmnmx
         ex=.true.
       end if !}
       if(rmnmx(1).le.0.) then !{
@@ -61,7 +61,7 @@ c*** check the parameters
         ex=.true.
       end if !}
       if(zmnmx(1).ge.zmnmx(2)) then !{
-        write(0,*) 'zmnmx must be accending: ',zmnmx
+        write(0,*) 'zmnmx must be ascending: ',zmnmx
         ex=.true.
       end if !}
       if(btrt(1).le.0. .or. btrt(2).le.0.) then !{
