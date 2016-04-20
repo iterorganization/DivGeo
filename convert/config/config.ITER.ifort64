@@ -12,4 +12,5 @@ COMPILE = ${FC} -c ${FFLAGS}
 CPP	= /lib/cpp -C -traditional
 
 LDLIBS	= ${LD_MSCL} -lstdc++
-LDEXTRA	= 
+LDFLAGS	= -i_dynamic
+LDEXTRA	=
