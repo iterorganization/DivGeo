@@ -14,7 +14,7 @@ c***  npoint is the actual number of points
 c***  ntria ... of triangles
 c***  npair ... of pairs (matched nodes)
 c***  px(:),py(:) are the x and y coordintes of nodes
-c***  tri(3,:) is the triangles contants (nodes indexes for each triangle)
+c***  tri(3,:) is the triangle constants (nodes indices for each triangle)
 c***  pairs(2,:) is the list of present pairs (matched nodes)
 
       integer npoint,ntria, npair
