@@ -4,14 +4,14 @@ ifndef LD_MSCL
 endif
 
 
-FC	     = ifort 
+FC	 = ifort 
 ifdef SOLPS_DEBUG
 FFLAGS	 = -g -C -vec_report0 -traceback
 else
 FFLAGS	 = -O -vec_report0
 endif
 COMPILE  = ${FC} -c ${FFLAGS}
-CPP	     = /lib/cpp -C -traditional
+CPP	 = /lib/cpp -C -traditional -ffreestanding
 
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  = 
