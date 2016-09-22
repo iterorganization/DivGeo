@@ -60,7 +60,8 @@
 #include <stdarg.h>
 #include <assert.h>
 #include <ctype.h>
-#include <values.h>
+#include <limits.h>
+#include <float.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -70,6 +71,8 @@
 
 #define DLG_ERROR_BOX "errorBox"
 
+#define MAXDOUBLE DBL_MAX
+#define MAXINT INT_MAX
 #define MAKESTREX_BUF 3000
 #define MAKESTREX_CHR '\x1'
 #define STATICSTR_LEN 1024

@@ -13,9 +13,13 @@
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
-#include <values.h>
+#include <limits.h>
+#include <float.h>
 #include <pthread.h>
 
+#define MAXDOUBLE DBL_MAX
+#define MINDOUBLE DBL_MIN
+#define MAXINT INT_MAX
 #define DG_FNAME_LEN 256
 #define DG_VERSION 21100
 
