@@ -1187,12 +1187,13 @@ EnumText102
 text101 0
 spcs_gen
 Species
-text101 5
-A generic atomic species - should be one
-of H, D, T, He, Be, C, N, Ne, or Ar
-All the ion species and the necessary
-molecules and test ions are supplied
-automatically.
+text101 6
+The element name of the species you wish to include.
+For H, D, T, He, Be, C, N, Ne, or Ar, a set of default reactions
+will be provided by Uinp.
+For other elements, Uinp will use ADAS reaction rates, when available.
+All the ion species as well as the necessary molecules and test ions
+(for hydrogen isotopes) are supplied automatically.
 Text -n-m-S-s-h+i 0 1
 EnumText102
 text101 0

@@ -18,8 +18,8 @@ c----------------------------------------------------------------------
       rgrs(1:nr)=rgr(1:nr)
       zgrs(1:nz)=zgr(1:nz)
 
-      if(ngpr.lt.2*nr-1) stop 'increase ngpr'
-      if(ngpz.lt.2*nz-1) stop 'increase ngpz'
+      if(ngpr.lt.2*nr-1) stop '==== increase ngpr in eqdim.inc!'
+      if(ngpz.lt.2*nz-1) stop '==== increase ngpz in eqdim.inc!'
 
       nn=nr*nz
       call splbcb(rgrs, nr, zgrs, nz, pfms, nr, cx, nn*3, cy, nn*3,
