@@ -15,7 +15,7 @@ LDLIBS	= -L${SOLPSLIB} -L/usr/local/lib
 LDFLAGS = -lblas ${LD_NAG} -lslap -lmmach -lxersla ${LD_MSCL} ${LD_SONNET} ${LD_NETCDF}
 
 
-!!!Local Variables:
-!!! mode: Makefile
-!!! End:
+#!!!Local Variables:
+#!!! mode: Makefile
+#!!! End:
 

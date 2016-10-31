@@ -18,7 +18,7 @@ LDEXTRA	 =
 
 # LDUMLIB = -lnagblas -lC
 
-!!!Local Variables:
-!!! mode: Makefile
-!!! End:
+#!!!Local Variables:
+#!!! mode: Makefile
+#!!! End:
 

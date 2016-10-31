@@ -3,7 +3,7 @@ CFLAGS = -g
 CC = cc
 INCLUDES = -I/opt/SUNWmotif/include
 
-!!!Local Variables:
-!!! mode: Makefile
-!!! End:
+#!!!Local Variables:
+#!!! mode: Makefile
+#!!! End:
 

@@ -17,7 +17,7 @@ CPP	= /lib/cpp -C -traditional
 LDLIBS	= ${LD_MSCL} -lstdc++
 LDEXTRA	= 
 
-!!!Local Variables:
-!!! mode: Makefile
-!!! End:
+#!!!Local Variables:
+#!!! mode: Makefile
+#!!! End:
 

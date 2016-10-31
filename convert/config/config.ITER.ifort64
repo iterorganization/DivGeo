@@ -15,7 +15,7 @@ LDLIBS	= ${LD_MSCL} -lstdc++
 LDFLAGS	= -i_dynamic
 LDEXTRA	=
 
-!!!Local Variables:
-!!! mode: Makefile
-!!! End:
+#!!!Local Variables:
+#!!! mode: Makefile
+#!!! End:
 

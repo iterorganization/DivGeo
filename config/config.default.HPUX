@@ -5,7 +5,7 @@ INCLUDES = -I /usr/include/X11R5
 DEFINES = -DHPUX
 LD = gcc
 
-!!!Local Variables:
-!!! mode: Makefile
-!!! End:
+#!!!Local Variables:
+#!!! mode: Makefile
+#!!! End:
 
