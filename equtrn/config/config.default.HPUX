@@ -16,3 +16,8 @@ CPP	     = /lib/cpp
 LDLIBS   = -Wl,${LD_MSCL} -Wl,-L/usr/local/lib
 LDFLAGS  = 
 LDEXTRA	 =
+
+!!!Local Variables:
+!!! mode: Makefile
+!!! End:
+

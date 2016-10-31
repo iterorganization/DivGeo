@@ -19,3 +19,8 @@ LDFLAGS  =
 LDEXTRA	 =
 
 LDWOS 	 = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt
+
+!!!Local Variables:
+!!! mode: Makefile
+!!! End:
+

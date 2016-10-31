@@ -17,3 +17,8 @@ LDFLAGS  = ${LD_NAG} -lslap -lmach -lblas -lxersla ${LD_SONNET} -lnagblas -lC -l
 LDEXTRA	 =
 
 # LDUMLIB = -lnagblas -lC
+
+!!!Local Variables:
+!!! mode: Makefile
+!!! End:
+
