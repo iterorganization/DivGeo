@@ -412,7 +412,7 @@ text101 0
 Help
 Help
 text101 1
-Obsolette - use "Target specification" instead.
+Obsolete - use "Target specification" instead.
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
@@ -433,7 +433,7 @@ text101 0
 Help
 Help
 text101 1
-Obsolette - use "Target specification" instead
+Obsolete - use "Target specification" instead
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
@@ -454,7 +454,7 @@ text101 0
 Help
 Help
 text101 1
-Obsolette - use "Target specification" instead.
+Obsolete - use "Target specification" instead.
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
@@ -475,7 +475,7 @@ text101 0
 Help
 Help
 text101 1
-Obsolette - use "Target specification" instead.
+Obsolete - use "Target specification" instead.
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
@@ -600,7 +600,7 @@ text101 0
 Help
 Help
 text101 3
-This is an obsolette specification for calculation of radiative wall loading.
+This is an obsolete specification for calculation of radiative wall loading.
 
 It only works in Sonnet outpu mode.
 Text +n-m-S-s-h-i 0 0
@@ -953,7 +953,7 @@ text101 0
 Help
 Help
 text101 1
-Obsolette - use "Target specification" instead.
+Obsolete - use "Target specification" instead.
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
