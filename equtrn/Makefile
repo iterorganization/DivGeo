@@ -58,6 +58,14 @@ ifeq (${HOST_NAME}, JET)
 ALL += ${PROG_jetppf2dg}
 endif
 
+ifeq (${HOST_NAME}, IPP)
+ALL += ${PROG_shotfile2dg}
+endif
+
+ifeq (${HOST_NAME}, ITM)
+ALL += ${PROG_shotfile2dg}
+endif
+
 creq =  cropequ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
 dgdg =	dg2dg.o rdeqdg.o wreqdg.o rdeqlh.o double.o open_files.o
 dgminuspsidg =	dg_minuspsi_dg.o rdeqdg.o wreqdg.o rdeqlh.o
