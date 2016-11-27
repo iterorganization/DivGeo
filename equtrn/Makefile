@@ -8,13 +8,25 @@ ifndef COMPILER
 $(error COMPILER not defined)
 endif
 
+MAKES = Makefile 
 # Include global SOLPS compiler settings
 ifndef SOLPS_CPP
 ifeq ($(shell [ -e ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
   include ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}
+  MAKES += ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}
+  ifeq ($(shell [ -e ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}.local ] && echo yes || echo no ),yes)
+    include ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}.local
+    MAKES += ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}.local
+  endif
 else
   $(warning ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER} not found.)
 endif
+else
+  MAKES += ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}
+  ifeq ($(shell [ -e ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}.local ] && echo yes || echo no ),yes)
+    include ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}.local
+    MAKES += ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}.local
+  endif
 endif
 
 ifdef SOLPS_DEBUG
@@ -89,12 +101,14 @@ dgsymmdg = dg_symm_dg.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o
 
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
 include config/config.${HOST_NAME}.${COMPILER}
+MAKES+= config/config.${HOST_NAME}.${COMPILER}
 else
 $(error config/config.${HOST_NAME}.${COMPILER} not found.)
 endif
 
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER}.local ] && echo yes || echo no ),yes)
 include config/config.${HOST_NAME}.${COMPILER}.local
+MAKES+= config/config.${HOST_NAME}.${COMPILER}.local
 endif
 
 include $(OBJDIR)/LISTOBJ
@@ -129,65 +143,65 @@ $(OBJDIR)/%.o : %.f
 
 all: $(ALL:%=$(OBJDIR)/%)
 
-${OBJDIR}/${PROG_cropequ}: $(CREQ)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_cropequ}: $(CREQ) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(CREQ) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/${PROG_dg2dg}: $(DGDG)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_dg2dg}: $(DGDG) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(DGDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/${PROG_culham}: $(CULHAM)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_culham}: $(CULHAM) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(CULHAM) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/${PROG_sst2dg}: $(SSTDG)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_sst2dg}: $(SSTDG) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(SSTDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/${PROG_dg2ef}: $(DGEF)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_dg2ef}: $(DGEF) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(DGEF) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/${PROG_dg2vr}: $(DGVR)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_dg2vr}: $(DGVR) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(DGVR) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/${PROG_ef2dg}: $(EFDG)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_ef2dg}: $(EFDG) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(EFDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/${PROG_vr2dg}: $(VRDG)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_vr2dg}: $(VRDG) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(VRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/${PROG_nk2dg}: $(NKDG)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_nk2dg}: $(NKDG) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(NKDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/${PROG_nkn2dg}: $(NKNDG)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_nkn2dg}: $(NKNDG) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(NKNDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/${PROG_jt2dg}: $(JTDG)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_jt2dg}: $(JTDG) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(JTDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/${PROG_risepsi}: $(RSPS)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_risepsi}: $(RSPS) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(RSPS) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/${PROG_move_equ}: $(MVEQ)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_move_equ}: $(MVEQ) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(MVEQ) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/${PROG_prinequ}: $(PREQ)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_prinequ}: $(PREQ) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(PREQ) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/${PROG_pb2dg}: $(PBDG)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_pb2dg}: $(PBDG) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(PBDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/${PROG_pt2dg}: $(PTDG)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_pt2dg}: $(PTDG) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(PTDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/${PROG_dg_minuspsi_dg}: $(DGMINUSPSIDG)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_dg_minuspsi_dg}: $(DGMINUSPSIDG) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(DGMINUSPSIDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
-${OBJDIR}/${PROG_shotfile2dg}: $(SHOTFILE2DG)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDWOS)
+${OBJDIR}/${PROG_shotfile2dg}: $(SHOTFILE2DG) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(SHOTFILE2DG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDWOS)
 
-${OBJDIR}/${PROG_jetppf2dg}: $(JETPPF2DG)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDFLUSH)
+${OBJDIR}/${PROG_jetppf2dg}: $(JETPPF2DG) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(JETPPF2DG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDFLUSH)
 
-${OBJDIR}/${PROG_dg_symm_dg}: $(DGSYMMDG)
-	${FC} ${FFLAGS} -o $@ $^ ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+${OBJDIR}/${PROG_dg_symm_dg}: $(DGSYMMDG) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(DGSYMMDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 clean:
 	cd ${OBJDIR}; rm -rf *.o *.f $(ALL) LISTOBJ dependencies*

@@ -10,13 +10,25 @@ ifndef COMPILER
 $(error COMPILER not defined)
 endif
 
+MAKES = Makefile 
 # Include global SOLPS compiler settings
 ifndef SOLPS_CPP
 ifeq ($(shell [ -e ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
   include ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}
+  MAKES += ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}
+  ifeq ($(shell [ -e ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}.local ] && echo yes || echo no ),yes)
+    include ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}.local
+    MAKES += ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}.local
+  endif
 else
   $(warning ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER} not found.)
 endif
+else
+  MAKES += ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}
+  ifeq ($(shell [ -e ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}.local ] && echo yes || echo no ),yes)
+    include ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}.local
+    MAKES += ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}.local
+  endif
 endif
 
 ifdef SOLPS_DEBUG
@@ -40,12 +52,14 @@ include ${OBJDIR}/LISTOBJ
 
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
 include config/config.${HOST_NAME}.${COMPILER}
+MAKES+= config/config.${HOST_NAME}.${COMPILER}
 else
 $(error config/config.${HOST_NAME}.${COMPILER} not found.)
 endif
 
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER}.local ] && echo yes || echo no ),yes)
 include config/config.${HOST_NAME}.${COMPILER}.local
+MAKES+= config/config.${HOST_NAME}.${COMPILER}.local
 endif
 
 DEST = $(OBJS:%.o=$(OBJDIR)/%.o)
@@ -53,7 +67,7 @@ DEST = $(OBJS:%.o=$(OBJDIR)/%.o)
 $(OBJDIR)/%.o : %.c
 	 $(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(DG): $(DEST)
+$(DG): $(DEST) $(MAKES)
 	 $(CC) $(CFLAGS) $(INCLUDES) -o $@ $(DEST) $(LIBS)
 
 all: VERSION listobj depend $(DG)
