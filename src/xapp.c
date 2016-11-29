@@ -11,6 +11,7 @@ XApp CreateXApp(int* pargc,char** argv) {
   xap->x=NULL;
   xap->views=CreateGroup();
   xap->configFileName=NULL;
+  xap->winToEmbedInto=None;
   xap->config=NULL;
   xap->stringSource=NULL;
 

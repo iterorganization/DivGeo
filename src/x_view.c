@@ -673,6 +673,26 @@ View CreateXmView(XApp xap,App app) {
   XtRealizeWidget(w->x->wShell);
   XtPopup(w->x->wShell,XtGrabNone);     /* relcheck_ignore_line */
 
+  if (xap->winToEmbedInto) {
+    Status code;
+    int status;
+    XWindowAttributes attrs;
+    Window x11w;
+    Display *dpy = XtDisplay(w->x->wShell);
+
+    if (XGetWindowAttributes(dpy, xap->winToEmbedInto, &attrs)){
+        x11w = XtWindow(w->x->wShell);
+        XMapWindow(dpy,x11w);
+        status = XReparentWindow(dpy, x11w, xap->winToEmbedInto, 0, 0);
+        fprintf(stderr, "DivGeo embeding into Window ID: %ld with status %d\n ",
+                (long)xap->winToEmbedInto, status);
+        assert(status != BadWindow);/* 3 parameter not a Window */
+        assert(status != BadMatch); /* 8 parameter mismatch */
+      }
+    else
+      fprintf(stderr, "DivGeo embeding failed in XGetWindowAttributes()\n");
+  }
+ 
   /* Allocate X resources/add WM callbacks */
 
   a=XmInternAtom(XtDisplay(w->x->wShell),"WM_DELETE_WINDOW",False);

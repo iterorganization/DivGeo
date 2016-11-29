@@ -3,12 +3,15 @@
 #ifndef _xapp_h
 #define _xapp_h
 
+#include <X11/X.h>
+
 struct _XApp {
   int type;
 
   XAppExt x;
   Group views;
   char* configFileName;
+  Window winToEmbedInto;
   App config;
   StringSource stringSource;
 

@@ -55,6 +55,7 @@ XrmOptionDescRec commandLineOptions[]={
 
   "-nocfg","loadConfig",XrmoptionNoArg,"0",
   "-cfg","configFileName",XrmoptionSepArg,NULL,
+  "-wid","embedWID",XrmoptionSepArg,NULL,
   "-nores","checkResources",XrmoptionNoArg,"0",
   "-nohelp","checkHelpFile",XrmoptionNoArg,"0",
 };
@@ -96,12 +97,14 @@ void ConfigureXApp(XApp xap) {
     strcpy(xap->configFileName,xap->argv[0]);
     strcpy(GetFileExt(xap->configFileName),XAppStr(xap,FSTR_CFGEXT));
   }
-
+  xap->winToEmbedInto = (Window)strtol(GetResourceString(xap->x->wShell,
+                                             "embedWID", NULL,""), NULL, 0);
   if (xap->x->bDisplayHelp) {
     fprintf(stderr,"DivGeo version %s\n"
       "Usage: %s [-display [Host]{:Number}] [-nores] [-nocfg] [-nohelp]"
       " [-cfg CfgFile] [filename] ...\n"
       "-display      Specifies display to use\n"
+      "-wid          Embed first DivGeo view into window ID\n"
       "-nores        Do not check resource file version\n"
       "-nocfg        Do not load configuration file\n"
       "-cfg          Specifies configuration file\n"
@@ -146,7 +149,7 @@ void UnconfigureXApp(XApp xap) {
   if (xap->x->helpFile!=NULL) xap->x->helpFile=Free(xap->x->helpFile);
   xap->x->strs=Free(xap->x->strs);
   xap->configFileName=Free(xap->configFileName);
-
+  xap->winToEmbedInto=None;
   xap->stringSource=NULL;
   xap->x=Free(xap->x);
 }
