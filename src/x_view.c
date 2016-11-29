@@ -682,7 +682,6 @@ View CreateXmView(XApp xap,App app) {
 
     if (XGetWindowAttributes(dpy, xap->winToEmbedInto, &attrs)){
         x11w = XtWindow(w->x->wShell);
-        XMapWindow(dpy,x11w);
         status = XReparentWindow(dpy, x11w, xap->winToEmbedInto, 0, 0);
         fprintf(stderr, "DivGeo embeding into Window ID: %ld with status %d\n ",
                 (long)xap->winToEmbedInto, status);

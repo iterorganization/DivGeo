@@ -21,7 +21,7 @@
 #define MINDOUBLE DBL_MIN
 #define MAXINT INT_MAX
 #define DG_FNAME_LEN 256
-#define DG_VERSION 21100
+#define DG_VERSION 21110
 
 #ifdef PC_VERSION
 

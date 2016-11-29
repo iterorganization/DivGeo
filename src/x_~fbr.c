@@ -13,7 +13,7 @@ char* dgResources[]={
   "# Resource file version and diagnostics\n",
   "########################################################################\n",
   "\n",
-  "DivGeo.resourceFileVersion:             21100\n",
+  "DivGeo.resourceFileVersion:             21110\n",
   "\n",
   "########################################################################\n",
   "# String resources\n",
