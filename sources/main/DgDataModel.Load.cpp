@@ -28,31 +28,25 @@ void DgDataModel::Load() {
   IToken* pToken = null;
   while( not file.atEnd() ) {
     QString str( file.readLine() );
-    if( str.trimmed().isEmpty() ) {
-      pRoot->AppendChild( line, "" );
-      line++;
-      continue;
-    }
 
     QStringList words = str.split( ' ' );
     words.last() = words.last().trimmed();
-
-    if( words.first() == "DgFile" ) {
-      pRoot->AppendChild( line, words.first(), words.value( 1 ) )
-          ->AppendChild( line, "", "{\n; For compatibility\n}" );
-      line += 3;
-      continue;
-    }
 
     if( pToken == null ) {
 
       int token = Name2Int( words.first().toUtf8().data(), TKN::names );
       if( token == -1 ) {
+        if( str.trimmed().isEmpty() ) {
+          pRoot->AppendChild( line, "" );
+          line++;
+          continue;
+        }
         pRoot->AppendChild( line++, "syntax error" );
         continue;
       }
 
       switch( token ) {
+      case TKN::DgFile:                 pToken = new TokenBase< TKN::DgFile                >( pRoot ); break;
       case TKN::Equil100:               pToken = new TokenBase< TKN::Equil100              >( pRoot ); break;
       case TKN::EquilHints114:          pToken = new TokenBase< TKN::EquilHints114         >( pRoot ); break;
       case TKN::Template100:            pToken = new TokenBase< TKN::Template100           >( pRoot ); break;
@@ -83,10 +77,10 @@ void DgDataModel::Load() {
       case TKN::MarkedMeshElements112:  pToken = new TokenBase< TKN::MarkedMeshElements112 >( pRoot ); break;
       case TKN::MarkedMeshCells112:     pToken = new TokenBase< TKN::MarkedMeshCells112    >( pRoot ); break;
       case TKN::VarSetDefs100:          pToken = new TokenBase< TKN::VarSetDefs100         >( pRoot ); break;
-      case TKN::VarDefs100:             pToken = new TokenBase< TKN::VarDefs100            >( pRoot ); break;
+      //case TKN::VarDefs100:             pToken = new TokenBase< TKN::VarDefs100            >( pRoot ); break;
       case TKN::VarSetDefs101:          pToken = new TokenBase< TKN::VarSetDefs101         >( pRoot ); break;
-      case TKN::VarDefs101:             pToken = new TokenBase< TKN::VarDefs101            >( pRoot ); break;
-      case TKN::VarDefs102:             pToken = new TokenBase< TKN::VarDefs102            >( pRoot ); break;
+      //case TKN::VarDefs101:             pToken = new TokenBase< TKN::VarDefs101            >( pRoot ); break;
+      //case TKN::VarDefs102:             pToken = new TokenBase< TKN::VarDefs102            >( pRoot ); break;
       case TKN::VarSets100:             pToken = new TokenBase< TKN::VarSets100            >( pRoot ); break;
       case TKN::XPoint100:              pToken = new TokenBase< TKN::XPoint100             >( pRoot ); break;
       case TKN::MaxElemId101:           pToken = new TokenBase< TKN::MaxElemId101          >( pRoot ); break;
@@ -104,7 +98,7 @@ void DgDataModel::Load() {
       default: break;
       }
     }
-    if( pToken != null and pToken->Load( words, line ) ) {
+    if( pToken != null and pToken->Load( str.trimmed(), words, line ) ) {
       delete pToken;
       pToken = null;
     }

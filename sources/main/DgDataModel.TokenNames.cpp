@@ -35,10 +35,15 @@ const _NameRec Tokens::names[] = {
   NAMEREC( MarkedMeshElements112 ),
   NAMEREC( MarkedMeshCells112 ),
   NAMEREC( VarSetDefs100 ),
+  NAMEREC( VarSetDef100 ),
   NAMEREC( VarDefs100 ),
+  NAMEREC( VarDef100 ),
   NAMEREC( VarSetDefs101 ),
+  NAMEREC( VarSetDef101 ),
   NAMEREC( VarDefs101 ),
+  NAMEREC( VarDef101 ),
   NAMEREC( VarDefs102 ),
+  NAMEREC( VarDef102 ),
   NAMEREC( VarSets100 ),
   NAMEREC( XPoint100 ),
   NAMEREC( MaxElemId101 ),
@@ -53,6 +58,7 @@ const _NameRec Tokens::names[] = {
   NAMEREC( MeshFileHeader113 ),
   NAMEREC( Comments316 ),
   NAMEREC( Properties316 ),
+  NAMEREC( DgFile ),
   _NameRec( 0, 0 )
 };
 

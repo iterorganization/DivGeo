@@ -37,10 +37,15 @@ enum ETokens {
   MarkedMeshElements112,
   MarkedMeshCells112,
   VarSetDefs100,
+  VarSetDef100, // loader
   VarDefs100,
+  VarDef100, // loader
   VarSetDefs101,
+  VarSetDef101, // loader
   VarDefs101,
+  VarDef101, // loader
   VarDefs102,
+  VarDef102, // loader
   VarSets100,
   XPoint100,
   MaxElemId101,
@@ -54,7 +59,12 @@ enum ETokens {
   MeshSlidingOptions112,
   MeshFileHeader113,
   Comments316,
-  Properties316
+  Properties316,
+
+  DgFile,
+  text101,
+  Vars110,
+  Var,
 };
 
 static const _NameRec names[];
