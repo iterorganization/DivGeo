@@ -8,21 +8,17 @@
 
 /* Some point math operators and cast functions */
 const QPointF operator*( const QPointF& p1, const QPoint&  p2 );
-//const QPointF operator*( const QPointF& p1, const QPointF& p2 );
 const QPointF operator*( const QPointF& p1, const Point&   p2 );
 
 const QPointF operator/( const QPointF& p1, const QPoint&  p2 );
-//const QPointF operator/( const QPointF& p1, const QPointF& p2 );
 const QPointF operator/( const QPointF& p1, const Point&   p2 );
 
 const QPointF operator+( const QPointF& p1, const Point&   p2 );
 const QPoint  operator+( const QPoint&  p1, const Point&   p2 );
-const QPointF operator+( const QPointF& p1, const QPointF& p2 );
 const Point   operator+( const Point&   p1, const QPointF& p2 );
 
 const QPointF operator-( const QPointF& p1, const Point&   p2 );
 const QPoint  operator-( const QPoint&  p1, const Point&   p2 );
-const QPointF operator-( const QPointF& p1, const QPointF& p2 );
 const Point   operator-( const Point&   p1, const QPointF& p2 );
 
 const QPoint Min( const QPoint& p1, const QPoint& p2 );

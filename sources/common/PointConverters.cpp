@@ -1,12 +1,9 @@
 #include "PointConverters.h"
 
-//const QPoint operator*( const QPoint& p1, const QPoint& p2 ) { return QPoint( p1.x() * p2.x(), p1.y() * p2.y() ); }
 const QPointF operator*( const QPointF& p1, const QPoint&  p2 ) { return QPointF( p1.x() * p2.x(), p1.y() * p2.y() ); }
-//const QPointF operator*( const QPointF& p1, const QPointF& p2 ) { return QPointF( p1.x() * p2.x(), p1.y() * p2.y() ); }
 const QPointF operator*( const QPointF& p1, const Point&   p2 ) { return QPointF( p1.x() * p2.x,   p1.y() * p2.y ); }
 
 const QPointF operator/( const QPointF& p1, const QPoint&  p2 ) { return QPointF( p1.x() / p2.x(), p1.y() / p2.y() ); }
-//const QPointF operator/( const QPointF& p1, const QPointF& p2 ) { return QPointF( p1.x() / p2.x(), p1.y() / p2.y() ); }
 const QPointF operator/( const QPointF& p1, const Point&   p2 ) { return QPointF( p1.x() / p2.x,   p1.y() / p2.y ); }
 
 const QPointF operator+( const QPointF& p1, const Point&   p2 ) { return QPointF( p1.x() + p2.x,   p1.y() + p2.y ); }
