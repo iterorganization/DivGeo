@@ -64,11 +64,10 @@ DlgVarsEdit::DlgVarsEdit(VarSetPtr _pVS, ModelPtr _pModel, CViewWndPtr _pView,
   else
     pBtnSetAll = pBtnResetAll = null;
 
-  if( multiple_vars_num != 0 ) {
-    pChHold = new QCheckBox( SM_DLG( DLG::VARSEDIT::LBL::HOLD ) );
-    pChHold->setChecked( false );
+  pChHold = new QCheckBox( SM_DLG( DLG::VARSEDIT::LBL::HOLD ) );
+  pChHold->setChecked( false );
+  if( multiple_vars_num != 0 )
     pLoButtons->addWidget( pChHold );
-  }
 
   pLoButtons->addSpacerItem( new QSpacerItem( 1, 1, QSizePolicy::Expanding ) );
 
