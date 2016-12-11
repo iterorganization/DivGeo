@@ -310,7 +310,7 @@ void CViewWnd::slotAddChords( QPoint position, EEventID eventid )
         break;
       }
       pChord->Highlight();
-      pModel->Agent()->Update( false ); //1409 false
+      pModel->Agent()->Update();
       pToolAdd->pItem = pScene->GetItem( pChord );
       pConsole->SetLoggingMode( LM::COLLECT );
     }
