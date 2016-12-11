@@ -199,8 +199,8 @@ void CMainWnd::slotNewView( CViewWndPtr _pView )
            this,    SLOT(slotChangeShowFlag(ShowFlag,bool)) );
   connect( _pView,  SIGNAL(ViewClosed(CViewWnd*)),
            this,    SLOT(slotViewClosed(CViewWnd*)) );
-  connect( _pView,  SIGNAL(ViewInFocus(CViewWnd*)),
-           this,    SLOT(slotActiveViewChangedP(CViewWnd*)) );
+  //connect( _pView,  SIGNAL(ViewInFocus(CViewWnd*)),
+  //         this,    SLOT(slotActiveViewChangedP(CViewWnd*)) );
 
   /* Update info */
   connect( _pView,  SIGNAL(UpdateModelInfo()),
@@ -557,9 +557,7 @@ typedef QList< QMdiSubWindow* > WndList;
 
 void CMainWnd::slotActiveViewChanged( CViewWndPtr _pView )
 {
-  if( _pView == null )
-      UpdateMenu( _pView );
-  else {
+  if( _pView != null ) {
     // Find subwindow
     WndList wnds = pMdiArea->subWindowList();
     WndList::iterator it = std::find_if( wnds.begin(), wnds.end(), CbFindSubWindow( _pView ) );
@@ -585,9 +583,9 @@ void CMainWnd::slotActiveViewChanged( CViewWndPtr _pView )
       }
       UpdateModelInfo( true );
       UpdateActionsInfo();
-    } //1411 {}
-    UpdateMenu( _pView );
+    }
   }
+  UpdateMenu( _pView );
 }
 
 
