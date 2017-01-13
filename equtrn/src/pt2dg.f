@@ -700,7 +700,7 @@ c
       write(lun,*,err=99)
       write(lun,*,err=99) '   jm    = ', nr,';'
       write(lun,*,err=99) '   km    = ', nz,';'
-      write(lun,*,err=99) '   psib  = ',psib,' Wb/rad;'
+      write(lun,*,err=99) '   psib  = ',psib - psib,' Wb/rad;'
       write(lun,*,err=99) '   btf   = ',btf,' t;'
       write(lun,*,err=99) '   rtf   = ',rtf,' m;'
       write(lun,*,err=99)

@@ -47,6 +47,7 @@ PROG_cropequ = cropequ
 PROG_dg2dg   = dg2dg
 PROG_dg2ef   = dg2ef
 PROG_ef2dg   = ef2dg
+PROG_cr2dg   = cr2dg
 PROG_vr2dg   = vr2dg
 PROG_dg2vr   = dg2vr
 PROG_nk2dg   = nk2dg
@@ -63,10 +64,11 @@ PROG_dg_symm_dg     = dg_symm_dg
 PROG_dg_minuspsi_dg = dg_minuspsi_dg
 PROG_shotfile2dg    = shotfile2dg
 PROG_jetppf2dg      = jetppf2dg
+PROG_dgcut = dgcut
 
 .PHONY: DOC listobj
 
-ALL = ${PROG_cropequ} ${PROG_dg2dg} ${PROG_dg2ef} ${PROG_ef2dg} ${PROG_vr2dg} ${PROG_nk2dg} ${PROG_dg2vr} ${PROG_risepsi} ${PROG_prinequ} ${PROG_jt2dg} ${PROG_pb2dg} ${PROG_pt2dg} ${PROG_dg_symm_dg} ${PROG_move_equ} .doxygen
+ALL = ${PROG_cropequ} ${PROG_dg2dg} ${PROG_dg2ef} ${PROG_ef2dg} ${PROG_cr2dg} ${PROG_vr2dg} ${PROG_nk2dg} ${PROG_dg2vr} ${PROG_risepsi} ${PROG_prinequ} ${PROG_jt2dg} ${PROG_pb2dg} ${PROG_pt2dg} ${PROG_dg_symm_dg} ${PROG_move_equ} ${PROG_dgcut} .doxygen
 
 ifeq (${HOST_NAME}, JET)
 ALL += ${PROG_jetppf2dg}
@@ -85,6 +87,7 @@ dgdg =	dg2dg.o rdeqdg.o wreqdg.o rdeqlh.o double.o open_files.o
 dgminuspsidg =	dg_minuspsi_dg.o rdeqdg.o wreqdg.o rdeqlh.o
 dgef =	dg2ef.o rdeqdg.o wrefit.o rdeqlh.o open_files.o
 efdg =	ef2dg.o wreqdg.o rdefit.o open_files.o
+crdg =	cr2dg.o wreqdg.o rdcreate.o open_files.o
 vrdg =	vr2dg.o wreqdg.o rdeqvr.o open_files.o
 nkdg =	nk2dg.o wreqdg.o rdeqnk.o open_files.o
 nkndg =  nkn2dg.o wreqdg.o rdeqnk2.o
@@ -100,7 +103,7 @@ sstdg = sst2dg.o wreqdg.o open_files.o
 shotfile2dg = shotfile2dg.o wreqdg.o
 jetppf2dg = jetppf2dg.o wreqdg.o
 dgsymmdg = dg_symm_dg.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o
-
+dgcut = dgcut.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
 include config/config.${HOST_NAME}.${COMPILER}
 MAKES+= config/config.${HOST_NAME}.${COMPILER}
@@ -121,6 +124,7 @@ DGMINUSPSIDG = $(dgminuspsidg:%.o=$(OBJDIR)/%.o)
 DGEF = $(dgef:%.o=$(OBJDIR)/%.o)
 DGVR = $(dgvr:%.o=$(OBJDIR)/%.o)
 EFDG = $(efdg:%.o=$(OBJDIR)/%.o)
+CRDG = $(crdg:%.o=$(OBJDIR)/%.o)
 VRDG = $(vrdg:%.o=$(OBJDIR)/%.o)
 NKDG = $(nkdg:%.o=$(OBJDIR)/%.o)
 NKNDG = $(nkndg:%.o=$(OBJDIR)/%.o)
@@ -135,6 +139,7 @@ SSTDG = $(sstdg:%.o=$(OBJDIR)/%.o)
 SHOTFILE2DG = $(shotfile2dg:%.o=$(OBJDIR)/%.o)
 JETPPF2DG = $(jetppf2dg:%.o=$(OBJDIR)/%.o)
 DGSYMMDG = $(dgsymmdg:%.o=$(OBJDIR)/%.o)
+DGCUT = $(dgcut:%.o=$(OBJDIR)/%.o)
 
 $(OBJDIR)/%.o : %.f
 	${CPP} -P ${INCLUDE} $< > ${OBJDIR}/$*.f
@@ -165,6 +170,9 @@ ${OBJDIR}/${PROG_dg2vr}: $(DGVR) $(MAKES)
 
 ${OBJDIR}/${PROG_ef2dg}: $(EFDG) $(MAKES)
 	${FC} ${FFLAGS} -o $@ $(EFDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+
+${OBJDIR}/${PROG_cr2dg}: $(CRDG) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(CRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_vr2dg}: $(VRDG) $(MAKES)
 	${FC} ${FFLAGS} -o $@ $(VRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
@@ -204,6 +212,9 @@ ${OBJDIR}/${PROG_jetppf2dg}: $(JETPPF2DG) $(MAKES)
 
 ${OBJDIR}/${PROG_dg_symm_dg}: $(DGSYMMDG) $(MAKES)
 	${FC} ${FFLAGS} -o $@ $(DGSYMMDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+
+${OBJDIR}/${PROG_dgcut}: $(DGCUT) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(DGCUT) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 clean:
 	cd ${OBJDIR}; rm -rf *.o *.f $(ALL) LISTOBJ dependencies*
