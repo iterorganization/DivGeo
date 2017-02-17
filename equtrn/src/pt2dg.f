@@ -27,7 +27,7 @@ c
 c
 c                        -----------------------------------------------
 c      
-c     Predefined function: double of the area of a triangle
+c     Pre-defined function: double of the area of a triangle
 c     ------------------- 
       artri(x1,x2,x3,y1,y2,y3) = abs(x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2))
 c                                                                 

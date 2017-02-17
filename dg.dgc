@@ -636,7 +636,7 @@ text101 5
 Here you specify the total power radiated from additional sources
 (typically, from the plasma core which is not covered by the B2 grid).
 
-Don't forget to specify the source points (Sources). The power you specify
+Do not forget to specify the source points (Sources). The power you specify
 in this layer will be distributed equally among them.
 Text +n-m-S-s-h-i 0 0
 EnumText102
@@ -2493,7 +2493,7 @@ is started.
 Several different sets of criteria ("views") can be specified. Look into
 the routine "srfprvsl" in Eirene for the file naming conventions.
 
-A criterion is selected if a non-zero value is assigned to it in this
+A criterion is selected if a nonzero value is assigned to it in this
 form. The values set here do not affect the parameter values specified
 for Eirene!
 Text +n-m-S-s-h-i 0 0
