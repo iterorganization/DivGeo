@@ -75,7 +75,7 @@ ALL += ${PROG_shotfile2dg}
 endif
 
 ifeq (${HOST_NAME}, ITM)
-ALL += ${PROG_shotfile2dg}
+#ALL += ${PROG_shotfile2dg}
 endif
 
 creq =  cropequ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
