@@ -492,7 +492,7 @@ text101 0
 Help
 Help
 text101 1
-Here you specify the additional data for the b2plot post-processor.
+Here you specify the additional data for the b2plot postprocessor.
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
