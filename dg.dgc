@@ -1322,28 +1322,28 @@ D2
 Click ? for help
 0
 midplane
-Mid-plane location
+Midplane location
 text101 0
 0 1
 VarDefs102 3
 jxi
-Inner mid-plane
+Inner midplane
 text101 1
-Grid cell marking the poloidal location of the inner mid-plane
+Grid cell marking the poloidal location of the inner midplane
 SetOfMeshCells -n-m-S-s-h-i 0 1
 EnumText102
 text101 0
 jxa
-Outer mid-plane
+Outer midplane
 text101 1
-Grid cell marking the poloidal location of the outer mid-plane
+Grid cell marking the poloidal location of the outer midplane
 SetOfMeshCells -n-m-S-s-h-i 0 2
 EnumText102
 text101 0
 Help
 Help
 text101 2
-Here you specify the location of the "outer" and "inner" mid-plane in the
+Here you specify the location of the "outer" and "inner" midplane in the
 grid for the B2 output.
 Text +n-m-S-s-h-i 0 0
 EnumText102
