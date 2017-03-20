@@ -8,7 +8,7 @@ else
 FFLAGS	 = -O -vec_report0
 endif
 COMPILE  = ${FC} -c ${FFLAGS}
-CPP	 = /lib/cpp -C -traditional
+CPP	 = /lib/cpp -traditional -ffreestanding
 
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  = -i_dynamic

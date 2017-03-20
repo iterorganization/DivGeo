@@ -64,7 +64,9 @@ PROG_dg_minuspsi_dg = dg_minuspsi_dg
 PROG_shotfile2dg    = shotfile2dg
 PROG_jetppf2dg      = jetppf2dg
 
-ALL = ${PROG_cropequ} ${PROG_dg2dg} ${PROG_dg2ef} ${PROG_ef2dg} ${PROG_vr2dg} ${PROG_nk2dg} ${PROG_dg2vr} ${PROG_risepsi} ${PROG_prinequ} ${PROG_jt2dg} ${PROG_pb2dg} ${PROG_pt2dg} ${PROG_dg_symm_dg} ${PROG_move_equ}
+.PHONY: DOC listobj
+
+ALL = ${PROG_cropequ} ${PROG_dg2dg} ${PROG_dg2ef} ${PROG_ef2dg} ${PROG_vr2dg} ${PROG_nk2dg} ${PROG_dg2vr} ${PROG_risepsi} ${PROG_prinequ} ${PROG_jt2dg} ${PROG_pb2dg} ${PROG_pt2dg} ${PROG_dg_symm_dg} ${PROG_move_equ} .doxygen
 
 ifeq (${HOST_NAME}, JET)
 ALL += ${PROG_jetppf2dg}
@@ -219,8 +221,9 @@ depend: ${OBJS:.o=.f}
 
 $(OBJDIR)/LISTOBJ: listobj
 
-listobj:
+listobj: ${OBJDIR}/dependencies
 	@cd src ; echo "OBJS =" *.f | sed -e 's/ [^ /]*\// /g' -e 's/\.f/.o/g' > $(OBJDIR)/LISTOBJ
+	@echo "SRCS =" src/*.f >> ${OBJDIR}/LISTOBJ
 
 ${OBJDIR}/dependencies:
 	-mkdir -p ${OBJDIR}
@@ -228,8 +231,11 @@ ${OBJDIR}/dependencies:
 	${MAKE} listobj
 	${MAKE} depend
 
-DOC: 
+${OBJDIR}/.doxygen: ${SRCS} ${MAKES}
 	doxygen
+	touch $@
+
+DOC: ${OBJDIR}/.doxygen
 
 include ${OBJDIR}/dependencies
 

@@ -11,8 +11,8 @@ c*** (courtesy Prof. O. de Barbieri)
 c=======================================================================
 c                                                                       
 #include "eqdim.inc"
-#include "pt2dg.inc"                                              
-c                                                                       
+#include "pt2dg.inc"                                             
+c                                                                
 c-----------------------------------------------------------------------
 c                                                                       
       dimension lko(6)
