@@ -38,4 +38,5 @@ device/
 # Doxygen documentation
 
 equtrn/doxygen
+equtrn/.doxygen
 
