@@ -10,7 +10,7 @@ else
 FFLAGS	 = -O
 endif
 COMPILE  = ${FC} -c ${FFLAGS}
-CPP	     = /lib/cpp -C -traditional
+CPP	 = /lib/cpp -C -traditional -ffreestanding
 
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  = 
