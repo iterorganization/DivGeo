@@ -226,7 +226,7 @@ tags:
 	rm -f TAGS ; etags src/*.f src/*.inc
 
 depend: ${OBJS:.o=.f}
-	makedepend -f- ${INCLUDE} $^ | \
+	@makedepend -f- ${INCLUDE} $^ | \
 	sed -e '3,$$s|^src/|${OBJDIR}/|' | \
 	sed -e 's,^${OBJDIR}/,\$${OBJDIR}/,' | \
 	sed -e 's,: ${SOLPSTOP},: $${SOLPSTOP},' > ${OBJDIR}/dependencies

@@ -86,9 +86,8 @@ tags:
 	rm -f TAGS ; etags src/*.c src/*.h dg.dgc
 
 depend: ${OBJS:.o=.c}
-	-mkdir -p ${OBJDIR}
-	-cd ${OBJDIR} ; ln -sf ${SRCDIR}/src/dg.dgh ${SRCDIR}/dg.dgc .
-	$(CC) ${INCLUDES} -M $^ | sed '/^[^ ]*.o: / s|^|${OBJDIR}/|' | \
+	@-cd ${OBJDIR} ; ln -sf ${SRCDIR}/src/dg.dgh ${SRCDIR}/dg.dgc .
+	@$(CC) ${INCLUDES} -M $^ | sed '/^[^ ]*.o: / s|^|${OBJDIR}/|' | \
 	sed -e 's,^${OBJDIR}/,\$${OBJDIR}/,' | \
 	sed 's,: ${SOLPSTOP},: $${SOLPSTOP},' > ${OBJDIR}/dependencies
 
