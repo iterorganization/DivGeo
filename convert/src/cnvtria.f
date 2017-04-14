@@ -42,29 +42,30 @@ c*** read *.elemente
 c----------------------------------------------------------------------
 c*** find pairs (matched nodes)  
       k=0  
-      do 10 i=1,ntria          
+      do i=1,ntria          
 c*** examin each combination of nodes in each triangle
-       do 11 i1=1,3
+       do i1=1,3
         i2=mod(i1,3)+1
         j1=min(tri(i1,i),tri(i2,i))
         j2=max(tri(i1,i),tri(i2,i))
-        do 12 j=1,k
+        do j=1,k
 c*** chech if this pair is already present
          if(pairs(1,j).EQ.j1.AND.pairs(2,j).EQ.j2) goto 11        
-   12   continue 
+        end do 
 c*** add pair
         k=k+1
         pairs(1,k)=j1
         pairs(2,k)=j2
-   11  continue
-   10 continue 
+   11   continue
+       end do
+      end do 
       npair=k  
-c*** output templait (coordinate of triangle edges in mm)              
-      do 20 i=1,npair 
+c*** output template (coordinate of triangle edges in mm)              
+      do i=1,npair 
         write(*,*) 10.*px(pairs(1,i)),10.*py(pairs(1,i))
         write(*,*) 10.*px(pairs(2,i)),10.*py(pairs(2,i))
         write(*,*)
-   20 continue  
+      end do 
       write(0,*) '    writing template is finished'
       deallocate(px,py,tri,pairs)
       end

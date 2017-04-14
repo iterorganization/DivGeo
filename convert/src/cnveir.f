@@ -24,10 +24,11 @@ c*** next:    the next segment not found yet
 c*** prvs:    the previous segment not found yet
 c*** free:    one of the ends of the segment is not yet linked
       logical done(nxelm),next(nxelm),prvs(nxelm),free(nxelm),b,open
-      logical bbb
+c      logical bbb
 c
       character ss*72,s1,s3*3
       equivalence (ss,s1,s3)
+      external locase
 c======================================================================
 c*** Read the data from the input file
 c*** First, find the beginning of the relevant data
@@ -36,7 +37,7 @@ c
       call locase(ss,ss,72)
       if(index(ss,'*** 3b. ').ne.1) go to 10
 c----------------------------------------------------------------------
-c*** Found. Let's read the data
+c*** Found. Let us read the data
 c
       read(*,'(i6)',err=980) ns
       write(0,*) '== ns = ',ns
@@ -67,14 +68,14 @@ c
         inext(i)=0
         iprvs(i)=0
       end do
-      do 100 i=1,ns-1
+      do i=1,ns-1
 c        write(0,*) '=== i = ',i
 c        bbb=i.eq.135
 c        write(0,*) '  free next prvs inext iprvs'
 c        write(0,'(3l5,2i6)') (free(l),next(l),prvs(l),inext(l),iprvs(l),
 c     ,                                                          l=1,ns)
         if(free(i)) then
-          do 110 j=i+1,ns
+          do j=i+1,ns
 c            if(bbb) write(0,*) '=== j = ',j,free(j),next(j),
 c     ,                                        prvs(j),inext(j),iprvs(j)
             if(.not. free(j)) go to 110
@@ -215,9 +216,11 @@ c                  if(bbb) write(0,*) '*50: start. k ='
                 go to 110
               end if
             end if
- 110      continue
+ 110        continue
+          end do
         end if
- 100  continue
+ 100    continue
+       end do
 c      write(0,*) '=== Rearranged.'
 c      write(0,'(3l5,2i6)') (free(i),next(i),
 c     ,                                prvs(i),inext(i),iprvs(i),i=1,ns)
@@ -242,7 +245,7 @@ c          write(0,*)
 c          write(0,'(3l5,2i6)') (free(i),next(i),
 c     ,                                prvs(i),inext(i),iprvs(i),i=1,ns)
 c          write(0,'(1p,4e12.3)') (x1(i),x2(i),y1(i),y2(i),i=1,ns)
-        do 120 i=1,ns
+        do i=1,ns
 c         write(0,*) '== i = ',i,done(i),free(i),prvs(i),iprvs(i)
           if(done(i) .or. (.not.free(i).and.open)) go to 120
 c
@@ -275,7 +278,8 @@ c              write(0,*) 'j = ',j,next(j),inext(j)
               j=iprvs(j)
             end do
           end if
- 120    continue
+ 120      continue
+        end do
         open=.false.
       end do
       stop
