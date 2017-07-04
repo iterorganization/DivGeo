@@ -1430,7 +1430,7 @@ EnumText102
 text101 0
 nfile
 nfile
-text101 9
+text101 10
 Control parameter for writing the interim files
 in Eirene.
 30000 means "read and write the time-dependent data (fort.15)"
@@ -1438,8 +1438,9 @@ in Eirene.
 Normally, nfile=10000 is used for the test run of Eirene
 
 !!! For the "new" Eirene (solps4.2 or higher), the time-dependent stratum is
-not needed, and the value of nfile should normally be 100 to ensure writing
-the neutral-related data on the triangular mesh, fort.13 file
+not needed, and the value of nfile should normally be 406 to ensure reading
+and writing of the neutral-related data on the triangular mesh, in the
+fort.11 and fort.13 files
 Int -n-m-S-s-h-i 0 4
 EnumText102
 text101 0
@@ -1464,7 +1465,7 @@ Vars110 10
 Click ? for help
 0
 60
-30000
+406
 50000
 hepdt
 He pumping data
@@ -2728,7 +2729,7 @@ Vars110 10
 Click ? for help
 0
 60
-30000
+406  
 50000
 MaxElemId101 0
 CreaTime101
