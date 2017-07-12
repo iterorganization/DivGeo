@@ -71,7 +71,7 @@ PROG_dgcut = dgcut
 ALL = ${PROG_cropequ} ${PROG_dg2dg} ${PROG_dg2ef} ${PROG_ef2dg} ${PROG_cr2dg} ${PROG_vr2dg} ${PROG_nk2dg} ${PROG_dg2vr} ${PROG_risepsi} ${PROG_prinequ} ${PROG_jt2dg} ${PROG_pb2dg} ${PROG_pt2dg} ${PROG_dg_symm_dg} ${PROG_move_equ} ${PROG_dgcut}
 
 ifeq (${HOST_NAME}, JET)
-ALL += ${PROG_jetppf2dg}
+#ALL += ${PROG_jetppf2dg}
 endif
 
 ifeq (${HOST_NAME}, IPP)
