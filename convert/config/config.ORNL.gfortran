@@ -6,7 +6,7 @@ LD_MSCL ?= -L${MSCL_ROOT} -lmscl
 
 FC      = gfortran
 ifdef SOLPS_DEBUG
-FFLAGS = -g -C
+FFLAGS = -g -C -ffpe-trap=denormal
 else
 FFLAGS = -O3
 endif

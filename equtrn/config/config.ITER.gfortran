@@ -3,7 +3,7 @@ LD_MSCL ?= `pkg-config mscl --libs`
 
 FC	     = gfortran
 ifdef SOLPS_DEBUG
-FFLAGS	 = -g -fcheck=all -fbacktrace
+FFLAGS	 = -g -fcheck=all -fbacktrace -ffpe-trap=denormal
 else
 FFLAGS	 = -O
 endif
