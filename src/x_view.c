@@ -673,6 +673,16 @@ View CreateXmView(XApp xap,App app) {
   XtRealizeWidget(w->x->wShell);
   XtPopup(w->x->wShell,XtGrabNone);     /* relcheck_ignore_line */
 
+  if (xap->winToEmbedInto) {
+
+    /* Printing Window ID and Process ID */
+    Window x11w;
+    x11w = XtWindow(w->x->wShell);
+    fprintf(stdout, "DivGeo WID: %ld\nDivGeo PID: %ld\n", x11w, getpid());
+    fflush(stdout);
+  }
+
+
   /* Allocate X resources/add WM callbacks */
 
   a=XmInternAtom(XtDisplay(w->x->wShell),"WM_DELETE_WINDOW",False);
@@ -727,10 +737,7 @@ View CreateXmView(XApp xap,App app) {
   /* Display welcome message */
 
   ViewMsgEx(w,MSG_ABOUT,"$(VERSION)%s",GetVersionStr(DG_VERSION));
-  Window x11w;
-  x11w = XtWindow(w->x->wShell);
-  fprintf(stdout, "DivGeo WID: %ld\n", x11w);
-  fflush(stdout);
+
   return w;
 }
 
