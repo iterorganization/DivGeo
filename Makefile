@@ -45,11 +45,6 @@ SRCDIR = ${PWD}
 
 include ${OBJDIR}/LISTOBJ
 
-#LIBS = -Wl,-Bstatic -lXm -Wl,-Bdynamic -lXt -lX11 -lm -L/usr/X11R6/lib
-#CFLAGS = -g
-#CC = cc
-
-
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
 include config/config.${HOST_NAME}.${COMPILER}
 MAKES+= config/config.${HOST_NAME}.${COMPILER}
