@@ -1,4 +1,4 @@
-LIBS = -lXm -lz
+LIBS = -lXm -lpthread -lz
 CFLAGS = -g
 CC = cc
 
