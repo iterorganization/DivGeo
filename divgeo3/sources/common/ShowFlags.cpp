@@ -1,0 +1,27 @@
+#include "ShowFlags.h"
+
+const _FlagsRec ShowFlags::flags[] = {
+  _FlagsRec( AXES,         'X' ),
+  _FlagsRec( GRID,         'G' ),
+  _FlagsRec( ELEMS,        'e' ),
+  _FlagsRec( NORMALS,      'N' ),
+  _FlagsRec( NUMBERS,      '0' ),
+  _FlagsRec( NODES,        'n' ),
+  _FlagsRec( IRRNODES,     'r' ),
+  _FlagsRec( TEMPLATE,     'T' ),
+  _FlagsRec( EQUIL,        'E' ),
+  _FlagsRec( SURFACES,     's' ),
+  _FlagsRec( GRIDPOINTS,   'p' ),
+  _FlagsRec( MESH,         'g' ),
+  _FlagsRec( SEPARATORS,   'S' ),
+  _FlagsRec( SOURCES,      'c' ),
+  _FlagsRec( CHORDS,       'h' ),
+  _FlagsRec( MENU,         '-' ),
+  _FlagsRec( TOOLBAR,      '=' ),
+  _FlagsRec( XPOINTTESTS,  'x' ),
+  _FlagsRec( MESHDETAILS,  'm' ),
+  _FlagsRec( STRETCH,      't' ),
+  _FlagsRec( TOPVIEW,      'v' ),
+  _FlagsRec( CHORDS3D,     '3' ),
+  _FlagsRec( 0, 0 ),
+};

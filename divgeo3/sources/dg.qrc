@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/main">
+        <file>tools.png</file>
+        <file>buttons.png</file>
+        <file>icon.png</file>
+        <file>tools24.png</file>
+    </qresource>
+</RCC>
