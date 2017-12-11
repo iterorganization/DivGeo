@@ -45,11 +45,6 @@ SRCDIR = ${PWD}
 
 include ${OBJDIR}/LISTOBJ
 
-#LIBS = -Wl,-Bstatic -lXm -Wl,-Bdynamic -lXt -lX11 -lm -L/usr/X11R6/lib
-#CFLAGS = -g
-#CC = cc
-
-
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
 include config/config.${HOST_NAME}.${COMPILER}
 MAKES+= config/config.${HOST_NAME}.${COMPILER}
@@ -91,7 +86,7 @@ depend: ${OBJS:.o=.c}
 	sed -e 's,^${OBJDIR}/,\$${OBJDIR}/,' | \
 	sed 's,: ${SOLPSTOP},: $${SOLPSTOP},' > ${OBJDIR}/dependencies
 
-${OBJDIR}/LISTOBJ:
+listobj:
 	@P=${OBJDIR}; cd src ; rm -f $${P}/LISTOBJ; touch $${P}/LISTOBJ; \
 	echo "OBJS =" *.c | sed -e 's/ [^ /]*\// /g' -e 's/\.c/.o/g' -e 's/res2fbr\.o//g' > $${P}/LISTOBJ
 
@@ -110,7 +105,7 @@ ${OBJDIR}/dependencies:
 	${MAKE} listobj
 	${MAKE} depend
 
-listobj: ${OBJDIR}/LISTOBJ
+${OBJDIR}/LISTOBJ: listobj
 
 include ${OBJDIR}/dependencies
 

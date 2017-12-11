@@ -237,7 +237,7 @@ depend: ${OBJS:.o=.f}
 	sed -e 's,^${OBJDIR}/,\$${OBJDIR}/,' | \
 	sed -e 's,: ${SOLPSTOP},: $${SOLPSTOP},' > ${OBJDIR}/dependencies
 
-$(OBJDIR)/LISTOBJ: listobj
+${OBJDIR}/LISTOBJ: listobj
 
 listobj: ${OBJDIR}/dependencies
 	@cd src ; echo "OBJS =" *.f | sed -e 's/ [^ /]*\// /g' -e 's/\.f/.o/g' > $(OBJDIR)/LISTOBJ
