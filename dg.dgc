@@ -1971,7 +1971,7 @@ the usual settings for the grid generation, such as the "Surfaces" and
 "Grid points" together with the "Carre guard length" in the
 "Target specifications", and also with the "Core width" in the "Limiter
 configuration" in order to get the grid which suits you and is acceptable
-for the plasma-modelling code (no pink segments in the grid). If you find
+for the plasma modelling code (no pink segments in the grid). If you find
 it impossible to create the necessary distribution of the surfaces or the
 grid points because of local extrema appearing on the visualisation curve,
 then try to adjust the "Radial scale" or "Poloidal scale" in the "Limiter
