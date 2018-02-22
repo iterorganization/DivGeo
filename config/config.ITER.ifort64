@@ -1,5 +1,5 @@
 LIBS = -lXm -lXt -lX11 -lm -lpthread -lz
-CFLAGS = -g
+CFLAGS = -g -Wpointer-to-int-cast
 CC = cc
 
 #!!!Local Variables:
