@@ -1,0 +1,20 @@
+# check if necessary variables are correctly defined
+ifndef LD_MSCL
+  $(error LD_MSCL not defined)
+endif
+
+FC       = nagfor
+FFLAGS   = -g
+COMPILE  = ${FC} -c ${FFLAGS}
+CPP      = /lib/cpp -traditional
+
+LDLIBS   = ${LD_MSCL}
+LDFLAGS  =
+
+LDWOS    = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
+LDFLUSH  = -lflush ${LD_NAG} -lppf
+
+#!!!Local Variables:
+#!!! mode: Makefile
+#!!! End:
+
