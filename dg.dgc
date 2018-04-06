@@ -1927,41 +1927,40 @@ text101 0
 VarDefs102 8
 Help
 Help
-text101 51
+text101 50
 This gives you a way - although a clumsy one - to treat a limiter
 configurations. The problem is that DG in its present state cannot produce
 correct output files if no x-points is specified, so that one has to cheat
 the code somehow. The temporary solution realised with this set of
 variables works in the following way.
 
-(1) Create a DG model with a real equilibrium and specify all the necessary
-surface data. Create also a closed polygon which will be treated by Carre
-as the target.
-
-(2) Add a "Limiter configuration" variable, and cut and paste the name of
-the equilibrium file into the "Real equilibrium" there. Specify some
-reasonable value for the "Core width".
-
-(3) Import a fake single-null equilibrium. The best would be something of a
+(1) Import a fake single-null equilibrium. The best would be something of a
 very different size, so that it lies completely outside the geometry you
 really want to model. Import the single-null topology. Create a surface in
 the core region as usual - although its position does not affect anything.
 
-(4) Create two closed polygons which will be treated by DG as the two
-targets for this fake equilibrium. Create a "Structure" which contains
-these two polygons, plus the one representing the limiter - see p.(1), plus
-some grid-limiting parts if needed. Use the fake targets as the "Inner
-target" and "Outer target" in the "Structure".
+(2) Create two closed polygons acting as the targets for the fake single-
+null equilibrium.
 
-(5) Specify the targets as usual with the "Target specification" variables.
-"Target #1" and "Target #2" should be positioned so that you travel
+(3) Add a "Limiter configuration" variable, and cut and paste the name of
+the limiter equilibrium file into the "Real equilibrium" there. Specify some
+reasonable value for the "Core width".
+
+(4) Create a "Structure" which contains the two fake SN targets - see p.(2),
+plus the one representing the limiter, plus some grid-limiting parts if
+needed. Use the fake targets as the "Inner target" and "Outer target" in
+the "Structure".
+
+(5) Specify the target properties as usual with the "Target specification"
+variables. These refer to the parts of the limiter on both sides of the
+plasma. "Target #1" and "Target #2" should be positioned so that you travel
 clockwise around the plasma when going from "Target #1" to "Target #2".
 Use the real elements you want to be reconnected to the grid corners as
 the "SOL edges". For the "PFR edges", create two fake elements and specify
 0 as the "Surface Type" in the "General Surface Data" for these two elements.
 They must not be included in the "Elements not for Eirene" list.
 
-(6) Create the "Surfaces" and "Grid points" as usual. Only the "SOL" zone
+(6) Create the "Surfaces" and "Grid points" as usual. Only the "Core" zone
 for the "Grid points" and the "SOL" and "Core" areas for the "Surfaces" are
 meaningful.
 
