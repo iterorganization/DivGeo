@@ -1927,7 +1927,7 @@ text101 0
 VarDefs102 8
 Help
 Help
-text101 48
+text101 51
 This gives you a way - although a clumsy one - to treat a limiter
 configurations. The problem is that DG in its present state cannot produce
 correct output files if no x-points is specified, so that one has to cheat
@@ -1954,18 +1954,21 @@ some grid-limiting parts if needed. Use the fake targets as the "Inner
 target" and "Outer target" in the "Structure".
 
 (5) Specify the targets as usual with the "Target specification" variables.
-Note that the "Target #1" corresponds to the CW side of the limiter, and
-the "Target #2" to the CCW side. Use the real elements you want to be re-
-connected to the grid corners as the "SOL edges". For the "PFR edges",
-create two fake elements and specify 0 as the "Surface Type" in the
-"General Surface Data" for these two elements. They must not be included in
-the "Elements not for Eirene" list.
+"Target #1" and "Target #2" should be positioned so that you travel
+clockwise around the plasma when going from "Target #1" to "Target #2".
+Use the real elements you want to be reconnected to the grid corners as
+the "SOL edges". For the "PFR edges", create two fake elements and specify
+0 as the "Surface Type" in the "General Surface Data" for these two elements.
+They must not be included in the "Elements not for Eirene" list.
 
 (6) Create the "Surfaces" and "Grid points" as usual. Only the "SOL" zone
 for the "Grid points" and the "SOL" and "Core" areas for the "Surfaces" are
 meaningful.
 
-(7) Follow the usual procedure: create output, do "lns", go to "carre" and
+(7) In "Global Eirene data", make sure that the "Major radius" is set to
+its real positive value.
+
+(8) Follow the usual procedure: create output, do "lns", go to "carre" and
 create the grid, import the grid and look at it. You will have to play with
 the usual settings for the grid generation, such as the "Surfaces" and
 "Grid points" together with the "Carre guard length" in the
