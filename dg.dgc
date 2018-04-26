@@ -66,11 +66,12 @@ EnumText102
 text101 0
 jsrss
 Sputtered atom
-text101 7
+text101 8
 Specification of the sputtered particle
 for physical sputtering (always atom)
 
-=< 0: the wall material
+= 0: the wall material (but sputtered particles are not followed)
+< 0: the wall material (sputtered particles are followed)
 > (NATMI+NMOLI+NIONI+NPLSI): mass&charge
 else: the sequential number of the atom
       in the list (4A)
@@ -1015,9 +1016,11 @@ EnumText102
 text101 0
 tgnini
 RNG initialiser
-text101 2
+text101 4
 Value for initialisation of the random number generator.
-Should be big and odd.
+Either use a big odd number (to get the same seed every time)
+or -1 to obtain the seed from the CPU clock (which will
+be different every time)
 Int -n-m-S-s-h-i 0 17
 EnumText102
 text101 0
@@ -1287,9 +1290,12 @@ EnumText102
 text101 0
 gpf_nini
 Initialisation
-text101 2
+text101 5
 Value used for initialisation of the random
-number generator. A big odd number seems OK
+number generator. Either use a big odd number
+(to get the same seed every time) or -1 to
+obtain the seed from the CPU clock (which will
+be different every time)
 Int -n-m-S-s-h-i 0 10
 EnumText102
 text101 0
@@ -1797,7 +1803,7 @@ Help
 text101 8
 Here you can specify the diagnostic surfaces to calculate
 the neutral flows in PFR.
-The neutral particle fluxes acrosws these surfaces are
+The neutral particle fluxes across these surfaces are
 calculated in Eirene and added to the output data in B2.
 The fluxes of each nucleus species, including the
 contribution from molecules, are calculated.
@@ -2731,7 +2737,7 @@ Vars110 10
 Click ? for help
 0
 60
-406  
+406
 50000
 MaxElemId101 0
 CreaTime101
