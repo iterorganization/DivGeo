@@ -21,7 +21,7 @@ c=====================================================
       real*8 fg(ngpr),pg(ngpr),ffg(ngpr),ppg(ngpr)
       real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real*8 rdim,zdim,rcntc,redge,zmsmid,rma,zma,psimin,psilim,btorc
-      character title*40, date*8
+      character title*80, date*8
       integer chop
 c=====================================================
 c
@@ -32,7 +32,7 @@ c      tab=char(9)
 
       call open_files(' ')
  
-      call rdefit(1,ngpr,ngpz,iret, title,date,ipestg,nr,nz,
+      call rdefit(1,ngpr,ngpz,iret,title,date,ipestg,nr,nz,
      ,           rdim,zdim,zmsmid,rcntc,redge,rma,zma,psimin,psilim,
      ,           btorc,fg,pg,ffg,ppg,pfm,rgr,zgr)
       if(iret.ne.0) then
