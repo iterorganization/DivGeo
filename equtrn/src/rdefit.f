@@ -1,4 +1,4 @@
-      subroutine rdefit(lun,ngpr,ngpz,iret, title,date,ipestg,nr,nz,
+      subroutine rdefit(lun,ngpr,ngpz,iret,title,date,ipestg,nr,nz,
      ,           rdim,zdim,zmsmid,rcntc,redge,rma,zma,psimin,psilim,
      ,           btorc,fg,pg,ffg,ppg,pfm,rgr,zgr)
 c=====================================================
@@ -26,7 +26,7 @@ c
       real*8 fg(*),pg(*),ffg(*),ppg(*),pfm(ngpr,*),rgr(*),zgr(*)
       real*8 rdim,zdim,rcntc,redge,zmsmid,rma,zma,psimin,psilim,btorc
       integer l
-      character title*40, date*8, cvect(80)*1
+      character zeile*80, title*80, date*8, cvect(80)*1
 c=====================================================
       rr(r)=r/float(nr-1)*rdim+redge
       zz(z)=(z-float(nz+1)/float(2))/float(nz-1)*zdim+zmsmid
@@ -34,7 +34,13 @@ c=====================================================
 c
       iret=0
       rewind lun
-      read(lun,'(a40,a8,3i4)') title,date,ipestg,nr,nz
+      read(lun,'(a80)') zeile
+      l=len(trim(zeile))
+      read(zeile(l-3:l),'(i4)') nz
+      read(zeile(l-7:l-4),'(i4)') nr
+      read(zeile(l-11:l-8),'(i4)') ipestg
+      date=zeile(l-19:l-12)
+      title=zeile(1:l-20)
       write(*,*) ipestg,nr,nz
       if(nr.gt.ngpr) then
           write (6,'(a,i4,a,i4,a)') 
