@@ -16,15 +16,15 @@ c*** The file is read from standard input and the result sent to the
 c*** standard output
 c=====================================================
 #include "eqdim.inc"
-      real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
-      real*8 rcntc,btorc
+      real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
+      real(kind=R8) :: rcntc,btorc
       character date*9, page
 c=====================================================
 c
       page=char(12)
 c      call date2(date)
       call date_and_time(date)
-      call rdeqdg(5,ngpr,ngpz,iret, nr,nz,btorc,rcntc,rgr,zgr,pfm)
+      call rdeqdg(5,iret,nr,nz,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== dg2ef: error in rdeqdg. iret =',iret
           stop

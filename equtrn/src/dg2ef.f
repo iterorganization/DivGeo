@@ -13,11 +13,19 @@ c
 c=====================================================
 c*** Translation of dg compatible equilibrium data into efit format
 c=====================================================
+      implicit none
 #include "eqdim.inc"
-      real*8 fg(ngpr),pg(ngpr),ffg(ngpr),ppg(ngpr)
-      real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
-      real*8 rdim,zdim,rcntc,redge,zmsmid,rma,zma,psimin,psilim,btorc
+      integer i, j, ia, ja
+      integer iret, nr, nz, ipestg
+      real(kind=R8) :: fg(ngpr),pg(ngpr),ffg(ngpr),ppg(ngpr)
+      real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
+      real(kind=R8) :: rdim,zdim,rcntc,redge,zmsmid,rma,zma,
+     ,  psimin,psilim,btorc
+      real(kind=R8) :: u
       character title*40, date*9
+      integer lvdmin
+      real(kind=R8) :: vmin
+      external vmin, lvdmin
       data title/'Conversion from the dg format'/
 c=====================================================
 c
@@ -26,7 +34,7 @@ c      call date2(date)
 
       call open_files(' ')
 
-      call rdeqdg(1,ngpr,ngpz,iret, nr,nz,btorc,rcntc,rgr,zgr,pfm)
+      call rdeqdg(1,iret,nr,nz,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== dg2ef: error in rdeqdg. iret =',iret
           stop
@@ -57,7 +65,7 @@ c
       zma=(float(ja)-(nz+1)/2)/(nz-1)*zdim
 
 c
-      call wrefit(2,ngpr,iret, title,date,ipestg,nr,nz,
+      call wrefit(2,iret,title,date,ipestg,nr,nz,
      ,           rdim,zdim,zmsmid,rcntc,redge,rma,zma,psimin,psilim,
      ,           btorc,fg,pg,ffg,ppg,pfm)
       if(iret.ne.0) then

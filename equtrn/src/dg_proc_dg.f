@@ -14,16 +14,17 @@ c=====================================================
 c*** do arbitrary re-processing of the equilibrium
 c*** in this case chop off the first few columns
 c=====================================================
+      implicit none
 #include "eqdim.inc"
-      real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
-      real*8 rcntc,psilim,btorc,shift
+      real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
+      real(kind=R8) :: rcntc,psilim,btorc,shift
       character*256 filename
       integer chop
 c=====================================================
 c
       call open_files(' ')
 
-      call rdeqdg(1,ngpr,ngpz,iret,nr,nz,btorc,rcntc,rgr,zgr,pfm)
+      call rdeqdg(1,iret,nr,nz,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== dg_proc_dg: error in rdeqdg. iret =',iret
           stop
@@ -41,7 +42,7 @@ c need to add something here to remove the first few columns
       nr=nr-chop
       psilim=0.
 
-      call wreqdg(2,ngpr,ngpz,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
+      call wreqdg(2,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== dg_proc_dg: error in wreqdg. iret = ',iret
       end if

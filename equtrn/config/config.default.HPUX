@@ -11,8 +11,9 @@ FC       = f77
 FFLAGS 	 = -g -C +FPOZV
 FFLAGS   = +O3 -R8 
 COMPILE  = ${FC} -c ${FFLAGS}
-CPP	     = /lib/cpp
+CPP      = /lib/cpp
 
+DEFINES  = ${SOLPS_CPP}
 LDLIBS   = -Wl,${LD_MSCL} -Wl,-L/usr/local/lib
 LDFLAGS  = 
 LDEXTRA	 =

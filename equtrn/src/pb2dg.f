@@ -14,14 +14,16 @@ c======================================================================
 c*** Translation of equilibrium data from P. Barabasci
 c*** into dg compatible format
 c======================================================================
+      implicit none
 #include "eqdim.inc"
-      real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
-      real*8 rcntc,psilim,btorc
+      integer nr,nz,iret
+      real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
+      real(kind=R8) :: rcntc,psilim,btorc
 c======================================================================
 c
       call open_files(' ')
 
-      call rdeqpb(1,ngpr,ngpz, iret,nr,nz,btorc,psilim,rgr,zgr,pfm)
+      call rdeqpb(1,ngpr,ngpz,iret,nr,nz,btorc,psilim,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== pb2dg: error in rdeqpb. iret =',iret
           stop
@@ -39,7 +41,7 @@ c      psilim=psilim/(2.*pi)
       rcntc=1.
 c
       print *,'psilim = ',psilim
-      call wreqdg(2,ngpr,ngpz,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
+      call wreqdg(2,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== pb2dg: error in wreqdg. iret = ',iret
       end if

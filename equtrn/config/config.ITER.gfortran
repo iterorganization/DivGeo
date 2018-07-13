@@ -1,15 +1,16 @@
 # check if necessary variables are correctly defined
 LD_MSCL ?= `pkg-config mscl --libs`
 
-FC	     = gfortran
+FC       = gfortran
 ifdef SOLPS_DEBUG
 FFLAGS	 = -g -fcheck=all -fbacktrace -ffpe-trap=denormal
 else
 FFLAGS	 = -O
 endif
 COMPILE  = ${FC} -c ${FFLAGS}
-CPP	     = /lib/cpp -traditional
+CPP      = /lib/cpp -traditional
 
+DEFINES  = ${SOLPS_CPP}
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  =
 

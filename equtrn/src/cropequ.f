@@ -14,8 +14,8 @@ c  version : 21.07.2000 16:44
 c
       implicit none
 #include "eqdim.inc"
-      real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
-      real*8 rcntc,psilim,btorc,rmin,rmax,zmin,zmax
+      real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
+      real(kind=R8) :: rcntc,psilim,btorc,rmin,rmax,zmin,zmax
       integer nr,nz,nrn,nzn,iret
       logical err
 c      character tab    !###
@@ -25,7 +25,7 @@ c      tab=char(9)      !###
 
       call open_files('Input   == nr, Rmin, Rmax, nz, Zmin, Zmax')
 
-      call rdeqdg(1,ngpr,ngpz,iret, nr,nz,btorc,rcntc,rgr,zgr,pfm)
+      call rdeqdg(1,iret,nr,nz,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== dg2dg: error in rdeqdg. iret =',iret
           stop
@@ -66,11 +66,11 @@ c      tab=char(9)      !###
       if(zmax.le.zgr(1)) zmax=zgr(nz)
       if(zmin.ge.zgr(nz)) zmin=zgr(1)
 
-      call crop(pfm,ngpr,ngpz,rgr,nr,zgr,nz,nrn,rmin,rmax,nzn,zmin,zmax)
+      call crop(pfm,rgr,nr,zgr,nz,nrn,rmin,rmax,nzn,zmin,zmax)
 
       psilim=0
 
-      call wreqdg(2,ngpr,ngpz,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
+      call wreqdg(2,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== dg2dg: error in wreqdg. iret = ',iret
       end if
@@ -78,12 +78,13 @@ c      tab=char(9)      !###
       end
 
 c======================================================================
-      subroutine crop(pfm,ngpr,ngpz,rgr,nr,zgr,nz,
-     ,                                      nrn,rmin,rmax,nzn,zmin,zmax)
+      subroutine crop(pfm,rgr,nr,zgr,nz,nrn,rmin,rmax,nzn,zmin,zmax)
 
       implicit none
-      integer ifail,nn,nr,ngpz,ngpr,j,i,nz,nrn,nzn
-      real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz),rmin,rmax,zmin,zmax,h,x
+#include "eqdim.inc"
+      integer ifail,nn,nr,j,i,nz,nrn,nzn
+      real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz),
+     &                 rmin,rmax,zmin,zmax,h,x
       real   pfms(nr,nz),rgrs(ngpr),zgrs(ngpz)
       real   pfmss(ngpr,ngpz),rgrss(ngpr),zgrss(ngpz)
       real   cx(nr,3,nz),cy(nz,3,nr),cc(nz,3,nr,3),wrkz(nz),wrkr(nr,4)

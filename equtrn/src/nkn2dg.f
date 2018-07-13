@@ -13,14 +13,16 @@ c
 c=====================================================
 c*** Translation of equilibrium data from Naka to dg compatible format
 c=====================================================
+      implicit none
 #include "eqdim.inc"
-      real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
-      real*8 rmin,zmin,rmax,zmax,delr,delz,psilim,btorc,rcntc,fg
+      real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
+      real(kind=R8) :: rmin,zmin,rmax,zmax,delr,delz,
+     &  psilim,btorc,rcntc,fg
 c=====================================================
 c
       call open_files(' ')
 
-      call rdeqnk2(1,ngpr,ngpz,iret, nr,nz,
+      call rdeqnk2(1,iret,nr,nz,
      ,           rmin,zmin,rmax,zmax,delr,delz,psilim,
      ,           btorc,rcntc,fg,pfm,rgr,zgr)
       if(iret.ne.0) then
@@ -29,7 +31,7 @@ c
       end if
 c
       print *,'psilim = ',psilim
-      call wreqdg(2,ngpr,ngpz,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
+      call wreqdg(2,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== nk2dg: error in wreqdg. iret = ',iret
       end if

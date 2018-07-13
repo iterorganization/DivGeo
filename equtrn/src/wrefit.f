@@ -1,4 +1,4 @@
-      subroutine wrefit(lun,ngpr,iret, title,date,ipestg,nr,nz,
+      subroutine wrefit(lun,iret,title,date,ipestg,nr,nz,
      ,           rdim,zdim,zmsmid,rcntc,redge,rma,zma,psimin,psilim,
      ,           btorc,fg,pg,ffg,ppg,pfm)
 c=====================================================
@@ -23,8 +23,13 @@ c=====================================================
 c
 c  version : 18.12.94 18:29
 c
-      real*8 fg(*),pg(*),ffg(*),ppg(*),pfm(ngpr,*)
-      real*8 rdim,zdim,rcntc,redge,zmsmid,rma,zma,psimin,psilim,btorc
+      implicit none
+#include "eqdim.inc"
+      integer i,j
+      integer lun,iret,nr,nz,ipestg
+      real(kind=R8) :: fg(*),pg(*),ffg(*),ppg(*),pfm(ngpr,*)
+      real(kind=R8) :: rdim,zdim,rcntc,redge,zmsmid,rma,zma,
+     &  psimin,psilim,btorc
       character title*40, date*8
 c=====================================================
 c

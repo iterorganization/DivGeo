@@ -9,26 +9,38 @@ c=======================================================================
 c*** Conversion of equilibrium file produced with PROTEUS into DG format
 c*** (courtesy Prof. O. de Barbieri)
 c=======================================================================
-c                                                                       
+c
+      implicit none  
 #include "eqdim.inc"
 #include "pt2dg.inc"                                             
 c                                                                
 c-----------------------------------------------------------------------
-c                                                                       
-      dimension lko(6)
+c
+      integer lko(6)
       logical ex,exi
-      real*8 psib, btf, rtf
-      real*8 x1, x2, x3, y1, y2, y3
-      dimension nrnz(2),rmnmx(2),zmnmx(2),btrt(2)
+      real(kind=R8) :: psib, btf, rtf
+      real(kind=R8) :: x1, x2, x3, y1, y2, y3
+      integer nrnz(2)
+      integer jr,jz,j1,j110,j120,j100,j23,j22,j21,j50,j49,j29,j20,l20
+      integer kret,lm,lnwt,lr23,lk22,lk21,kbpol,kwrite
+      integer lwreqdg,lelem,lnode,lbound,lreg,lcount,lkill,lke
+      integer modele,mnodes,melems,mhmesh
+      real(kind=R8) :: rmnmx(2),zmnmx(2),btrt(2)
+      real(kind=R8) :: zp00,zpz2,zx1e,zy1e,zx2e,zy2e,zxye,zpr1,zpr2,
+     .                 zpz1,zarsum,zardif,zr0,zz0,za11,za12,za21,za22,
+     .                 zb11,zb12,zb21,zb22,zx0,ze0,zr,zz,zarea,
+     .                 zar12,zar13,zar23,zdet,z00e,zdr,zdz,zprz,
+     .                 rmin,rmax,zmin,zmax
       character*256 in_mesh,in_psi,out_file,hlp_txt*8
       namelist/input/nrnz,rmnmx,zmnmx,btrt,in_mesh,in_psi,out_file
-      data nrnz, rmnmx, zmnmx, btrt, in_mesh, in_psi, out_file  /
-     /      2*0,  2*0.,  2*0., 2*0.,  ' '   ,   ' ' ,   ' '     /
+      data nrnz,  rmnmx,  zmnmx,   btrt, in_mesh, in_psi, out_file  /
+     /      2*0,2*0._R8,2*0._R8,2*0._R8,  ' '   ,   ' ' ,   ' '     /
 c
 c                        -----------------------------------------------
 c      
 c     Pre-defined function: double of the area of a triangle
 c     ------------------- 
+      real (kind=R8) :: artri
       artri(x1,x2,x3,y1,y2,y3) = abs(x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2))
 c                                                                 
 c-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -350,9 +362,9 @@ c
                          if(kwrite.gt.0)                  then
                          write(nwrite,3000) (xrp(jr),jr=1,6)
       do 600       jz = 1,mpz
-                         write(nwrite,3100) xzp(jz)
-     +,                  psi4(1,jz),psi4(2,jz),psi4(3,jz)
-     +,                  psi4(4,jz),psi4(5,jz),psi4(6,jz)
+                         write(nwrite,3100) xzp(jz),
+     +                   psi4(1,jz),psi4(2,jz),psi4(3,jz),
+     +                   psi4(4,jz),psi4(5,jz),psi4(6,jz)
   600 continue
                          write(6,2000) mpr,mpz,lcount
                                                           endif
@@ -360,8 +372,8 @@ c
 c                                
             lwreqdg    = nwreqdg      
 c
-                         CALL WREQDG(lwreqdg,npr,npz,kret,mpr,mpz,psib
-     +,                              btf,rtf,xrp,xzp,psi4)
+                         CALL WREQDG(lwreqdg,kret,mpr,mpz,psib,
+     +                               btf,rtf,xrp,xzp,psi4)
 c
                          write(nwrite,2100) kret
 c                                                                       
@@ -641,8 +653,7 @@ c
 
 !> Write the equilibrium data in the dg compatible format.
 !> \version 23.06.97 17:23
-      subroutine wreqdg(lun,ngpr,ngpz,iret, nr,nz, psib,
-     ,                                             btf,rtf,rgr,zgr,pfm)
+      subroutine wreqdg(lun,iret,nr,nz,psib,btf,rtf,rgr,zgr,pfm)
 c=====================================================
 c*** Write the equilibrium data in the dg compatible format.
 c***
@@ -664,8 +675,9 @@ c
 c  version : 23.06.97 17:23
 c
       implicit none
-      integer lun, ngpr, ngpz, iret, nr, nz
-      real*8 rgr(ngpr), zgr(ngpz), pfm(ngpr,ngpz),
+#include "eqdim.inc"
+      integer lun, iret, nr, nz
+      real(kind=R8) :: rgr(ngpr), zgr(ngpz), pfm(ngpr,ngpz),
      &     btf, rtf, psib
       integer i, j
 c... toroidal field in tesla, radius in m

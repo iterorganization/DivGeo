@@ -1,4 +1,4 @@
-      subroutine rdeqvr(lun,ngpr,ngpz,iret, nr,nz, btf,rtf,rgr,zgr,pfm)
+      subroutine rdeqvr(lun,iret,nr,nz,btf,rtf,rgr,zgr,pfm)
 c======================================================================
 c*** Read the equilibrium data from TdeV
 c***
@@ -23,10 +23,11 @@ c
 c  version : 06.02.99 20:52
 c
       implicit none
-      integer lun, ngpr, ngpz, iret, nr,nz
-      real*8 rgr(*), zgr(*), pfm(ngpr, *)
+#include "eqdim.inc"
+      integer lun, iret, nr,nz
+      real(kind=R8) :: rgr(*), zgr(*), pfm(ngpr, *)
 c... toroidal field in tesla, radius in m
-      real*8 btf, rtf
+      real(kind=R8) :: btf, rtf
       integer i, j
       character ul*72,uch*4
 c-----------------------------------------------------
@@ -97,7 +98,7 @@ c
           uch='btf'
  40       continue
           read(3,*,err=40, end=99) btf
-	  rtf=1.
+          rtf=1.
           close(3)
       end if
       iret=0

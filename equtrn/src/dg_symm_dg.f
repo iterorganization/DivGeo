@@ -18,37 +18,50 @@ c=====================================================
 c*** do arbitrary re-processing of the equilibrium
 c*** in this case symmetrize the equilibrium up-down
 c=====================================================
+      implicit none
 #include "eqdim.inc"
-      real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
-      real*8 rcntc,psilim,btorc,psisymm
-      real*8 :: alpha=0.0d0
+      integer iret,nr,nz,ir,iz
+      real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
+      real(kind=R8) :: rcntc,psilim,btorc,psisymm
+      real(kind=R8) :: alpha=0.0_R8
       character*256 arg
+#ifndef NAGFOR
       integer iargc
+#else
+      integer lenval, ierror
+#endif
 c=====================================================
 c
       call open_files(' ')
+#ifndef NAGFOR
       if(iargc().ge.4) then
-	call getarg(4, arg)
-	read(arg,*) alpha
+        call getarg(4, arg)
+        read(arg,*) alpha
       endif
+#else
+      if(command_argument_count().ge.4) then
+        call get_command_argument(4, arg, lenval, ierror)
+        read(arg,*) alpha
+      endif
+#endif
       write(*,*) 'Using ', alpha, ' in the symmetrization'
 
-      call rdeqdg(1,ngpr,ngpz,iret,nr,nz,btorc,rcntc,rgr,zgr,pfm)
+      call rdeqdg(1,iret,nr,nz,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== dg_proc_dg: error in rdeqdg. iret =',iret
           stop
       end if
 c
       do iz=1,nz/2
-	do ir=1,nr
-	  psisymm = (pfm(ir,iz)+pfm(ir,nz-iz+1))/2.0
-	  pfm(ir,iz) = (1-alpha)*psisymm + alpha*pfm(ir,iz)
-	  pfm(ir,nz-iz+1) = (1-alpha)*psisymm + alpha*pfm(ir,nz-iz+1)
-	enddo
+        do ir=1,nr
+          psisymm = (pfm(ir,iz)+pfm(ir,nz-iz+1))/2.0
+          pfm(ir,iz) = (1-alpha)*psisymm + alpha*pfm(ir,iz)
+          pfm(ir,nz-iz+1) = (1-alpha)*psisymm + alpha*pfm(ir,nz-iz+1)
+        enddo
       enddo
       psilim=0.
 
-      call wreqdg(2,ngpr,ngpz,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
+      call wreqdg(2,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== dg_symm_dg: error in wreqdg. iret = ',iret
       end if

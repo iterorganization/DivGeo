@@ -13,6 +13,7 @@ endif
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP	 = /lib/cpp -C -traditional -ffreestanding
 
+DEFINES  = ${SOLPS_CPP}
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  = 
 

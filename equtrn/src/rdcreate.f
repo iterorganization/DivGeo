@@ -1,4 +1,4 @@
-      subroutine rdcreate(lun,ngpr,ngpz,iret, title,ipestg,nr,nz,
+      subroutine rdcreate(lun,iret,title,ipestg,nr,nz,
      ,           rdim,zdim,zmsmid,rcntc,redge,rma,zma,psimin,psilim,
      ,           btorc,fg,pg,ffg,ppg,pfm,rgr,zgr)
 c=====================================================
@@ -23,11 +23,17 @@ c=====================================================
 c
 c  version : 18.12.94 18:33
 c
-      real*8 fg(*),pg(*),ffg(*),ppg(*),pfm(ngpr,*),rgr(*),zgr(*)
-      real*8 rdim,zdim,rcntc,redge,zmsmid,rma,zma,psimin,psilim,btorc
-      integer l
+      implicit none
+#include "eqdim.inc"
+      integer i, j
+      integer lun,iret,nr,nz,ipestg
+      real(kind=R8) :: fg(*),pg(*),ffg(*),ppg(*),pfm(ngpr,*),
+     .  rgr(*),zgr(*)
+      real(kind=R8) :: rdim,zdim,rcntc,redge,zmsmid,rma,zma,
+     .  psimin,psilim,btorc
       character title*48
 c=====================================================
+      real (kind=R8) :: rr, zz, r, z
       rr(r)=r/float(nr-1)*rdim+redge
       zz(z)=(z-float(nz+1)/float(2))/float(nz-1)*zdim+zmsmid
 c=====================================================
@@ -66,10 +72,10 @@ c
       read(lun,*) (ppg(i),i=1,nr)
       read(lun,*) ((pfm(i,j),i=1,nr),j=1,nz)
       do i=1,nr
-        rgr(i)=rr(float(i-1))
+        rgr(i)=rr(real(i-1,R8))
       enddo
       do i=1,nz
-        zgr(i)=zz(float(i))
+        zgr(i)=zz(real(i,R8))
       enddo
 c
       end

@@ -21,6 +21,7 @@ endif
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP	 = /lib/cpp -traditional -ffreestanding
 
+DEFINES  = ${SOLPS_CPP}
 LDLIBS   = ${LD_MSCL}
 
 #LDWOS	 = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket

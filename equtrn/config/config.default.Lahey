@@ -10,8 +10,9 @@ endif
 FC       = f95f
 FFLAGS   = -O --tpp
 COMPILE  = ${FC} -c ${FFLAGS}
-CPP	     = /lib/cpp -C -traditional
+CPP      = /lib/cpp -C -traditional
 
+DEFINES  = ${SOLPS_CPP}
 LDLIBS   = -${LD_MSCL} -L/usr/local/lib
 LDFLAGS  = -lnag
 LDEXTRA	 =

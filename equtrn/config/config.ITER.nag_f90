@@ -4,10 +4,15 @@ ifndef LD_MSCL
 endif
 
 FC       = nagfor
+ifdef SOLPS_DEBUG
 FFLAGS   = -g
+else
+FFLAGS   =
+endif
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP      = /lib/cpp -traditional
 
+DEFINES  = ${SOLPS_CPP}
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  =
 

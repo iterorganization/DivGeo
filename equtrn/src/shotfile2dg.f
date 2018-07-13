@@ -124,8 +124,7 @@ c
       open(2,file=filename)
       psilim=0
       write(*,*) 'ngr,ngz=',ngr,ngz
-      call wreqdg(2,ngpr,ngpz,iret,ngr,ngz,psilim,
-     1 btorc,rcntc,gpr,gpz,pfmd)
+      call wreqdg(2,iret,ngr,ngz,psilim,btorc,rcntc,gpr,gpz,pfmd)
       if(iret.ne.0) then
           print *,'==== shotfile2dg: error in wreqdg. iret = ',iret
       end if

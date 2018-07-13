@@ -42,7 +42,6 @@ ifeq ($(shell [ -d ${FLUSH}/source/default/commons ] && echo yes || echo no ),ye
 FINCLUDE += -I${FLUSH}/source/default/commons
 endif
 
-
 PROG_cropequ = cropequ
 PROG_dg2dg   = dg2dg
 PROG_dg2ef   = dg2ef
@@ -148,7 +147,7 @@ DGSYMMDG = $(dgsymmdg:%.o=$(OBJDIR)/%.o)
 DGCUT = $(dgcut:%.o=$(OBJDIR)/%.o)
 
 $(OBJDIR)/%.o : %.f
-	${CPP} -P ${INCLUDE} $< > ${OBJDIR}/$*.f
+	${CPP} ${DEFINES} -P ${INCLUDE} $< > ${OBJDIR}/$*.f
 #	$(COMPILE) -o ${OBJDIR}/$*.o $<
 	$(COMPILE) -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f ${FINCLUDE}
 #	/bin/rm ${OBJDIR}/$*.f

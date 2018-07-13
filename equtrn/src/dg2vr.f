@@ -14,13 +14,13 @@ c=====================================================
 c*** Translation of TdeV equilibrium data into dg compatible format
 c=====================================================
 #include "eqdim.inc"
-      real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
-      real*8 rcntc,psilim,btorc
+      real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
+      real(kind=R8) :: rcntc,psilim,btorc
 c=====================================================
 c
       call open_files(' ')
 
-      call rdeqdg(1,ngpr,ngpz,iret, nr,nz, btorc,rcntc,rgr,zgr,pfm)
+      call rdeqdg(1,iret,nr,nz,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== dg2vr: error in rdeqdg. iret =',iret
           stop

@@ -1,5 +1,4 @@
-      subroutine wreqdg(lun,ngpr,ngpz,iret, nr,nz, psib,
-     ,                                             btf,rtf,rgr,zgr,pfm)
+      subroutine wreqdg(lun,iret,nr,nz,psib,btf,rtf,rgr,zgr,pfm)
 c=====================================================
 c*** Write the equilibrium data in the dg compatible format.
 c***
@@ -22,10 +21,11 @@ c
 c  version : 23.06.97 17:23
 c
       implicit none
-      integer lun, ngpr, ngpz, iret, nr, nz
-      real*8 rgr(ngpz), zgr(ngpz), pfm(ngpr,ngpz)
+#include "eqdim.inc"
+      integer lun, iret, nr, nz
+      real(kind=R8) :: rgr(ngpz), zgr(ngpz), pfm(ngpr,ngpz)
 c... toroidal field in tesla, radius in m
-      real*8 btf, rtf, psib
+      real(kind=R8) :: btf, rtf, psib
       integer i, j
 c
 c***  Write the toroidal field and the corresponding radius...

@@ -87,8 +87,7 @@ c
       call getarg(2,filename)
       open(2,file=filename)
       psilim=0
-      call wreqdg(2,ngpr,ngpz,iret,ngr,ngz,psilim,
-     1 btorc,rcntc,gpr,gpz,pfm)
+      call wreqdg(2,iret,ngr,ngz,psilim,btorc,rcntc,gpr,gpz,pfm)
       if(iret.ne.0) then
           print *,'==== ef2dg: error in wreqdg. iret = ',iret
       end if

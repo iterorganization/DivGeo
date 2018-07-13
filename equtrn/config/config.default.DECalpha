@@ -3,14 +3,14 @@ ifndef LD_MSCL
 $(error LD_MSCL not defined)
 endif
 
-
 # File compiler.macro for IBM xlf
 
-FC	    = f77
-CPP	    = /usr/ucb/cpp -C -DNOB2GXDR
+FC      = f77
+CPP     = /usr/ucb/cpp -C -DNOB2GXDR
 FFLAGS	= -r8 -i4 -fast
 COMPILE	= ${FC} -c ${FFLAGS}
 
+DEFINES = ${SOLPS_CPP}
 LDLIBS	= -L${SOLPSLIB} -L/usr/local/lib
 LDFLAGS = -lblas ${LD_NAG} -lslap -lmmach -lxersla ${LD_MSCL} ${LD_SONNET} ${LD_NETCDF}
 

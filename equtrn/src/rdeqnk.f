@@ -1,4 +1,4 @@
-      subroutine rdeqnk(lun,ngpr,ngpz,iret, nr,nz,
+      subroutine rdeqnk(lun,iret,nr,nz,
      ,           rmin,zmin,rmax,zmax,delr,delz,psilim,
      ,           btorc,rcntc,fg,pfm,rgr,zgr)
 c=====================================================
@@ -19,9 +19,15 @@ c=====================================================
 c
 c  version : 16.01.96 19:33
 c
-      real*8 pfm(ngpr,*),rgr(*),zgr(*)
-      real*8 rmin,zmin,rmax,zmax,delr,delz,psilim,btorc,rcntc,fg,u
+      implicit none
+#include "eqdim.inc"
+      integer i,j
+      integer lun,iret,nr,nz
+      real(kind=R8) :: pfm(ngpr,*),rgr(*),zgr(*)
+      real(kind=R8) :: rmin,zmin,rmax,zmax,delr,delz,
+     &  psilim,btorc,rcntc,fg,u
 c=====================================================
+      real(kind=R8) :: rr, zz
       rr(i)=delr*(i-1)+rmin
       zz(i)=delz*(i-1)+zmin
 c=====================================================

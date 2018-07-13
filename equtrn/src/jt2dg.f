@@ -13,15 +13,17 @@ c
 c=====================================================
 c*** Translation of efit equilibrium data into dg compatible format
 c=====================================================
+      implicit none
 #include "eqdim.inc"
-      real*8 pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
-      real*8 rcntc,psilim,btorc
+      integer i,j
+      integer iret,nr,nz
+      real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
+      real(kind=R8) :: rcntc,psilim,btorc
 c=====================================================
 c
       call open_files(' ')
 
-      call rdeqdg(1,ngpr,ngpz,iret, nr,nz,
-     ,                                  psilim,btorc,rcntc,rgr,zgr,pfm)
+      call rdeqdg(1,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== jt2dg: error in rdefit. iret =',iret
           stop
@@ -33,7 +35,7 @@ c
         end do
       end do
       print *,'psilim = ',psilim
-      call wreqdg(2,ngpr,ngpz,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
+      call wreqdg(2,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== ef2dg: error in wreqdg. iret = ',iret
       end if

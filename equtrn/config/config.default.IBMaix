@@ -12,8 +12,9 @@ FFLAGS 	 = -g -C -qflttrap=enable:overflow:zerodivide:invalid -qsigtrap -qfloat=
 FFLAGS   = -O -qMAXMEM=-1 -qST_SIZE=5000 -qTKQ_SIZE=30000 -qAUX_SIZE=50000 -qrealsize=8 -qextchk -qfloat=rsqrt:hssngl:fltint # -Q -qipa -qattr=full -qhot
 FFLAGS   = -O
 COMPILE  = ${FC} -c ${FFLAGS}
-CPP	     = /lib/cpp
+CPP      = /lib/cpp
 
+DEFINES  = ${SOLPS_CPP}
 LDLIBS   = ${LD_MSCL} -L/usr/local/lib -L/usr/lpp/xlC/lib
 LDFLAGS  = 
 LDEXTRA	 =
