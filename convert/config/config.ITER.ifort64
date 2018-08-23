@@ -6,10 +6,10 @@ FC_VERSION = $(shell echo `ifort --version | head -1 | awk '{printf "%s ",$$3,"\
 ifdef SOLPS_DEBUG
 FFLAGS = -g -C -traceback -debug all
 else
-ifeq (${FC_VERSION},18.0.1)
-FFLAGS = -O3
-else
+ifeq (${FC_VERSION},12.0.2)
 FFLAGS = -O3 -vec_report0
+else
+FFLAGS = -O3
 endif
 endif
 
@@ -17,7 +17,7 @@ COMPILE = ${FC} -c ${FFLAGS}
 CPP	= /lib/cpp -C -traditional
 
 LDLIBS	= ${LD_MSCL} -lstdc++
-ifneq (${FC_VERSION},18.0.1)
+ifeq (${FC_VERSION},12.0.2)
 LDFLAGS	= -i_dynamic
 endif
 LDEXTRA	=

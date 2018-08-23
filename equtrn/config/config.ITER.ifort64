@@ -3,20 +3,20 @@ LD_MSCL ?= `pkg-config mscl --libs`
 
 FC	 = ifort
 FC_VERSION = $(shell echo `ifort --version | head -1 | awk '{printf "%s ",$$3,"\n"}'`)
-ifeq (${FC_VERSION},18.0.1)
-ifdef SOLPS_DEBUG
-FFLAGS	 = -g -C -traceback
-else
-FFLAGS	 = -O
-endif
-LDFLAGS  =
-else
+ifeq (${FC_VERSION},12.0.2)
 ifdef SOLPS_DEBUG
 FFLAGS	 = -g -C -vec_report0 -traceback
 else
 FFLAGS	 = -O -vec_report0
 endif
 LDFLAGS  = -i_dynamic
+else
+ifdef SOLPS_DEBUG
+FFLAGS	 = -g -C -traceback
+else
+FFLAGS	 = -O
+endif
+LDFLAGS  =
 endif
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP	 = /lib/cpp -traditional -ffreestanding
