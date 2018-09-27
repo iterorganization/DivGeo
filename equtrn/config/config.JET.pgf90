@@ -4,7 +4,7 @@ ifndef LD_MSCL
 endif
 
 FC       = pgf90
-FFLAGS	 = -g
+FFLAGS   = -g
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP      = /lib/cpp -traditional
 
@@ -12,7 +12,7 @@ DEFINES  = ${SOLPS_CPP}
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  = 
 
-LDWOS 	 = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
+LDWOS    = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
 LDFLUSH  = -lflush ${LD_NAG} -lppf
 
 #!!!Local Variables:

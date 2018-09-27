@@ -3,9 +3,9 @@ LD_MSCL ?= `pkg-config mscl --libs`
 
 FC       = gfortran
 ifdef SOLPS_DEBUG
-FFLAGS	 = -g -fcheck=all -fbacktrace -ffpe-trap=denormal
+FFLAGS   = -g -fcheck=all -fbacktrace -ffpe-trap=denormal
 else
-FFLAGS	 = -O
+FFLAGS   = -O
 endif
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP      = /lib/cpp -traditional
@@ -14,8 +14,8 @@ DEFINES  = ${SOLPS_CPP}
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  =
 
-#LDWOS	 = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
-#LDWOS	 = -L/afs/ipp/aug/ads/lib64/@sys -lKK -lwoss -lddww -lpplotXt -lsocket
+#LDWOS   = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
+#LDWOS   = -L/afs/ipp/aug/ads/lib64/@sys -lKK -lwoss -lddww -lpplotXt -lsocket
 #LDWOS   = -L/afs/ipp/aug-ads/@sys/lib64 -Wl,-R/afs/ipp/aug-ads/@sys/lib64 -lkk -lddww
 
 #!!!Local Variables:

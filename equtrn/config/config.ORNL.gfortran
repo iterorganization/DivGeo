@@ -7,9 +7,9 @@ LD_MSCL ?= -L${MSCL_ROOT} -lmscl
 
 FC       = gfortran
 ifdef SOLPS_DEBUG
-FFLAGS	 = -g -C -ffpe-trap=denormal
+FFLAGS   = -g -C -ffpe-trap=denormal
 else
-FFLAGS	 = -O3
+FFLAGS   = -O3
 endif
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP      = /lib/cpp -traditional
@@ -18,7 +18,7 @@ DEFINES  = ${SOLPS_CPP}
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  = 
 
-#LDWOS 	 = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
+#LDWOS   = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
 
 
 #!!!Local Variables:

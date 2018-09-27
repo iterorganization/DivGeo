@@ -7,7 +7,7 @@ endif
 
 FC       = pgf90
 ifdef SOLPS_DEBUG
-FFLAGS	 = -g
+FFLAGS   = -g
 else
 FFLAGS   = -O3
 endif

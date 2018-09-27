@@ -3,11 +3,11 @@ ifndef LD_MSCL
   $(error LD_MSCL not defined)
 endif
 
-FC	 = ifort 
+FC       = ifort 
 ifdef SOLPS_DEBUG
-FFLAGS	 = -g -C -traceback
+FFLAGS   = -g -C -traceback
 else
-FFLAGS	 = -O
+FFLAGS   = -O
 endif
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP      = /lib/cpp -C -traditional -ffreestanding
@@ -16,8 +16,8 @@ DEFINES  = ${SOLPS_CPP}
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  = 
 
-#LDWOS	 = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
-#LDWOS	 = -L/afs/ipp-garching.mpg.de/aug/ads/lib64/@sys -lKK -lwoss -lddww -lpplotXt -lsocket
+#LDWOS   = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
+#LDWOS   = -L/afs/ipp-garching.mpg.de/aug/ads/lib64/@sys -lKK -lwoss -lddww -lpplotXt -lsocket
 #LDWOS   = -L/afs/ipp-garching.mpg.de/aug-ads/@sys/lib64 -Wl,-R/afs/ipp-garching.mpg.de/aug-ads/@sys/lib64 -lkk -lddww
 
 #!!!Local Variables:

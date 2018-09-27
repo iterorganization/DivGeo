@@ -3,21 +3,21 @@ ifndef LD_MSCL
   LD_MSCL = -L${SOLPSLIB} -lmscl
 endif
 
-FC	 = g95
+FC       = g95
 ifdef SOLPS_DEBUG
-FFLAGS	 = -g -C -ftrace=full
+FFLAGS   = -g -C -ftrace=full
 else
-FFLAGS	 = -O
+FFLAGS   = -O
 endif
 COMPILE  = ${FC} -c ${FFLAGS}
-CPP	 = /lib/cpp -C -traditional -ffreestanding
+CPP      = /lib/cpp -C -traditional -ffreestanding
 
 DEFINES  = ${SOLPS_CPP}
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  = 
 
-#LDWOS	 = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
-#LDWOS	 = -L/afs/ipp/aug/ads/lib64/@sys -lKK -lwoss -lddww -lpplotXt -lsocket
+#LDWOS   = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
+#LDWOS   = -L/afs/ipp/aug/ads/lib64/@sys -lKK -lwoss -lddww -lpplotXt -lsocket
 #LDWOS   = -L/afs/ipp/aug-ads/@sys/lib64 -Wl,-R/afs/ipp/aug-ads/@sys/lib64 -lkk -lddww
 
 #!!!Local Variables:

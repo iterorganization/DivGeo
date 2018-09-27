@@ -4,7 +4,7 @@ $(error LD_MSCL not defined)
 endif
 
 FC       = f95f
-FFLAGS 	 = -g -X9
+FFLAGS   = -g -X9
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP      = /lib/cpp -C -traditional
 
@@ -12,7 +12,7 @@ DEFINES  = ${SOLPS_CPP}
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  = 
 
-LDWOS 	 = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
+LDWOS    = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
 
 #!!!Local Variables:
 #!!! mode: Makefile

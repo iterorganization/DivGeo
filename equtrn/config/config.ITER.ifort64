@@ -1,31 +1,31 @@
 # check if necessary variables are correctly defined
 LD_MSCL ?= `pkg-config mscl --libs`
 
-FC	 = ifort
+FC       = ifort
 FC_VERSION = $(shell echo `ifort --version | head -1 | awk '{printf "%s ",$$3,"\n"}'`)
 ifeq (${FC_VERSION},12.0.2)
 ifdef SOLPS_DEBUG
-FFLAGS	 = -g -C -vec_report0 -traceback
+FFLAGS   = -g -C -vec_report0 -traceback
 else
-FFLAGS	 = -O -vec_report0
+FFLAGS   = -O -vec_report0
 endif
 LDFLAGS  = -i_dynamic
 else
 ifdef SOLPS_DEBUG
-FFLAGS	 = -g -C -traceback
+FFLAGS   = -g -C -traceback
 else
-FFLAGS	 = -O
+FFLAGS   = -O
 endif
 LDFLAGS  =
 endif
 COMPILE  = ${FC} -c ${FFLAGS}
-CPP	 = /lib/cpp -traditional -ffreestanding
+CPP      = /lib/cpp -traditional -ffreestanding
 
 DEFINES  = ${SOLPS_CPP}
 LDLIBS   = ${LD_MSCL}
 
-#LDWOS	 = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
-#LDWOS	 = -L/afs/ipp/aug/ads/lib64/@sys -lKK -lwoss -lddww -lpplotXt -lsocket
+#LDWOS   = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
+#LDWOS   = -L/afs/ipp/aug/ads/lib64/@sys -lKK -lwoss -lddww -lpplotXt -lsocket
 #LDWOS   = -L/afs/ipp/aug-ads/@sys/lib64 -Wl,-R/afs/ipp/aug-ads/@sys/lib64 -lkk -lddww
 
 #!!!Local Variables:

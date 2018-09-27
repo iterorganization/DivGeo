@@ -15,7 +15,7 @@ CPP      = /lib/cpp -C -traditional
 DEFINES  = ${SOLPS_CPP}
 LDLIBS   = -${LD_MSCL} -L/usr/local/lib
 LDFLAGS  = -lnag
-LDEXTRA	 =
+LDEXTRA  =
 
 #!!!Local Variables:
 #!!! mode: Makefile
