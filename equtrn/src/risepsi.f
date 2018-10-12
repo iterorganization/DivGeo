@@ -31,7 +31,7 @@ c
           stop
       end if
 c
-      read *,shift
+      read(*,*,err=99) shift 
       do j=1,nz
           do i=1,nr
               pfm(i,j)=pfm(i,j)+shift
@@ -42,5 +42,8 @@ c
       if(iret.ne.0) then
           print *,'==== risepsi: error in wreqdg. iret = ',iret
       end if
+      goto 100
 c
+ 99   write(*,*) 'Unrecognized shift value!'
+ 100  continue
       end
