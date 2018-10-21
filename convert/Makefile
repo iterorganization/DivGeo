@@ -85,5 +85,5 @@ clean:
 TAGS:	tags
 
 tags:
-	rm -f TAGS ; etags src/*.f
+	rm -f TAGS ; etags src/*.f || touch TAGS
 

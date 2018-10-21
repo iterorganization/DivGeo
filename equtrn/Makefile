@@ -228,7 +228,7 @@ clean:
 TAGS:	tags
 
 tags:
-	rm -f TAGS ; etags src/*.f src/*.inc
+	rm -f TAGS ; etags src/*.f src/*.inc || touch TAGS
 
 depend: ${OBJS:.o=.f}
 	@makedepend -f- ${INCLUDE} $^ | \

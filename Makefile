@@ -78,7 +78,7 @@ neat:
 	/bin/rm -rf ${OBJDIR}/*.o ${OBJDIR}/*.bak
 
 tags:
-	rm -f TAGS ; etags src/*.c src/*.h dg.dgc
+	rm -f TAGS ; etags src/*.c src/*.h dg.dgc || touch TAGS
 
 depend: ${OBJS:.o=.c}
 	@-cd ${OBJDIR} ; ln -sf ${SRCDIR}/src/dg.dgh ${SRCDIR}/dg.dgc .
