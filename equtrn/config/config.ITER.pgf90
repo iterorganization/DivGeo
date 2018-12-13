@@ -1,9 +1,5 @@
 # check if necessary variables are correctly defined
-ifeq (,$(findstring hpc-login0,$(NODENAME)))
-LD_MSCL ?= `pkg-config mscl --libs`
-else
 LD_MSCL ?= `pkg-config mscl --libs` -lgfortran
-endif
 
 FC       = pgf90
 ifdef SOLPS_DEBUG
