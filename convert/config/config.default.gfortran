@@ -13,8 +13,8 @@ endif
 COMPILE = ${FC} -c ${FFLAGS}
 CPP     = /lib/cpp -traditional
 
-LDLIBS	= ${LD_MSCL} -lstdc++
-LDEXTRA	= 
+LDLIBS  = ${LD_MSCL} -lstdc++
+LDEXTRA =
 
 #!!!Local Variables:
 #!!! mode: Makefile

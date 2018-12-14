@@ -3,7 +3,6 @@ ifndef LD_MSCL
   $(error LD_MSCL not defined)
 endif
 
-
 FC     = ifort
 ifdef SOLPS_DEBUG
 FFLAGS = -g -C -traceback -debug all
@@ -12,10 +11,10 @@ FFLAGS = -O3
 endif
 
 COMPILE = ${FC} -c ${FFLAGS}
-CPP    	= /lib/cpp -C -traditional -ffreestanding
+CPP     = /lib/cpp -C -traditional -ffreestanding
 
-LDLIBS	= ${LD_MSCL} -lstdc++
-LDEXTRA	= 
+LDLIBS  = ${LD_MSCL} -lstdc++
+LDEXTRA =
 
 #!!!Local Variables:
 #!!! mode: Makefile

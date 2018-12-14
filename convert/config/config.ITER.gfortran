@@ -1,18 +1,18 @@
 # check if necessary variables are correctly defined
 LD_MSCL ?= `pkg-config mscl --libs`
 
-FC     = gfortran
+FC      = gfortran
 ifdef SOLPS_DEBUG
-FFLAGS = -g -fcheck=all -fbacktrace -ffpe-trap=denormal -ffpe-trap=invalid -ffpe-trap=zero -ftrapv -fsignaling-nans
+FFLAGS  = -g -fcheck=all -fbacktrace -ffpe-trap=denormal -ffpe-trap=invalid -ffpe-trap=zero -ftrapv -fsignaling-nans
 else
-FFLAGS = -O3
+FFLAGS  = -O3
 endif
 
 COMPILE = ${FC} -c ${FFLAGS}
 CPP     = /lib/cpp -traditional
 
-LDLIBS	= ${LD_MSCL} -lstdc++
-LDEXTRA	=
+LDLIBS  = ${LD_MSCL} -lstdc++
+LDEXTRA =
 
 #!!!Local Variables:
 #!!! mode: Makefile

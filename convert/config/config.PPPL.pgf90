@@ -5,16 +5,16 @@ endif
 
 FC      = pgf90
 ifdef SOLPS_DEBUG
-FFLAGS = -g -C -tp=amd64
+FFLAGS  = -g -C -tp=amd64
 else
-FFLAGS = -O -tp=amd64
+FFLAGS  = -O -tp=amd64
 endif
 
 COMPILE = ${FC} -c ${FFLAGS}
 CPP	= /lib/cpp -C -traditional
 
 LDLIBS	= ${LD_MSCL} -lstdc++
-LDEXTRA	= 
+LDEXTRA	=
 
 #!!!Local Variables:
 #!!! mode: Makefile
