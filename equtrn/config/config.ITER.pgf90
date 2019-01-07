@@ -10,7 +10,11 @@ endif
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP      = /lib/cpp -traditional
 
+ifdef SOLPS_CPP
 DEFINES  = ${SOLPS_CPP}
+else
+DEFINES += -DPGF90
+endif
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  =
 

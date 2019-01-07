@@ -8,7 +8,11 @@ FFLAGS   = -g
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP      = /lib/cpp -traditional
 
+ifdef SOLPS_CPP
 DEFINES  = ${SOLPS_CPP}
+else
+DEFINES += -DNAGFOR
+endif
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  =
 
