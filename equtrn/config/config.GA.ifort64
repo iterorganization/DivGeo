@@ -1,12 +1,13 @@
 # check if necessary variables are correctly defined
+IRISLIB ?= /fusion/projects/codes/solps/SOLPS-ITER/public_lib/GA.ifort64 
 MSCL_ROOT ?= ${IRISLIB}
 LD_MSCL ?= -L${MSCL_ROOT} -lmscl
 
 FC       = ifort 
 ifdef SOLPS_DEBUG
-FFLAGS	 = -g -C -vec_report0 -traceback
+FFLAGS   = -g -C -vec_report0 -traceback
 else
-FFLAGS	 = -O -vec_report0
+FFLAGS   = -O -vec_report0
 endif
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP      = /lib/cpp -C -traditional
@@ -14,6 +15,6 @@ CPP      = /lib/cpp -C -traditional
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  = 
 
-#LDWOS	 = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
-#LDWOS	 = -L/afs/ipp/aug/ads/lib64/@sys -lKK -lwoss -lddww -lpplotXt -lsocket
+#LDWOS   = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
+#LDWOS   = -L/afs/ipp/aug/ads/lib64/@sys -lKK -lwoss -lddww -lpplotXt -lsocket
 #LDWOS   = -L/afs/ipp/aug-ads/@sys/lib64 -Wl,-R/afs/ipp/aug-ads/@sys/lib64 -lkk -lddww
