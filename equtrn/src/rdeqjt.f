@@ -1,7 +1,6 @@
-      subroutine rdeqdg(lun,ngpr,ngpz,iret, nr,nz,
-     ,                                        psib,btf,rtf,rgr,zgr,pfm)
+      subroutine rdeqjt(lun,iret,nr,nz,psib,btf,rtf,rgr,zgr,pfm)
 c=====================================================
-c*** Read the equilibrium data written in the dg compatible format.
+c*** Read the equilibrium data written in the JET compatible format.
 c***
 c*** Input:
 c***  lun     the logical unit number for the input
@@ -24,9 +23,10 @@ c=====================================================
 c
 c  version : 05.08.95 16:50
 c
-      real*8 rgr(*), zgr(*), pfm(ngpr, *)
+#include "eqdim.inc"
+      real(kind=R8) rgr(*), zgr(*), pfm(ngpr, *)
 c... toroidal field in tesla, radius in m
-      real*8 btf, rtf, psib
+      real(kind=R8) btf, rtf, psib
       real ubtf, urtf
 c-----------------------------------------------------
 c
@@ -47,19 +47,19 @@ c
           close(3)
       end if
       if(nr.gt.ngpr) then
-          print *,'==== rdeqdg: nr > ngpr ',nr
+          print *,'==== rdeqjt: nr > ngpr ',nr
           iret=2
       end if
       if(nz.gt.ngpz) then
-          print *,'=== rdeqdg: nz > ngpz'
+          print *,'=== rdeqjt: nz > ngpz'
           iret=2
       end if
       if(nr.le.0) then
-          print *,'=== rdeqdg: nr < 1'
+          print *,'=== rdeqjt: nr < 1'
           iret=4
       end if
       if(nz.le.0) then
-          print *,'=== rdeqdg: nz < 1'
+          print *,'=== rdeqjt: nz < 1'
           iret=4
       end if
       if(iret.ne.0) return
@@ -76,7 +76,7 @@ c
       return
 c-----------------------------------------------------
 c
- 99   print *,'==== rdeqdg: error in the input files'
+ 99   print *,'==== rdeqjt: error in the input files'
       iret=8
 c
       end

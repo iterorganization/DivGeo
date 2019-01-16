@@ -396,10 +396,10 @@ c
  1003 format(80a1)                                                      
  1060 format(10x,'Stop in AAMAIN :',/       
      +,      10x,'mnodes = ',i5,' ###   nnodes = ',i5,/                 
-     +,      10x,'Please set nnodes .gt. mnodes ')                      
+     +,      10x,'Please set nnodes .gt. mnodes')                      
  1070 format(10x,'Stop in AAMAIN :',/  
      +,      10x,'melems = ',i5,' ###   nelems = ',i5,/                 
-     +,      10x,'Please set nelems .gt. melems ')                      
+     +,      10x,'Please set nelems .gt. melems')                      
  1100 format(10x,'Stop in AAMAIN :',/
      +,      10x,'label of nodes should be 1',/                         
      +,      10x,'label = ',i2)                                         
@@ -435,10 +435,6 @@ c--b
      +,/,   t39,'yrp =',e12.4,12x,'yzp =',e12.4)
  5002 format(4x,'lnnk =',i3,t39,'csi =',e12.4,12x,'eta =',e12.4)
 c--e
-c                                                                       
-c-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-
-c                                                                       
- 9999 format(1H1,'          ',/)                                        
 c                                                                       
 c-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-
 c                                                                       

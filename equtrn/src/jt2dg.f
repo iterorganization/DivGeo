@@ -23,7 +23,7 @@ c=====================================================
 c
       call open_files(' ')
 
-      call rdeqdg(1,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
+      call rdeqjt(1,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== jt2dg: error in rdefit. iret =',iret
           stop

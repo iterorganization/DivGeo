@@ -1,4 +1,4 @@
-      subroutine wreqvr(lun,ngpr,iret,nr,nz,rgr,zgr,pfm)
+      subroutine wreqvr(lun,iret,nr,nz,rgr,zgr,pfm)
 c
 c  version : 18.01.96 15:02
 c
@@ -17,7 +17,8 @@ c***
 c*** Output:
 c***  iret    return code (0 means OK)
 c=====================================================
-      real*8 pfm(ngpr,*),rgr(ngpr),zgr(*)
+#include "eqdim.inc"
+      real(kind=R8) pfm(ngpr,*),rgr(ngpr),zgr(*)
 c=====================================================
 c
       write(lun,*,err=999)

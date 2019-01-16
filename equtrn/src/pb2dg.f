@@ -23,7 +23,7 @@ c======================================================================
 c
       call open_files(' ')
 
-      call rdeqpb(1,ngpr,ngpz,iret,nr,nz,btorc,psilim,rgr,zgr,pfm)
+      call rdeqpb(1,iret,nr,nz,btorc,psilim,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== pb2dg: error in rdeqpb. iret =',iret
           stop

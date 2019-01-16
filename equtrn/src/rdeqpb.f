@@ -1,5 +1,4 @@
-      subroutine rdeqpb(lun,ngpr,ngpz,
-     ,                             iret,nr,nz,rbtor,psilim,rgr,zgr,pfm)
+      subroutine rdeqpb(lun,iret,nr,nz,rbtor,psilim,rgr,zgr,pfm)
 c======================================================================
 c*** Read the equilibrium data from TdeV
 c***
@@ -23,9 +22,10 @@ c======================================================================
 c
 c  version : 27.06.98 20:47
 c
-      real*8 rgr(ngpr), zgr(ngpz), pfm(ngpr, ngpz)
+#include "eqdim.inc"
+      real(kind=R8) rgr(ngpr), zgr(ngpz), pfm(ngpr, ngpz)
 c... toroidal field in tesla, radius in m
-      real*8 rbtor,psilim
+      real(kind=R8) rbtor,psilim
       logical errenc
       integer nnul
       parameter (nnul=72)

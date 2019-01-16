@@ -28,7 +28,7 @@ c
 c
       psilim=0.
       print *,'psilim = ',psilim
-      call wreqvr(2,ngpr,iret,nr,nz,rgr,zgr,pfm)
+      call wreqvr(2,iret,nr,nz,rgr,zgr,pfm)
       if(iret.ne.0) then
           print *,'==== dg2vr: error in wreqvr. iret = ',iret
       end if

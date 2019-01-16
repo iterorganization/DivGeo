@@ -57,17 +57,21 @@ c
           h(k)=s(i)
  110  continue
 c
- 30   go to (31,32,33,34,35),j
-c
- 31   read(hh,'(bn,i4)') nr
-      go to 10
- 32   read(hh,'(bn,i4)') nz
-      go to 10
- 33   read(hh,'(bn,e12.0)') btf
-      go to 10
- 34   read(hh,'(bn,e12.0)') rtf
-      go to 10
- 35   read(hh,'(bn,e12.0)') psib
+ 30   continue
+      select case (j)
+      case (1)
+        read(hh,'(bn,i4)') nr
+      case (2)
+        read(hh,'(bn,i4)') nz
+      case (3)
+        read(hh,'(bn,e12.0)') btf
+      case (4)
+        read(hh,'(bn,e12.0)') rtf
+      case (5)
+        read(hh,'(bn,e12.0)') psib
+      case default
+        continue
+      end select
       go to 10
 c=====================================================
 c*** Error encountered
