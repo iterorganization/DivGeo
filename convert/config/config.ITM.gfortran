@@ -1,6 +1,6 @@
 # check if necessary variables are correctly defined
 MSCL_ROOT ?= /pfs/work/g2dpc/SOLPS-ITER/${COMPILER}/mscl
-LD_MSCL ?= -L${MSCL_ROOT}/lib -lmscl
+LD_MSCL ?= -L${MSCL_ROOT} -lmscl
 
 FC     = gfortran
 ifdef SOLPS_DEBUG
