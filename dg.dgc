@@ -2027,7 +2027,7 @@ text101 0
 lm_vhst
 Recombination histories
 text101 7
-This is a default value for the limiting number of Monte-Carlo histories
+This is a default value for the limiting number of Monte Carlo histories
 for a recombination stratum.
 An increase of the limiting number of histories for the recycling strata
 leads to a reduction of the computer time allocated for the other strata.
@@ -2040,7 +2040,7 @@ text101 0
 lm_whst
 Wall histories
 text101 5
-This is a default value for the limiting number of Monte-Carlo histories
+This is a default value for the limiting number of Monte Carlo histories
 for a wall-recycling stratum.
 The wall recycling can be more important in a limiter case as compared
 with a divertor one, therefore, the relative number of histories for this
@@ -2162,7 +2162,7 @@ different wall materials. The evaluation can be done in a stand-
 alone Eirene run through a call to the diagnostic routine "diag2".
 If this specification is present in the DG output file, then uinp
 will create a separate Eirene input file called "diag2.eir" which
-can be used for the stand-alone diagnostic run.
+can be used for the standalone diagnostic run.
 
 Instead of the real wall, where the plasma fluxes are not determined
 in B2-Eirene, the diag2 routine calculates the neutral fluxes and
@@ -2256,7 +2256,7 @@ text101 0
 dgntime
 Eirene time
 text101 3
-Time allocated for the Eirene stand-alone run [s]. Must be long
+Time allocated for the Eirene standalone run [s]. Must be long
 enough to ensure accurate calculation of neutral population all over
 the computational mesh.
 Int -n-m-S-s-h-i 0 9
