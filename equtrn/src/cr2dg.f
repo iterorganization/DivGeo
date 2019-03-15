@@ -27,7 +27,7 @@ c=====================================================
 c
       call open_files(' ')
 
-      call rdcreate(1,ngpr,ngpz,iret,title,ipestg,nr,nz,
+      call rdcreate(1,iret,title,ipestg,nr,nz,
      ,           rdim,zdim,zmsmid,rcntc,redge,rma,zma,psimin,psilim,
      ,           btorc,fg,pg,ffg,ppg,pfm,rgr,zgr)
       if(iret.ne.0) then
