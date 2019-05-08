@@ -1,0 +1,102 @@
+      subroutine rdfiesta(lun,iret,title,date,ipestg,nr,nz,
+     ,           rdim,zdim,zmsmid,rcntc,redge,rma,zma,psimin,psilim,
+     ,           btorc,fg,pg,ffg,ppg,pfm,rgr,zgr)
+c=====================================================
+c*** where:
+c***
+c*** i)  nr, nz, rdim, redge, and zdim define the rectangular mesh used
+c***     to store the psi values via the functions rr & zz defined at
+c***     the top of these code,
+c***
+c*** ii) psimin is the flux value at the magnetic axis; psilim is the
+c***     value at the separatrix,
+c***
+c*** iii) btorc is the toroidal magnetic field at a radius rcntc,
+c***
+c*** iv) the poloidal flux is pfm,
+c***
+c*** v) fg is the flux function R*Btor; ffg is its derivative with
+c***    respect to psi,
+c***
+c*** vi) pg is the pressure & ppg is its derivative.
+c=====================================================
+c
+c  version : 18.12.94 18:33
+c
+      implicit none
+#include "eqdim.inc"
+      integer lun,iret,ipestg,nr,nz
+      real(kind=R8) :: fg(*),pg(*),ffg(*),ppg(*),pfm(ngpr,*),
+     &  rgr(*),zgr(*)
+      real(kind=R8) :: rdim,zdim,rcntc,redge,zmsmid,rma,zma,
+     &  psimin,psilim,btorc
+      integer i,j,l
+      character zeile*80, title*80, date*8, cvect(80)*1
+c=====================================================
+      real(kind=R8) :: rr, zz, r, z
+      rr(r)=r/float(nr-1)*rdim+redge
+      zz(z)=(z-float(nz+1)/float(2))/float(nz-1)*zdim+zmsmid
+c=====================================================
+c
+      write(*,*) 'Subroutine rdfiesta'
+      iret=0
+      rewind lun
+      read(lun,'(a80)') zeile
+      l=len(trim(zeile))
+      read(zeile(l-3:l),'(i4)') nz
+      read(zeile(l-7:l-4),'(i4)') nr
+      read(zeile(l-11:l-8),'(i4)') ipestg
+      date=zeile(l-19:l-12)
+      title=zeile(1:l-20)
+      write(*,*) ipestg,nr,nz
+      if(nr.gt.ngpr) then
+          write (6,'(a,i4,a,i4,a)') 
+     .     '=== rdfiesta: nr (',nr,') > ngpr (',ngpr,')'
+          iret=2
+      end if
+      if(nz.gt.ngpz) then
+          write (6,'(a,i4,a,i4,a)') 
+     .     '=== rdfiesta: nz (',nz,') > ngpz (',ngpz,')'
+          iret=2
+      end if
+      if(nr.le.0) then
+          write (6,'(a,i4,a)') '=== rdfiesta: nr (',nr,') < 1'
+          iret=4
+      end if
+      if(nz.le.0) then
+          write (6,'(a,i4,a)') '=== rdfiesta: nz (',nz,') < 1'
+          iret=4
+      end if
+      if(iret.ne.0) return
+c
+      read(lun,'(80a1)',advance='no',size=l) cvect
+      backspace(lun)
+      if (l.eq.80) then
+        read(lun,'(5e16.9)') rdim,zdim,rcntc,redge,zmsmid
+      else
+        read(lun,*) rdim,zdim,rcntc,redge,zmsmid
+      endif
+      read(lun,'(80a1)',advance='no',size=l) cvect
+      backspace(lun)
+      if (l.eq.80) then
+        read(lun,'(5e16.9)') rma,zma,psimin,psilim,btorc
+      else
+        read(lun,*) rma,zma,psimin,psilim,btorc
+      endif
+      read(lun,'()')
+      read(lun,'()')
+      read(lun,'(5e16.9)') (fg(i),i=1,nr)
+      read(lun,'(5e16.9)') (pg(i),i=1,nr)
+      read(lun,'(5e16.9)') (ffg(i),i=1,nr)
+      read(lun,'(5e16.9)') (ppg(i),i=1,nr)
+      do j=1,nz
+         read(lun,'(5e16.9)') (pfm(i,j),i=1,nr)
+      enddo
+      do i=1,nr
+        rgr(i)=rr(real(i-1,R8))
+      enddo
+      do i=1,nz
+        zgr(i)=zz(real(i,R8))
+      enddo
+c
+      end

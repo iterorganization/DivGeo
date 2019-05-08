@@ -45,6 +45,7 @@ PROG_cropequ = cropequ
 PROG_dg2dg   = dg2dg
 PROG_dg2ef   = dg2ef
 PROG_ef2dg   = ef2dg
+PROG_fiesta2dg = fiesta2dg
 PROG_cr2dg   = cr2dg
 PROG_vr2dg   = vr2dg
 PROG_dg2vr   = dg2vr
@@ -66,7 +67,7 @@ PROG_dgcut = dgcut
 
 .PHONY: DOC listobj
 
-ALL = ${PROG_cropequ} ${PROG_dg2dg} ${PROG_dg2ef} ${PROG_ef2dg} ${PROG_cr2dg} ${PROG_vr2dg} ${PROG_nk2dg} ${PROG_dg2vr} ${PROG_risepsi} ${PROG_prinequ} ${PROG_jt2dg} ${PROG_pb2dg} ${PROG_pt2dg} ${PROG_dg_symm_dg} ${PROG_move_equ} ${PROG_dgcut}
+ALL = ${PROG_cropequ} ${PROG_dg2dg} ${PROG_dg2ef} ${PROG_ef2dg} ${PROG_fiesta2dg} ${PROG_cr2dg} ${PROG_vr2dg} ${PROG_nk2dg} ${PROG_dg2vr} ${PROG_risepsi} ${PROG_prinequ} ${PROG_jt2dg} ${PROG_pb2dg} ${PROG_pt2dg} ${PROG_dg_symm_dg} ${PROG_move_equ} ${PROG_dgcut}
 
 ifeq (${HOST_NAME}, JET)
 ifeq (${COMPILER},pgf90)
@@ -91,6 +92,7 @@ dgdg =	dg2dg.o rdeqdg.o wreqdg.o rdeqlh.o double.o open_files.o
 dgminuspsidg =	dg_minuspsi_dg.o rdeqdg.o wreqdg.o rdeqlh.o
 dgef =	dg2ef.o rdeqdg.o wrefit.o rdeqlh.o open_files.o
 efdg =	ef2dg.o wreqdg.o rdefit.o open_files.o
+fiestadg = fiesta2dg.o wreqdg.o rdfiesta.o open_files.o
 crdg =	cr2dg.o wreqdg.o rdcreate.o open_files.o
 vrdg =	vr2dg.o wreqdg.o rdeqvr.o open_files.o
 nkdg =	nk2dg.o wreqdg.o rdeqnk.o open_files.o
@@ -128,6 +130,7 @@ DGMINUSPSIDG = $(dgminuspsidg:%.o=$(OBJDIR)/%.o)
 DGEF = $(dgef:%.o=$(OBJDIR)/%.o)
 DGVR = $(dgvr:%.o=$(OBJDIR)/%.o)
 EFDG = $(efdg:%.o=$(OBJDIR)/%.o)
+FIESTADG = $(fiestadg:%.o=$(OBJDIR)/%.o)
 CRDG = $(crdg:%.o=$(OBJDIR)/%.o)
 VRDG = $(vrdg:%.o=$(OBJDIR)/%.o)
 NKDG = $(nkdg:%.o=$(OBJDIR)/%.o)
@@ -174,6 +177,9 @@ ${OBJDIR}/${PROG_dg2vr}: $(DGVR) $(MAKES)
 
 ${OBJDIR}/${PROG_ef2dg}: $(EFDG) $(MAKES)
 	${FC} ${FFLAGS} -o $@ $(EFDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+
+${OBJDIR}/${PROG_fiesta2dg}: $(FIESTADG) $(MAKES)
+	${FC} ${FFLAGS} -o $@ $(FIESTADG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_cr2dg}: $(CRDG) $(MAKES)
 	${FC} ${FFLAGS} -o $@ $(CRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
