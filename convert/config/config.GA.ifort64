@@ -7,7 +7,7 @@ FC      = ifort
 ifdef SOLPS_DEBUG
 FFLAGS  = -g -C -traceback -debug all
 else
-FFLAGS  = -O3 -vec_report0
+FFLAGS  = -O3
 endif
 
 COMPILE = ${FC} -c ${FFLAGS}
