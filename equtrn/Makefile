@@ -255,6 +255,7 @@ ${OBJDIR}/dependencies:
 
 .doxygen: ${SRCS} ${MAKES}
 	doxygen
+	cd doxygen/latex; ${MAKE}; cd .. ; ln -sf latex/refman.pdf .
 	touch $@
 
 DOC: .doxygen
