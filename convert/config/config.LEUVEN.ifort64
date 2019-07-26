@@ -11,7 +11,7 @@ FFLAGS  = -O3 -vec_report0
 endif
 
 COMPILE = ${FC} -c ${FFLAGS}
-CPP     = /lib/cpp -C -traditional
+CPP     = /lib/cpp -traditional
 
 LDLIBS  = ${LD_MSCL} -lstdc++
 LDEXTRA =
