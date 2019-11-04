@@ -67,16 +67,16 @@ TRIDG = $(tridg:%.o=$(OBJDIR)/%.o)
 
 $(OBJDIR)/%.o : %.f
 	[ -d ${OBJDIR} ] || mkdir -p ${OBJDIR}
-	$(COMPILE) -o ${OBJDIR}/$*.o $<
+	$(COMPILE) ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o $<
 	if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
 
 all: $(ALL:%=$(OBJDIR)/%)
 
 ${OBJDIR}/${PROGEIR}: $(EIRDG) $(MAKES)
-	${FC} ${FFLAGS} -o ${OBJDIR}/${PROGEIR} $(EIRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o ${OBJDIR}/${PROGEIR} $(EIRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROGTRIA}: $(TRIDG) $(MAKES)
-	${FC} ${FFLAGS} -o ${OBJDIR}/${PROGTRIA} $(TRIDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o ${OBJDIR}/${PROGTRIA} $(TRIDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 clean:
 	cd ${OBJDIR}; rm -rf *.o $(ALL)

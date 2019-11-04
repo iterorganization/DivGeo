@@ -150,81 +150,81 @@ DGCUT = $(dgcut:%.o=$(OBJDIR)/%.o)
 
 $(OBJDIR)/%.o : %.f
 	${CPP} ${DEFINES} -P ${INCLUDE} $< > ${OBJDIR}/$*.f
-#	$(COMPILE) -o ${OBJDIR}/$*.o $<
-	$(COMPILE) -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f ${FINCLUDE}
+#	$(COMPILE) ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o $<
+	$(COMPILE) ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f ${FINCLUDE}
 #	/bin/rm ${OBJDIR}/$*.f
 	if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
 
 all: $(ALL:%=$(OBJDIR)/%) .doxygen
 
 ${OBJDIR}/${PROG_cropequ}: $(CREQ) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(CREQ) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(CREQ) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_dg2dg}: $(DGDG) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(DGDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_culham}: $(CULHAM) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(CULHAM) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(CULHAM) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_sst2dg}: $(SSTDG) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(SSTDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(SSTDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_dg2ef}: $(DGEF) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(DGEF) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGEF) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_dg2vr}: $(DGVR) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(DGVR) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGVR) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_ef2dg}: $(EFDG) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(EFDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(EFDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_fiesta2dg}: $(FIESTADG) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(FIESTADG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(FIESTADG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_cr2dg}: $(CRDG) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(CRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(CRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_vr2dg}: $(VRDG) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(VRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(VRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_nk2dg}: $(NKDG) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(NKDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(NKDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_nkn2dg}: $(NKNDG) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(NKNDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(NKNDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_jt2dg}: $(JTDG) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(JTDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(JTDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_risepsi}: $(RSPS) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(RSPS) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(RSPS) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_move_equ}: $(MVEQ) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(MVEQ) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(MVEQ) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_prinequ}: $(PREQ) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(PREQ) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(PREQ) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_pb2dg}: $(PBDG) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(PBDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(PBDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_pt2dg}: $(PTDG) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(PTDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(PTDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_dg_minuspsi_dg}: $(DGMINUSPSIDG) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(DGMINUSPSIDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGMINUSPSIDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_shotfile2dg}: $(SHOTFILE2DG) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(SHOTFILE2DG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDWOS)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(SHOTFILE2DG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDWOS)
 
 ${OBJDIR}/${PROG_jetppf2dg}: $(JETPPF2DG) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(JETPPF2DG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDFLUSH)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(JETPPF2DG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDFLUSH)
 
 ${OBJDIR}/${PROG_dg_symm_dg}: $(DGSYMMDG) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(DGSYMMDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGSYMMDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_dgcut}: $(DGCUT) $(MAKES)
-	${FC} ${FFLAGS} -o $@ $(DGCUT) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGCUT) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 clean:
 	cd ${OBJDIR}; rm -rf *.o *.f $(ALL) LISTOBJ dependencies*
