@@ -6,7 +6,7 @@ c*** where:
 c***
 c*** i)  nr, nz, rmin, rmax, delr, and delz define the rectangular
 c***     mesh used to store the psi values via the functions rr & zz
-c***     defined at the top of these code,
+c***     defined at the top of these codes,
 c***
 c*** ii) psilim is the value at the separatrix,
 c***

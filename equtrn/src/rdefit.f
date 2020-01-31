@@ -6,7 +6,7 @@ c*** where:
 c***
 c*** i)  nr, nz, rdim, redge, and zdim define the rectangular mesh used
 c***     to store the psi values via the functions rr & zz defined at
-c***     the top of these code,
+c***     the top of these codes,
 c***
 c*** ii) psimin is the flux value at the magnetic axis; psilim is the
 c***     value at the separatrix,

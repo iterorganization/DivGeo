@@ -380,7 +380,7 @@ int RebuildCarreSurfaces(App a,int area) {
     return 0;
   }
 
-  if (!CountSurfaces(a,area)) return 0;  /* $$ - maybe some errorcode? */
+  if (!CountSurfaces(a,area)) return 0;  /* $$ - maybe some error code? */
 
   for (sx=AppSurfaceEx1st(a,&ix);sx!=NULL;sx=Next(&ix)) {
     if (sx->zone!=area) continue;
@@ -391,7 +391,7 @@ int RebuildCarreSurfaces(App a,int area) {
     if (carreMode) break;
   }
 
-  if (sx==NULL) return 0;  /* $$ - maybe some errorcode? */
+  if (sx==NULL) return 0;  /* $$ - maybe some error code? */
 
   r=DistributeSurfaces(a,area,count,a1,a2,law,l1,l2,carreMode,NULL);
 

@@ -104,7 +104,7 @@ int RebuildCarreGridPoints(App a,int area) {
   }
 
 
-  if (!CountGridPoints(a,area)) return 0;  /* $$ - maybe some errorcode? */
+  if (!CountGridPoints(a,area)) return 0;  /* $$ - maybe some error code? */
 
   for (gpx=AppGridPointEx1st(a,&ix);gpx!=NULL;gpx=Next(&ix)) {
     if (gpx->zone!=area) continue;
@@ -115,7 +115,7 @@ int RebuildCarreGridPoints(App a,int area) {
     if (carreMode) break;
   }
 
-  /* $$ - maybe some errorcode if no gridpoints? */
+  /* $$ - maybe some error code if no grid points? */
   if (gpx==NULL) {count=0;a1=a2=1;law=DGLAW_NORMAL;carreMode=1;}
 
   r=DistributeGridPoints(a,area,count,a1,a2,law,carreMode);

@@ -23,7 +23,7 @@ c
       integer nrnz(2)
       integer jr,jz,j1,j110,j120,j100,j23,j22,j21,j50,j49,j29,j20,l20
       integer kret,lm,lnwt,lr23,lk22,lk21,kbpol,kwrite
-      integer lwreqdg,lelem,lnode,lbound,lreg,lcount,lkill,lke
+      integer lwrptdg,lelem,lnode,lbound,lreg,lcount,lkill,lke
       integer modele,mnodes,melems,mhmesh
       real(kind=R8) :: rmnmx(2),zmnmx(2),btrt(2)
       real(kind=R8) :: zp00,zpz2,zx1e,zy1e,zx2e,zy2e,zxye,zpr1,zpr2,
@@ -134,7 +134,7 @@ c*** Open the files
       hlp_txt='in_psi'
       open(ndisk,file=in_psi,err=15)
       hlp_txt='in_psi'
-      open(nwreqdg,file=out_file,err=15)
+      open(nwrptdg,file=out_file,err=15)
       ex=.true.
  15   if(.not.ex) then !{
         write(0,*) 'Failed opening ',hlp_txt
@@ -370,9 +370,9 @@ c
                                                           endif
 c
 c                                
-            lwreqdg    = nwreqdg      
+            lwrptdg    = nwrptdg
 c
-                         CALL WREQDG(lwreqdg,kret,mpr,mpz,psib,
+                         CALL WRPTDG(lwrptdg,kret,mpr,mpz,psib,
      +                               btf,rtf,xrp,xzp,psi4)
 c
                          write(nwrite,2100) kret
@@ -406,7 +406,7 @@ c
 c
  2000 format(1h1,5('   ',/),20x,'Message from AAMAIN:'
      +,3('   ',/),t10,'mpr =',i4,t35,'mpz =',i4,t50,'lcount =',i4)
- 2100 format(4('   ',/),t15,'After call of WREQDG: kret =',i3)
+ 2100 format(4('   ',/),t15,'After call of WRPTDG: kret =',i3)
  2200 format(1h1,5('   ',/),t20,'npr =',i4,t40,'npz =',i4
      +,/,                   t20,'mpr =',i4,t40,'mpz =',i4)
  2300 format(4('   ',/),t13,'j50 =',i3,t43,'j49 =',i3
@@ -627,7 +627,7 @@ c
 c                                                                
 c-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 c
-      lun = nwreqdg 
+      lun = nwrptdg
 c
       write(lun,*) 
       write(lun,*) '     ((bpr(j,k),j=1,jm),k=1,km)'
@@ -649,7 +649,7 @@ c
 
 !> Write the equilibrium data in the dg compatible format.
 !> \version 23.06.97 17:23
-      subroutine wreqdg(lun,iret,nr,nz,psib,btf,rtf,rgr,zgr,pfm)
+      subroutine wrptdg(lun,iret,nr,nz,psib,btf,rtf,rgr,zgr,pfm)
 c=====================================================
 c*** Write the equilibrium data in the dg compatible format.
 c***
@@ -697,11 +697,11 @@ c
       write(lun,*,err=99)
      /    '   z    :=  vertical coordinates of grid points  [m];'
       write(lun,*,err=99)
-     /    '   psi  :=  flux per radiant at grid points     [Wb/rad];'
+     /    '   psi  :=  flux per radian at grid points      [Wb/rad];'
       write(lun,*,err=99)
      /    '   psib :=  psi at plasma boundary              [Wb/rad];'
       write(lun,*,err=99)
-     /    '   btf  :=  toroidal magnetic field                  [t];'
+     /    '   btf  :=  toroidal magnetic field                  [T];'
       write(lun,*,err=99)
      /    '   rtf  :=  major radius at which btf is specified   [m];'
       write(lun,*,err=99)
@@ -725,7 +725,7 @@ c
       return
 c-----------------------------------------------------
 c
- 99   print *,'==== wreqdg: error writing the files'
+ 99   print *,'==== wrptdg: error writing the files'
       iret=8
 c
       end

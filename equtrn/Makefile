@@ -35,7 +35,7 @@ endif
 OBJDIR = ${PWD}/builds/${HOST_NAME}.${COMPILER}${EXT_DEBUG}
 
 VPATH = src
-INCLUDE =
+INCLUDE = -I../src
 FINCLUDE =
 ifeq ($(shell [ -d ${FLUSH}/source/default/commons ] && echo yes || echo no ),yes)
 FINCLUDE += -I${FLUSH}/source/default/commons
@@ -58,6 +58,8 @@ PROG_jt2dg   = jt2dg
 PROG_pb2dg   = pb2dg
 PROG_pt2dg   = pt2dg
 PROG_sst2dg  = sst2dg
+PROG_ids2dg  = ids2dg
+PROG_dg2ids  = dg2ids
 PROG_culham  = culham
 PROG_dg_symm_dg     = dg_symm_dg
 PROG_dg_minuspsi_dg = dg_minuspsi_dg
@@ -87,6 +89,10 @@ ifeq (${HOST_NAME}, IPPITM)
 ALL += ${PROG_shotfile2dg}
 endif
 
+ifdef IMAS_VERSION
+ALL += ${PROG_ids2dg} ${PROG_dg2ids}
+endif
+
 creq =  cropequ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
 dgdg =	dg2dg.o rdeqdg.o wreqdg.o rdeqlh.o double.o open_files.o
 dgminuspsidg =	dg_minuspsi_dg.o rdeqdg.o wreqdg.o rdeqlh.o
@@ -110,6 +116,8 @@ shotfile2dg = shotfile2dg.o wreqdg.o
 jetppf2dg = jetppf2dg.o wreqdg.o
 dgsymmdg = dg_symm_dg.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o
 dgcut = dgcut.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o
+idsdg = ids2dg.o rdids.o wreqdg.o wrtrdg.o streql.o usrnam.o
+dgids = dg2ids.o rdtrg.o wrids.o streql.o usrnam.o
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
 include config/config.${HOST_NAME}.${COMPILER}
 MAKES+= config/config.${HOST_NAME}.${COMPILER}
@@ -147,11 +155,13 @@ SHOTFILE2DG = $(shotfile2dg:%.o=$(OBJDIR)/%.o)
 JETPPF2DG = $(jetppf2dg:%.o=$(OBJDIR)/%.o)
 DGSYMMDG = $(dgsymmdg:%.o=$(OBJDIR)/%.o)
 DGCUT = $(dgcut:%.o=$(OBJDIR)/%.o)
+IDSDG = $(idsdg:%.o=$(OBJDIR)/%.o)
+DGIDS = $(dgids:%.o=$(OBJDIR)/%.o)
 
 $(OBJDIR)/%.o : %.f
 	${CPP} ${DEFINES} -P ${INCLUDE} $< > ${OBJDIR}/$*.f
-#	$(COMPILE) ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o $<
-	$(COMPILE) ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f ${FINCLUDE}
+#	$(COMPILE) ${INCMODS} ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o $<
+	$(COMPILE) ${INCMODS} ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f ${FINCLUDE}
 #	/bin/rm ${OBJDIR}/$*.f
 	if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
 
@@ -225,6 +235,12 @@ ${OBJDIR}/${PROG_dg_symm_dg}: $(DGSYMMDG) $(MAKES)
 
 ${OBJDIR}/${PROG_dgcut}: $(DGCUT) $(MAKES)
 	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGCUT) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+
+${OBJDIR}/${PROG_ids2dg}: $(IDSDG) $(MAKES)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(IDSDG) ${LDLIBS} $(LDFLAGS) $(LD_UAL) $(LDEXTRA)
+
+${OBJDIR}/${PROG_dg2ids}: $(DGIDS) $(MAKES)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGIDS) ${LDLIBS} $(LDFLAGS) $(LD_UAL) $(LDEXTRA)
 
 clean:
 	cd ${OBJDIR}; rm -rf *.o *.f $(ALL) LISTOBJ dependencies*

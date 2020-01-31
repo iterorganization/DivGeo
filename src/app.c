@@ -660,30 +660,30 @@ void NotifyAppViews(App a,unsigned type,void* object) {
   /* Update chFlags */
   if (type!=N_EXAMINE && object!=NULL) {
     switch(GetObjType(object)) {
-      case  T_ELEM:
+      case T_ELEM:
         a->chFlags |= CHF_GEOMETRY;
         if ((type==N_ADDED || type==N_CHANGED || type==N_DEL) &&
             ElementInTarget((Elem)object))
           a->chFlags |= CHF_TARGETS;
         break;
-      case  T_NODE:
+      case T_NODE:
         a->chFlags |= CHF_GEOMETRY;
         if (type==N_CHANGED && PointInTarget((Node)object))
           a->chFlags |= CHF_TARGETS;
         break;
-      case  T_SEPARATOR:
-      case  T_SOURCE:
-      case  T_CHORD:
-      case  T_GRIDPOINTEX:
-      case  T_SURFACEEX:
+      case T_SEPARATOR:
+      case T_SOURCE:
+      case T_CHORD:
+      case T_GRIDPOINTEX:
+      case T_SURFACEEX:
         a->chFlags |= CHF_GEOMETRY;
         break;
-      case  T_EQUIL:
-      case  T_TEMPLATE:
-      case  T_SONNET:
+      case T_EQUIL:
+      case T_TEMPLATE:
+      case T_SONNET:
         a->chFlags |= CHF_FILES;
         break;
-      case  T_VAR:
+      case T_VAR:
         a->chFlags |= CHF_VARS;
         v=(Var)object;
         if (type==N_CHANGED &&
@@ -691,13 +691,13 @@ void NotifyAppViews(App a,unsigned type,void* object) {
           a->chFlags |= CHF_VARDEFS;
         if (v->def->varType & VTF_TARGET) a->chFlags |= CHF_TARGETS;
         break;
-      case  T_VARSETDEF:
-      case  T_VARDEF:
-      case  T_VARSET:
+      case T_VARSETDEF:
+      case T_VARDEF:
+      case T_VARSET:
         a->chFlags |= CHF_VARDEFS/*|CHF_VARSMENU*//*CHF_TARGETS*/;
         break;
-      case  T_APP:
-      case  T_VIEW:
+      case T_APP:
+      case T_VIEW:
         /* a->chFlags |= CHF_APPVIEW; */
         break;
       case T_XPOINTTEST:

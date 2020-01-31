@@ -1,9 +1,9 @@
 c  version : 21.10.2000 00:19
-      integer            ndisk, nread, nwrite, nwreqdg, nparm
+      integer            ndisk, nread, nwrite, nwrptdg, nparm
      +,                  nodele, nnodes, nelems, npr, npz
       parameter 
      +(                  ndisk  = 4,     nread = 7,      nwrite = 6
-     +,                  nwreqdg = 99,   nparm=5
+     +,                  nwrptdg = 99,   nparm=5
      +,                  nodele = 6,     nnodes = 5000,  nelems  = 3000 
      +,                  npr    = ngpr,  npz = ngpz
      +)                    

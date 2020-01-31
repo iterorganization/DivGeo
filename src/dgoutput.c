@@ -182,12 +182,12 @@ int WriteOutputFile(App a,char* fName) {
   SurfaceZone sz;
 
   r=GetAppFlags(a);
-  if (~r & AF_VALIDVARS) return ERR_EMPTYVARS;
-  if (~r & AF_VALIDSTRUCTURE) return ERR_EMPTYSTRUCTURE;
-  if (~r & AF_VALIDTARGETS) return ERR_EMPTYTARGETS;
-  if (~r & AF_VALIDSURFACES) return ERR_BADSURFACES;
+  if (~r & AF_VALIDVARS)       return ERR_EMPTYVARS;
+  if (~r & AF_VALIDSTRUCTURE)  return ERR_EMPTYSTRUCTURE;
+  if (~r & AF_VALIDTARGETS)    return ERR_EMPTYTARGETS;
+  if (~r & AF_VALIDSURFACES)   return ERR_BADSURFACES;
   if (~r & AF_VALIDGRIDPOINTS) return ERR_BADGRIDPOINTS;
-  if (~r & AF_VALIDCELLS) return ERR_BADCELLS;
+  if (~r & AF_VALIDCELLS)      return ERR_BADCELLS;
 
 /* Determine the maximum element number actually used */
   maxId=0;

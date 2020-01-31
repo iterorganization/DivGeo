@@ -169,7 +169,7 @@ char* dgResources[]={
   "DivGeo.wrnNoEquil:                      Equilibrium could not be loaded\n",
   "DivGeo.wrnNoTemplate:                   Template could not be loaded\n",
   "DivGeo.wrnBadType:                      Some variables have lost their values\n",
-  "DivGeo.wrnSyntax:                       Some syntax errors occured\n",
+  "DivGeo.wrnSyntax:                       Some syntax errors occurred\n",
   "DivGeo.wrnNoSonnet:                     The mesh could not be loaded\n",
   "DivGeo.wrnBadTarget1:                   Bad target 1; discarded\n",
   "DivGeo.wrnBadTarget2:                   Bad target 2; discarded\n",

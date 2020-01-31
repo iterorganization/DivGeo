@@ -260,7 +260,7 @@ int ActAddEquil(App a,AddEquilRec ar) {
   eq=ar->obj;
   eq->x=eq->y=eq->val=NULL;
 
-/* Do not create the UndoAction until sure that no error occured
+/* Do not create the UndoAction until sure that no error occurred
 */
   switch (DetectFileType(eq->fName)) {
     case FT_DG_EQUIL:

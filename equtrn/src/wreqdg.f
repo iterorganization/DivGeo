@@ -23,7 +23,7 @@ c
       implicit none
 #include "eqdim.inc"
       integer lun, iret, nr, nz
-      real(kind=R8) :: rgr(ngpz), zgr(ngpz), pfm(ngpr,ngpz)
+      real(kind=R8) :: rgr(ngpr), zgr(ngpz), pfm(ngpr,ngpz)
 c... toroidal field in tesla, radius in m
       real(kind=R8) :: btf, rtf, psib
       integer i, j
@@ -46,11 +46,11 @@ c
       write(lun,*,err=99)
      /    '   z    :=  vertical coordinates of grid points  [m];'
       write(lun,*,err=99)
-     /    '   psi  :=  flux per radiant at grid points     [Wb/rad];'
+     /    '   psi  :=  flux per radian at grid points      [Wb/rad];'
       write(lun,*,err=99)
      /    '   psib :=  psi at plasma boundary              [Wb/rad];'
       write(lun,*,err=99)
-     /    '   btf  :=  toroidal magnetic field                  [t];'
+     /    '   btf  :=  toroidal magnetic field                  [T];'
       write(lun,*,err=99)
      /    '   rtf  :=  major radius at which btf is specified   [m];'
       write(lun,*,err=99)
