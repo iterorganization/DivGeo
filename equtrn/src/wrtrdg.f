@@ -13,7 +13,7 @@ c*** Output:
 c***  iret    return code (0 means OK)
 c=====================================================
 c
-c  version : 23.06.97 17:23
+c  version : 03.02.20 13:42
 c
       implicit none
 #include "eqdim.inc"

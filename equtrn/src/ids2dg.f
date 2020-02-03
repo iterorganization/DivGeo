@@ -36,11 +36,11 @@
 !!-----------------------------------------------------------------------------
 
 !>
-!> \version  16.11.95 20:04
+!> \version  03.02.20 13:42
 
       program ids2dg
 c
-c  version : 16.11.95 20:04
+c  version : 03.02.20 13:42
 c
 c=====================================================
 c*** Translation of IDS equilibrium and wall data into dg compatible format

@@ -24,7 +24,7 @@ IMAS_MINOR_VERSION ?= $(shell echo ${IMAS_VERSION} | cut -d '.' -f2 )
 ifndef SOLPS_CPP
 EQUIVS    += -DIMAS -DUAL_MAJOR_VERSION=${UAL_MAJOR_VERSION} -DIMAS_MINOR_VERSION=${IMAS_MINOR_VERSION} -DGGD_MINOR_VERSION=${GGD_MINOR_VERSION}
 endif
-LD_UAL    ?= `pkg-config imas-ifort ggd --libs`
+LD_UAL    ?= `pkg-config imas-ifort ggd --libs` -lstdc++
 INCMODS   += `pkg-config imas-ifort ggd --cflags`
 endif
 

@@ -13,7 +13,7 @@ c***  rwall   the R coordinates of the structure points
 c***  zwall   the Z coordinates of the structure points
 c=====================================================
 c
-c  version : 23.06.97 17:23
+c  version : 03.02.20 13:42
 c
       implicit none
 #include "eqdim.inc"
