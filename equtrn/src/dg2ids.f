@@ -142,7 +142,7 @@ c
         write(0,*) 'Invalid shot number for equilibrium IDS'
         call exit(0)
       end if
-      if (.not.(0.le.run.and.run.le.9999)) then
+      if (.not.(0.le.run.and.run.le.99999)) then
         write(0,*) 'Invalid equilibrium IDS run number'
         call exit(0)
       end if
