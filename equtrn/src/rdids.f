@@ -49,26 +49,35 @@ c
       real(kind=R8), intent(out) :: rwall(ngpr), zwall(ngpr)
       integer, intent(out) :: nunits, npts(ngpr)
       integer :: nlimunits, nmobunits, nvslunits, nelem
-      integer i,j,k,icnt,jcnt,idx
+      integer i,j,k,icnt,jcnt,idx,status
 c=====================================================
 c
       iret = 0
       !! Create and modify new shot/run
       if (do_equilibrium) then
         call imas_open_env( treename, shot, run,
-     &   idx, username, device, version )
+     &   idx, username, device, version, status )
 
-        call ids_get( idx, "equilibrium/1", eq )
-        if (eq%ids_properties%homogeneous_time < 0) then ! second attempt
-          call imas_close( idx )
+        if (status.eq.0)
+     &   call ids_get( idx, "equilibrium/1", eq, status )
+        if (status.ne.0 .or.
+     &      eq%ids_properties%homogeneous_time < 0) then ! second attempt
+          status = 0
+          call imas_close( idx, status )
+          if (status.ne.0) stop 'Error closing IMAS database !'
           call imas_open_env( treename, shot, run,
-     &     idx, "public", device, version )
-          call ids_get( idx, "equilibrium/1", eq )
-          if (eq%ids_properties%homogeneous_time .ge. 0) then
+     &     idx, "public", device, version, status )
+          if (status.eq.0)
+     &     call ids_get( idx, "equilibrium/1", eq, status )
+          if (status.eq.0 .and.
+     &        eq%ids_properties%homogeneous_time .ge. 0) then
             write(*,*) 'Got IDS equilibrium from: '
             write(*,'(2(a,i8),2(a,a24))')
      .       ' Shot: ', shot, ' Run: ', run,
      .       ' User: ', 'public', ' Device: ', trim(device)
+          else
+            do_equilibrium = .false.
+            write(*,*) 'Error reading equilibrium IDS !'
           end if
         else
           write(*,*) 'Got IDS equilibrium from: '
@@ -78,41 +87,59 @@ c
         end if
       end if
       
+      status = 0
       if (do_wall.and.wall.ne.shot) then
-        if (do_equilibrium) call imas_close ( idx )
+        if (do_equilibrium) then
+          call imas_close ( idx, status )
+          if (status.ne.0) stop 'Error closing IMAS database !'
+        end if
         call imas_open_env( treename, wall, wall_run,
-     &     idx, username, device, version )
-        call ids_get( idx, "wall", vessel )
-        if (vessel%ids_properties%homogeneous_time < 0) then
-          call imas_close( idx )
+     &     idx, username, device, version, status )
+        if (status.eq.0) call ids_get( idx, "wall", vessel, status )
+        if (status.ne.0 .or.
+     &      vessel%ids_properties%homogeneous_time < 0) then
+          status = 0
+          call imas_close( idx, status )
+          if (status.ne.0) stop 'Error closing IMAS database !'
           call imas_open_env( treename, wall, wall_run,
-     &     idx, username, trim(device)//'_MD', version )
-          call ids_get( idx, "wall", vessel )
-          if (vessel%ids_properties%homogeneous_time .ge. 0) then
+     &     idx, username, trim(device)//'_MD', version, status )
+          if (status.eq.0) call ids_get( idx, "wall", vessel, status )
+          if (status.eq.0 .and.
+     &        vessel%ids_properties%homogeneous_time .ge. 0) then
             write(*,*) 'Got IDS wall data from: '
             write(*,'(2(a,i8),2(a,a24))')
      .       ' Shot: ', wall, ' Run: ', wall_run,
      .       ' User: ', trim(username), ' Device: ', trim(device)//'_MD'
           else
-            call imas_close( idx )
+            status = 0
+            call imas_close( idx, status )
+            if (status.ne.0) stop 'Error closing IMAS database !'
             call imas_open_env( treename, wall, wall_run,
-     &       idx, "public", device, version )
-            call ids_get( idx, "wall", vessel )
-            if (vessel%ids_properties%homogeneous_time .ge. 0) then
+     &       idx, "public", device, version, status )
+            if (status.eq.0) call ids_get( idx, "wall", vessel, status )
+            if (status.eq.0 .and.
+     &          vessel%ids_properties%homogeneous_time .ge. 0) then
               write(*,*) 'Got IDS wall data from: '
               write(*,'(2(a,i8),2(a,a24))')
      .         ' Shot: ', wall, ' Run: ', wall_run,
      .         ' User: ', 'public', ' Device: ', trim(device)
             else
-              call imas_close( idx )
+              status = 0
+              call imas_close( idx, status )
+              if (status.ne.0) stop 'Error closing IMAS database !'
               call imas_open_env( treename, wall, wall_run,
-     &         idx, "public", trim(device)//'_MD', version )
-              call ids_get( idx, "wall", vessel )
-              if (vessel%ids_properties%homogeneous_time .ge. 0) then
+     &         idx, "public", trim(device)//'_MD', version, status )
+              if (status.eq.0)
+     &         call ids_get( idx, "wall", vessel, status )
+              if (status.eq.0 .and.
+     &            vessel%ids_properties%homogeneous_time .ge. 0) then
                 write(*,*) 'Got IDS wall data from: '
                 write(*,'(2(a,i8),2(a,a24))')
      .           ' Shot: ', wall, ' Run: ', wall_run,
      .           ' User: ', 'public', ' Device: ', trim(device)//'_MD'
+              else
+                do_wall = .false.
+                write(*,*) 'Error reading wall description IDS !'
               end if
             end if
           end if
@@ -123,16 +150,22 @@ c
      .     ' User: ', trim(username), ' Device: ', trim(device)
         end if
       else if (do_wall) then
-        call ids_get( idx, "wall", vessel )
-        if (vessel%ids_properties%homogeneous_time .ge. 0) then
+        call ids_get( idx, "wall", vessel, status )
+        if (status.eq.0 .and.
+     &      vessel%ids_properties%homogeneous_time .ge. 0) then
           write(*,*) 'Got IDS wall data from: '
           write(*,'(2(a,i8),2(a,a24))')
      .     ' Shot: ', shot, ' Run: ', run,
      .     ' User: ', trim(username), ' Device: ', trim(device)
+        else
+          do_wall = .false.
+          write(*,*) 'Error reading wall description IDS !'
         end if
       end if
 
-      call imas_close( idx )
+      status = 0
+      call imas_close( idx, status )
+      if (status.ne.0) stop 'Error closing IMAS database !'
 
       if (do_equilibrium .and.
      &    eq%ids_properties%homogeneous_time < 0) then
@@ -152,7 +185,7 @@ c
         end if
         iret = 2
       end if
-      write(0,*) "IDS read finished"
+      if (do_wall .or. do_equilibrium) write(0,*) "IDS read finished"
 
       nr = 0
       nz = 0
@@ -264,185 +297,207 @@ c
 c
       npts = 0
       icnt = 0
+      nunits = 0
+      nlimunits = 0
+      nmobunits = 0
+      nvslunits = 0
       rwall = 0.0_R8
       zwall = 0.0_R8
 c
       if (do_wall) then
-        nlimunits = size(vessel%description_2d(1)%limiter%unit)
-        nunits = nlimunits
-        if (nlimunits.lt.0) then
-          write(0,*) 'Invalid number of limiter units !, nlimunits = ',
-     .                                                   nlimunits
-          iret=5
-          return
-        end if
-        if (nunits.gt.ngpr) then
-          write(0,*) 'Too large number of wall units !, nunits = ',
-     .                                                  nunits
-          iret=5
-          return
-        end if
-        do i=1,nlimunits
-          npts(i)=
-     .     size(vessel%description_2d(1)%limiter%unit(i)%outline%r)
-          if (vessel%description_2d(1)%limiter%unit(i)%closed.eq.1)
-     .     npts(i)=npts(i)+1
-        end do
-        do i=1,nlimunits
-          if (icnt+npts(i).gt.ngpr) then
-            write(0,*) 'Too large number of wall points !, npts = ',
-     .                                                icnt+npts(i)
+        if (associated(vessel%description_2d(1)%limiter%unit)) then
+          nlimunits = size(vessel%description_2d(1)%limiter%unit)
+          nunits = nunits + nlimunits
+          if (nlimunits.lt.0) then
+            write(0,*)
+     .       'Invalid number of limiter units !, nlimunits = ',
+     .                                           nlimunits
             iret=5
             return
           end if
-          do j=1,
-     .         size(vessel%description_2d(1)%limiter%unit(i)%outline%r)
-            rwall(icnt+j)=
-     .       vessel%description_2d(1)%limiter%unit(i)%outline%r(j)
-            zwall(icnt+j)=
-     .       vessel%description_2d(1)%limiter%unit(i)%outline%z(j)
-          end do
-          if (vessel%description_2d(1)%limiter%unit(i)%closed.eq.1) then
-            rwall(icnt+npts(i))=rwall(icnt+1)
-            zwall(icnt+npts(i))=zwall(icnt+1)
-          end if
-          icnt = icnt + npts(i)
-        end do
-c
-        nmobunits = size(vessel%description_2d(1)%mobile%unit)
-        nunits = nunits + nmobunits
-        if (nmobunits.lt.0) then
-          write(0,*) 'Invalid number of mobile units !, nmobunits = ',
-     .                                                  nmobunits
-          iret=5
-          return
-        end if
-        if (nunits.gt.ngpr) then
-          write(0,*) 'Too large number of wall units !, nunits = ',
-     .                                                  nunits
-          iret=5
-          return
-        end if
-        do i=nlimunits+1,nlimunits+nmobunits
-          npts(i)=
-     .     size(vessel%description_2d(1)%mobile%unit(i)%outline(step)%r)
-          if (vessel%description_2d(1)%mobile%unit(i)%closed.eq.1)
-     .     npts(i)=npts(i)+1
-          if (icnt+npts(i).gt.ngpr) then
-            write(0,*) 'Too large number of wall points !, npts = ',
-     .                                                icnt+npts(i)
-            iret=5
-            return
-          end if
-          do j=1,
-     .     size(vessel%description_2d(1)%mobile%unit(i)%outline(step)%r)
-            rwall(icnt+j)=
-     .       vessel%description_2d(1)%mobile%unit(i)%outline(step)%r(j)
-            zwall(icnt+j)=
-     .       vessel%description_2d(1)%mobile%unit(i)%outline(step)%z(j)
-          end do
-          if (vessel%description_2d(1)%mobile%unit(i)%closed.eq.1) then
-            rwall(icnt+npts(i))=rwall(icnt+1)
-            zwall(icnt+npts(i))=zwall(icnt+1)
-          end if
-          icnt = icnt + npts(i)
-        end do
-c
-        jcnt = nlimunits+nmobunits
-        nvslunits = size(vessel%description_2d(1)%vessel%unit)
-        if (nvslunits.lt.0) then
-          write(0,*)
-     .     'Invalid number of vessel elements !, nvslunits = ',
-     .                                           nvslunits
-          iret=5
-          return
-        end if
-        do i=1,nvslunits
-          nunits = nunits +
-     .     size(vessel%description_2d(1)%vessel%unit(i)%element)
           if (nunits.gt.ngpr) then
-            write(0,*) 'Too large number of wall units !, nunits = ',
-     .                                                    nunits
+            write(0,*)
+     .       'Too large number of wall units !, nunits = ',
+     .                                          nunits
             iret=5
             return
           end if
-          do j=1,size(vessel%description_2d(1)%vessel%unit(i)%element)
-            jcnt = jcnt + 1
-            npts(jcnt)=size(
-     .   vessel%description_2d(1)%vessel%unit(i)%element(j)%outline%r)
-#if IMAS_MINOR_VERSION > 26
-            if
-     . (vessel%description_2d(1)%vessel%unit(i)%element(j)%closed.eq.1)
-     .       npts(jcnt)=npts(jcnt)+1
-#endif
-            if (icnt+npts(jcnt).gt.ngpr) then
-              write(0,*) 'Too large number of wall points !, npts = ',
-     .                                                  icnt+npts(jcnt)
+          do i=1,nlimunits
+            npts(i)=
+     .       size(vessel%description_2d(1)%limiter%unit(i)%outline%r)
+            if (vessel%description_2d(1)%limiter%unit(i)%closed.eq.1)
+     .       npts(i)=npts(i)+1
+          end do
+          do i=1,nlimunits
+            if (icnt+npts(i).gt.ngpr) then
+              write(0,*)
+     .         'Too large number of wall points !, npts = ',
+     .                                        icnt+npts(i)
               iret=5
               return
             end if
-            do k=1,size(
-     .   vessel%description_2d(1)%vessel%unit(i)%element(j)%outline%r)
-              rwall(icnt+k)=
-     .   vessel%description_2d(1)%vessel%unit(i)%element(j)%outline%r(k)
-              zwall(icnt+k)=
-     .   vessel%description_2d(1)%vessel%unit(i)%element(j)%outline%z(k)
+            do j=1,
+     .         size(vessel%description_2d(1)%limiter%unit(i)%outline%r)
+              rwall(icnt+j)=
+     .         vessel%description_2d(1)%limiter%unit(i)%outline%r(j)
+              zwall(icnt+j)=
+     .         vessel%description_2d(1)%limiter%unit(i)%outline%z(j)
             end do
-#if IMAS_MINOR_VERSION > 26
-            if (
-     .   vessel%description_2d(1)%vessel%unit(i)%element(j)%closed.eq.1)
+            if (vessel%description_2d(1)%limiter%unit(i)%closed.eq.1)
+     >       then
+              rwall(icnt+npts(i))=rwall(icnt+1)
+              zwall(icnt+npts(i))=zwall(icnt+1)
+            end if
+            icnt = icnt + npts(i)
+          end do
+        end if
+c
+        if (associated(vessel%description_2d(1)%mobile%unit)) then
+          nmobunits = size(vessel%description_2d(1)%mobile%unit)
+          nunits = nunits + nmobunits
+          if (nmobunits.lt.0) then
+            write(0,*)
+     .       'Invalid number of mobile units !, nmobunits = ',
+     .                                          nmobunits
+            iret=5
+            return
+          end if
+          if (nunits.gt.ngpr) then
+            write(0,*)
+     .       'Too large number of wall units !, nunits = ',
+     .                                          nunits
+            iret=5
+            return
+          end if
+          do i=nlimunits+1,nlimunits+nmobunits
+            npts(i)=
+     .     size(vessel%description_2d(1)%mobile%unit(i)%outline(step)%r)
+            if (vessel%description_2d(1)%mobile%unit(i)%closed.eq.1)
+     .       npts(i)=npts(i)+1
+            if (icnt+npts(i).gt.ngpr) then
+              write(0,*)
+     .         'Too large number of wall points !, npts = ',
+     .                                        icnt+npts(i)
+              iret=5
+              return
+            end if
+            do j=1,
+     .     size(vessel%description_2d(1)%mobile%unit(i)%outline(step)%r)
+              rwall(icnt+j)=
+     .       vessel%description_2d(1)%mobile%unit(i)%outline(step)%r(j)
+              zwall(icnt+j)=
+     .       vessel%description_2d(1)%mobile%unit(i)%outline(step)%z(j)
+            end do
+            if (vessel%description_2d(1)%mobile%unit(i)%closed.eq.1)
      .       then
+              rwall(icnt+npts(i))=rwall(icnt+1)
+              zwall(icnt+npts(i))=zwall(icnt+1)
+            end if
+            icnt = icnt + npts(i)
+          end do
+        end if
+c
+        if (associated(vessel%description_2d(1)%vessel%unit)) then
+          jcnt = nlimunits+nmobunits
+          nvslunits = size(vessel%description_2d(1)%vessel%unit)
+          if (nvslunits.lt.0) then
+            write(0,*)
+     .       'Invalid number of vessel elements !, nvslunits = ',
+     .                                             nvslunits
+            iret=5
+            return
+          end if
+          do i=1,nvslunits
+            nunits = nunits +
+     .       size(vessel%description_2d(1)%vessel%unit(i)%element)
+            if (nunits.gt.ngpr) then
+              write(0,*)
+     .         'Too large number of wall units !, nunits = ',
+     .                                            nunits
+              iret=5
+              return
+            end if
+            do j=1,size(vessel%description_2d(1)%vessel%unit(i)%element)
+              jcnt = jcnt + 1
+              npts(jcnt)=size(
+     .   vessel%description_2d(1)%vessel%unit(i)%element(j)%outline%r)
+#if IMAS_MINOR_VERSION > 26
+              if
+     . (vessel%description_2d(1)%vessel%unit(i)%element(j)%closed.eq.1)
+     .         npts(jcnt)=npts(jcnt)+1
+#endif
+              if (icnt+npts(jcnt).gt.ngpr) then
+                write(0,*)
+     .           'Too large number of wall points !, npts = ',
+     .                                          icnt+npts(jcnt)
+                iret=5
+                return
+              end if
+              do k=1,size(
+     .   vessel%description_2d(1)%vessel%unit(i)%element(j)%outline%r)
+                rwall(icnt+k)=
+     .   vessel%description_2d(1)%vessel%unit(i)%element(j)%outline%r(k)
+                zwall(icnt+k)=
+     .   vessel%description_2d(1)%vessel%unit(i)%element(j)%outline%z(k)
+              end do
+#if IMAS_MINOR_VERSION > 26
+              if (
+     .   vessel%description_2d(1)%vessel%unit(i)%element(j)%closed.eq.1)
+     .         then
+                rwall(icnt+npts(jcnt))=rwall(icnt+1)
+                zwall(icnt+npts(jcnt))=zwall(icnt+1)
+              end if
+#endif
+              icnt = icnt + npts(jcnt)
+            end do
+            if (size(vessel%description_2d(1)%
+     .             vessel%unit(i)%annular%outline_inner%r).gt.0) then
+              jcnt = jcnt + 1
+              npts(jcnt)=1+size(
+     . vessel%description_2d(1)%vessel%unit(i)%annular%outline_inner%r)
+              if (icnt+npts(jcnt).gt.ngpr) then
+                write(0,*)
+     .           'Too large number of wall points !, npts = ',
+     .                                          icnt+npts(jcnt)
+                iret=5
+                return
+              end if
+              do k=1,size(
+     . vessel%description_2d(1)%vessel%unit(i)%annular%outline_inner%r)
+                rwall(icnt+k)=vessel%description_2d(1)%
+     .                        vessel%unit(i)%annular%outline_inner%r(k)
+                zwall(icnt+k)=vessel%description_2d(1)%
+     .                        vessel%unit(i)%annular%outline_inner%z(k)
+              end do
               rwall(icnt+npts(jcnt))=rwall(icnt+1)
               zwall(icnt+npts(jcnt))=zwall(icnt+1)
+              icnt = icnt + npts(jcnt)
             end if
-#endif
-            icnt = icnt + npts(jcnt)
-          end do
-          if (size(vessel%description_2d(1)%
-     .             vessel%unit(i)%annular%outline_inner%r).gt.0) then
-            jcnt = jcnt + 1
-            npts(jcnt)=1+size(
-     . vessel%description_2d(1)%vessel%unit(i)%annular%outline_inner%r)
-            if (icnt+npts(jcnt).gt.ngpr) then
-              write(0,*) 'Too large number of wall points !, npts = ',
-     .                                                  icnt+npts(jcnt)
-              iret=5
-              return
-            end if
-            do k=1,size(
-     . vessel%description_2d(1)%vessel%unit(i)%annular%outline_inner%r)
-              rwall(icnt+k)=vessel%description_2d(1)%
-     .                      vessel%unit(i)%annular%outline_inner%r(k)
-              zwall(icnt+k)=vessel%description_2d(1)%
-     .                      vessel%unit(i)%annular%outline_inner%z(k)
-            end do
-            rwall(icnt+npts(jcnt))=rwall(icnt+1)
-            zwall(icnt+npts(jcnt))=zwall(icnt+1)
-            icnt = icnt + npts(jcnt)
-          end if
-          if (size(vessel%description_2d(1)%
+            if (size(vessel%description_2d(1)%
      .             vessel%unit(i)%annular%outline_outer%r).gt.0) then
-            jcnt = jcnt + 1
-            npts(jcnt)=1+size(
+              jcnt = jcnt + 1
+              npts(jcnt)=1+size(
      . vessel%description_2d(1)%vessel%unit(i)%annular%outline_outer%r)
-            if (icnt+npts(jcnt).gt.ngpr) then
-              write(0,*) 'Too large number of wall points !, npts = ',
-     .                                                  icnt+npts(jcnt)
-              iret=5
-              return
+              if (icnt+npts(jcnt).gt.ngpr) then
+                write(0,*)
+     .           'Too large number of wall points !, npts = ',
+     .                                          icnt+npts(jcnt)
+                iret=5
+                return
+              end if
+              do k=1,size(
+     . vessel%description_2d(1)%vessel%unit(i)%annular%outline_outer%r)
+                rwall(icnt+k)=vessel%description_2d(1)%
+     .                        vessel%unit(i)%annular%outline_outer%r(k)
+                zwall(icnt+k)=vessel%description_2d(1)%
+     .                        vessel%unit(i)%annular%outline_outer%z(k)
+              end do
+              rwall(icnt+npts(jcnt))=rwall(icnt+1)
+              zwall(icnt+npts(jcnt))=zwall(icnt+1)
+              icnt = icnt + npts(jcnt)
             end if
-            do k=1,size(
-     . vessel%description_2d(1)%vessel%unit(i)%annular%outline_outer%r)
-              rwall(icnt+k)=vessel%description_2d(1)%
-     .                      vessel%unit(i)%annular%outline_outer%r(k)
-              zwall(icnt+k)=vessel%description_2d(1)%
-     .                      vessel%unit(i)%annular%outline_outer%z(k)
-            end do
-            rwall(icnt+npts(jcnt))=rwall(icnt+1)
-            zwall(icnt+npts(jcnt))=zwall(icnt+1)
-            icnt = icnt + npts(jcnt)
-          end if
-        end do
+          end do
+        end if
       end if
 c
       if (do_equilibrium) call ids_deallocate( eq )

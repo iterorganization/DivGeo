@@ -23,7 +23,7 @@
       character*10 ctime
       character*5 zone
       integer tvalues(8)
-      integer :: idx, i, j, icnt, jcnt
+      integer :: idx, i, j, icnt, jcnt, status
 #ifdef USE_PXFGETENV
       integer lenval, ierror
 #else
@@ -138,11 +138,14 @@ c
 
       !! Create and modify new wall IDS
       call imas_create_env( treename, shot, run,
-     & 0, 0, idx, username, device, version )
+     & 0, 0, idx, username, device, version, status )
+      if (status.ne.0) stop 'Error opening IMAS database !'
 
-      call ids_put( idx, "wall", vessel )
+      call ids_put( idx, "wall", vessel, status )
+      if (status.ne.0) stop 'Error putting wall description IDS !'
       call ids_deallocate( vessel )
-      call imas_close( idx )
+      call imas_close( idx, status )
+      if (status.ne.0) stop 'Error closing IMAS database !'
 
       write(0,*) "Wall IDS write finished"
       
