@@ -79,7 +79,7 @@ c Now re-order the elements to make sequences
         pp1(1,jcnt+1) = pp2(1,i)
         pp1(2,jcnt+1) = pp2(2,i)
         pp2(1,jcnt+1) = pp1(1,i)
-        pp2(1,jcnt+1) = pp1(2,i)
+        pp2(2,jcnt+1) = pp1(2,i)
         pp1(1,i) = help(1,1)
         pp1(2,i) = help(1,2)
         pp2(1,i) = help(2,1)

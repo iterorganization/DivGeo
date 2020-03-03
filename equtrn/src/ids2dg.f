@@ -157,7 +157,7 @@ c
             call get_command_argument( cptArg + 1, wall_run_string )
             !! Transform dummy string variable to integer
             read( wall_run_string, *) wall_run
-          case("--username","-u")
+          case("--username","--user","-u")
             call get_command_argument( cptArg + 1, username )
           case("--device","-d")
             call get_command_argument( cptArg + 1, device )
@@ -180,14 +180,34 @@ c
      &  (do_equilibrium .and. streql(run_string," ")) .or.
      &  (do_wall .and. streql(wall_run_string," ")) .or.
      &  (.not.do_equilibrium .and. .not.do_wall) ) then
-        write(0,*) "ERROR! In order to run ids2dg, ",
-     &   "at least the shot and run variables ",
-     &   "(for the equilibrium and/or the wall IDS) and ",
-     &   "the DG output file must be defined. ",
-     &   "Example (terminal): "
-        write(0,*) "ids2dg --shot 1 --run 1 <DG_case_file>"
-        write(0,*) "Other options are :"
-        write(0,*) " --wall, --step, --username, --device, --version"
+        write(0,'(a)') 'Standard ids2dg usage:'
+        write(0,'(a)')
+     &   'ids2dg -s <shot> -r <run> -w <wall> -R <wall_run> <DG_file>'
+        write(0,'(a)') ' '
+        write(0,'(a)') 'Available options are:'
+        write(0,'(a)') '--shot, -s:             '//
+     &   'Shot number of the equilibrium IDS to import '//
+     &   '(if negative, do not import an equilibrium IDS)'
+        write(0,'(a)') '--run,  -r:             '//
+     &   'Run number of the equilibrium IDS to import'
+        write(0,'(a)') '--step, -S:             '//
+     &   'Time step of the equilibrium IDS to import (default: 1)'
+        write(0,'(a)') '--wall, -w:             '//
+     &   'Shot number of the wall description IDS to import '//
+     &   '(if negative, do not import a wall description IDS) '//
+     &   '(default: same as shot value)'
+        write(0,'(a)') '--wall_run, -R:         '//
+     &   'Run number of the wall description IDS to import '//
+     &   '(default: same as run value)'
+        write(0,'(a)') '--username, --user, -u: '//
+     &   'User name for the database to be read '//
+     &   '(default is $USER)'
+        write(0,'(a)') '--device, -d:           '//
+     &   'Device database name to be read '//
+     &   '(default is $DEVICE if defined, "solps-iter" otherwise)'
+        write(0,'(a)') '--version, -v:          '//
+     &   'IMAS version being used '//
+     &   '(only supported and default value: 3)'
         call exit(0)
       end if
       if (do_equilibrium.and.shot.gt.214748) then
@@ -254,7 +274,7 @@ c
           print *,'==== ids2dg: error in wrtrdg. iret = ',iret
           goto 999
         else
-          write(*,*) 'Wrote DG template file ',trim(dg_file)//'.trg'
+          write(*,*) 'Wrote DG template file ',trim(dg_file)//'.ogr'
         end if
       end if
 c
