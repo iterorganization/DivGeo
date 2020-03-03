@@ -1,5 +1,5 @@
       subroutine rdids(treename,shot,wall,run,wall_run,step,
-     ,           username,device,version,
+     ,           username,database,version,
      ,           do_equilibrium,do_wall,
      ,           iret,ipestg,nr,nz,
      ,           rcntc,psimin,psilim,
@@ -38,7 +38,7 @@ c
       integer, intent(in) :: run       !< The run number of the IDS equilibrium being read
       integer, intent(in) :: wall_run  !< The run number of the wall IDS being read
       character(len=24), intent(in) :: username   !< Creator/owner of the IMAS IDS database
-      character(len=24), intent(in) :: device     !< Device name of the IMAS IDS database
+      character(len=24), intent(in) :: database   !< IMAS IDS database name
             !< (i. e. solps-iter, iter, aug)
       character(len=24), intent(in) :: version    !< Major version of the IMAS IDS database
       logical, intent(inout) :: do_equilibrium, do_wall
@@ -56,7 +56,7 @@ c
       !! Create and modify new shot/run
       if (do_equilibrium) then
         call imas_open_env( treename, shot, run,
-     &   idx, username, device, version, status )
+     &   idx, username, database, version, status )
 
         if (status.eq.0)
      &   call ids_get( idx, "equilibrium/1", eq, status )
@@ -66,7 +66,7 @@ c
           call imas_close( idx, status )
           if (status.ne.0) stop 'Error closing IMAS database !'
           call imas_open_env( treename, shot, run,
-     &     idx, "public", device, version, status )
+     &     idx, "public", database, version, status )
           if (status.eq.0)
      &     call ids_get( idx, "equilibrium/1", eq, status )
           if (status.eq.0 .and.
@@ -74,7 +74,7 @@ c
             write(*,*) 'Got IDS equilibrium from: '
             write(*,'(2(a,i8),2(a,a24))')
      .       ' Shot: ', shot, ' Run: ', run,
-     .       ' User: ', 'public', ' Device: ', trim(device)
+     .       ' User: ', 'public', ' Database: ', trim(database)
           else
             do_equilibrium = .false.
             write(*,*) 'Error reading equilibrium IDS !'
@@ -83,7 +83,7 @@ c
           write(*,*) 'Got IDS equilibrium from: '
           write(*,'(2(a,i8),2(a,a24))')
      .     ' Shot: ', shot, ' Run: ', run,
-     .     ' User: ', trim(username), ' Device: ', trim(device)
+     .     ' User: ', trim(username), ' Database: ', trim(database)
         end if
       end if
       
@@ -94,7 +94,7 @@ c
           if (status.ne.0) stop 'Error closing IMAS database !'
         end if
         call imas_open_env( treename, wall, wall_run,
-     &     idx, username, device, version, status )
+     &     idx, username, database, version, status )
         if (status.eq.0) call ids_get( idx, "wall", vessel, status )
         if (status.ne.0 .or.
      &      vessel%ids_properties%homogeneous_time < 0) then
@@ -102,33 +102,34 @@ c
           call imas_close( idx, status )
           if (status.ne.0) stop 'Error closing IMAS database !'
           call imas_open_env( treename, wall, wall_run,
-     &     idx, username, trim(device)//'_MD', version, status )
+     &     idx, username, trim(database)//'_MD', version, status )
           if (status.eq.0) call ids_get( idx, "wall", vessel, status )
           if (status.eq.0 .and.
      &        vessel%ids_properties%homogeneous_time .ge. 0) then
             write(*,*) 'Got IDS wall data from: '
             write(*,'(2(a,i8),2(a,a24))')
      .       ' Shot: ', wall, ' Run: ', wall_run,
-     .       ' User: ', trim(username), ' Device: ', trim(device)//'_MD'
+     .       ' User: ', trim(username),
+     .       ' Database: ', trim(database)//'_MD'
           else
             status = 0
             call imas_close( idx, status )
             if (status.ne.0) stop 'Error closing IMAS database !'
             call imas_open_env( treename, wall, wall_run,
-     &       idx, "public", device, version, status )
+     &       idx, "public", database, version, status )
             if (status.eq.0) call ids_get( idx, "wall", vessel, status )
             if (status.eq.0 .and.
      &          vessel%ids_properties%homogeneous_time .ge. 0) then
               write(*,*) 'Got IDS wall data from: '
               write(*,'(2(a,i8),2(a,a24))')
      .         ' Shot: ', wall, ' Run: ', wall_run,
-     .         ' User: ', 'public', ' Device: ', trim(device)
+     .         ' User: ', 'public', ' Database: ', trim(database)
             else
               status = 0
               call imas_close( idx, status )
               if (status.ne.0) stop 'Error closing IMAS database !'
               call imas_open_env( treename, wall, wall_run,
-     &         idx, "public", trim(device)//'_MD', version, status )
+     &         idx, "public", trim(database)//'_MD', version, status )
               if (status.eq.0)
      &         call ids_get( idx, "wall", vessel, status )
               if (status.eq.0 .and.
@@ -136,7 +137,8 @@ c
                 write(*,*) 'Got IDS wall data from: '
                 write(*,'(2(a,i8),2(a,a24))')
      .           ' Shot: ', wall, ' Run: ', wall_run,
-     .           ' User: ', 'public', ' Device: ', trim(device)//'_MD'
+     .           ' User: ', 'public',
+     .           ' Database: ', trim(database)//'_MD'
               else
                 do_wall = .false.
                 write(*,*) 'Error reading wall description IDS !'
@@ -147,7 +149,7 @@ c
           write(*,*) 'Got IDS wall data from: '
           write(*,'(2(a,i8),2(a,a24))')
      .     ' Shot: ', wall, ' Run: ', wall_run,
-     .     ' User: ', trim(username), ' Device: ', trim(device)
+     .     ' User: ', trim(username), ' Database: ', trim(database)
         end if
       else if (do_wall) then
         call ids_get( idx, "wall", vessel, status )
@@ -156,7 +158,7 @@ c
           write(*,*) 'Got IDS wall data from: '
           write(*,'(2(a,i8),2(a,a24))')
      .     ' Shot: ', shot, ' Run: ', run,
-     .     ' User: ', trim(username), ' Device: ', trim(device)
+     .     ' User: ', trim(username), ' Database: ', trim(database)
         else
           do_wall = .false.
           write(*,*) 'Error reading wall description IDS !'

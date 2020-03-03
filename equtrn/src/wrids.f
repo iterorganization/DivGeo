@@ -1,5 +1,5 @@
       subroutine wrids(iret,nunits,npts,rwall,zwall,dg_file,
-     ,           treename,shot,run,username,device,version)
+     ,           treename,shot,run,username,database,version)
       use ids_schemas  ! IGNORE
       use ids_routines ! IGNORE
       implicit none
@@ -11,7 +11,7 @@
       integer, intent(in) :: shot      !< The shot number of the wall IDS being written
       integer, intent(in) :: run       !< The run number of the wall IDS being written
       character(len=24), intent(in) :: username   !< Creator/owner of the IMAS IDS database
-      character(len=24), intent(in) :: device     !< Device name of the IMAS IDS database
+      character(len=24), intent(in) :: database   !< IMAS IDS database name
             !< (i. e. solps-iter, iter, aug)
       character(len=24), intent(in) :: version    !< Major version of the IMAS IDS database
       integer, intent(out) :: iret
@@ -138,7 +138,7 @@ c
 
       !! Create and modify new wall IDS
       call imas_create_env( treename, shot, run,
-     & 0, 0, idx, username, device, version, status )
+     & 0, 0, idx, username, database, version, status )
       if (status.ne.0) stop 'Error opening IMAS database !'
 
       call ids_put( idx, "wall", vessel, status )

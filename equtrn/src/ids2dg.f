@@ -5,7 +5,7 @@
 !!
 !!      @verbatim
 !!          $ids2dg --shot <shot> --run <run> --wall <wall> --wall_run <wall_run>
-!!          --step <step> --username <username> --device <device> --version <version>
+!!          --step <step> --username <username> --database <database> --version <version>
 !!          <DG output filename stem>
 !!      @endverbatim
 !!
@@ -13,7 +13,7 @@
 !!
 !!      @verbatim
 !!          $ids2dg -s <shot> -r <run> -w <wall> -R <wall_run>
-!!          -S <step> -u <username> -d <device> -v <version> <DG output filename stem>
+!!          -S <step> -u <username> -d <database> -v <version> <DG output filename stem>
 !!      @endverbatim
 !!
 !!      The arguments marked with < ... > are the parameters of the IDS database
@@ -26,13 +26,13 @@
 !!          - \b wall_run: The run number of the wall IDS being read (default: same as <run>)
 !!          - \b step:     The time slice index for the equilibrium IDS (default: 1)
 !!          - \b username: Creator/owner of the IMAS IDS database (default: $USER)
-!!          - \b device:   Device name of the IMAS IDS database
+!!          - \b database: IMAS IDS database name
 !!                         (i. e. solps-iter, iter, aug) (default: $DEVICE)
 !!          - \b version:  Major version of the IMAS IDS database (default: 3)
 !!      Example of the command:
 !!      @verbatim
 !!          $ids2dg
-!!          --shot 1512 --run 6 --username penkod --device solps-iter --version 3 DG_case_file
+!!          --shot 1512 --run 6 --username penkod --database solps-iter --version 3 DG_case_file
 !!      @endverbatim
 !!
 !!-----------------------------------------------------------------------------
@@ -61,8 +61,8 @@ c=====================================================
     !! Local variables
       character(len=24) :: treename   !< The name of the IMAS IDS database
       character(len=24) :: username   !< Creator/owner of the IMAS IDS database
-      character(len=24) :: device     !< Device name of the IMAS IDS database
-        !< (i. e. solps-iter, iter, aug)
+      character(len=24) :: database   !< IMAS IDS database name
+                                      !< (i. e. solps-iter, iter, aug)
       character(len=24) :: version    !< Major version of the IMAS IDS database
       integer :: shot      !< The shot number of the IDS equilibrium being read
                            !< If negative, no equilibrium IDS is translated
@@ -102,7 +102,7 @@ c
       treename = 'ids'
       version = "3"
       username = usrnam()
-      device = 'solps-iter'
+      database = 'solps-iter'
       run_string = ' '
       shot_string = ' '
       wall_string = ' '
@@ -122,7 +122,7 @@ c
       call getenv ('DEVICE', device_env)
 #endif
 #endif
-      if (.not.streql(device_env,' ')) device = device_env
+      if (.not.streql(device_env,' ')) database = device_env
 #endif
       
     !! Check if arguments are found
@@ -159,8 +159,8 @@ c
             read( wall_run_string, *) wall_run
           case("--username","--user","-u")
             call get_command_argument( cptArg + 1, username )
-          case("--device","-d")
-            call get_command_argument( cptArg + 1, device )
+          case("--database","--device","-d")
+            call get_command_argument( cptArg + 1, database )
           case("--version","-v")
             call get_command_argument( cptArg + 1, version )
         end select
@@ -174,8 +174,8 @@ c
         wall_run = run
         write(wall_run_string,'(i6)') wall_run
       end if
-    !! If not at least shot, run, username and device were defined,
-    !! display the error message and and a full command example
+    !! If not at least shot, run, username and database were defined,
+    !! display the error message and a full command example
       if( narg.lt.5 .or. mod(narg,2).eq.0 .or.
      &  (do_equilibrium .and. streql(run_string," ")) .or.
      &  (do_wall .and. streql(wall_run_string," ")) .or.
@@ -185,24 +185,24 @@ c
      &   'ids2dg -s <shot> -r <run> -w <wall> -R <wall_run> <DG_file>'
         write(0,'(a)') ' '
         write(0,'(a)') 'Available options are:'
-        write(0,'(a)') '--shot, -s:             '//
+        write(0,'(a)') '--shot, -s:               '//
      &   'Shot number of the equilibrium IDS to import '//
      &   '(if negative, do not import an equilibrium IDS)'
-        write(0,'(a)') '--run,  -r:             '//
+        write(0,'(a)') '--run,  -r:               '//
      &   'Run number of the equilibrium IDS to import'
-        write(0,'(a)') '--step, -S:             '//
+        write(0,'(a)') '--step, -S:               '//
      &   'Time step of the equilibrium IDS to import (default: 1)'
-        write(0,'(a)') '--wall, -w:             '//
+        write(0,'(a)') '--wall, -w:               '//
      &   'Shot number of the wall description IDS to import '//
      &   '(if negative, do not import a wall description IDS) '//
      &   '(default: same as shot value)'
-        write(0,'(a)') '--wall_run, -R:         '//
+        write(0,'(a)') '--wall_run, -R:           '//
      &   'Run number of the wall description IDS to import '//
      &   '(default: same as run value)'
-        write(0,'(a)') '--username, --user, -u: '//
+        write(0,'(a)') '--username, --user, -u:   '//
      &   'User name for the database to be read '//
      &   '(default is $USER)'
-        write(0,'(a)') '--device, -d:           '//
+        write(0,'(a)') '--database, --device, -d: '//
      &   'Device database name to be read '//
      &   '(default is $DEVICE if defined, "solps-iter" otherwise)'
         write(0,'(a)') '--version, -v:          '//
@@ -232,15 +232,15 @@ c
       write(*,*) 'Requesting IDS files: '
       if (do_equilibrium) write(*,'(2(a,i8),2(a,a24),(a,i8))')
      . ' Shot: ', shot, ' Run: ', run,
-     . ' User: ', trim(username), ' Device: ', trim(device),
+     . ' User: ', trim(username), ' Database: ', trim(database),
      . ' Step: ', step
       if (do_wall .and. wall.ne.shot)
      > write(*,'(2(a,i8),2(a,a24))')
      . ' Wall: ', wall, ' Run: ', wall_run,
-     . ' User: ', trim(username), ' Device: ', trim(device)
+     . ' User: ', trim(username), ' Database: ', trim(database)
 
       call rdids(treename,shot,wall,run,wall_run,step,
-     ,           username,device,version,
+     ,           username,database,version,
      ,           do_equilibrium,do_wall,
      ,           iret,ipestg,nr,nz,
      ,           rcntc,psimin,psilim,

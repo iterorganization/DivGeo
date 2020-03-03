@@ -4,27 +4,27 @@
 !!      In terminal, run the following command:
 !!
 !!      @verbatim
-!!          $dg2ids --shot <shot> --run <run> --device <device> --version <version>
+!!          $dg2ids --shot <shot> --run <run> --database <database> --version <version>
 !!          <DG input template file>
 !!      @endverbatim
 !!
 !!      The command can be shortened as:
 !!
 !!      @verbatim
-!!          $dg2ids -s <shot> -r <run> -d <device> -v <version> <DG input template file>
+!!          $dg2ids -s <shot> -r <run> -d <database> -v <version> <DG input template file>
 !!      @endverbatim
 !!
 !!      The arguments marked with < ... > are the parameters of the wall IDS
 !!      where the data is to be stored:
 !!          - \b shot:     The shot number of the wall IDS being written
 !!          - \b run:      The run number of the wall IDS being written
-!!          - \b device:   Device name of the IMAS IDS database
+!!          - \b database: IMAS IDS database name
 !!                         (i. e. solps-iter, iter, aug) (default: $DEVICE)
 !!          - \b version:  Major version of the IMAS IDS database (default: 3)
 !!      Example of the command:
 !!      @verbatim
 !!          $dg2ids
-!!          --shot 10 --run 3 --device iter --version 3 DG_template_file
+!!          --shot 10 --run 3 --database iter --version 3 DG_template_file
 !!      @endverbatim
 !!
 !!-----------------------------------------------------------------------------
@@ -48,8 +48,8 @@ c=====================================================
     !! Local variables
       character(len=24) :: treename   !< The name of the IMAS IDS database
       character(len=24) :: username   !< Creator/owner of the IMAS IDS database
-      character(len=24) :: device     !< Device name of the IMAS IDS database
-        !< (i. e. solps-iter, iter, aug)
+      character(len=24) :: database   !< IMAS IDS database name
+                                      !< (i. e. solps-iter, iter, aug)
       character(len=24) :: version    !< Major version of the IMAS IDS database
       integer :: shot      !< The shot number of the wall IDS being written
       integer :: run       !< The run number of the wall IDS being written
@@ -80,7 +80,7 @@ c
       treename = 'ids'
       version = "3"
       username = usrnam()
-      device = 'solps-iter'
+      database = 'solps-iter'
       run_string = ' '
       shot_string = ' '
 #ifndef NO_GETENV
@@ -97,7 +97,7 @@ c
       call getenv ('DEVICE', device_env)
 #endif
 #endif
-      if (.not.streql(device_env,' ')) device = device_env
+      if (.not.streql(device_env,' ')) database = device_env
 #endif
       
     !! Check if arguments are found
@@ -119,14 +119,14 @@ c
               read( run_string, *) run
             case("--username","-u")
               call get_command_argument( cptArg + 1, username )
-            case("--device","-d")
-              call get_command_argument( cptArg + 1, device )
+            case("--database","--device","-d")
+              call get_command_argument( cptArg + 1, database )
             case("--version","-v")
               call get_command_argument( cptArg + 1, version )
           end select
         end do
-    !! If not at least shot, run, username and device were defined display
-    !! the error message and and a full command example
+    !! If not at least shot, run, username and database were defined display
+    !! the error message and a full command example
       else if( narg.lt.5 .or. mod(narg,2).eq.0 .or. 
      &  streql(shot_string," ") .or. streql(run_string," ") ) then
         write(0,*) "ERROR! In order to run dg2ids input IDS, ",
@@ -135,7 +135,7 @@ c
      &   "Example (terminal): "
         write(0,*) "dg2ids --shot 1 --run 1 <DG_template_file>"
         write(0,*) "Other options are :"
-        write(0,*) " --username, --device, --version"
+        write(0,*) " --username, --database, --version"
         call exit(0)
       end if
       if (.not.(0.lt.shot.and.shot.le.214748)) then
@@ -154,7 +154,7 @@ c
       end if
 
       write(*,'(a,i8,a,i8,4a)') 'Shot: ', shot, ' Run: ', run,
-     & ' User: ', trim(username), ' Device: ', trim(device)
+     & ' User: ', trim(username), ' Database: ', trim(database)
 
       call rdtrg(1,iret,nunits,npts,rwall,zwall)
       if(iret.ne.0) then
@@ -165,7 +165,7 @@ c
       rwall = rwall / 1000.0_R8
       zwall = zwall / 1000.0_R8
       call wrids(iret,nunits,npts,rwall,zwall,dg_file,
-     .           treename,shot,run,username,device,version)
+     .           treename,shot,run,username,database,version)
       if(iret.ne.0) then
         print *,'==== dg2ids: error in wrids. iret = ',iret
       end if
