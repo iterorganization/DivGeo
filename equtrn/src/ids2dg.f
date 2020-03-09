@@ -205,7 +205,7 @@ c
         write(0,'(a)') '--database, --device, -d: '//
      &   'Device database name to be read '//
      &   '(default is $DEVICE if defined, "solps-iter" otherwise)'
-        write(0,'(a)') '--version, -v:          '//
+        write(0,'(a)') '--version, -v:            '//
      &   'IMAS version being used '//
      &   '(only supported and default value: 3)'
         call exit(0)

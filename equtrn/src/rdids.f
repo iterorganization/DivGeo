@@ -421,11 +421,11 @@ c
             end if
             do j=1,size(vessel%description_2d(1)%vessel%unit(i)%element)
               jcnt = jcnt + 1
-              npts(jcnt)=size(
-     .   vessel%description_2d(1)%vessel%unit(i)%element(j)%outline%r)
-#if IMAS_MINOR_VERSION > 26
-              if
-     . (vessel%description_2d(1)%vessel%unit(i)%element(j)%closed.eq.1)
+              npts(jcnt)=size(vessel%description_2d(1)%
+     .                        vessel%unit(i)%element(j)%outline%r)
+#if IMAS_MINOR_VERSION > 27
+              if (vessel%description_2d(1)%
+     .            vessel%unit(i)%element(j)%outline%closed.eq.1)
      .         npts(jcnt)=npts(jcnt)+1
 #endif
               if (icnt+npts(jcnt).gt.ngpr) then
@@ -435,16 +435,16 @@ c
                 iret=5
                 return
               end if
-              do k=1,size(
-     .   vessel%description_2d(1)%vessel%unit(i)%element(j)%outline%r)
-                rwall(icnt+k)=
-     .   vessel%description_2d(1)%vessel%unit(i)%element(j)%outline%r(k)
-                zwall(icnt+k)=
-     .   vessel%description_2d(1)%vessel%unit(i)%element(j)%outline%z(k)
+              do k=1,size(vessel%description_2d(1)%
+     .                    vessel%unit(i)%element(j)%outline%r)
+                rwall(icnt+k)=vessel%description_2d(1)%
+     .                        vessel%unit(i)%element(j)%outline%r(k)
+                zwall(icnt+k)=vessel%description_2d(1)%
+     .                        vessel%unit(i)%element(j)%outline%z(k)
               end do
-#if IMAS_MINOR_VERSION > 26
-              if (
-     .   vessel%description_2d(1)%vessel%unit(i)%element(j)%closed.eq.1)
+#if IMAS_MINOR_VERSION > 27
+              if (vessel%description_2d(1)%
+     .            vessel%unit(i)%element(j)%outline%closed.eq.1)
      .         then
                 rwall(icnt+npts(jcnt))=rwall(icnt+1)
                 zwall(icnt+npts(jcnt))=zwall(icnt+1)
@@ -453,10 +453,17 @@ c
               icnt = icnt + npts(jcnt)
             end do
             if (size(vessel%description_2d(1)%
-     .             vessel%unit(i)%annular%outline_inner%r).gt.0) then
+     .               vessel%unit(i)%annular%outline_inner%r).gt.0) then
               jcnt = jcnt + 1
-              npts(jcnt)=1+size(
-     . vessel%description_2d(1)%vessel%unit(i)%annular%outline_inner%r)
+              npts(jcnt)=size(vessel%description_2d(1)%
+     .                        vessel%unit(i)%annular%outline_inner%r)
+#if IMAS_MINOR_VERSION > 27
+              if (vessel%description_2d(1)%
+     .            vessel%unit(i)%annular%outline_inner%closed.eq.1)
+     .         npts(jcnt)=npts(jcnt)+1
+#else
+              npts(jcnt)=npts(jcnt)+1 ! Outline is assumed closed in older DD versions
+#endif
               if (icnt+npts(jcnt).gt.ngpr) then
                 write(0,*)
      .           'Too large number of wall points !, npts = ',
@@ -464,22 +471,37 @@ c
                 iret=5
                 return
               end if
-              do k=1,size(
-     . vessel%description_2d(1)%vessel%unit(i)%annular%outline_inner%r)
+              do k=1,size(vessel%description_2d(1)%
+     .                    vessel%unit(i)%annular%outline_inner%r)
                 rwall(icnt+k)=vessel%description_2d(1)%
      .                        vessel%unit(i)%annular%outline_inner%r(k)
                 zwall(icnt+k)=vessel%description_2d(1)%
      .                        vessel%unit(i)%annular%outline_inner%z(k)
               end do
+#if IMAS_MINOR_VERSION > 27
+              if (vessel%description_2d(1)%
+     .            vessel%unit(i)%annular%outline_inner%closed.eq.1)
+                rwall(icnt+npts(jcnt))=rwall(icnt+1)
+                zwall(icnt+npts(jcnt))=zwall(icnt+1)
+              end if
+#else
               rwall(icnt+npts(jcnt))=rwall(icnt+1)
               zwall(icnt+npts(jcnt))=zwall(icnt+1)
+#endif
               icnt = icnt + npts(jcnt)
             end if
             if (size(vessel%description_2d(1)%
-     .             vessel%unit(i)%annular%outline_outer%r).gt.0) then
+     .               vessel%unit(i)%annular%outline_outer%r).gt.0) then
               jcnt = jcnt + 1
-              npts(jcnt)=1+size(
-     . vessel%description_2d(1)%vessel%unit(i)%annular%outline_outer%r)
+              npts(jcnt)=size(vessel%description_2d(1)%
+     .                        vessel%unit(i)%annular%outline_outer%r)
+#if IMAS_MINOR_VERSION > 27
+              if (vessel%description_2d(1)%
+     .            vessel%unit(i)%annular%outline_outer%closed.eq.1)
+     .         npts(jcnt)=npts(jcnt)+1
+#else
+              npts(jcnt)=npts(jcnt)+1 ! Outline is assumed closed in older DD versions
+#endif
               if (icnt+npts(jcnt).gt.ngpr) then
                 write(0,*)
      .           'Too large number of wall points !, npts = ',
@@ -487,15 +509,23 @@ c
                 iret=5
                 return
               end if
-              do k=1,size(
-     . vessel%description_2d(1)%vessel%unit(i)%annular%outline_outer%r)
+              do k=1,size(vessel%description_2d(1)%
+     .                    vessel%unit(i)%annular%outline_outer%r)
                 rwall(icnt+k)=vessel%description_2d(1)%
      .                        vessel%unit(i)%annular%outline_outer%r(k)
                 zwall(icnt+k)=vessel%description_2d(1)%
      .                        vessel%unit(i)%annular%outline_outer%z(k)
               end do
+#if IMAS_MINOR_VERSION > 27
+              if (vessel%description_2d(1)%
+     .            vessel%unit(i)%annular%outline_outer%closed.eq.1)
+                rwall(icnt+npts(jcnt))=rwall(icnt+1)
+                zwall(icnt+npts(jcnt))=zwall(icnt+1)
+              end if
+#else
               rwall(icnt+npts(jcnt))=rwall(icnt+1)
               zwall(icnt+npts(jcnt))=zwall(icnt+1)
+#endif
               icnt = icnt + npts(jcnt)
             end if
           end do
