@@ -24,6 +24,9 @@
       character*5 zone
       integer tvalues(8)
       integer :: idx, i, j, icnt, jcnt, status
+#if IMAS_MINOR_VERSION < 9
+      integer, parameter :: IDS_REAL = R8
+#endif
 #ifdef USE_PXFGETENV
       integer lenval, ierror
 #else
@@ -65,6 +68,7 @@ c
       vessel%ids_properties%homogeneous_time = 1
       allocate( vessel%ids_properties%comment(1) )
       vessel%ids_properties%comment = "DivGeo template"
+#if IMAS_MINOR_VERSION > 14
       allocate( vessel%ids_properties%source(1) )
       vessel%ids_properties%source = dg_file
       allocate( vessel%ids_properties%provider(1) )
@@ -72,6 +76,7 @@ c
       allocate( vessel%ids_properties%creation_date(1) )
       vessel%ids_properties%creation_date =
      & date//' '//ctime//' '//' '//zone
+#if IMAS_MINOR_VERSION > 21
       allocate( vessel%ids_properties%version_put%data_dictionary(1) )
       vessel%ids_properties%version_put%data_dictionary = imas_version
       allocate( vessel%ids_properties%version_put%access_layer(1) )
@@ -80,6 +85,8 @@ c
      & vessel%ids_properties%version_put%access_layer_language(1) )
       vessel%ids_properties%version_put%access_layer_language =
      & 'FORTRAN'
+#endif
+#endif
       allocate( vessel%time(1) )
       vessel%time(1) = 0.0_IDS_real
       allocate( vessel%code%name(1) )
@@ -141,8 +148,12 @@ c
      & 0, 0, idx, username, database, version, status )
       if (status.ne.0) stop 'Error opening IMAS database !'
 
+#if UAL_MAJOR_VERSION > 3
       call ids_put( idx, "wall", vessel, status )
       if (status.ne.0) stop 'Error putting wall description IDS !'
+#else
+      call ids_put( idx, "wall", vessel )
+#endif
       call ids_deallocate( vessel )
       call imas_close( idx, status )
       if (status.ne.0) stop 'Error closing IMAS database !'

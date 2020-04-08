@@ -28,7 +28,7 @@ c
       implicit none
 #include "eqdim.inc"
       type(ids_equilibrium) :: eq !< IDS designed to store equilibrium data
-      type (ids_wall) :: vessel   !< IDS designed to store wall data
+      type(ids_wall) :: vessel    !< IDS designed to store wall data
       character(len=24), intent(in) :: treename   !< The name of the IMAS IDS database
       integer, intent(in) :: shot      !< The shot number of the IDS equilibrium being read
                                        !< If negative, do not read any equilibrium
@@ -50,6 +50,10 @@ c
       integer, intent(out) :: nunits, npts(ngpr)
       integer :: nlimunits, nmobunits, nvslunits, nelem
       integer i,j,k,icnt,jcnt,idx,status
+#if IMAS_MINOR_VERSION < 9
+      real(kind=R8), parameter :: IDS_REAL_INVALID = -9.0E40_R8
+#endif
+
 c=====================================================
 c
       iret = 0
@@ -58,8 +62,12 @@ c
         call imas_open_env( treename, shot, run,
      &   idx, username, database, version, status )
 
+#if UAL_MAJOR_VERSION > 3
         if (status.eq.0)
      &   call ids_get( idx, "equilibrium/1", eq, status )
+#else
+        call ids_get( idx, "equilibrium/1", eq )
+#endif
         if (status.ne.0 .or.
      &      eq%ids_properties%homogeneous_time < 0) then ! second attempt
           status = 0
@@ -67,8 +75,12 @@ c
           if (status.ne.0) stop 'Error closing IMAS database !'
           call imas_open_env( treename, shot, run,
      &     idx, "public", database, version, status )
+#if UAL_MAJOR_VERSION > 3
           if (status.eq.0)
      &     call ids_get( idx, "equilibrium/1", eq, status )
+#else
+          call ids_get( idx, "equilibrium/1", eq )
+#endif
           if (status.eq.0 .and.
      &        eq%ids_properties%homogeneous_time .ge. 0) then
             write(*,*) 'Got IDS equilibrium from: '
@@ -95,7 +107,11 @@ c
         end if
         call imas_open_env( treename, wall, wall_run,
      &     idx, username, database, version, status )
+#if UAL_MAJOR_VERSION > 3
         if (status.eq.0) call ids_get( idx, "wall", vessel, status )
+#else
+        if (status.eq.0) call ids_get( idx, "wall", vessel )
+#endif
         if (status.ne.0 .or.
      &      vessel%ids_properties%homogeneous_time < 0) then
           status = 0
@@ -103,7 +119,11 @@ c
           if (status.ne.0) stop 'Error closing IMAS database !'
           call imas_open_env( treename, wall, wall_run,
      &     idx, username, trim(database)//'_MD', version, status )
+#if UAL_MAJOR_VERSION > 3
           if (status.eq.0) call ids_get( idx, "wall", vessel, status )
+#else
+          if (status.eq.0) call ids_get( idx, "wall", vessel )
+#endif
           if (status.eq.0 .and.
      &        vessel%ids_properties%homogeneous_time .ge. 0) then
             write(*,*) 'Got IDS wall data from: '
@@ -117,7 +137,11 @@ c
             if (status.ne.0) stop 'Error closing IMAS database !'
             call imas_open_env( treename, wall, wall_run,
      &       idx, "public", database, version, status )
+#if UAL_MAJOR_VERSION > 3
             if (status.eq.0) call ids_get( idx, "wall", vessel, status )
+#else
+            if (status.eq.0) call ids_get( idx, "wall", vessel )
+#endif
             if (status.eq.0 .and.
      &          vessel%ids_properties%homogeneous_time .ge. 0) then
               write(*,*) 'Got IDS wall data from: '
@@ -130,8 +154,12 @@ c
               if (status.ne.0) stop 'Error closing IMAS database !'
               call imas_open_env( treename, wall, wall_run,
      &         idx, "public", trim(database)//'_MD', version, status )
+#if UAL_MAJOR_VERSION > 3
               if (status.eq.0)
      &         call ids_get( idx, "wall", vessel, status )
+#else
+              if (status.eq.0) call ids_get( idx, "wall", vessel )
+#endif
               if (status.eq.0 .and.
      &            vessel%ids_properties%homogeneous_time .ge. 0) then
                 write(*,*) 'Got IDS wall data from: '
@@ -152,7 +180,11 @@ c
      .     ' User: ', trim(username), ' Database: ', trim(database)
         end if
       else if (do_wall) then
+#if UAL_MAJOR_VERSION > 3
         call ids_get( idx, "wall", vessel, status )
+#else
+        call ids_get( idx, "wall", vessel )
+#endif
         if (status.eq.0 .and.
      &      vessel%ids_properties%homogeneous_time .ge. 0) then
           write(*,*) 'Got IDS wall data from: '
@@ -354,6 +386,7 @@ c
           end do
         end if
 c
+#if IMAS_MINOR_VERSION > 10
         if (associated(vessel%description_2d(1)%mobile%unit)) then
           nmobunits = size(vessel%description_2d(1)%mobile%unit)
           nunits = nunits + nmobunits
@@ -398,6 +431,7 @@ c
             icnt = icnt + npts(i)
           end do
         end if
+#endif
 c
         if (associated(vessel%description_2d(1)%vessel%unit)) then
           jcnt = nlimunits+nmobunits
