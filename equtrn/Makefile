@@ -165,7 +165,9 @@ $(OBJDIR)/%.o : %.f
 #	/bin/rm ${OBJDIR}/$*.f
 	if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
 
-all: $(ALL:%=$(OBJDIR)/%) .doxygen
+all: VERSION $(ALL:%=$(OBJDIR)/%) .doxygen
+
+.PHONY: VERSION clean listobj depend all tags force
 
 ${OBJDIR}/${PROG_cropequ}: $(CREQ) $(MAKES)
 	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(CREQ) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
@@ -263,9 +265,16 @@ listobj: ${OBJDIR}/dependencies
 	@cd src ; echo "OBJS =" *.f | sed -e 's/ [^ /]*\// /g' -e 's/\.f/.o/g' > $(OBJDIR)/LISTOBJ
 	@echo "SRCS =" src/*.f >> ${OBJDIR}/LISTOBJ
 
+VERSION: ../src/git_version_DG.h
+
+../src/git_version_DG.h: force
+	@echo "#define GIT_VERSION_DG \"`git describe --dirty --always`\"" > ../src/git_version_new.h
+	@if cmp -s ../src/git_version_new.h ../src/git_version_DG.h; then rm ../src/git_version_new.h; else mv ../src/git_version_new.h ../src/git_version_DG.h; fi
+
 ${OBJDIR}/dependencies:
 	-mkdir -p ${OBJDIR}
 	touch ${OBJDIR}/dependencies
+	${MAKE} VERSION
 	${MAKE} listobj
 	${MAKE} depend
 
