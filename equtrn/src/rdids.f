@@ -357,7 +357,7 @@ c
           end if
           if (nunits.gt.ngpr) then
             write(0,*)
-     .       'Too large number of wall units !, nunits = ',
+     .       'Number of wall units too large !, nunits = ',
      .                                          nunits
             iret=5
             return
@@ -371,7 +371,7 @@ c
           do i=1,nlimunits
             if (icnt+npts(i).gt.ngpr) then
               write(0,*)
-     .         'Too large number of wall points !, npts = ',
+     .         'Number of wall points too large !, npts = ',
      .                                        icnt+npts(i)
               iret=5
               return
@@ -405,7 +405,7 @@ c
           end if
           if (nunits.gt.ngpr) then
             write(0,*)
-     .       'Too large number of wall units !, nunits = ',
+     .       'Number of wall units too large !, nunits = ',
      .                                          nunits
             iret=5
             return
@@ -417,7 +417,7 @@ c
      .       npts(i)=npts(i)+1
             if (icnt+npts(i).gt.ngpr) then
               write(0,*)
-     .         'Too large number of wall points !, npts = ',
+     .         'Number of wall points too large !, npts = ',
      .                                        icnt+npts(i)
               iret=5
               return
@@ -454,7 +454,7 @@ c
      .       size(vessel%description_2d(1)%vessel%unit(i)%element)
             if (nunits.gt.ngpr) then
               write(0,*)
-     .         'Too large number of wall units !, nunits = ',
+     .         'Number of wall units too large !, nunits = ',
      .                                            nunits
               iret=5
               return
@@ -470,7 +470,7 @@ c
 #endif
               if (icnt+npts(jcnt).gt.ngpr) then
                 write(0,*)
-     .           'Too large number of wall points !, npts = ',
+     .           'Number of wall points too large !, npts = ',
      .                                          icnt+npts(jcnt)
                 iret=5
                 return
@@ -496,7 +496,7 @@ c
               nunits = nunits + 1
               if (nunits.gt.ngpr) then
                 write(0,*)
-     .           'Too large number of wall units !, nunits = ',
+     .           'Number of wall units too large !, nunits = ',
      .                                              nunits
                 iret=5
                 return
@@ -513,7 +513,7 @@ c
 #endif
               if (icnt+npts(jcnt).gt.ngpr) then
                 write(0,*)
-     .           'Too large number of wall points !, npts = ',
+     .           'Number of wall points too large !, npts = ',
      .                                          icnt+npts(jcnt)
                 iret=5
                 return
@@ -542,7 +542,7 @@ c
               nunits = nunits + 1
               if (nunits.gt.ngpr) then
                 write(0,*)
-     .           'Too large number of wall units !, nunits = ',
+     .           'Number of wall units too large !, nunits = ',
      .                                              nunits
                 iret=5
                 return
@@ -559,7 +559,7 @@ c
 #endif
               if (icnt+npts(jcnt).gt.ngpr) then
                 write(0,*)
-     .           'Too large number of wall points !, npts = ',
+     .           'Number of wall points too large !, npts = ',
      .                                          icnt+npts(jcnt)
                 iret=5
                 return
@@ -591,7 +591,7 @@ c
               nunits = nunits + 2
               if (nunits.gt.ngpr) then
                 write(0,*)
-     .           'Too large number of wall units !, nunits = ',
+     .           'Number of wall units too large !, nunits = ',
      .                                              nunits
                 iret=5
                 return
@@ -605,7 +605,7 @@ c
      .           npts(jcnt)=npts(jcnt)+1
                 if (icnt+npts(jcnt).gt.ngpr) then
                   write(0,*)
-     .             'Too large number of wall points !, npts = ',
+     .             'Number of wall points too large !, npts = ',
      .                                          icnt+npts(jcnt)
                   iret=5
                   return
