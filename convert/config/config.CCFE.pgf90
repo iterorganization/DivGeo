@@ -5,9 +5,9 @@ endif
 
 FC      = pgf90
 ifdef SOLPS_DEBUG
-FFLAGS = -g -C
+FFLAGS  = -g -C
 else
-FFLAGS = -O3
+FFLAGS  = -O3
 endif
 
 COMPILE = ${FC} -c ${FFLAGS}

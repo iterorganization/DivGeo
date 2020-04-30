@@ -1,17 +1,16 @@
 # check if necessary variables are correctly defined
-ifndef LD_MSCL
-  $(error LD_MSCL not defined)
-endif
+LD_MSCL ?= -l${SOLPSLIB} -lmscl
 
-FC      = ifort
+FC      = ftn
+FFLAGS  = -ez -e0 -ef
 ifdef SOLPS_DEBUG
-FFLAGS  = -g -C -traceback -debug all
+FFLAGS += -O0 -G0 -g -hfp0 -K trap=fp -K trap=divz -Rb
 else
-FFLAGS  = -O3
+FFLAGS += -O3 -hfp3
 endif
 
 COMPILE = ${FC} -c ${FFLAGS}
-CPP     = /lib/cpp -C -traditional -ffreestanding
+CPP     = /lib/cpp -traditional
 
 LDLIBS  = ${LD_MSCL} -lstdc++
 LDEXTRA =

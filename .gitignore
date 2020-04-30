@@ -39,4 +39,6 @@ device/
 
 equtrn/doxygen
 equtrn/.doxygen
+equtrn/html
+equtrn/latex
 

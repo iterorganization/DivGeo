@@ -242,7 +242,7 @@ ${OBJDIR}/${PROG_ids2dg}: $(IDSDG) $(MAKES)
 	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(IDSDG) ${LDLIBS} $(LDFLAGS) $(LD_UAL) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_dg2ids}: $(DGIDS) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGIDS) ${LDLIBS} $(LDFLAGS) $(LD_UAL) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGIDS) $(LDFLAGS) $(LD_UAL) $(LDEXTRA)
 
 clean:
 	cd ${OBJDIR}; rm -rf *.o *.f $(ALL) LISTOBJ dependencies*
