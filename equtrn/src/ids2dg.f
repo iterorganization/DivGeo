@@ -226,8 +226,6 @@ c
         write(0,*) 'Invalid wall IDS run number'
         call exit(0)
       end if
-      if (do_equilibrium) open(2,file=trim(dg_file)//'.equ')
-      if (do_wall) open(3,file=trim(dg_file)//'.ogr')
 
       write(*,*) 'Requesting IDS files: '
       if (do_equilibrium) write(*,'(2(a,i8),2(a,a24),(a,i8))')
@@ -252,6 +250,7 @@ c
       end if
 c
       if (do_equilibrium) then
+        open(2,file=trim(dg_file)//'.equ')
         psimin = psimin / twopi
         psilim = psilim / twopi
         pfm = pfm / twopi
@@ -266,6 +265,7 @@ c
         end if
       end if
       if (do_wall) then
+        open(3,file=trim(dg_file)//'.ogr')
         rwall = rwall * 1000.0_R8
         zwall = zwall * 1000.0_R8
         iret = 0

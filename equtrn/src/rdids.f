@@ -51,10 +51,10 @@ c
       integer :: nlimunits, nmobunits, nvslunits, nelem
       integer i,j,k,icnt,jcnt,idx,status
 #if IMAS_MINOR_VERSION > 27
-      integer iside, kk, kkk
-      real(kind=R8) :: t1, t2, ra, rb, za, zb, rc, zc,
+      integer iside, kk, ks, kkk, kks
+      real(kind=R8) :: t1, t2, ra, rb, za, zb, rc, zc, rd, zd,
      .                 r1, r2, z1, z2, r3, z3, x4, z4, det, ! avoid clash with R4 type
-     .                 rab_normal, rbc_normal, zab_normal, zbc_normal
+     .                 rab_normal, rcd_normal, zab_normal, zcd_normal
 #endif
 #if IMAS_MINOR_VERSION < 9
       real(kind=R8), parameter :: IDS_REAL_INVALID = -9.0E40_R8
@@ -104,7 +104,7 @@ c
      .     ' User: ', trim(username), ' Database: ', trim(database)
         end if
       end if
-      
+
       status = 0
       if (do_wall.and.wall.ne.shot) then
         if (do_equilibrium) then
@@ -450,6 +450,8 @@ c
             return
           end if
           do i=1,size(vessel%description_2d(1)%vessel%unit)
+           if (associated(
+     .          vessel%description_2d(1)%vessel%unit(i)%element)) then
             nunits = nunits +
      .       size(vessel%description_2d(1)%vessel%unit(i)%element)
             if (nunits.gt.ngpr) then
@@ -491,6 +493,9 @@ c
 #endif
               icnt = icnt + npts(jcnt)
             end do
+           end if
+           if (associated(vessel%description_2d(1)%
+     .               vessel%unit(i)%annular%outline_inner%r)) then
             if (size(vessel%description_2d(1)%
      .               vessel%unit(i)%annular%outline_inner%r).gt.0) then
               nunits = nunits + 1
@@ -537,6 +542,9 @@ c
 #endif
               icnt = icnt + npts(jcnt)
             end if
+           end if
+           if (associated(vessel%description_2d(1)%
+     .               vessel%unit(i)%annular%outline_outer%r)) then
             if (size(vessel%description_2d(1)%
      .               vessel%unit(i)%annular%outline_outer%r).gt.0) then
               nunits = nunits + 1
@@ -583,12 +591,23 @@ c
 #endif
               icnt = icnt + npts(jcnt)
             end if
+           end if
 #if IMAS_MINOR_VERSION > 27
+           if (associated(vessel%description_2d(1)%
+     .               vessel%unit(i)%annular%centreline%r)) then
             if (size(vessel%description_2d(1)%
      .               vessel%unit(i)%annular%centreline%r).gt.0) then
-              nvslunits = nvslunits + 1 ! We count the inner and outer contours
-                                        ! as two separate units
-              nunits = nunits + 2
+              if (maxval(vessel%description_2d(1)%
+     .                   vessel%unit(i)%annular%thickness(:)).gt.0.0_R8
+     .             .and. vessel%description_2d(1)%
+     .                   vessel%unit(i)%annular%centreline%closed.eq.1)
+     .         then
+                nvslunits = nvslunits + 1 ! We count the inner and outer contours
+                                          ! for closed structures as two separate units
+                nunits = nunits + 2
+              else
+                nunits = nunits + 1
+              end if
               if (nunits.gt.ngpr) then
                 write(0,*)
      .           'Number of wall units too large !, nunits = ',
@@ -597,12 +616,21 @@ c
                 return
               end if
               do iside = -1, 1, 2
-                jcnt = jcnt + 1
-                npts(jcnt)=size(vessel%description_2d(1)%
-     .                          vessel%unit(i)%annular%centreline%r)
+                if (iside.eq.1 .and.
+     .           maxval(vessel%description_2d(1)%
+     .                  vessel%unit(i)%annular%thickness(:)).le.0.0_R8)
+     .           cycle ! No thickness, so only one contour
+                if (iside.eq.-1.or.vessel%description_2d(1)%vessel%
+     .              unit(i)%annular%centreline%closed.eq.1)
+     >           jcnt = jcnt + 1
                 if (vessel%description_2d(1)%
-     .              vessel%unit(i)%annular%centreline%closed.eq.1)
-     .           npts(jcnt)=npts(jcnt)+1
+     .              vessel%unit(i)%annular%centreline%closed.eq.1) then
+                  npts(jcnt)=size(vessel%description_2d(1)%vessel%
+     .                            unit(i)%annular%centreline%r)+1
+                else
+                  npts(jcnt)=2*size(vessel%description_2d(1)%vessel%
+     .                              unit(i)%annular%centreline%r)+1
+                end if
                 if (icnt+npts(jcnt).gt.ngpr) then
                   write(0,*)
      .             'Number of wall points too large !, npts = ',
@@ -611,11 +639,15 @@ c
                   return
                 end if
 cxpb We consider the k-th segment and the next segment, kk.
-cxpb The k-th segment is [A,B] and the kk-th segment is [B,C]
-cxpb A is point k, B is point kk, C is point kkk
-cxpb After thickness mapping: [A,B] --> [1,2] and [B,C] --> [3,4]
-cxpb We then correct point B mapping to point X
-cxpb If [A,B] || [B,C], then points 2 and 3 are the same and so is X
+cxpb The k-th segment is [A,B] and the kk-th segment is [C,D]
+cxpb A is point k, B/C is point kk, D is point kkk
+cxpb When treating an open-ended structure, on the second pass,
+cxpb points kk maps to point ks
+cxpb After thickness mapping: [A,B] --> [1,2] and [C,D] --> [3,4]
+cxpb We then correct point B/C mapping to point X
+cxpb If [A,B] || [C,D], then
+cxpb If thickness stayed constant, points 2 and 3 are the same and so is X
+cxpb If thickness changed, X is mid-point of [2,3]
 cxpb Otherwise, X is the intersection of (12) and (34)
                 do k=1,size(vessel%description_2d(1)%
      .                      vessel%unit(i)%annular%centreline%r)-1
@@ -634,6 +666,16 @@ cxpb Otherwise, X is the intersection of (12) and (34)
                     kk = k+1
                     kkk = kk+1
                   endif
+                  if (iside.eq.1 .and. vessel%description_2d(1)%
+     .             vessel%unit(i)%annular%centreline%closed.eq.0) then
+                    ks = 2*size(vessel%description_2d(1)%vessel%
+     .                          unit(i)%annular%centreline%r)+1-kk
+                  else if (kk.eq.1) then
+                    ks = size(vessel%description_2d(1)%vessel%
+     .                        unit(i)%annular%centreline%r)
+                  else
+                    ks = kk
+                  end if
                   ra = vessel%description_2d(1)%
      .                 vessel%unit(i)%annular%centreline%r(k)
                   za = vessel%description_2d(1)%
@@ -646,50 +688,70 @@ cxpb Otherwise, X is the intersection of (12) and (34)
      .                 vessel%unit(i)%annular%thickness(k)
                   rab_normal = (za-zb)/sqrt((za-zb)**2+(rb-ra)**2)
                   zab_normal = (rb-ra)/sqrt((za-zb)**2+(rb-ra)**2)
-                  r1 = ra+rab_normal*(t1/2.)*iside
-                  z1 = za+zab_normal*(t1/2.)*iside
-                  r2 = rb+rab_normal*(t1/2.)*iside
-                  z2 = zb+zab_normal*(t1/2.)*iside
-                  if (kk.ne.kkk) then ! we are not at the open end
+                  if (t1.eq.0.0_R8 .or. t1.eq.IDS_REAL_INVALID) then
+                    r1 = ra
+                    z1 = za
+                    r2 = rb
+                    z2 = zb
+                  else
+                    r1 = ra+rab_normal*(t1/2.)*iside
+                    z1 = za+zab_normal*(t1/2.)*iside
+                    r2 = rb+rab_normal*(t1/2.)*iside
+                    z2 = zb+zab_normal*(t1/2.)*iside
+                  end if
+                  if (kk.ne.size(vessel%description_2d(1)%vessel%
+     .                           unit(i)%annular%centreline%r).or.
+     .                vessel%description_2d(1)%vessel%
+     .                unit(i)%annular%centreline%closed.eq.1) then ! we are not at the open end
                     rc = vessel%description_2d(1)%
-     .                   vessel%unit(i)%annular%centreline%r(kkk)
+     .                   vessel%unit(i)%annular%centreline%r(kk)
                     zc = vessel%description_2d(1)%
+     .                   vessel%unit(i)%annular%centreline%z(kk)
+                    rd = vessel%description_2d(1)%
+     .                   vessel%unit(i)%annular%centreline%r(kkk)
+                    zd = vessel%description_2d(1)%
      .                   vessel%unit(i)%annular%centreline%z(kkk)
                     t2 = vessel%description_2d(1)%
      .                   vessel%unit(i)%annular%thickness(kk)
-                    rbc_normal = (zb-zc)/sqrt((zb-zc)**2+(rc-rb)**2)
-                    zbc_normal = (rc-rb)/sqrt((zb-zc)**2+(rc-rb)**2)
-                    r3 = rb+rbc_normal*(t2/2.)*iside
-                    z3 = zb+zbc_normal*(t2/2.)*iside
-                    x4 = rc+rbc_normal*(t2/2.)*iside
-                    z4 = zc+zbc_normal*(t2/2.)*iside
+                    rcd_normal = (zc-zd)/sqrt((zc-zd)**2+(rd-rc)**2)
+                    zcd_normal = (rd-rc)/sqrt((zc-zd)**2+(rd-rc)**2)
+                    if (t2.eq.0.0_R8 .or. t2.eq.IDS_REAL_INVALID) then
+                      r3 = rc
+                      z3 = zc
+                      x4 = rd
+                      z4 = zd
+                    else
+                      r3 = rc+rcd_normal*(t2/2.)*iside
+                      z3 = zc+zcd_normal*(t2/2.)*iside
+                      x4 = rd+rcd_normal*(t2/2.)*iside
+                      z4 = zd+zcd_normal*(t2/2.)*iside
+                    end if
                     det = (r3-x4)*(z2-z1) - (r2-r1)*(z3-z4)
-                    if (det.le.1.0e-6) then ! [AB] || [BC] case
-                      rwall(icnt+kk)=(r2+r3)/2.0_R8
-                      zwall(icnt+kk)=(z2+z3)/2.0_R8
-                      if (kk.eq.1) then ! The last and first points coincide
-                        kkk=size(vessel%description_2d(1)%
-     .                           vessel%unit(i)%annular%centreline%r)
-                        rwall(icnt+kkk)=rwall(icnt+kk)
-                        zwall(icnt+kkk)=zwall(icnt+kk)
-                      end if
+                    if (r2.eq.r3 .and. z2.eq.z3) then
+                      rwall(icnt+ks)=r2
+                      zwall(icnt+ks)=z2
+                    else if (abs(det).le.1.0e-6) then ! [AB] || [BC] case
+                      rwall(icnt+ks)=(r2+r3)/2.0_R8
+                      zwall(icnt+ks)=(z2+z3)/2.0_R8
                     else ! Intersection coordinates
-                      rwall(icnt+kk)=((r3-x4)*(r1*(z2-z1)-z1*(r2-r1))
+                      rwall(icnt+ks)=((r3-x4)*(r1*(z2-z1)-z1*(r2-r1))
      .                               -(r2-r1)*(x4*(z3-z4)-z4*(r3-x4)))
      .                               /det
-                      zwall(icnt+kk)=((z3-z4)*(r1*(z2-z1)-z1*(r2-r1))
+                      zwall(icnt+ks)=((z3-z4)*(r1*(z2-z1)-z1*(r2-r1))
      .                               -(z2-z1)*(x4*(z3-z4)-z4*(r3-x4)))
      .                               /det
-                      if (kk.eq.1) then ! The last and first points coincide
-                        kkk=size(vessel%description_2d(1)%
-     .                           vessel%unit(i)%annular%centreline%r)
-                        rwall(icnt+kkk)=rwall(icnt+kk)
-                        zwall(icnt+kkk)=zwall(icnt+kk)
-                      end if
+                    end if
+                    if (kk.eq.1) then ! The last and first points coincide
+                      kks=size(vessel%description_2d(1)%
+     .                         vessel%unit(i)%annular%centreline%r)+1
+                      rwall(icnt+kk)=rwall(icnt+ks)
+                      zwall(icnt+kk)=zwall(icnt+ks)
+                      rwall(icnt+kks)=rwall(icnt+ks)
+                      zwall(icnt+kks)=zwall(icnt+ks)
                     end if
                   else
-                    rwall(icnt+kk)=r2
-                    rwall(icnt+kk)=z2
+                    rwall(icnt+ks)=r2
+                    zwall(icnt+ks)=z2
 ! Going back to the first point since this is an open-ended segment
                     ra = vessel%description_2d(1)%
      .                   vessel%unit(i)%annular%centreline%r(1)
@@ -705,13 +767,23 @@ cxpb Otherwise, X is the intersection of (12) and (34)
                     zab_normal = (rb-ra)/sqrt((za-zb)**2+(rb-ra)**2)
                     r1 = ra+rab_normal*(t1/2.)*iside
                     z1 = za+zab_normal*(t1/2.)*iside
-                    rwall(icnt+1)=r1
-                    rwall(icnt+1)=z1
+                    if (iside.eq.-1) then
+                      rwall(icnt+1)=r1
+                      zwall(icnt+1)=z1
+                      rwall(icnt+npts(jcnt))=r1
+                      zwall(icnt+npts(jcnt))=z1
+                    else if (iside.eq.1) then
+                      rwall(icnt+npts(jcnt)-1)=r1
+                      zwall(icnt+npts(jcnt)-1)=z1
+                    endif
                   endif
                 end do
-                icnt = icnt + npts(jcnt)
+                if (iside.eq.1 .or. vessel%description_2d(1)%vessel%
+     .                          unit(i)%annular%centreline%closed.eq.1)
+     .           icnt = icnt + npts(jcnt)
               end do
             end if
+           end if
 #endif
           end do
         end if
