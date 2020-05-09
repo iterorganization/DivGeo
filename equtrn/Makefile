@@ -85,10 +85,6 @@ ifeq (${HOST_NAME}, ITM)
 #ALL += ${PROG_shotfile2dg}
 endif
 
-ifeq (${HOST_NAME}, IPPITM)
-ALL += ${PROG_shotfile2dg}
-endif
-
 ifdef IMAS_VERSION
 ALL += ${PROG_ids2dg} ${PROG_dg2ids}
 endif
