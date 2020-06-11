@@ -1,4 +1,4 @@
-LIBS = -lXm -lXt -lX11 -lXext -lXmuu -lXp -lXft -lpthread -lm -L/usr/X11R6/lib
+LIBS = -lXm -lXt -lX11 -lXext -lXmuu -lXp -lXft -lpthread -lm -dynamic
 CFLAGS = -g
 CC = cc
 
