@@ -1,5 +1,5 @@
 # check if necessary variables are correctly defined
-LD_MSCL ?= -l${SOLPSLIB} -lmscl
+LD_MSCL ?= -L${SOLPSLIB} -lmscl
 
 FC      = ftn
 ifdef SOLPS_DEBUG
