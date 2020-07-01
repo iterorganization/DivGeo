@@ -70,6 +70,7 @@ c=====================================================
 #endif
       integer narg, cptArg
       character*24 usrnam
+      logical ex
       logical streql
       external usrnam, streql
 
@@ -146,11 +147,18 @@ c
         write(0,*) 'Invalid equilibrium IDS run number'
         call exit(0)
       end if
-      open(1,file=trim(dg_file),iostat=iret)
-      if(iret.ne.0) then
-        print *,'==== dg2ids: error in opening ',trim(dg_file),
-     .          '. iret = ',iret
+      inquire(file=trim(dg_file),exist=ex)
+      if (.not.ex) then
+        print *,'==== dg2ids: error in opening DG template file '
+     .         ,trim(dg_file),'. File not found!'
         goto 999
+      else
+        open(1,file=trim(dg_file),iostat=iret)
+        if(iret.ne.0) then
+          print *,'==== dg2ids: error in opening DG template file '
+     .           ,trim(dg_file),'. iret = ',iret
+          goto 999
+        end if
       end if
 
       write(*,'(a,i8,a,i8,4a)') 'Shot: ', shot, ' Run: ', run,

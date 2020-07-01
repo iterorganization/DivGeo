@@ -115,7 +115,7 @@ c
       do i = 1, nunits
         jcnt = icnt + npts(i)
         if (rwall(icnt+1).eq.rwall(jcnt) .and.
-     &      zwall(icnt+1).eq.rwall(jcnt)) then
+     &      zwall(icnt+1).eq.zwall(jcnt)) then
           vessel%description_2d(1)%limiter%unit(i)%closed = 1
           allocate(vessel%
      .     description_2d(1)%limiter%unit(i)%outline%r(npts(i)-1) )
