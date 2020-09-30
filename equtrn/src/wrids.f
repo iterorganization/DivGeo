@@ -102,7 +102,7 @@ c
       allocate( vessel%code%commit(1) )
       vessel%code%commit = dg_version
       allocate( vessel%code%repository(1) )
-      vessel%code%repository = "git.iter.org"
+      vessel%code%repository = "ssh://git.iter.org/bnd/divgeo.git"
       allocate( vessel%code%output_flag(1) )
       vessel%code%output_flag(1) = 0
 #if IMAS_MINOR_VERSION > 29
@@ -112,7 +112,8 @@ c
       allocate( vessel%code%library(1)%version(1) )
       vessel%code%library(1)%version = ggd_version
       allocate( vessel%code%library(1)%repository(1) )
-      vessel%code%library(1)%repository = "git.iter.org"
+      vessel%code%library(1)%repository =
+     . "ssh://git.iter.org/imex/ggd.git"
 #endif
 
       allocate( vessel%description_2d(1) )
