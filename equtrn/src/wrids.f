@@ -17,7 +17,7 @@
       integer, intent(out) :: iret
       real(kind=R8), intent(in) :: rwall(ngpr), zwall(ngpr)
       integer, intent(in) :: nunits, npts(ngpr)
-      character*8 imas_version, ual_version
+      character*8 imas_version, ual_version, ggd_version
       character*24 dg_version
       character*8 date
       character*10 ctime
@@ -50,6 +50,10 @@ c
       if (ierror.eq.0) call get_environment_variable
      . ('UAL_VERSION',value=ual_version)
       call get_environment_variable
+     . ('GGD_VERSION',status=ierror, length=lenval)
+      if (ierror.eq.0) call get_environment_variable
+     . ('GGD_VERSION',value=ggd_version)
+      call get_environment_variable
      . ('GIT_VERSION_DG',status=ierror, length=lenval)
       if (ierror.eq.0) call get_environment_variable
      . ('GIT_VERSION_DG',value=dg_version)
@@ -57,10 +61,12 @@ c
 #ifdef USE_PXFGETENV
       CALL PXFGETENV ('IMAS_VERSION', 0, imas_version, lenval, ierror)
       CALL PXFGETENV ('UAL_VERSION', 0, ual_version, lenval, ierror)
+      CALL PXFGETENV ('GGD_VERSION', 0, ggd_version, lenval, ierror)
       CALL PXFGETENV ('GIT_VERSION_DG', 0, dg_version, lenval, ierror)
 #else
       call getenv ('IMAS_VERSION', imas_version)
       call getenv ('UAL_VERSION', ual_version)
+      call getenv ('GGD_VERSION', ggd_version)
       call getenv ('GIT_VERSION_DG', dg_version)
 #endif
 #endif
@@ -99,6 +105,15 @@ c
       vessel%code%repository = "git.iter.org"
       allocate( vessel%code%output_flag(1) )
       vessel%code%output_flag(1) = 0
+#if IMAS_MINOR_VERSION > 29
+      allocate( vessel%code%library(1) )
+      allocate( vessel%code%library(1)%name(1) )
+      vessel%code%library(1)%name = 'GGD'
+      allocate( vessel%code%library(1)%version(1) )
+      vessel%code%library(1)%version = ggd_version
+      allocate( vessel%code%library(1)%repository(1) )
+      vessel%code%library(1)%repository = "git.iter.org"
+#endif
 
       allocate( vessel%description_2d(1) )
       allocate( vessel%description_2d(1)%type%name(1) )

@@ -30,9 +30,9 @@ c
           stop
       end if
 c
-      print *,'desired shift along r in meters ='
+      print *,'desired shift along r in metres ='
       read *,shiftr
-      print *,'desired shift along z in meters ='
+      print *,'desired shift along z in metres ='
       read *,shiftz
       rgr(1:nr)=rgr(1:nr)+shiftr
       zgr(1:nz)=zgr(1:nz)+shiftz
