@@ -2,8 +2,8 @@
 LD_MSCL ?= `pkg-config mscl --libs`
 
 FC       = ifort
-FC_VERSION = $(shell echo `ifort --version | head -1 | awk '{printf "%s ",$$3,"\n"}'`)
-ifeq (${FC_VERSION},12.0.2)
+COMPILER_MAJOR_VERSION = $(shell ${FC} -V 2>&1 | grep -o "Version [0-9]*" | cut -d ' ' -f 2 )
+ifeq ($(shell test ${COMPILER_MAJOR_VERSION} -le 12; echo $$?),0)
 ifdef SOLPS_DEBUG
 FFLAGS   = -g -C -vec_report0 -traceback
 else

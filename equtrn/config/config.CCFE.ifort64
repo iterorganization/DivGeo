@@ -3,9 +3,10 @@ ifndef LD_MSCL
   $(error LD_MSCL not defined)
 endif
 
-FC       = ifort 
+FC       = ifort
+COMPILER_MAJOR_VERSION = $(shell ${FC} -V 2>&1 | grep -o "Version [0-9]*" | cut -d ' ' -f 2 )
 ifdef SOLPS_DEBUG
-FFLAGS   = -g -C -vec_report0 -traceback
+FFLAGS   = -g -C -traceback
 else
 FFLAGS   = -O
 endif
@@ -13,7 +14,11 @@ COMPILE  = ${FC} -c ${FFLAGS}
 CPP      = /lib/cpp -C -traditional -ffreestanding
 
 LDLIBS   = ${LD_MSCL}
-LDFLAGS  = 
+LDFLAGS  =
+ifeq ($(shell test ${COMPILER_MAJOR_VERSION} -le 12; echo $$?),0)
+FFLAGS  += -vec_report0
+LDFLAGS += -i_dynamic
+endif
 
 ifdef IMAS_VERSION
 UAL_MAJOR_VERSION ?= $(shell echo ${UAL_VERSION} | cut -d '.' -f1 )

@@ -12,7 +12,7 @@ CPP      = /lib/cpp -traditional -ffreestanding
 
 DEFINES  = ${SOLPS_CPP}
 LDLIBS   = ${LD_MSCL}
-LDFLAGS  = 
+LDFLAGS  =
 
 ifdef IMAS_VERSION
 UAL_MAJOR_VERSION ?= $(shell echo ${UAL_VERSION} | cut -d '.' -f1 )

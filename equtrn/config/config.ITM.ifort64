@@ -3,7 +3,7 @@ ifndef LD_MSCL
   $(error LD_MSCL not defined)
 endif
 
-FC       = ifort 
+FC       = ifort
 ifdef SOLPS_DEBUG
 FFLAGS   = -g -C -traceback
 else
@@ -14,7 +14,7 @@ CPP      = /lib/cpp -C -traditional -ffreestanding
 
 DEFINES  = ${SOLPS_CPP}
 LDLIBS   = ${LD_MSCL}
-LDFLAGS  = 
+LDFLAGS  =
 
 ifdef IMAS_VERSION
 UAL_MAJOR_VERSION ?= $(shell echo ${UAL_VERSION} | cut -d '.' -f1 )
