@@ -4,24 +4,8 @@ ifndef LD_MSCL
 endif
 
 FC      = ifort
-COMPILER_MAJOR_VERSION = $(shell ${FC} -V 2>&1 | grep -o "Version [0-9]*" | cut -d ' ' -f 2 )
-ifdef SOLPS_DEBUG
-FFLAGS  = -g -C -traceback -debug all
-else
-FFLAGS  = -O3
-endif
-ifeq ($(shell test ${COMPILER_MAJOR_VERSION} -le 12; echo $$?),0)
-FFLAGS += -vec_report0
-endif
 
-COMPILE = ${FC} -c ${FFLAGS}
 CPP     = /lib/cpp -C -traditional
-
-LDLIBS  = ${LD_MSCL} -lstdc++
-ifeq ($(shell test ${COMPILER_MAJOR_VERSION} -le 12; echo $$?),0)
-LDFLAGS = -i_dynamic
-endif
-LDEXTRA =
 
 #!!!Local Variables:
 #!!! mode: Makefile

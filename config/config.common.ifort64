@@ -1,0 +1,7 @@
+CFLAGS = -g
+CC = cc
+
+#!!!Local Variables:
+#!!! mode: Makefile
+#!!! End:
+

@@ -4,17 +4,8 @@ MSCL_ROOT ?= ${IRISLIB}
 LD_MSCL   ?= -L${MSCL_ROOT} -lmscl
 
 FC      = ifort
-ifdef SOLPS_DEBUG
-FFLAGS  = -g -C -traceback -debug all
-else
-FFLAGS  = -O3
-endif
 
-COMPILE = ${FC} -c ${FFLAGS}
 CPP     = /lib/cpp -C -traditional
-
-LDLIBS  = ${LD_MSCL} -lstdc++
-LDEXTRA =
 
 #!!!Local Variables:
 #!!! mode: Makefile
