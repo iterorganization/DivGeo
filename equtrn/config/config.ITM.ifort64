@@ -6,6 +6,8 @@ endif
 FC       = ifort
 CPP      = /lib/cpp -C -traditional -ffreestanding
 
+LD_UAL  += -lxml2 -lstdc++
+
 #!!!Local Variables:
 #!!! mode: Makefile
 #!!! End:
