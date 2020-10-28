@@ -35,7 +35,7 @@ DEFINES += -DIMAS -DUAL_MAJOR_VERSION=${UAL_MAJOR_VERSION} -DIMAS_MINOR_VERSION=
 endif
 endif
 
-!!!Local Variables:
+#!!!Local Variables:
 #!!! mode: Makefile
 #!!! End:
 
