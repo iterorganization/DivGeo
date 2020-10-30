@@ -12,6 +12,8 @@ CPP      = /lib/cpp -traditional
 
 GGD_VERSION ?= 1.9.1
 
+LD_UAL  += -lstdc++
+
 #!!!Local Variables:
 #!!! mode: Makefile
 #!!! End:
