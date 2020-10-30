@@ -121,21 +121,22 @@ dgsymmdg = dg_symm_dg.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o
 dgcut = dgcut.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o
 idsdg = ids2dg.o rdids.o wreqdg.o wrtrdg.o streql.o usrnam.o
 dgids = dg2ids.o rdtrg.o wrids.o streql.o usrnam.o
+
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
 include config/config.${HOST_NAME}.${COMPILER}
-MAKES+= config/config.${HOST_NAME}.${COMPILER}
+MAKES += config/config.${HOST_NAME}.${COMPILER}
 else
 $(error config/config.${HOST_NAME}.${COMPILER} not found.)
 endif
 
 ifeq ($(shell [ -e config/config.common.${COMPILER} ] && echo yes || echo no ),yes)
 include config/config.common.${COMPILER}
-MAKES+= config/config.common.${COMPILER}
+MAKES += config/config.common.${COMPILER}
 endif
 
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER}.local ] && echo yes || echo no ),yes)
 include config/config.${HOST_NAME}.${COMPILER}.local
-MAKES+= config/config.${HOST_NAME}.${COMPILER}.local
+MAKES += config/config.${HOST_NAME}.${COMPILER}.local
 endif
 
 include $(OBJDIR)/LISTOBJ
