@@ -1159,7 +1159,7 @@ Type of boundary condition for the continuity equation for this species at
 the core-edge interface (CEI). The legal values are:
  0 - the default BC depending on the species (old settings)
  1 - density for the highest ion, zero flux for the rest
- 2 - density for the highest ion, zero density for the rest
+ 2 - density for the highest ion, minimal density for the rest
  3 - flux for the highest ion, zero flux for the rest
 Int -n-m-S-s-h-i 0 2
 EnumText102
