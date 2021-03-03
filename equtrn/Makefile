@@ -254,7 +254,7 @@ ${OBJDIR}/${PROG_dg2ids}: $(DGIDS) $(MAKES)
 	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGIDS) $(LDFLAGS) $(LD_UAL) $(LDEXTRA)
 
 clean:
-	cd ${OBJDIR}; rm -rf *.o *.f $(ALL) LISTOBJ dependencies*
+	cd ${OBJDIR}; rm -rf *.o *.f *.f90 *.mod $(ALL) LISTOBJ dependencies*
 	rm -rf .doxygen
 
 TAGS:	tags

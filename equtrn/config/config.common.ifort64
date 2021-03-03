@@ -4,7 +4,7 @@ FFLAGS  += -g -C -traceback
 else
 FFLAGS  += -O
 endif
-COMPILE  = ${FC} -c ${FFLAGS}
+COMPILE  = ${FC} -c ${FFLAGS} -module ${OBJDIR}
 
 DEFINES  = ${SOLPS_CPP}
 LDLIBS   = ${LD_MSCL}
