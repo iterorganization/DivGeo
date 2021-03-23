@@ -9,7 +9,7 @@ FFLAGS   = -O
 endif
 CPP      = /lib/cpp -traditional
 
-GGD_VERSION ?= ${EBVERSIONGGD}
+GGD_VERSION ?= `pkg-config ggd --modversion`
 
 #!!!Local Variables:
 #!!! mode: Makefile

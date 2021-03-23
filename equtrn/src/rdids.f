@@ -24,7 +24,13 @@ c
 c  version : 03.02.20 13:42
 c
       use ids_schemas  ! IGNORE
+     , , only : ids_equilibrium, ids_wall
+#if IMAS_MINOR_VERSION > 8
+      use ids_schemas  ! IGNORE
+     , , only : IDS_REAL_INVALID
+#endif
       use ids_routines ! IGNORE
+     , , only : imas_open_env, imas_close, ids_get, ids_deallocate
       implicit none
 #include "eqdim.inc"
       type(ids_equilibrium) :: eq !< IDS designed to store equilibrium data

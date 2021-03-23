@@ -1,7 +1,13 @@
       subroutine wrids(iret,nunits,npts,rwall,zwall,dg_file,
      ,           treename,shot,run,username,database,version)
       use ids_schemas  ! IGNORE
+     , , only : ids_wall
+#if IMAS_MINOR_VERSION > 8
+      use ids_schemas  ! IGNORE
+     , , only : ids_real
+#endif
       use ids_routines ! IGNORE
+     , , only : imas_create_env, ids_deallocate, ids_put, imas_close
       implicit none
 #include "git_version_DG.h"
 #include "eqdim.inc"

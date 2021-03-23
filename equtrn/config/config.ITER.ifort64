@@ -4,7 +4,7 @@ LD_MSCL ?= `pkg-config mscl --libs`
 FC       = ifort
 CPP      = /lib/cpp -traditional -ffreestanding
 
-GGD_VERSION ?= ${EBVERSIONGGD}
+GGD_VERSION ?= `pkg-config ggd --modversion`
 
 #!!!Local Variables:
 #!!! mode: Makefile
