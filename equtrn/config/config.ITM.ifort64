@@ -7,7 +7,7 @@ CPP      = /lib/cpp -C -traditional -ffreestanding
 
 LD_UAL  += -lxml2 -lstdc++
 
-GGD_VERSION ?= 1.9.1
+GGD_VERSION ?= `pkg-config ggd --modversion`
 
 #!!!Local Variables:
 #!!! mode: Makefile
