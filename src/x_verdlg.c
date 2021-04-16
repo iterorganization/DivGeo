@@ -65,7 +65,7 @@ Widget OpenNewVersionDlg(View w,int bOnlyIfNeeded) {
     SetUserPrefsString(w->xapp,PSTR_DGVERSION,buf);
     UnlockUserPrefsFile(w->xapp);
 
-    if (!strcmp(s,buf)) return;
+    if (!strcmp(s,buf)) return NULL;
   }
 
   wDlg=XtNameToWidget(w->x->wMain,"*"DLG_NEWVERSION);

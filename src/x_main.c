@@ -11,7 +11,7 @@ View w=NULL;
 
 int AAmain(int argc,char** argv);
 
-AAmain(int argc,char** argv) {
+int AAmain(int argc,char** argv) {
 if (getchar()!='\n') {
   a=CreateApp();
   assert(AddEquil(a,"i.eq")==0);
@@ -22,7 +22,7 @@ if (getchar()!='\n') {
   AAmain(argc,argv);
 }
 
-main(int argc,char** argv) {
+int main(int argc,char** argv) {
   int i,err;
   char* s;
   Widget wNewPrefsDlg;

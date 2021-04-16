@@ -1,4 +1,5 @@
 #include "dg.h"
+#include "unistd.h"
 /*#pragma hdrstop*/
 
 static int VectorInRectangle(double x1,double y1,double x2,double y2,

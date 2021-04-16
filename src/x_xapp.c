@@ -470,7 +470,7 @@ static char* XAppResName(XApp xap,int id) {
   return TranslateId(viewMsgs,id);
 }
 
-XAppPause(XApp xap,char* str) {
+void XAppPause(XApp xap,char* str) {
   printf(str);                          /* relcheck_ignore_line */
   ProcessPending(xap->x->wShell);
   getchar();

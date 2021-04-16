@@ -90,6 +90,8 @@ void CbClearHelpLine(Widget wg,XtPointer pWidget,XtPointer pcbs);
 
 void CreateAutosaveInfo(View w);
 
+Widget OpenAutosaveDlg(View w);
+
 #define DISCARD_MESH    0x0001
 #define DISCARD_DOC     0x0002
 
