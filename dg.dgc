@@ -1933,7 +1933,7 @@ text101 0
 VarDefs102 8
 Help
 Help
-text101 53
+text101 54
 This gives you a way - although a clumsy one - to treat limiter and linear
 configurations. The problem is that DG in its present state cannot produce
 correct output files if no x-point is specified, so that one has to cheat
@@ -1942,7 +1942,8 @@ variables works in the following way.
 
 (1) Import a fake single-null equilibrium. The best would be something of a
 very different size, so that it lies completely outside the geometry you
-really want to model. Import the single-null topology. Create a surface in
+really want to model. Make sure that it is of the same sign as your limiter
+equilibrium. Import the single-null topology. Create a surface in
 the core region as usual - although its position does not affect anything.
 
 (2) Create two closed polygons acting as the targets for the fake single-

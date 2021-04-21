@@ -14,6 +14,7 @@ c=====================================================
 c*** Change the sign of the flux
 c=====================================================
       implicit none
+      integer iret,nr,nz,i,j
 #include "eqdim.inc"
       real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real(kind=R8) :: rcntc,psilim,btorc,shift
