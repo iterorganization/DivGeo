@@ -96,7 +96,7 @@ c
       allocate( vessel%code%commit(1) )
       vessel%code%commit = dg_version
       allocate( vessel%code%repository(1) )
-      vessel%code%repository = "git.iter.org"
+      vessel%code%repository = "ssh://git.iter.org/bnd/divgeo.git"
       allocate( vessel%code%output_flag(1) )
       vessel%code%output_flag(1) = 0
 
