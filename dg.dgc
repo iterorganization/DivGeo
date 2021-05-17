@@ -1159,7 +1159,7 @@ Type of boundary condition for the continuity equation for this species at
 the core-edge interface (CEI). The legal values are:
  0 - the default BC depending on the species (old settings)
  1 - density for the highest ion, zero flux for the rest
- 2 - density for the highest ion, zero density for the rest
+ 2 - density for the highest ion, minimal density for the rest
  3 - flux for the highest ion, zero flux for the rest
 Int -n-m-S-s-h-i 0 2
 EnumText102
@@ -1369,7 +1369,7 @@ text101 4
 Numbering offset for the "additional surfaces".
 
 If > 0, do not forget to add the necessary number of data
-linesto the begining of the list (block 3B)
+lines to the beginning of the list (block 3B)
 Int -n-m-S-s-h-i 0 2
 EnumText102
 text101 0
@@ -1933,16 +1933,17 @@ text101 0
 VarDefs102 8
 Help
 Help
-text101 50
+text101 51
 This gives you a way - although a clumsy one - to treat a limiter
 configurations. The problem is that DG in its present state cannot produce
-correct output files if no x-points is specified, so that one has to cheat
+correct output files if no x-point is specified, so that one has to cheat
 the code somehow. The temporary solution realised with this set of
 variables works in the following way.
 
 (1) Import a fake single-null equilibrium. The best would be something of a
 very different size, so that it lies completely outside the geometry you
-really want to model. Import the single-null topology. Create a surface in
+really want to model. Make sure that it is of the same sign as your limiter
+equilibrium. Import the single-null topology. Create a surface in
 the core region as usual - although its position does not affect anything.
 
 (2) Create two closed polygons acting as the targets for the fake single-
@@ -1990,7 +1991,7 @@ text101 0
 lm_pntrt
 Core width
 text101 1
-Here you specify the radial extent of the grid into the cpre region [m]
+Here you specify the radial extent of the grid into the core region [m]
 Float -n-m-S-s-h-i 0 2
 EnumText102
 text101 0
@@ -2491,7 +2492,7 @@ surfaces" which are not invalidated through either "Elements not for
 Eirene" in DG or by the ADDUSR routine, and the "non-default standard
 surfaces" corresponding to the recycling strata.
 
-At the begining of the Eirene run, a data file with coordinates of the
+At the beginning of the Eirene run, a data file with coordinates of the
 end points of the segments where these data are set will be created for
 every combination of the values of the selected variables found in the
 Eirene input data. These files can then be used for plotting the surfaces

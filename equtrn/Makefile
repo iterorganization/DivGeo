@@ -89,23 +89,23 @@ ifdef IMAS_VERSION
 ALL += ${PROG_ids2dg} ${PROG_dg2ids}
 endif
 
-creq =  cropequ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
-dgdg =	dg2dg.o rdeqdg.o wreqdg.o rdeqlh.o double.o open_files.o
-dgminuspsidg =	dg_minuspsi_dg.o rdeqdg.o wreqdg.o rdeqlh.o
-dgef =	dg2ef.o rdeqdg.o wrefit.o rdeqlh.o open_files.o
-efdg =	ef2dg.o wreqdg.o rdefit.o open_files.o
+creq = cropequ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
+dgdg = dg2dg.o rdeqdg.o wreqdg.o rdeqlh.o double.o open_files.o
+dgminuspsidg = dg_minuspsi_dg.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
+dgef = dg2ef.o rdeqdg.o wrefit.o rdeqlh.o open_files.o
+efdg = ef2dg.o wreqdg.o rdefit.o open_files.o
 fiestadg = fiesta2dg.o wreqdg.o rdfiesta.o open_files.o
-crdg =	cr2dg.o wreqdg.o rdcreate.o open_files.o
-vrdg =	vr2dg.o wreqdg.o rdeqvr.o open_files.o
-nkdg =	nk2dg.o wreqdg.o rdeqnk.o open_files.o
+crdg = cr2dg.o wreqdg.o rdcreate.o open_files.o
+vrdg = vr2dg.o wreqdg.o rdeqvr.o open_files.o
+nkdg = nk2dg.o wreqdg.o rdeqnk.o open_files.o
 nkndg =  nkn2dg.o wreqdg.o rdeqnk2.o
-jtdg =	jt2dg.o rdeqjt.o wreqdg.o rdeqjh.o open_files.o
-dgvr =	dg2vr.o rdeqdg.o wreqvr.o rdeqlh.o open_files.o
-rsps =	risepsi.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
-mveq =	move_equ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
-preq =	prinequ.o rdeqdg.o rdeqlh.o
-pbdg =	pb2dg.o rdeqpb.o wreqdg.o open_files.o
-ptdg =	pt2dg.o
+jtdg = jt2dg.o rdeqjt.o wreqdg.o rdeqjh.o open_files.o
+dgvr = dg2vr.o rdeqdg.o wreqvr.o rdeqlh.o open_files.o
+rsps = risepsi.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
+mveq = move_equ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o
+preq = prinequ.o rdeqdg.o rdeqlh.o
+pbdg = pb2dg.o rdeqpb.o wreqdg.o open_files.o
+ptdg = pt2dg.o
 culham = culham.o rdefit.o wreqdg.o open_files.o double.o
 sstdg = sst2dg.o wreqdg.o open_files.o
 shotfile2dg = shotfile2dg.o wreqdg.o
@@ -114,16 +114,17 @@ dgsymmdg = dg_symm_dg.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o
 dgcut = dgcut.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o
 idsdg = ids2dg.o rdids.o wreqdg.o wrtrdg.o streql.o usrnam.o
 dgids = dg2ids.o rdtrg.o wrids.o streql.o usrnam.o
+
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
 include config/config.${HOST_NAME}.${COMPILER}
-MAKES+= config/config.${HOST_NAME}.${COMPILER}
+MAKES += config/config.${HOST_NAME}.${COMPILER}
 else
 $(error config/config.${HOST_NAME}.${COMPILER} not found.)
 endif
 
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER}.local ] && echo yes || echo no ),yes)
 include config/config.${HOST_NAME}.${COMPILER}.local
-MAKES+= config/config.${HOST_NAME}.${COMPILER}.local
+MAKES += config/config.${HOST_NAME}.${COMPILER}.local
 endif
 
 include $(OBJDIR)/LISTOBJ
@@ -166,10 +167,10 @@ all: VERSION $(ALL:%=$(OBJDIR)/%) .doxygen
 .PHONY: VERSION clean listobj depend all tags force
 
 ${OBJDIR}/${PROG_cropequ}: $(CREQ) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(CREQ) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(CREQ) $(LDLIBS) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_dg2dg}: $(DGDG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGDG) $(LDLIBS) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_culham}: $(CULHAM) $(MAKES)
 	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(CULHAM) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
@@ -178,7 +179,7 @@ ${OBJDIR}/${PROG_sst2dg}: $(SSTDG) $(MAKES)
 	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(SSTDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_dg2ef}: $(DGEF) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGEF) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGEF) $(LDLIBS) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_dg2vr}: $(DGVR) $(MAKES)
 	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGVR) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
