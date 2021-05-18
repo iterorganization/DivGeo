@@ -31,6 +31,7 @@
 #include <Xm/TextF.h>
 #include <Xm/Frame.h>
 #include <Xm/ScrolledW.h>
+#include <Xm/RepType.h>
 
 #include "dg.h"     /* Include DivGeo core */
 

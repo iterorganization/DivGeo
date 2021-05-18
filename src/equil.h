@@ -76,6 +76,7 @@ int DistributeSurfaces(App a,int area,int count,double a1,double a2,
 int RebuildCarreSurfaces(App a,int area);
 
 int WriteDgEquil(Equil eq,char* fName,int sx,int sy);
+int WriteSplineEquil(Equil eq,char* fName,int sx,int sy);
 
 /* Private functions - only for Act_xxx
 */

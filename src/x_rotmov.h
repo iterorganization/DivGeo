@@ -9,6 +9,7 @@ void CbGluePoints(Widget,XtPointer xtpV,XtPointer);
 void CbReduceElements(Widget,XtPointer xtpV,XtPointer);
 void CbGroupNormals(Widget,XtPointer xtpV,XtPointer);
 
+Widget OpenStretchDlg(View w);
 Widget OpenStretchRotateDlg(View w);
 Widget OpenSetAngleDlg(View w);
 
