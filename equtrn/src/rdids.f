@@ -351,6 +351,11 @@ c
       zwall = 0.0_R8
 c
       if (do_wall) then
+#if IMAS_MINOR_VERSION > 32
+        if (vessel%temperature_reference%data .ne. IDS_REAL_INVALID)
+     .    write(0,*) 'Wall IDS has reference temperature ',
+     .                vessel%temperature_reference%data, ' K'
+#endif
         if (associated(vessel%description_2d(1)%limiter%unit)) then
           nlimunits = size(vessel%description_2d(1)%limiter%unit)
           nunits = nunits + nlimunits
