@@ -1569,14 +1569,15 @@ EnumText102
 text101 0
 Help
 Help
-text101 7
+text101 8
 Here you can specify an AMDS model to be used for atomic and molecular
 reactions in Eirene.
-If no such reference is present, then the default reactions for each species
-are used.
-If this layer is present, then the defaults are not applied and all the
-needed reactions are to be specified in the AMDS models. Multiple layers of
-this type can be present.
+Multiple layers of this type can be present.
+For any species with no inelastic collisions listed in the chosen AMDS
+model(s), a set of default reactions will be used.
+For species involved as primaries in the AMDS model reactions, all the
+needed inelastic reactions are to be specified in the AMDS model(s).
+Default elastic collisions, when relevant, will still be added.
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
