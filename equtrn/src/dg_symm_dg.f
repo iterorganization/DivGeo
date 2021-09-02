@@ -25,6 +25,7 @@ c=====================================================
       real(kind=R8) :: rcntc,psilim,btorc,psisymm
       real(kind=R8) :: alpha=0.0_R8
       character*256 arg
+      logical used
 #ifndef NAGFOR
       integer iargc
 #else
@@ -37,11 +38,23 @@ c
       if(iargc().ge.4) then
         call getarg(4, arg)
         read(arg,*) alpha
+      else if(iargc().eq.3) then
+        inquire(unit=3,opened=used)
+        if(.not.used) then
+          call getarg(3, arg)
+          read(arg,*) alpha
+        end if
       endif
 #else
       if(command_argument_count().ge.4) then
         call get_command_argument(4, arg, lenval, ierror)
         read(arg,*) alpha
+      else if(command_argument_count().eq.3) then
+        inquire(unit=3,opened=used)
+        if(.not.used) then
+          call get_command_argument(3, arg, lenval, ierror)
+          read(arg,*) alpha
+        endif
       endif
 #endif
       write(*,*) 'Using ', alpha, ' in the symmetrization'
