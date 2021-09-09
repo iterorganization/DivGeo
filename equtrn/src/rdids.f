@@ -8,7 +8,7 @@
 c=====================================================
 c*** where:
 c***
-c*** i)  nr, nz, and redge define the rectangular mesh used
+c*** i)  nr and nz define the size of the rectangular mesh used
 c***     to store the psi values,
 c***
 c*** ii) psimin is the flux value at the magnetic axis; psilim is the
@@ -27,7 +27,7 @@ c
      , , only : ids_equilibrium, ids_wall
 #if IMAS_MINOR_VERSION > 8
       use ids_schemas  ! IGNORE
-     , , only : IDS_REAL_INVALID
+     , , only : IDS_REAL_INVALID, IDS_INT_INVALID
 #endif
       use ids_routines ! IGNORE
      , , only : imas_open_env, imas_close, ids_get, ids_deallocate
@@ -55,7 +55,7 @@ c
       real(kind=R8), intent(out) :: rwall(ngpr), zwall(ngpr)
       integer, intent(out) :: nunits, npts(ngpr)
       integer :: nlimunits, nmobunits, nvslunits, nelem
-      integer i,j,k,icnt,jcnt,idx,status
+      integer i,j,k,icnt,jcnt,idx,status,igrid
 #if IMAS_MINOR_VERSION > 27
       integer iside, kk, ks, kkk, kks
       real(kind=R8) :: t1, t2, ra, rb, za, zb, rc, zc, rd, zd,
@@ -64,6 +64,7 @@ c
 #endif
 #if IMAS_MINOR_VERSION < 9
       real(kind=R8), parameter :: IDS_REAL_INVALID = -9.0E40_R8
+      integer, parameter :: IDS_INT_INVALID = -9999999
 #endif
 
 c=====================================================
@@ -74,6 +75,7 @@ c
         call imas_open_env( treename, shot, run,
      &   idx, username, database, version, status )
 
+!! We take the 2nd occurence of the equilibrium, i.e. the SPIDER equilibrium, not CHEASE
 #if UAL_MAJOR_VERSION > 3
         if (status.eq.0)
      &   call ids_get( idx, "equilibrium/1", eq, status )
@@ -82,6 +84,7 @@ c
 #endif
         if (status.ne.0 .or.
      &      eq%ids_properties%homogeneous_time < 0) then ! second attempt
+                                                         ! fetch from the public database
           status = 0
           call imas_close( idx, status )
           if (status.ne.0) stop 'Error closing IMAS database !'
@@ -254,13 +257,26 @@ c
           do_equilibrium = .false.
         end if
 
-!! We take the 2nd occurence of the equilibrium, i.e. the SPIDER equilibrium, not CHEASE
+        igrid = IDS_INT_INVALID
         if (do_equilibrium) then
-          if (eq%time_slice(step)%profiles_2d(1)%grid_type%index.ne.1)
-     >     then
+          if (associated(eq%time_slice(step)%profiles_2d)) then
+            do i = 1, size(eq%time_slice(step)%profiles_2d)
+              if
+     .         (eq%time_slice(step)%profiles_2d(i)%grid_type%index.eq.1)
+     >          igrid = i
+            end do
+          end if
+          if (igrid.eq.IDS_INT_INVALID) then
             write(0,*) 'IDS equilibrium grid is not rectangular !'
-            write(0,*) 'Grid type : ',
-     .       eq%time_slice(step)%profiles_2d(2)%grid_type%index
+             if (.not.associated(eq%time_slice(step)%profiles_2d)) then
+               write(0,*) 'No profiles_2d grid declared !'
+             else if (size(eq%time_slice(step)%profiles_2d).eq.1) then
+               write(0,*) 'Grid type : ',
+     .          eq%time_slice(step)%profiles_2d(1)%grid_type%index
+             else
+               write(0,*) 'Grid types : ',
+     .          eq%time_slice(step)%profiles_2d(:)%grid_type%index
+             end if
             iret = 1
             do_equilibrium = .false.
           end if
@@ -275,8 +291,8 @@ c
         end if
 
         if (do_equilibrium) then
-          nr = size(eq%time_slice(step)%profiles_2d(1)%grid%dim1)
-          nz = size(eq%time_slice(step)%profiles_2d(1)%grid%dim2)
+          nr = size(eq%time_slice(step)%profiles_2d(igrid)%grid%dim1)
+          nz = size(eq%time_slice(step)%profiles_2d(igrid)%grid%dim2)
           ipestg = 3
           write(*,*) ' nr, nz : ', nr, nz
           if(nr.gt.ngpr) then
@@ -323,19 +339,20 @@ c
             psilim = 0.0_R8
           end if
           do i=1,nr
-            rgr(i) = eq%time_slice(step)%profiles_2d(1)%grid%dim1(i)
-            if (associated(eq%time_slice(step)%profiles_2d(1)%phi)) then
-              fg(i) = eq%time_slice(step)%profiles_2d(1)%phi(i,1)
+            rgr(i) = eq%time_slice(step)%profiles_2d(igrid)%grid%dim1(i)
+            if (associated(eq%time_slice(step)%profiles_2d(igrid)%phi))
+     .       then
+              fg(i) = eq%time_slice(step)%profiles_2d(igrid)%phi(i,1)
             else
               fg(i) = IDS_REAL_INVALID
             endif
           enddo
           do j=1,nz
-            zgr(j) = eq%time_slice(step)%profiles_2d(1)%grid%dim2(j)
+            zgr(j) = eq%time_slice(step)%profiles_2d(igrid)%grid%dim2(j)
           enddo
           do i=1,nr
             do j=1,nz
-              pfm(i,j) = eq%time_slice(step)%profiles_2d(1)%psi(i,j)
+              pfm(i,j) = eq%time_slice(step)%profiles_2d(igrid)%psi(i,j)
             enddo
           enddo
         end if
@@ -802,5 +819,6 @@ cxpb Otherwise, X is the intersection of (12) and (34)
 c
       if (do_equilibrium) call ids_deallocate( eq )
       if (do_wall) call ids_deallocate( vessel )
+      return
 c
       end

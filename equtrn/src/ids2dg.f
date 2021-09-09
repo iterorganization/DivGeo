@@ -47,14 +47,14 @@ c
 c=====================================================
 c*** Translation of IDS equilibrium and wall data into dg compatible format
 c=====================================================
+      use imas_constants_module
       implicit none
 #include "eqdim.inc"
       integer iret, nr, nz, ipestg
       real(kind=R8) :: fg(ngpr)
       real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real(kind=R8) :: rcntc,psimin,psilim,btorc
-      real(kind=R8), parameter :: twopi =
-     *     2.0_R8*3.141592653589793238462643383280_R8
+      real(kind=R8) :: twopi
       real(kind=R8) :: rwall(ngpr), zwall(ngpr)
       integer :: nunits, npts(ngpr)
 
@@ -250,6 +250,7 @@ c
       end if
 c
       if (do_equilibrium) then
+        twopi = 2.0_R8 * imas_constants%pi
         open(2,file=trim(dg_file)//'.equ')
         psimin = psimin / twopi
         psilim = psilim / twopi
