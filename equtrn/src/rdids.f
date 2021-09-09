@@ -40,8 +40,8 @@ c
                                        !< If negative, do not read any equilibrium
       integer, intent(in) :: wall      !< The shot number of the IDS wall being read
                                        !< If negative, do not read wall description
-      integer, intent(in) :: occ       !< Occurence index of the IDS equilibrium being read
-                                       !< Default is 1 (meaning the 2nd occurence!)
+      integer, intent(in) :: occ       !< Occurrence index of the IDS equilibrium being read
+                                       !< Default is 1 (meaning the 2nd occurrence!)
       integer, intent(in) :: step      !< The time slice index of the IDS equilibrium being read
       integer, intent(in) :: run       !< The run number of the IDS equilibrium being read
       integer, intent(in) :: wall_run  !< The run number of the wall IDS being read
@@ -77,7 +77,7 @@ c
         call imas_open_env( treename, shot, run,
      &   idx, username, database, version, status )
 
-!! We take the 2nd occurence of the equilibrium, i.e. the SPIDER equilibrium, not CHEASE
+!! We take the 2nd occurrence of the equilibrium, i.e. the SPIDER equilibrium, not CHEASE
 #if UAL_MAJOR_VERSION > 3
         if (status.eq.0)
      &   call ids_get( idx, "equilibrium/"//int2str(occ), eq, status )
@@ -102,7 +102,7 @@ c
      &        eq%ids_properties%homogeneous_time .ge. 0) then
             write(*,*) 'Got IDS equilibrium from: '
             write(*,'(3(a,i8),a,a,a,a24)')
-     .       ' Shot: ', shot, ' Run: ', run, ' Occurence: ', occ,
+     .       ' Shot: ', shot, ' Run: ', run, ' Occurrence: ', occ,
      .       ' User: ', 'public', ' Database: ', trim(database)
           else
             do_equilibrium = .false.
@@ -111,7 +111,7 @@ c
         else
           write(*,*) 'Got IDS equilibrium from: '
           write(*,'(3(a,i8),2(a,a24))')
-     .     ' Shot: ', shot, ' Run: ', run, ' Occurence: ', occ,
+     .     ' Shot: ', shot, ' Run: ', run, ' Occurrence: ', occ,
      .     ' User: ', trim(username), ' Database: ', trim(database)
         end if
       end if

@@ -5,7 +5,7 @@
 !!
 !!      @verbatim
 !!          $ids2dg --shot <shot> --run <run> --wall <wall> --wall_run <wall_run>
-!!          --step <step> --occurence <occurence>
+!!          --step <step> --occurrence <occurrence>
 !!          --username <username> --database <database> --version <version>
 !!          <DG output filename stem>
 !!      @endverbatim
@@ -14,25 +14,25 @@
 !!
 !!      @verbatim
 !!          $ids2dg -s <shot> -r <run> -w <wall> -R <wall_run>
-!!          -S <step> -o <occurence>
+!!          -S <step> -o <occurrence>
 !!          -u <username> -d <database> -v <version> <DG output filename stem>
 !!      @endverbatim
 !!
 !!      The arguments marked with < ... > are the parameters of the IDS database
 !!      where the data is to be stored:
-!!          - \b shot:      The shot number of the equilibrium IDS being read
-!!                          (if the number is negative, no equilibrium will be translated)
-!!          - \b run:       The run number of the equilibrium IDS being read
-!!          - \b wall:      The shot number of the wall IDS being read (default: same as <shot>)
-!!                          (if the number is negative, no wall description will be translated)
-!!          - \b wall_run:  The run number of the wall IDS being read (default: same as <run>)
-!!          - \b occurence: The occurence index of the equilibrium IDS to be read (default: 1)
-!!                          (Recall occurence indices start at zero !)
-!!          - \b step:      The time slice index for the equilibrium IDS (default: 1)
-!!          - \b username:  Creator/owner of the IMAS IDS database (default: $USER)
-!!          - \b database:  IMAS IDS database name
-!!                          (i. e. solps-iter, iter, aug) (default: $DEVICE)
-!!          - \b version:   Major version of the IMAS IDS database (default: 3)
+!!          - \b shot:       The shot number of the equilibrium IDS being read
+!!                           (if the number is negative, no equilibrium will be translated)
+!!          - \b run:        The run number of the equilibrium IDS being read
+!!          - \b wall:       The shot number of the wall IDS being read (default: same as <shot>)
+!!                           (if the number is negative, no wall description will be translated)
+!!          - \b wall_run:   The run number of the wall IDS being read (default: same as <run>)
+!!          - \b occurrence: The occurrence index of the equilibrium IDS to be read (default: 1)
+!!                           (Recall occurrence indices start at zero !)
+!!          - \b step:       The time slice index for the equilibrium IDS (default: 1)
+!!          - \b username:   Creator/owner of the IMAS IDS database (default: $USER)
+!!          - \b database:   IMAS IDS database name
+!!                           (i. e. solps-iter, iter, aug) (default: $DEVICE)
+!!          - \b version:    Major version of the IMAS IDS database (default: 3)
 !!      Example of the command:
 !!      @verbatim
 !!          $ids2dg
@@ -51,7 +51,7 @@ c
 c=====================================================
 c*** Translation of IDS equilibrium and wall data into dg compatible format
 c=====================================================
-      use imas_constants_module
+      use imas_constants_module, only: imas_constants
       implicit none
 #include "eqdim.inc"
       integer iret, nr, nz, ipestg
@@ -72,7 +72,7 @@ c=====================================================
                            !< If negative, no equilibrium IDS is translated
       integer :: wall      !< The shot number of the IDS wall being read
                            !< If negative, no wall description IDS is translated
-      integer :: occ       !< The occurence index for the chosen IDS equilibrium
+      integer :: occ       !< The occurrence index for the chosen IDS equilibrium
       integer :: step      !< The time slice index for the chosen IDS equilibrium
       integer :: run       !< The run number of the IDS equilibrium being read
       integer :: wall_run  !< The run number of the IDS wall being read
@@ -151,7 +151,7 @@ c
             call get_command_argument( cptArg + 1, step_string )
             !! Transform dummy string variable to integer
             read( step_string, *) step
-          case("--occurence","-o")
+          case("--occurrence","-o")
             call get_command_argument( cptArg + 1, occ_string )
             !! Transform dummy string variable to integer
             read( occ_string, *) occ
@@ -201,8 +201,9 @@ c
      &   '(if negative, do not import an equilibrium IDS)'
         write(0,'(a)') '--run,  -r:               '//
      &   'Run number of the equilibrium IDS to import'
-        write(0,'(a)') '--occurence, -o:          '//
-     &   'Occurence index of the equilibrium IDS to import (default: 1)'
+        write(0,'(a)') '--occurrence, -o:         '//
+     &   'Occurrence index of the equilibrium IDS to import '//
+     &   '(default: 1)'
         write(0,'(a)') '--step, -S:               '//
      &   'Time step of the equilibrium IDS to import (default: 1)'
         write(0,'(a)') '--wall, -w:               '//
@@ -236,7 +237,7 @@ c
         call exit(0)
       end if
       if (do_equilibrium.and..not.(0.le.occ)) then
-        write(0,*) 'Invalid equilibrium occurence index'
+        write(0,*) 'Invalid equilibrium occurrence index'
         call exit(0)
       end if
       if (do_wall.and..not.(0.le.wall_run.and.wall_run.le.99999)) then
@@ -248,7 +249,7 @@ c
       if (do_equilibrium) write(*,'(2(a,i8),2(a,a24),2(a,i8))')
      . ' Shot: ', shot, ' Run: ', run,
      . ' User: ', trim(username), ' Database: ', trim(database),
-     . ' Occurence: ', occ, ' Step: ', step
+     . ' Occurrence: ', occ, ' Step: ', step
       if (do_wall .and. wall.ne.shot)
      > write(*,'(2(a,i8),2(a,a24))')
      . ' Wall: ', wall, ' Run: ', wall_run,
