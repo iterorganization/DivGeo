@@ -68,7 +68,7 @@ c
       real(kind=R8), parameter :: IDS_REAL_INVALID = -9.0E40_R8
       integer, parameter :: IDS_INT_INVALID = -9999999
 #endif
-      character(len=24) :: md_base
+      character(len=24) :: md_base, eq_occ
       logical streql
       external streql
 
@@ -81,11 +81,16 @@ c
      &   idx, username, database, version, status )
 
 !! We take the 2nd occurrence of the equilibrium, i.e. the SPIDER equilibrium, not CHEASE
+        if (occ.eq.0) then
+          eq_occ = "equilibrium"
+        else
+          eq_occ = "equilibrium/"//int2str(occ)
+        end if
 #if UAL_MAJOR_VERSION > 3
         if (status.eq.0)
-     &   call ids_get( idx, "equilibrium/"//int2str(occ), eq, status )
+     &   call ids_get( idx, trim(eq_occ), eq, status )
 #else
-        call ids_get( idx, "equilibrium/"//int2str(occ), eq )
+        call ids_get( idx, trim(eq_occ), eq )
 #endif
         if (.not.streql(username,'public').and.(status.ne.0 .or.
      &      eq%ids_properties%homogeneous_time < 0)) then ! second attempt
@@ -97,9 +102,9 @@ c
      &     idx, "public", database, version, status )
 #if UAL_MAJOR_VERSION > 3
           if (status.eq.0)
-     &     call ids_get( idx, "equilibrium/"//int2str(occ), eq, status )
+     &     call ids_get( idx, trim(eq_occ), eq, status )
 #else
-          call ids_get( idx, "equilibrium/"//int2str(occ), eq )
+          call ids_get( idx, trim(eq_occ), eq )
 #endif
           if (status.eq.0 .and.
      &        eq%ids_properties%homogeneous_time .ge. 0) then
