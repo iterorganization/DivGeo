@@ -1,4 +1,4 @@
-      subroutine rdids(treename,shot,wall,run,wall_run,step,
+      subroutine rdids(treename,shot,wall,run,wall_run,occ,step,
      ,           username,database,version,
      ,           do_equilibrium,do_wall,
      ,           iret,ipestg,nr,nz,
@@ -40,6 +40,8 @@ c
                                        !< If negative, do not read any equilibrium
       integer, intent(in) :: wall      !< The shot number of the IDS wall being read
                                        !< If negative, do not read wall description
+      integer, intent(in) :: occ       !< Occurence index of the IDS equilibrium being read
+                                       !< Default is 1 (meaning the 2nd occurence!)
       integer, intent(in) :: step      !< The time slice index of the IDS equilibrium being read
       integer, intent(in) :: run       !< The run number of the IDS equilibrium being read
       integer, intent(in) :: wall_run  !< The run number of the wall IDS being read
@@ -78,9 +80,9 @@ c
 !! We take the 2nd occurence of the equilibrium, i.e. the SPIDER equilibrium, not CHEASE
 #if UAL_MAJOR_VERSION > 3
         if (status.eq.0)
-     &   call ids_get( idx, "equilibrium/1", eq, status )
+     &   call ids_get( idx, "equilibrium/"//int2str(occ), eq, status )
 #else
-        call ids_get( idx, "equilibrium/1", eq )
+        call ids_get( idx, "equilibrium/"//int2str(occ), eq )
 #endif
         if (status.ne.0 .or.
      &      eq%ids_properties%homogeneous_time < 0) then ! second attempt
@@ -92,15 +94,15 @@ c
      &     idx, "public", database, version, status )
 #if UAL_MAJOR_VERSION > 3
           if (status.eq.0)
-     &     call ids_get( idx, "equilibrium/1", eq, status )
+     &     call ids_get( idx, "equilibrium/"//int2str(occ), eq, status )
 #else
-          call ids_get( idx, "equilibrium/1", eq )
+          call ids_get( idx, "equilibrium/"//int2str(occ), eq )
 #endif
           if (status.eq.0 .and.
      &        eq%ids_properties%homogeneous_time .ge. 0) then
             write(*,*) 'Got IDS equilibrium from: '
-            write(*,'(2(a,i8),2(a,a24))')
-     .       ' Shot: ', shot, ' Run: ', run,
+            write(*,'(3(a,i8),a,a,a,a24)')
+     .       ' Shot: ', shot, ' Run: ', run, ' Occurence: ', occ,
      .       ' User: ', 'public', ' Database: ', trim(database)
           else
             do_equilibrium = .false.
@@ -108,8 +110,8 @@ c
           end if
         else
           write(*,*) 'Got IDS equilibrium from: '
-          write(*,'(2(a,i8),2(a,a24))')
-     .     ' Shot: ', shot, ' Run: ', run,
+          write(*,'(3(a,i8),2(a,a24))')
+     .     ' Shot: ', shot, ' Run: ', run, ' Occurence: ', occ,
      .     ' User: ', trim(username), ' Database: ', trim(database)
         end if
       end if
@@ -821,4 +823,46 @@ c
       if (do_wall) call ids_deallocate( vessel )
       return
 c
-      end
+      contains
+
+      function int2str(intval) result(string)
+      integer , intent(in) :: intval
+      character(len=2-max(sign(1,intval),0)+max(
+     ,    min(abs(intval)/10**1,1)*1,
+     ,    min(abs(intval)/10**2,1)*2,
+     ,    min(abs(intval)/10**3,1)*3,
+     ,    min(abs(intval)/10**4,1)*4,
+     ,    min(abs(intval)/10**5,1)*5,
+     ,    min(abs(intval)/10**6,1)*6,
+     ,    min(abs(intval)/10**7,1)*7,
+     ,    min(abs(intval)/10**8,1)*8,
+     ,    min(abs(intval)/10**9,1)*9) ) :: string
+      integer :: absn,j,k,is
+      absn = abs(intval)
+      if ( absn == intval ) then
+            is = 1
+      else
+            is = 2
+            string(1:1) = "-"
+      end if
+      do j=len(string),is,-1
+            k = modulo(absn,10)+1
+            string(j:j) = "0123456789"(k:k)
+            absn = absn / 10
+      end do
+      return
+      end function int2str
+
+  !> Write a real to a string with 15 digits
+  !> +1.23456789012345E000
+      function real2str(realval) result(string)
+      character(*), parameter :: SAMPLE = '+1.23456789012345E000'
+      !                                     0.10000000000000E+03
+      !                                    -0.10000000000000E+03
+      double precision, intent(in) :: realval
+      character(len(SAMPLE)) :: string
+
+      write( string, '(es21.14)' ) realval
+      end function real2str
+
+      end subroutine rdids
