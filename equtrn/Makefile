@@ -119,7 +119,7 @@ shotfile2dg = shotfile2dg.o wreqdg.o
 jetppf2dg = jetppf2dg.o wreqdg.o
 dgsymmdg = dg_symm_dg.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o
 dgcut = dgcut.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o
-idsdg = ids2dg.o rdids.o wreqdg.o wrtrdg.o streql.o usrnam.o
+idsdg = ids2dg.o rdids.o wreqdg.o wrtrdg.o chcase.o streql.o usrnam.o
 dgids = dg2ids.o rdtrg.o wrids.o streql.o usrnam.o
 
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)

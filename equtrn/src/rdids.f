@@ -68,6 +68,9 @@ c
       real(kind=R8), parameter :: IDS_REAL_INVALID = -9.0E40_R8
       integer, parameter :: IDS_INT_INVALID = -9999999
 #endif
+      character(len=24) :: md_base
+      logical streql
+      external streql
 
 c=====================================================
 c
@@ -84,9 +87,9 @@ c
 #else
         call ids_get( idx, "equilibrium/"//int2str(occ), eq )
 #endif
-        if (status.ne.0 .or.
-     &      eq%ids_properties%homogeneous_time < 0) then ! second attempt
-                                                         ! fetch from the public database
+        if (.not.streql(username,'public').and.(status.ne.0 .or.
+     &      eq%ids_properties%homogeneous_time < 0)) then ! second attempt
+                                                          ! fetch from the public database
           status = 0
           call imas_close( idx, status )
           if (status.ne.0) stop 'Error closing IMAS database !'
@@ -108,11 +111,14 @@ c
             do_equilibrium = .false.
             write(*,*) 'Error reading equilibrium IDS !'
           end if
-        else
+        else if (status.eq.0) then
           write(*,*) 'Got IDS equilibrium from: '
           write(*,'(3(a,i8),2(a,a24))')
      .     ' Shot: ', shot, ' Run: ', run, ' Occurrence: ', occ,
      .     ' User: ', trim(username), ' Database: ', trim(database)
+        else
+          do_equilibrium = .false.
+          write(*,*) 'Error reading equilibrium IDS !'
         end if
       end if
 
@@ -134,8 +140,10 @@ c
           status = 0
           call imas_close( idx, status )
           if (status.ne.0) stop 'Error closing IMAS database !'
+          md_base = trim(database)//'_MD'
+          call chcase(1, md_base)
           call imas_open_env( treename, wall, wall_run,
-     &     idx, username, trim(database)//'_MD', version, status )
+     &     idx, username, trim(md_base), version, status )
 #if UAL_MAJOR_VERSION > 3
           if (status.eq.0) call ids_get( idx, "wall", vessel, status )
 #else
@@ -147,8 +155,8 @@ c
             write(*,'(2(a,i8),2(a,a24))')
      .       ' Shot: ', wall, ' Run: ', wall_run,
      .       ' User: ', trim(username),
-     .       ' Database: ', trim(database)//'_MD'
-          else
+     .       ' Database: ', trim(md_base)
+          else if (.not.streql(username,'public')) then
             status = 0
             call imas_close( idx, status )
             if (status.ne.0) stop 'Error closing IMAS database !'
@@ -170,7 +178,7 @@ c
               call imas_close( idx, status )
               if (status.ne.0) stop 'Error closing IMAS database !'
               call imas_open_env( treename, wall, wall_run,
-     &         idx, "public", trim(database)//'_MD', version, status )
+     &         idx, "public", trim(md_base), version, status )
 #if UAL_MAJOR_VERSION > 3
               if (status.eq.0)
      &         call ids_get( idx, "wall", vessel, status )
@@ -183,12 +191,15 @@ c
                 write(*,'(2(a,i8),2(a,a24))')
      .           ' Shot: ', wall, ' Run: ', wall_run,
      .           ' User: ', 'public',
-     .           ' Database: ', trim(database)//'_MD'
+     .           ' Database: ', trim(md_base)
               else
                 do_wall = .false.
                 write(*,*) 'Error reading wall description IDS !'
               end if
             end if
+          else if (status.ne.0) then
+            do_wall = .false.
+            write(*,*) 'Error reading wall description IDS !'
           end if
         else
           write(*,*) 'Got IDS wall data from: '

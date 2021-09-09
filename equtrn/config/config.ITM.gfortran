@@ -12,7 +12,7 @@ CPP      = /lib/cpp -traditional
 
 GGD_VERSION ?= `pkg-config ggd --modversion`
 
-LD_UAL  += -lstdc++
+LDEXTRA += -lstdc++
 
 #!!!Local Variables:
 #!!! mode: Makefile
