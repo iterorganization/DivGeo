@@ -21,7 +21,7 @@
 !!      The arguments marked with < ... > are the parameters of the IDS database
 !!      where the data is to be stored:
 !!          - \b shot:       The shot number of the equilibrium IDS being read
-!!                           (if the number is negative, no equilibrium will be translated)
+!!                           (if the number is negative or missing, no equilibrium will be translated)
 !!          - \b run:        The run number of the equilibrium IDS being read
 !!          - \b wall:       The shot number of the wall IDS being read (default: same as <shot>)
 !!                           (if the number is negative, no wall description will be translated)
@@ -113,6 +113,8 @@ c
       shot_string = ' '
       wall_string = ' '
       wall_run_string = ' '
+      shot = -1
+      wall = -1
       step = 1
       occ = 1
 #ifndef NO_GETENV
@@ -198,7 +200,7 @@ c
         write(0,'(a)') 'Available options are:'
         write(0,'(a)') '--shot, -s:               '//
      &   'Shot number of the equilibrium IDS to import '//
-     &   '(if negative, do not import an equilibrium IDS)'
+     &   '(if negative or missing, do not import an equilibrium IDS)'
         write(0,'(a)') '--run,  -r:               '//
      &   'Run number of the equilibrium IDS to import'
         write(0,'(a)') '--occurrence, -o:         '//
