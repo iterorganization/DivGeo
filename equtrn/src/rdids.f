@@ -29,6 +29,10 @@ c
       use ids_schemas  ! IGNORE
      , , only : IDS_REAL_INVALID, IDS_INT_INVALID
 #endif
+#if IMAS_MINOR_VERSION > 33
+      use ids_schemas  ! IGNORE
+     , , only : get_max_occurrences
+#endif
       use ids_routines ! IGNORE
      , , only : imas_open_env, imas_close, ids_get, ids_deallocate
       implicit none
@@ -57,7 +61,7 @@ c
       real(kind=R8), intent(out) :: rwall(ngpr), zwall(ngpr)
       integer, intent(out) :: nunits, npts(ngpr)
       integer :: nlimunits, nmobunits, nvslunits, nelem
-      integer i,j,k,icnt,jcnt,idx,status,igrid
+      integer i,j,k,icnt,jcnt,idx,status,igrid,iocc
 #if IMAS_MINOR_VERSION > 27
       integer iside, kk, ks, kkk, kks
       real(kind=R8) :: t1, t2, ra, rb, za, zb, rc, zc, rd, zd,
@@ -69,18 +73,23 @@ c
       integer, parameter :: IDS_INT_INVALID = -9999999
 #endif
       character(len=24) :: md_base, eq_occ
-      logical streql
+      logical streql, public
       external streql
 
 c=====================================================
 c
       iret = 0
+      public = streql(username,'public')
       !! Create and modify new shot/run
       if (do_equilibrium) then
         call imas_open_env( treename, shot, run,
      &   idx, username, database, version, status )
 
 !! We take the 2nd occurrence of the equilibrium, i.e. the SPIDER equilibrium, not CHEASE
+#if IMAS_MINOR_VERSION > 33
+        if (occ.gt.get_max_occurrences(eq))
+     &   stop 'Invalid equilibrium occurrence number !'
+#endif
         if (occ.eq.0) then
           eq_occ = "equilibrium"
         else
@@ -92,10 +101,25 @@ c
 #else
         call ids_get( idx, trim(eq_occ), eq )
 #endif
-        if (.not.streql(username,'public').and.(status.ne.0 .or.
-     &      eq%ids_properties%homogeneous_time < 0)) then ! second attempt
-                                                          ! fetch from the public database
+        iocc = occ
+        if (occ.ne.0.and. ! try the default occurrence if the non-default one failed
+     &   (status.ne.0 .or. eq%ids_properties%homogeneous_time < 0)) then
+          iocc = 0
           status = 0
+#if UAL_MAJOR_VERSION > 3
+          call ids_get( idx, "equilibrium", eq, status )
+          if (status.eq.0)
+     &     write(*,*) 'Reverting to default occurrence !'
+#else
+          call ids_get( idx, "equilibrium", eq )
+#endif
+        end if
+        if (.not.public.and.(status.ne.0 .or.
+     &      eq%ids_properties%homogeneous_time < 0)) then ! third attempt
+                                                          ! fetch from the public database
+          iocc = occ
+          status = 0
+          public = .true.
           call imas_close( idx, status )
           if (status.ne.0) stop 'Error closing IMAS database !'
           call imas_open_env( treename, shot, run,
@@ -106,11 +130,24 @@ c
 #else
           call ids_get( idx, trim(eq_occ), eq )
 #endif
+          if (occ.ne.0.and. ! try the default occurrence if the non-default one failed
+     &     (status.ne.0 .or. eq%ids_properties%homogeneous_time < 0))
+     &     then
+            iocc = 0
+            status = 0
+#if UAL_MAJOR_VERSION > 3
+            call ids_get( idx, "equilibrium", eq, status )
+            if (status.eq.0)
+     &       write(*,*) 'Reverting to default occurrence !'
+#else
+            call ids_get( idx, "equilibrium", eq )
+#endif
+          end if
           if (status.eq.0 .and.
      &        eq%ids_properties%homogeneous_time .ge. 0) then
             write(*,*) 'Got IDS equilibrium from: '
             write(*,'(3(a,i8),a,a,a,a24)')
-     .       ' Shot: ', shot, ' Run: ', run, ' Occurrence: ', occ,
+     .       ' Shot: ', shot, ' Run: ', run, ' Occurrence: ', iocc,
      .       ' User: ', 'public', ' Database: ', trim(database)
           else
             do_equilibrium = .false.
@@ -119,7 +156,7 @@ c
         else if (status.eq.0) then
           write(*,*) 'Got IDS equilibrium from: '
           write(*,'(3(a,i8),2(a,a24))')
-     .     ' Shot: ', shot, ' Run: ', run, ' Occurrence: ', occ,
+     .     ' Shot: ', shot, ' Run: ', run, ' Occurrence: ', iocc,
      .     ' User: ', trim(username), ' Database: ', trim(database)
         else
           do_equilibrium = .false.
@@ -163,6 +200,7 @@ c
      .       ' Database: ', trim(md_base)
           else if (.not.streql(username,'public')) then
             status = 0
+            public = .true.
             call imas_close( idx, status )
             if (status.ne.0) stop 'Error closing IMAS database !'
             call imas_open_env( treename, wall, wall_run,
@@ -221,9 +259,15 @@ c
         if (status.eq.0 .and.
      &      vessel%ids_properties%homogeneous_time .ge. 0) then
           write(*,*) 'Got IDS wall data from: '
-          write(*,'(2(a,i8),2(a,a24))')
-     .     ' Shot: ', shot, ' Run: ', run,
-     .     ' User: ', trim(username), ' Database: ', trim(database)
+          if (.not.public) then
+            write(*,'(2(a,i8),2(a,a24))')
+     .       ' Shot: ', shot, ' Run: ', run,
+     .       ' User: ', trim(username), ' Database: ', trim(database)
+          else
+            write(*,'(2(a,i8),(a,a),(a,a24))')
+     .       ' Shot: ', wall, ' Run: ', wall_run,
+     .       ' User: ', 'public', ' Database: ', trim(database)
+          end if
         else
           do_wall = .false.
           write(*,*) 'Error reading wall description IDS !'
