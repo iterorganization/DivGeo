@@ -181,12 +181,14 @@ c
         end if
         call imas_open_env( treename, wall, wall_run,
      &     idx, username, database, version, status )
-        if (database.eq.'iter') then
-          call imas_open_env( treename, wall, wall_run,
-     &     idx, username, 'ITER', version, status )
-        else if (database.eq.'ITER') then
-          call imas_open_env( treename, wall, wall_run,
-     &     idx, username, 'iter', version, status )
+        if (status.ne.0) then
+          if (database.eq.'iter') then
+            call imas_open_env( treename, wall, wall_run,
+     &       idx, username, 'ITER', version, status )
+          else if (database.eq.'ITER') then
+            call imas_open_env( treename, wall, wall_run,
+     &       idx, username, 'iter', version, status )
+          end if
         end if
 #if UAL_MAJOR_VERSION > 3
         if (status.eq.0) call ids_get( idx, "wall", vessel, status )
