@@ -19,7 +19,7 @@
 !!          - \b shot:     The shot number of the wall IDS being written
 !!          - \b run:      The run number of the wall IDS being written
 !!          - \b database: IMAS IDS database name
-!!                         (i. e. solps-iter, iter, aug) (default: $DEVICE)
+!!                         (i. e. solps-iter, ITER, aug) (default: $DEVICE)
 !!          - \b version:  Major version of the IMAS IDS database (default: 3)
 !!      Example of the command:
 !!      @verbatim
@@ -49,7 +49,7 @@ c=====================================================
       character(len=24) :: treename   !< The name of the IMAS IDS database
       character(len=24) :: username   !< Creator/owner of the IMAS IDS database
       character(len=24) :: database   !< IMAS IDS database name
-                                      !< (i. e. solps-iter, iter, aug)
+                                      !< (i. e. solps-iter, ITER, aug)
       character(len=24) :: version    !< Major version of the IMAS IDS database
       integer :: shot      !< The shot number of the wall IDS being written
       integer :: run       !< The run number of the wall IDS being written
@@ -161,6 +161,7 @@ c
         end if
       end if
 
+      if (database.eq.'iter') database = 'ITER'
       write(*,'(a,i8,a,i8,4a)') 'Shot: ', shot, ' Run: ', run,
      & ' User: ', trim(username), ' Database: ', trim(database)
 

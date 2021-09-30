@@ -18,7 +18,7 @@
       integer, intent(in) :: run       !< The run number of the wall IDS being written
       character(len=24), intent(in) :: username   !< Creator/owner of the IMAS IDS database
       character(len=24), intent(in) :: database   !< IMAS IDS database name
-            !< (i. e. solps-iter, iter, aug)
+            !< (i. e. solps-iter, ITER, aug)
       character(len=24), intent(in) :: version    !< Major version of the IMAS IDS database
       integer, intent(out) :: iret
       real(kind=R8), intent(in) :: rwall(ngpr), zwall(ngpr)

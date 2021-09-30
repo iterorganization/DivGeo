@@ -50,8 +50,8 @@ c
       integer, intent(in) :: run       !< The run number of the IDS equilibrium being read
       integer, intent(in) :: wall_run  !< The run number of the wall IDS being read
       character(len=24), intent(in) :: username   !< Creator/owner of the IMAS IDS database
-      character(len=24), intent(in) :: database   !< IMAS IDS database name
-            !< (i. e. solps-iter, iter, aug)
+      character(len=24), intent(inout) :: database   !< IMAS IDS database name
+            !< (i. e. solps-iter, ITER, aug)
       character(len=24), intent(in) :: version    !< Major version of the IMAS IDS database
       logical, intent(inout) :: do_equilibrium, do_wall
       integer, intent(out) :: iret,ipestg,nr,nz
@@ -84,7 +84,15 @@ c
       if (do_equilibrium) then
         call imas_open_env( treename, shot, run,
      &   idx, username, database, version, status )
-
+        if (status.ne.0) then
+          if (database.eq.'iter') then
+            call imas_open_env( treename, shot, run,
+     &       idx, username, 'ITER', version, status )
+          else if (database.eq.'ITER') then
+            call imas_open_env( treename, shot, run,
+     &       idx, username, 'iter', version, status )
+          end if
+        end if
 !! We take the 2nd occurrence of the equilibrium, i.e. the SPIDER equilibrium, not CHEASE
 #if IMAS_MINOR_VERSION > 33
         if (occ.gt.get_max_occurrences(eq))
@@ -122,6 +130,7 @@ c
           public = .true.
           call imas_close( idx, status )
           if (status.ne.0) stop 'Error closing IMAS database !'
+          if (database.eq.'iter') database = 'ITER'
           call imas_open_env( treename, shot, run,
      &     idx, "public", database, version, status )
 #if UAL_MAJOR_VERSION > 3
@@ -172,6 +181,13 @@ c
         end if
         call imas_open_env( treename, wall, wall_run,
      &     idx, username, database, version, status )
+        if (database.eq.'iter') then
+          call imas_open_env( treename, wall, wall_run,
+     &     idx, username, 'ITER', version, status )
+        else if (database.eq.'ITER') then
+          call imas_open_env( treename, wall, wall_run,
+     &     idx, username, 'iter', version, status )
+        end if
 #if UAL_MAJOR_VERSION > 3
         if (status.eq.0) call ids_get( idx, "wall", vessel, status )
 #else
@@ -203,6 +219,7 @@ c
             public = .true.
             call imas_close( idx, status )
             if (status.ne.0) stop 'Error closing IMAS database !'
+            if (database.eq.'iter') database = 'ITER'
             call imas_open_env( treename, wall, wall_run,
      &       idx, "public", database, version, status )
 #if UAL_MAJOR_VERSION > 3

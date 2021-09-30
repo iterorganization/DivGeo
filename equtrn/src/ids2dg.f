@@ -31,7 +31,7 @@
 !!          - \b step:       The time slice index for the equilibrium IDS (default: 1)
 !!          - \b username:   Creator/owner of the IMAS IDS database (default: $USER)
 !!          - \b database:   IMAS IDS database name
-!!                           (i. e. solps-iter, iter, aug) (default: $DEVICE)
+!!                           (i. e. solps-iter, ITER, aug) (default: $DEVICE)
 !!          - \b version:    Major version of the IMAS IDS database (default: 3)
 !!      Example of the command:
 !!      @verbatim
@@ -66,7 +66,7 @@ c=====================================================
       character(len=24) :: treename   !< The name of the IMAS IDS database
       character(len=24) :: username   !< Creator/owner of the IMAS IDS database
       character(len=24) :: database   !< IMAS IDS database name
-                                      !< (i. e. solps-iter, iter, aug)
+                                      !< (i. e. solps-iter, ITER, aug)
       character(len=24) :: version    !< Major version of the IMAS IDS database
       integer :: shot      !< The shot number of the IDS equilibrium being read
                            !< If negative, no equilibrium IDS is translated
