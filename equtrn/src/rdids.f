@@ -29,8 +29,8 @@ c
       use ids_schemas  ! IGNORE
      , , only : IDS_REAL_INVALID, IDS_INT_INVALID
 #endif
-#if IMAS_MINOR_VERSION > 33
-      use ids_schemas  ! IGNORE
+#if ( UAL_MAJOR_VERSION > 3 && UAL_MINOR_VERSION > 9 )
+      use ids_routines  ! IGNORE
      , , only : get_max_occurrences
 #endif
       use ids_routines ! IGNORE
@@ -94,7 +94,7 @@ c
           end if
         end if
 !! We take the 2nd occurrence of the equilibrium, i.e. the SPIDER equilibrium, not CHEASE
-#if IMAS_MINOR_VERSION > 33
+#if ( UAL_MAJOR_VERSION > 3 && UAL_MINOR_VERSION > 9 )
         if (occ.gt.get_max_occurrences(eq))
      &   stop 'Invalid equilibrium occurrence number !'
 #endif
