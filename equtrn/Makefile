@@ -287,7 +287,7 @@ ${OBJDIR}/dependencies:
 	${MAKE} listobj
 	${MAKE} depend
 
-.doxygen: ${SRCS} ${MAKES}
+.doxygen: ${SRCS} Doxyfile ${MAKES}
 	doxygen
 	cd doxygen/latex; ${MAKE}; cd .. ; ln -sf latex/refman.pdf .
 	touch $@
