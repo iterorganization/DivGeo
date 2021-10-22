@@ -9,7 +9,6 @@
 #if UAL_MICRO_VERSION > 2
 #define GET_MAX_OCCURRENCES_PRESENT
 #endif
-#else
 #endif
 #endif
 #endif
