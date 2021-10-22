@@ -1,3 +1,19 @@
+#if UAL_MAJOR_VERSION > 4
+#define GET_MAX_OCCURRENCES_PRESENT
+#else
+#if UAL_MAJOR_VERSION > 3
+#if UAL_MINOR_VERSION > 9
+#define GET_MAX_OCCURRENCES_PRESENT
+#else
+#if UAL_MINOR_VERSION > 8
+#if UAL_MICRO_VERSION > 2
+#define GET_MAX_OCCURRENCES_PRESENT
+#endif
+#else
+#endif
+#endif
+#endif
+#endif
       subroutine rdids(treename,shot,wall,run,wall_run,occ,step,
      ,           username,database,version,
      ,           do_equilibrium,do_wall,
@@ -29,8 +45,8 @@ c
       use ids_schemas  ! IGNORE
      , , only : IDS_REAL_INVALID, IDS_INT_INVALID
 #endif
-#if ( UAL_MAJOR_VERSION > 3 && UAL_MINOR_VERSION > 9 )
-      use ids_routines  ! IGNORE
+#ifdef GET_MAX_OCCURRENCES_PRESENT
+      use ids_routines ! IGNORE
      , , only : get_max_occurrences
 #endif
       use ids_routines ! IGNORE
@@ -94,7 +110,7 @@ c
           end if
         end if
 !! We take the 2nd occurrence of the equilibrium, i.e. the SPIDER equilibrium, not CHEASE
-#if ( UAL_MAJOR_VERSION > 3 && UAL_MINOR_VERSION > 9 )
+#ifdef GET_MAX_OCCURRENCES_PRESENT
         if (occ.gt.get_max_occurrences(eq))
      &   stop 'Invalid equilibrium occurrence number !'
 #endif

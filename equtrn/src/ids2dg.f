@@ -51,7 +51,8 @@ c
 c=====================================================
 c*** Translation of IDS equilibrium and wall data into dg compatible format
 c=====================================================
-      use imas_constants_module, only: imas_constants
+      use imas_constants_module  ! IGNORE
+     , , only: imas_constants
       implicit none
 #include "eqdim.inc"
       integer iret, nr, nz, ipestg
