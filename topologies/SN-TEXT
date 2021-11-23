@@ -2,253 +2,57 @@ DivGeo data file>>
 
 This file should not be modified manually.
 
-DG version:             2.01
-File format version:    114
-Creation time:          Fri Feb  2 11:03:52 2001
-Last Modified time:     Mon Feb 13 17:09:02 2006
+DG version:             2.11a
+File format version:    115
+Creation time:          Thu Oct 28 12:12:16 2021
+Last Modified time:     Fri Nov 19 09:49:31 2021
 
-Original filename:      /b2-ext/B2E/solps4.0/src/DivGeo/dg/class/mast/tt.m4-AK.dg
-Equilibrium file:       /b2-ext/B2E/solps4.0/src/DivGeo/dg/class/mast/efm0137.96.equ
-Template file:          /b2-ext/B2E/solps4.0/src/DivGeo/dg/class/mast/vv.ogr
-Elements:               32
-Radial cells:           12SOL 12PFR 12Core
-Poloidal Cells:         12OU 6IU 24SOL
+Original filename:      SN-TEXT
+GIT version:            3.0.7-46-gd93a40c-dirty
+
+Radial cells:           0SOL 0PFR 0Core
+Poloidal Cells:         1TL 1LL 1SOL
 
 ------------------------------------------------------------------------
 
 DgFile 114 {
 ; For compatibility
 }
-Equil100 /b2-ext/B2E/solps4.0/src/DivGeo/dg/class/mast/efm0137.96.equ
-EquilHints114 1.509375e+02 -2.000000e+03 2.000000e+03 2.000000e+03
-Template110 0.000000e+00 0.000000e+00 0.000000e+00 1.000000e+00 /b2-ext/B2E/solps4.0/src/DivGeo/dg/class/mast/vv.ogr
-Nodes100 37
-7.985388e+02 -1.825946e+03
-1.199823e+03 -1.825946e+03
-1.484429e+03 -1.825946e+03
-1.208546e+03 -2.006960e+03
-7.809484e+02 1.826538e+03
-1.097456e+03 1.826538e+03
-1.568935e+03 1.826538e+03
-1.081730e+03 1.934872e+03
-2.806965e+02 -1.214034e+03
-2.806965e+02 -1.453234e+03
-2.806965e+02 -1.663355e+03
-2.009631e+02 -1.459801e+03
-2.794401e+02 1.310815e+03
-2.794401e+02 1.474230e+03
-2.794401e+02 1.663178e+03
-1.913495e+02 1.475506e+03
-9.958083e+02 1.001673e+03
-1.396611e+03 1.001673e+03
-1.396611e+03 8.029843e+02
-1.499381e+03 8.029843e+02
-1.499381e+03 4.021814e+02
-9.996101e+02 -9.982929e+02
-1.399940e+03 -9.982929e+02
-1.399940e+03 -7.998389e+02
-1.499167e+03 -7.998389e+02
-1.499167e+03 -3.995092e+02
-1.904845e+02 -4.991583e+02
-1.904845e+02 2.631709e+00
-1.904845e+02 5.015379e+02
-5.782548e+02 -1.546483e+03
-7.866231e+02 -1.716762e+03
-2.892279e+02 -1.671952e+03
-7.832623e+02 1.716833e+03
-5.737738e+02 1.546553e+03
-2.892279e+02 1.673143e+03
-4.191780e+02 1.547674e+03
-4.158172e+02 -1.547603e+03
-Elems100 32
-0 1 1
-1 2 2
-2 3 3
-3 0 4
-5 4 5
-6 5 8
-7 6 7
-4 7 6
-8 9 9
-9 10 10
-10 11 11
-11 8 12
-13 12 13
-14 13 16
-15 14 15
-12 15 14
-17 16 19
-18 17 20
-19 18 21
-20 19 27
-21 22 22
-22 23 23
-23 24 24
-24 25 25
-27 26 17
-28 27 18
-29 30 29
-33 32 31
-34 35 26
-35 33 32
-31 36 30
-36 29 33
+EquilHints114 6.800000e+02 -4.000000e+02 1.480000e+03 4.000000e+02
+Nodes100 0
+Elems100 0
 XPointsEx114 1
-58 200 60 202 4 9.714551e-04 5.951345e+02 1.145900e+03
+68 255 70 257 0 -3.697575e-08 7.873496e+02 -1.025017e-06
 GridPointSegs114 3
-4 1 -1.000000e+00 -1.000000e+00 1 1 1 4 -1 5.527811e+01 1.001286e+03 +u+t
-OU
-Outer target
-4 2 -1.000000e+00 -1.000000e+00 2 1 1 4 -1 1.455912e+02 5.268113e+02 +u-t
-IU
-Inner target
-4 3 -1.000000e+00 -1.000000e+00 3 -1 1 4 -1 2.371103e+02 4.649395e+03 +u-t
+0 2 -1.000000e+00 -1.000000e+00 1 1 1 0 -1 1.366863e+02 1.262131e+02 +u+t
+TL
+Top divertor
+0 3 -1.000000e+00 -1.000000e+00 2 1 1 0 -1 2.233137e+02 1.262131e+02 +u-t
+LL
+Lower divertor
+0 1 -1.000000e+00 -1.000000e+00 3 -1 1 0 -1 -4.625017e+01 1.449462e+03 +u-t
 SOL
 SOL
 SurfaceZones114 3
-1 3 -1 1 -i
+1 3 -1 1 -i 5
 SOL
 SOL
-2 2 -1 -1 -i
+2 1 -1 1 -i 19
 PFR
 PFR
-3 3 -1 -1 +i
+3 3 -1 -1 +i -1
 Core
 Core
-SurfacesEx114 36
-1 8.997485e-04 9.693750e+02 -6.120757e+02 +a1l0.000971455L-0.00127865n11h0.0318681H0.138066w4C1
-1 8.083236e-04 9.693750e+02 -6.128440e+02 +a1l0.000971455L-0.00127865n11h0.0318681H0.138066w4C1
-1 6.967795e-04 9.693750e+02 -6.137813e+02 +a1l0.000971455L-0.00127865n11h0.0318681H0.138066w4C1
-1 5.647152e-04 9.693750e+02 -6.148910e+02 +a1l0.000971455L-0.00127865n11h0.0318681H0.138066w4C1
-1 4.117295e-04 9.693750e+02 -6.161765e+02 +a1l0.000971455L-0.00127865n11h0.0318681H0.138066w4C1
-1 2.374216e-04 9.693750e+02 -6.176412e+02 +a1l0.000971455L-0.00127865n11h0.0318681H0.138066w4C1
-1 4.139031e-05 9.693750e+02 -6.192884e+02 +a1l0.000971455L-0.00127865n11h0.0318681H0.138066w4C1
-1 -1.767653e-04 9.693750e+02 -6.211215e+02 +a1l0.000971455L-0.00127865n11h0.0318681H0.138066w4C1
-1 -4.174463e-04 9.693750e+02 -6.231440e+02 +a1l0.000971455L-0.00127865n11h0.0318681H0.138066w4C1
-1 -6.810537e-04 9.693750e+02 -6.253739e+02 +a1l0.000971455L-0.00127865n11h0.0318681H0.138066w4C1
-1 -9.679885e-04 9.693750e+02 -6.278848e+02 +a1l0.000971455L-0.00127865n11h0.0318681H0.138066w4C1
-1 -1.278652e-03 9.693750e+02 -6.306034e+02 +a1l0.000971455L-0.00127865n11h0.0318681H0.138066w4C1
-3 1.204092e-03 9.693750e+02 -6.095184e+02 +a3l0.000971455L0.00827143n11h0.0318681H0.138066w4C1
-3 1.500699e-03 9.693750e+02 -6.071145e+02 +a3l0.000971455L0.00827143n11h0.0318681H0.138066w4C1
-3 1.862580e-03 9.693750e+02 -6.041882e+02 +a3l0.000971455L0.00827143n11h0.0318681H0.138066w4C1
-3 2.291033e-03 9.693750e+02 -6.007235e+02 +a3l0.000971455L0.00827143n11h0.0318681H0.138066w4C1
-3 2.787362e-03 9.693750e+02 -5.967100e+02 +a3l0.000971455L0.00827143n11h0.0318681H0.138066w4C1
-3 3.352866e-03 9.693750e+02 -5.921942e+02 +a3l0.000971455L0.00827143n11h0.0318681H0.138066w4C1
-3 3.988846e-03 9.693750e+02 -5.872334e+02 +a3l0.000971455L0.00827143n11h0.0318681H0.138066w4C1
-3 4.696604e-03 9.693750e+02 -5.817127e+02 +a3l0.000971455L0.00827143n11h0.0318681H0.138066w4C1
-3 5.477441e-03 9.693750e+02 -5.757053e+02 +a3l0.000971455L0.00827143n11h0.0318681H0.138066w4C1
-3 6.332657e-03 9.693750e+02 -5.692565e+02 +a3l0.000971455L0.00827143n11h0.0318681H0.138066w4C1
-3 7.263554e-03 9.693750e+02 -5.622452e+02 +a3l0.000971455L0.00827143n11h0.0318681H0.138066w4C1
-3 8.271433e-03 9.693750e+02 -5.548826e+02 +a3l0.000971455L0.00827143n11h0.0318681H0.138066w4C1
-2 1.336044e-03 3.707031e+02 1.303238e+03 +a2l0.000971455L0.012412n11h0.0318681H0.138066w4C1
-2 1.800890e-03 3.707031e+02 1.313765e+03 +a2l0.000971455L0.012412n11h0.0318681H0.138066w4C1
-2 2.368031e-03 3.707031e+02 1.325816e+03 +a2l0.000971455L0.012412n11h0.0318681H0.138066w4C1
-2 3.039506e-03 3.707031e+02 1.339303e+03 +a2l0.000971455L0.012412n11h0.0318681H0.138066w4C1
-2 3.817355e-03 3.707031e+02 1.354089e+03 +a2l0.000971455L0.012412n11h0.0318681H0.138066w4C1
-2 4.703616e-03 3.707031e+02 1.369996e+03 +a2l0.000971455L0.012412n11h0.0318681H0.138066w4C1
-2 5.700328e-03 3.707031e+02 1.386900e+03 +a2l0.000971455L0.012412n11h0.0318681H0.138066w4C1
-2 6.809531e-03 3.707031e+02 1.404737e+03 +a2l0.000971455L0.012412n11h0.0318681H0.138066w4C1
-2 8.033263e-03 3.707031e+02 1.423433e+03 +a2l0.000971455L0.012412n11h0.0318681H0.138066w4C1
-2 9.373563e-03 3.707031e+02 1.442997e+03 +a2l0.000971455L0.012412n11h0.0318681H0.138066w4C1
-2 1.083247e-02 3.707031e+02 1.463548e+03 +a2l0.000971455L0.012412n11h0.0318681H0.138066w4C1
-2 1.241202e-02 3.707031e+02 1.485183e+03 +a2l0.000971455L0.012412n11h0.0318681H0.138066w4C1
-GridPointsEx114 74
-1 1.387000e-01 +z1n11h0.1387H0.0375367w4C1
-1 2.655933e-01 +z1n11h0.1387H0.0375367w4C1
-1 3.812020e-01 +z1n11h0.1387H0.0375367w4C1
-1 4.860480e-01 +z1n11h0.1387H0.0375367w4C1
-1 5.806533e-01 +z1n11h0.1387H0.0375367w4C1
-1 6.655399e-01 +z1n11h0.1387H0.0375367w4C1
-1 7.412299e-01 +z1n11h0.1387H0.0375367w4C1
-1 8.082453e-01 +z1n11h0.1387H0.0375367w4C1
-1 8.671079e-01 +z1n11h0.1387H0.0375367w4C1
-1 9.183399e-01 +z1n11h0.1387H0.0375367w4C1
-1 9.624633e-01 +z1n11h0.1387H0.0375367w4C1
-2 2.655930e-01 +z2n5h0.265593H0.0816601w4C1
-2 4.860476e-01 +z2n5h0.265593H0.0816601w4C1
-2 6.655396e-01 +z2n5h0.265593H0.0816601w4C1
-2 8.082451e-01 +z2n5h0.265593H0.0816601w4C1
-2 9.183399e-01 +z2n5h0.265593H0.0816601w4C1
-3 4.166660e-02 +z3n23h0.0416666H0.0416667w4C1
-3 8.333321e-02 +z3n23h0.0416666H0.0416667w4C1
-3 1.249998e-01 +z3n23h0.0416666H0.0416667w4C1
-3 1.666665e-01 +z3n23h0.0416666H0.0416667w4C1
-3 2.083331e-01 +z3n23h0.0416666H0.0416667w4C1
-3 2.499997e-01 +z3n23h0.0416666H0.0416667w4C1
-3 2.916664e-01 +z3n23h0.0416666H0.0416667w4C1
-3 3.333330e-01 +z3n23h0.0416666H0.0416667w4C1
-3 3.749997e-01 +z3n23h0.0416666H0.0416667w4C1
-3 4.166663e-01 +z3n23h0.0416666H0.0416667w4C1
-3 4.583330e-01 +z3n23h0.0416666H0.0416667w4C1
-3 4.999997e-01 +z3n23h0.0416666H0.0416667w4C1
-3 5.416664e-01 +z3n23h0.0416666H0.0416667w4C1
-3 5.833330e-01 +z3n23h0.0416666H0.0416667w4C1
-3 6.249997e-01 +z3n23h0.0416666H0.0416667w4C1
-3 6.666664e-01 +z3n23h0.0416666H0.0416667w4C1
-3 7.083331e-01 +z3n23h0.0416666H0.0416667w4C1
-3 7.499998e-01 +z3n23h0.0416666H0.0416667w4C1
-3 7.916665e-01 +z3n23h0.0416666H0.0416667w4C1
-3 8.333332e-01 +z3n23h0.0416666H0.0416667w4C1
-3 8.749999e-01 +z3n23h0.0416666H0.0416667w4C1
-3 9.166666e-01 +z3n23h0.0416666H0.0416667w4C1
-3 9.583333e-01 +z3n23h0.0416666H0.0416667w4C1
-4 5.000000e-02 +z4n19h0.05H0.05w4C1
-4 1.000000e-01 +z4n19h0.05H0.05w4C1
-4 1.500000e-01 +z4n19h0.05H0.05w4C1
-4 2.000000e-01 +z4n19h0.05H0.05w4C1
-4 2.500000e-01 +z4n19h0.05H0.05w4C1
-4 3.000000e-01 +z4n19h0.05H0.05w4C1
-4 3.500000e-01 +z4n19h0.05H0.05w4C1
-4 4.000000e-01 +z4n19h0.05H0.05w4C1
-4 4.500000e-01 +z4n19h0.05H0.05w4C1
-4 5.000000e-01 +z4n19h0.05H0.05w4C1
-4 5.500000e-01 +z4n19h0.05H0.05w4C1
-4 6.000000e-01 +z4n19h0.05H0.05w4C1
-4 6.500000e-01 +z4n19h0.05H0.05w4C1
-4 7.000000e-01 +z4n19h0.05H0.05w4C1
-4 7.500000e-01 +z4n19h0.05H0.05w4C1
-4 8.000000e-01 +z4n19h0.05H0.05w4C1
-4 8.500000e-01 +z4n19h0.05H0.05w4C1
-4 9.000000e-01 +z4n19h0.05H0.05w4C1
-4 9.500000e-01 +z4n19h0.05H0.05w4C1
-5 1.387000e-01 +z5n11h0.1387H0.0375367w4C1
-5 2.655933e-01 +z5n11h0.1387H0.0375367w4C1
-5 3.812020e-01 +z5n11h0.1387H0.0375367w4C1
-5 4.860480e-01 +z5n11h0.1387H0.0375367w4C1
-5 5.806533e-01 +z5n11h0.1387H0.0375367w4C1
-5 6.655399e-01 +z5n11h0.1387H0.0375367w4C1
-5 7.412299e-01 +z5n11h0.1387H0.0375367w4C1
-5 8.082453e-01 +z5n11h0.1387H0.0375367w4C1
-5 8.671079e-01 +z5n11h0.1387H0.0375367w4C1
-5 9.183399e-01 +z5n11h0.1387H0.0375367w4C1
-5 9.624633e-01 +z5n11h0.1387H0.0375367w4C1
-6 2.655930e-01 +z6n5h0.265593H0.0816601w4C1
-6 4.860476e-01 +z6n5h0.265593H0.0816601w4C1
-6 6.655396e-01 +z6n5h0.265593H0.0816601w4C1
-6 8.082451e-01 +z6n5h0.265593H0.0816601w4C1
-6 9.183399e-01 +z6n5h0.265593H0.0816601w4C1
+SurfacesEx114 0
+GridPointsEx114 0
 Separators101 0
 Sources104 0
-Chords106 0
-MarkedElems100 14
-6
-5
-4
-7
-13
-12
-15
-14
-18
-17
-16
-25
-24
-27
+Chords115 0
+MarkedElems100 0
 MarkedSeparators104 0
 MarkedSources104 0
 MarkedChords110 0
-VarSetDefs101 40
+VarSetDefs101 39
 Main
 General Surface Data
 text101 0
@@ -385,7 +189,7 @@ text101 4
 Energy of thermal particles
 >0 : monoenergetic particles, E=ewall
 =0 : Thompson distribution with EWBIN
-<0 : maxwellian with T=ewall
+<0 : Maxwellian with T=ewall
 Float -n+m-S-s-h-i 0 11
 EnumText102
 text101 0
@@ -427,14 +231,6 @@ Physical sputtering byte of ILSPT (6B)
 Int -n+m-S-s-h-i 0 13
 EnumText102
 text101 0
-Help
-Help
-text101 2
-Here you specify the data related to the "additional surfaces" - in terms
-of Eirene.
-Text +n-m-S-s-h-i 0 0
-EnumText102
-text101 0
 jlcol
 Plotting Colour
 text101 5
@@ -444,6 +240,14 @@ ILCOL (3B) - colours for on-screen Eirene graphics:
 2 red    5 magenta   8 black
 3 blue   6 yellow     and so on
 Int -n+m-S-s-h-i 0 6
+EnumText102
+text101 0
+Help
+Help
+text101 2
+Here you specify the data related to the "additional surfaces" - in terms
+of Eirene.
+Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
 Vars110 19
@@ -464,8 +268,8 @@ Vars110 19
 0
 C
 2
-Click ? for help
 1
+Click ? for help
 jedgi1
 Inner edge of inner target
 text101 0
@@ -670,7 +474,7 @@ Help
 text101 3
 This is an obsolete specification for calculation of radiative wall loading.
 
-It only works in Sonnet outpu mode.
+It only works in Sonnet output mode.
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
@@ -792,6 +596,16 @@ for the 1-D plots.
 Elem -n-m-S-s-h-i 0 2
 EnumText102
 text101 0
+pltz_lbl
+Zone label
+text101 4
+This is the label to mark the plot zone - 8 symbols max.
+It will appear in the filenames for the plot data produced
+by b2plot for this zone.
+Must not contain ellipses, commas, or asterisks.
+Text -n-m-S-s-h+i 0 3
+EnumText102
+text101 0
 Help
 Help
 text101 5
@@ -803,21 +617,11 @@ starting from the "Starting element".
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
-pltz_lbl
-Zone label
-text101 4
-This is the label to mark the plot zone - 8 symbols max.
-It will appear in the filenames for the plot data produced
-by b2plot for this zone.
-Must not contain ellipses, commas, or asterrisks
-Text -n-m-S-s-h+i 0 3
-EnumText102
-text101 0
 Vars110 4
 Group100 0
 Group100 0
-Click ? for help
 
+Click ? for help
 rad_srcs
 Radiation Sources
 text101 0
@@ -963,16 +767,6 @@ Chords-related data
 text101 0
 0 99
 VarDefs102 4
-chr_lbl
-Chord label
-text101 4
-Must be an integer from 0 to 999.
-
-This label is used for the filename (line profiles) or
-put into the chords file (line integrals).
-Int -n-m-S-s+h-i 0 2
-EnumText102
-text101 0
 data_id
 Dataset identifier
 text101 4
@@ -991,6 +785,16 @@ used for diagnostics
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
+chr_lbl
+Chord label
+text101 4
+Must be an integer from 0 to 999.
+
+This label is used for the filename (line profiles) or
+put into the chords file (line integrals).
+Int -n-m-S-s+h-i 0 2
+EnumText102
+text101 0
 chr_angl
 Toroidal angle
 text101 2
@@ -1000,9 +804,9 @@ Float -n-m-S-s+h-i 0 3
 EnumText102
 text101 0
 Vars110 4
-0
 lin_int
 Click ? for help
+0
 0
 edge_trg
 Target edges
@@ -1126,6 +930,16 @@ or TRANSP1 in Eirene, block 6B)
 Float -n-m-S-s-h-i 0 7
 EnumText102
 text101 0
+tgspcsw
+Chem. sputter.
+text101 4
+Chemical sputtering byte of ILSPT (6B)
+
+ 0: no chemical sputtering
+ 1: standard model (constant yield)
+Int -n-m-S-s-h-i 0 9
+EnumText102
+text101 0
 tgspcff
 Chem. sput. factor
 text101 2
@@ -1192,6 +1006,28 @@ allocation for the stratum in Eirene
 Int -n-m-S-s-h-i 0 15
 EnumText102
 text101 0
+tgtgrd
+CARRE guard length
+text101 6
+Specifies the distance (m) from the target, over which
+a smooth grid transformation from orthogonal to target-
+aligned is allowed in the CARRE grid generator.
+
+Should be bigger for more oblique targets, and can be 0
+for the normal target.
+Float -n-m-S-s-h-i 0 18
+EnumText102
+text101 0
+tgnini
+RNG initialiser
+text101 4
+Value for initialisation of the random number generator.
+Either use a big odd number (to get the same seed every time)
+or -1 to obtain the seed from the CPU clock (which will
+be different every time)
+Int -n-m-S-s-h-i 0 17
+EnumText102
+text101 0
 pfr_edge
 PFR edge
 text101 7
@@ -1237,36 +1073,6 @@ specified here.
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
-tgspcsw
-Chem. sputter.
-text101 4
-Chemical sputtering byte of ILSPT (6B)
-
- 0: no chemical sputtering
- 1: standard model (constant yield)
-Int -n-m-S-s-h-i 0 9
-EnumText102
-text101 0
-tgtgrd
-CARRE guard length
-text101 6
-Specifies the distance (m) from the target, over which
-a smooth grid transformation from orthogonal to target-
-aligned is allowed in the CARRE grid generator.
-
-Should be bigger for more oblique targets, and can be 0
-for the normal target.
-Float -n-m-S-s-h-i 0 18
-EnumText102
-text101 0
-tgnini
-RNG initialiser
-text101 2
-Value for initialisation of the random number generator.
-Should be big and odd.
-Int -n-m-S-s-h-i 0 17
-EnumText102
-text101 0
 tgminhst
 Minimum histories
 text101 2
@@ -1282,18 +1088,18 @@ C
 0
 0
 1
+1
 2
 0
 1
 1
 0
 25000
+0.2
+-1
 Group100 0
 Group100 0
 Click ? for help
-1
-0.2
-10001
 0
 bnd_dvd
 Boundary divides
@@ -1338,17 +1144,6 @@ Plasma species
 text101 0
 0 6
 VarDefs102 6
-spcs_gen
-Species
-text101 5
-A generic atomic species - should be one
-of H, D, T, He, C, Ne, or Ar
-All the ion species and the necessary
-molecules and test ions are supplied
-automatically.
-Text -n-m-S-s-h+i 0 1
-EnumText102
-text101 0
 Help
 Help
 text101 6
@@ -1398,13 +1193,25 @@ If 0, then no scaling for this species, otherwise, as specified by
 Int -n-m-S-s-h-i 0 5
 EnumText102
 text101 0
+spcs_gen
+Species
+text101 6
+The element name of the species you wish to include.
+For H, D, T, He, Be, C, N, Ne, or Ar, a set of default reactions
+will be provided by Uinp.
+For other elements, Uinp will use ADAS reaction rates, when available.
+All the ion species as well as the necessary molecules and test ions
+(for hydrogen isotopes) are supplied automatically.
+Text -n-m-S-s-h+i 0 1
+EnumText102
+text101 0
 Vars110 6
--
 Click ? for help
 0
 0
 0.25
 1
+-
 gas_puff
 Gas puff
 text101 0
@@ -1485,20 +1292,23 @@ It may also affect the time allocation for the stratum
 Int -n-m-S-s-h-i 0 8
 EnumText102
 text101 0
+gpf_nini
+Initialisation
+text101 5
+Value used for initialisation of the random
+number generator. Either use a big odd number
+(to get the same seed every time) or -1 to
+obtain the seed from the CPU clock (which will
+be different every time)
+Int -n-m-S-s-h-i 0 10
+EnumText102
+text101 0
 Help
 Help
 text101 2
 Here you specify the data for a gas puff. You may have several sources of
 this kind representing different strata in Eirene.
 Text +n-m-S-s-h-i 0 0
-EnumText102
-text101 0
-gpf_nini
-Initialisation
-text101 2
-Value used for initialisation of the random
-number generator. A big odd number seems OK
-Int -n-m-S-s-h-i 0 10
 EnumText102
 text101 0
 gpf_mhst
@@ -1518,8 +1328,8 @@ D2
 1
 1
 10000
+-1
 Click ? for help
-6001
 0
 midplane
 Midplane location
@@ -1574,21 +1384,6 @@ Time in seconds allocated to one run of Eirene
 Int -n-m-S-s-h-i 0 3
 EnumText102
 text101 0
-nfile
-nfile
-text101 9
-Control parameter for writing the interim files
-in Eirene.
-30000 means "read and write the time-dependent data (fort.15)"
-10000 means "only write these data"
-Normally, nfile=10000 is used for the test run of Eirene
-
-!!! For the "new" Eirene (solps4.2 or higher), the time-dependent stratum is
-not needed, and the value of nfile should normally be 100 to ensure writing
-the neutral-related data on the triangular mesh, fort.13 file
-Int -n-m-S-s-h-i 0 4
-EnumText102
-text101 0
 lfrm15
 fort.15 format
 text101 4
@@ -1617,6 +1412,14 @@ saved for the next call ("census").
 Float -n-m-S-s-h-i 0 8
 EnumText102
 text101 0
+Help
+Help
+text101 2
+Here you specify the data for the whole Eirene run - such as the time
+allocation, major radius, e.t.c.
+Text +n-m-S-s-h-i 0 0
+EnumText102
+text101 0
 rmajor
 Major radius
 text101 5
@@ -1626,6 +1429,29 @@ If <0, then a toroidal geometry is assumed in Eirene.
 
 Must be > 0 if code cheating via "Limiter configuration" is in effect.
 Float -n-m-S-s-h-i 0 1
+EnumText102
+text101 0
+nttrator
+Number of sectors
+text101 1
+This variable specifies the number of sectors in the torus.
+Int -n-m-S-s-h-i 0 9
+EnumText102
+text101 0
+nfile
+nfile
+text101 10
+Control parameter for writing the interim files
+in Eirene.
+30000 means "read and write the time-dependent data (fort.15)"
+10000 means "only write these data"
+Normally, nfile=10000 is used for the test run of Eirene
+
+!!! For the "new" Eirene (solps4.2 or higher), the time-dependent stratum is
+not needed, and the value of nfile should normally be 406 to ensure reading
+and writing of the neutral-related data on the triangular mesh, in the
+fort.11 and fort.13 files
+Int -n-m-S-s-h-i 0 4
 EnumText102
 text101 0
 nprnli
@@ -1640,32 +1466,17 @@ Normally, should be set to 0 for solps4.2(+)
 Int -n-m-S-s-h-i 0 7
 EnumText102
 text101 0
-Help
-Help
-text101 2
-Here you specify the data for the whole Eirene run - such as the time
-allocation, major radius, e.t.c.
-Text +n-m-S-s-h-i 0 0
-EnumText102
-text101 0
-nttrator
-Number of sectors
-text101 1
-This variable specifies the number of sectors in the torus.
-Int -n-m-S-s-h-i 0 9
-EnumText102
-text101 0
 Vars110 10
 0
 100
-30000
 0
 1
 100
-0
-50000
 Click ? for help
+0
 60
+406
+50000
 hepdt
 He pumping data
 text101 0
@@ -1702,21 +1513,6 @@ Ratio of the pumping speed for He to that for DT
 Float -n-m-S-s-h-i 0 4
 EnumText102
 text101 0
-lstclhep
-Cell ranges
-text101 9
-Grid cells marking the poloidal ranges of the grid edges
-where the gas pressure should be averaged.
-The radial position of the markers is insignificant.
-The poloidal positions of the markers must make
-a certain number of continuous groups.
-In the case of PFR pumping, there can be no more than 2 such groups,
-each of them residing fully in one of the divertors.
-In the case of outer side pumping, there can be only one group.
-If no groups is specified, then the data from the source file are used.
-SetOfMeshCells -n-m-S-s-h-i 0 5
-EnumText102
-text101 0
 lhetrgts
 Pumping duct
 text101 2
@@ -1736,14 +1532,29 @@ The linearity of helium transport is assumed in this evaluation.
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
+lstclhep
+Cell ranges
+text101 9
+Grid cells marking the poloidal ranges of the grid edges
+where the gas pressure should be averaged.
+The radial position of the markers is insignificant.
+The poloidal positions of the markers must make
+a certain number of continuous groups.
+In the case of PFR pumping, there can be no more than 2 such groups,
+each of them residing fully in one of the divertors.
+In the case of outer side pumping, there can be only one group.
+If no groups is specified, then the data from the source file are used.
+SetOfMeshCells -n-m-S-s-h-i 0 5
+EnumText102
+text101 0
 Vars110 7
 1
 1
 570
 0.8
 Group100 0
-Group100 0
 Click ? for help
+Group100 0
 ref_amds
 Reference to AMDS
 text101 0
@@ -2121,55 +1932,60 @@ Group100 0
 Group100 0
 Click ? for help
 lm_cnfg
-Limiter configuration
+Limiter and linear configurations
 text101 0
 0 1
 VarDefs102 8
 Help
 Help
-text101 49
-This gives you a way - although a clumsy one - to treat a limiter
+text101 54
+This gives you a way - although a clumsy one - to treat limiter and linear
 configurations. The problem is that DG in its present state cannot produce
 correct output files if no x-point is specified, so that one has to cheat
 the code somehow. The temporary solution realised with this set of
 variables works in the following way.
 
-(1) Create a DG model with a real equilibrium and specify all the necessary
-surface data. Create also a closed polygon which will be treated by Carre
-as the target.
-
-(2) Add a "Limiter configuration" variable, and cut and paste the name of
-the equilibrium file into the "Real equilibrium" there. Specify some
-reasonable value for the "Core width".
-
-(3) Import a fake single-null equilibrium. The best would be something of a
+(1) Import a fake single-null equilibrium. The best would be something of a
 very different size, so that it lies completely outside the geometry you
 really want to model. Make sure that it is of the same sign as your limiter
 equilibrium. Import the single-null topology. Create a surface in
 the core region as usual - although its position does not affect anything.
 
-(4) Create two closed polygons which will be treated by DG as the two
-targets for this fake equilibrium. Create a "Structure" which contains
-these two polygons, plus the one representing the limiter - see p.(1), plus
-some grid-limiting parts if needed. Use the fake targets as the "Inner
-target" and "Outer target" in the "Structure".
+(2) Create two closed polygons acting as the targets for the fake single-
+null equilibrium.
 
-(5) Specify the targets as usual with the "Target specification" variables.
-Note that the "Target #1" corresponds to the CW side of the limiter, and
-the "Target #2" to the CCW side. Use the real elements you want to be re-
-connected to the grid corners as the "SOL edges". For the "PFR edges",
-create two fake elements and specify 0 as the "Surface Type" in the
-"General Surface Data" for these two elements. They must not be included in
-the "Elements not for Eirene" list.
+(3) Add a "Limiter configuration" variable, and cut and paste the name of
+the limiter equilibrium file into the "Real equilibrium" there. Specify some
+reasonable value for the "Core width". For linear cases, leave the "Real
+equilibrium" field as "-".
 
-(6) Create the "Surfaces" and "Grid points" as usual. Only the "SOL" zone
+(4) Create a "Structure" which contains the two fake SN targets - see p.(2),
+plus the one representing the limiter, plus some grid-limiting parts if
+needed. Use the fake targets as the "Inner target" and "Outer target" in
+the "Structure".
+
+(5) Specify the target properties as usual with the "Target specification"
+variables. These refer to the parts of the limiter on both sides of the
+plasma. "Target #1" and "Target #2" should be positioned so that you travel
+clockwise around the plasma when going from "Target #1" to "Target #2".
+Use the real elements you want to be reconnected to the grid corners as
+the "SOL edges". For the "PFR edges", create two fake elements and specify
+0 as the "Surface Type" in the "General Surface Data" for these two elements.
+They must not be included in the "Elements not for Eirene" list.
+
+(6) Create the "Surfaces" and "Grid points" as usual. Only the "Core" zone
 for the "Grid points" and the "SOL" and "Core" areas for the "Surfaces" are
 meaningful.
 
-(7) Follow the usual procedure: create output, do "lns", go to "carre" and
-create the grid, import the grid and look at it. You will have to play with
-the usual settings for the grid generation, such as the "Surfaces" and
-"Grid points" together with the "Carre guard length" in the
+(7) For limiter cases, make sure that the "Major radius" is set to
+its real positive value in "Global Eirene data". For linear cases, set it
+to any positive number.
+
+(8) Follow the usual procedure: create output, do "lns", go to "carre" and
+create the limiter grid, import the grid and look at it. For linear cases,
+the grid must be provided independently. You will have to
+play with the usual settings for the grid generation, such as the "Surfaces"
+and "Grid points" together with the "Carre guard length" in the
 "Target specifications", and also with the "Core width" in the "Limiter
 configuration" in order to get the grid which suits you and is acceptable
 for the plasma modelling code (no pink segments in the grid). If you find
@@ -2189,11 +2005,12 @@ EnumText102
 text101 0
 lm_equ
 Real equilibrium
-text101 4
+text101 5
 Here you specify the real equilibrium file to be used for your grid. If it
 is located in the same directory, then only the filename without path is
 sufficient. Due to technical reasons, the length of this specification must
 not exceed 128 characters.
+For linear devices, leave this field with its default value of "-".
 Text -n-m-S-s-h-i 0 1
 EnumText102
 text101 0
@@ -2860,92 +2677,7 @@ Vars110 3
 Press ? for help
 1.0
 Group100 0
-zoneirrd
-Zone irradiation data
-text101 0
-0 1
-VarDefs102 7
-irrdzone
-Zone boundary
-text101 3
-Select the elements which limit the irradiation zone. These elements must
-form a singly connected, closed chain. Elements belonging to the
-"Elements not for Eirene" can also be included.
-Elems -n-m-S-s-h-i 0 1
-EnumText102
-text101 0
-irrdtrn
-Optical transparence
-text101 7
-The optical transparence of each element in the zone boundary. If it is
-negative, then the optical transparence is either taken as minimum value
-of the forth and back transparence of this element for particles
-(honouring also the "surface special" settings in the B2 input file) for
-elements used in Eirene, or considered fully transparent for "elements not
-for Eirene". If it is set to a value >1, then the element is considered
-fully transparent, as if it were set to 1.
-Float -n+m-S-s-h-i 0 2
-EnumText102
-text101 0
-lmxp
-Highest wavelength
-text101 1
-The upper boundary of the radiation spectrum for output [A].
-Int -n-m-S-s-h-i 0 5
-EnumText102
-text101 0
-lmnp
-Lowest wavelength
-text101 1
-The lower boundary of the radiation spectrum for output [A].
-Int -n-m-S-s-h-i 0 4
-EnumText102
-text101 0
-nnsp
-Spectral resolution
-text101 1
-The number of bins (groups) used to collect the spectral lines.
-Int -n-m-S-s-h-i 0 3
-EnumText102
-text101 0
-llsp
-Distribution
-text101 3
-Mode of the wawelength bin distribution.
-0 - uniform
-1 - exponential (uniform on the log scale)
-Int -n-m-S-s-h-i 0 6
-EnumText102
-text101 0
-Help
-Help
-text101 14
-Here the data for evaluation via b2plot of average volumetric irradiation
-of a selected zone can be specified. Originally, this is provided for
-estimation of radiative ionisation of neutrals in the areas separated
-from the plasma, such as under the "dome" in PFR. The radiation source is
-in the edge plasma, calculated from the local plasma parameters using the
-ADAS data base for line emissivity.
-
-The zone is specified by selecting a polygon surrounding it. The elements
-making the polygon may also belong to the "Elements not for Eirene" list.
-Optical transparence of these elements can be specified here. If it is not
-specified, then it is either taken as minimum value of the forth and back
-transparence of this element for particles (honouring also the "surface
-special" settings in the B2 input file) for elements used in Eirene, or
-considered fully transparent for "elements not for Eirene".
-Text +n-m-S-s-h-i 0 0
-EnumText102
-text101 0
-Vars110 7
-Group100 0
--1
-910
-110
-32
-0
-Press ? for help
-VarSets100 8
+VarSets100 13
 0
 Vars110 19
 0
@@ -2990,39 +2722,6 @@ Vars110 19
 0
 0
 0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
 1
 1
 1
@@ -3065,22 +2764,6 @@ Vars110 19
 1
 1
 1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-0
-0
-0
-0
-0
 0
 0
 0
@@ -3102,23 +2785,6 @@ Vars110 19
 0
 0
 0
-0
-0
-0
-0
-0
-0
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
 1
 1
 1
@@ -3161,39 +2827,6 @@ Vars110 19
 1
 1
 1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
 0
 0
 0
@@ -3257,22 +2890,6 @@ Vars110 19
 0
 0
 0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-1
-1
-1
-1
-1
 1
 1
 1
@@ -3294,23 +2911,6 @@ Vars110 19
 1
 1
 1
-1
-1
-1
-1
-1
-1
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
 0
 0
 0
@@ -3332,17 +2932,6 @@ Vars110 19
 0
 0
 0
--0.1
--0.1
--0.1
--0.1
--0.1
--0.1
--0.1
--0.1
--0.1
--0.1
--0.1
 -0.1
 -0.1
 -0.1
@@ -3406,39 +2995,6 @@ Vars110 19
 0
 0
 0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-0
-C
-C
-C
-C
-C
-C
-C
-C
-C
-C
-C
 C
 C
 C
@@ -3481,82 +3037,58 @@ C
 2
 2
 2
-2
-2
-2
-2
-2
-2
-2
-2
-2
-2
-2
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
 Press ? for help
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
 5
 Vars110 4
-Group100 2
-5
-4
-Group100 2
-13
-12
-Group100 14
+Group100 3
+11
+10
+9
+Group100 3
+7
 6
 5
-4
-7
+Group100 18
+11
+10
+9
 13
 12
+7
+6
+5
 15
 14
-18
-17
 16
-25
-24
-27
-Click ? for help
-21
-Vars110 6
-D
-Click ? for help
-0
-0
-0.25
+17
+18
+3
+2
 1
+0
+19
+Click ? for help
 19
 Vars110 19
 C
@@ -3565,20 +3097,20 @@ C
 0
 0
 1
+0.01
 2
 0
 1
 1
 0
 25000
+0.2
+-1
 Group100 1
 9
 Group100 1
-8
+10
 Click ? for help
-1
-0.2
-10001
 0
 19
 Vars110 19
@@ -3588,84 +3120,118 @@ C
 0
 0
 1
+1
 2
 0
 1
 1
 0
 25000
-Group100 1
-13
-Group100 1
-12
-Click ? for help
-1
 0.2
-10001
+-1
+Group100 1
+7
+Group100 1
+6
+Click ? for help
 0
 24
 Vars110 10
 0
 100
-30000
 0
 1
 100
-0
-50000
 Click ? for help
+0
 60
-19
-Vars110 19
-C
-0
--0.1
-0
-0
-1
-2
-0
-1
-1
-0
-25000
-Group100 1
+406
+50000
+10
+Vars110 2
+Group100 7
+15
+14
+13
+12
+16
+17
+18
+Click ? for help
+8
+Vars110 2
+Group100 12
+11
+10
+9
 4
-Group100 1
-5
-Click ? for help
-1
-0.2
-10001
-0
-19
-Vars110 19
-C
-0
--0.1
-0
-0
-1
+3
 2
-0
-1
 1
 0
-25000
-Group100 1
-0
-Group100 1
-1
+7
+6
+5
+8
 Click ? for help
-1
-0.2
-10001
+21
+Vars110 6
+Click ? for help
 0
-MaxElemId101 33
+3.0
+0.25
+1
+H
+37
+Vars110 3
+2.0
+Press ? for Help
+-1
+-1
+-1
+-1
+-1
+-1
+-1
+-2
+-2
+-2
+-1
+-1
+0
+0
+0
+0
+0
+0
+0
+-1
+-1
+1
+Vars110 2
+Group100 1
+9
+Click ? for help
+2
+Vars110 2
+Group100 1
+6
+Click ? for help
+3
+Vars110 2
+Group100 1
+10
+Click ? for help
+4
+Vars110 2
+Group100 1
+7
+Click ? for help
+MaxElemId101 0
 CreaTime101
-Fri Feb  2 11:03:52 2001
+Thu Oct 28 12:12:16 2021
 TopoName114 SNU
 OutputMode109 Carre
 OutputFlags111 -V-S-T-s-g-c
 MeshSlidingOptions112 Surfaces 1.000000e+00 1
-ViewAttr105 -6.547014e+02 -2.084628e+03 2.805639e+03 2.077668e+03 -X+G+e-N-0-n-r-T-E-s+p+g-S-c-h+-+=+x-m
+ViewAttr115 6.348200e+02 -4.726505e+02 1.424180e+03 4.727721e+02 0.000000e+00 -X+G+e+N+0-n+r+T-E+s+p+g-S+c+h+-+=+x-m-t-v+3
