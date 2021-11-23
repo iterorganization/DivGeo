@@ -8,7 +8,7 @@ ifndef COMPILER
 $(error COMPILER not defined)
 endif
 
-MAKES = Makefile 
+MAKES = Makefile
 # Include global SOLPS compiler settings
 ifndef SOLPS_CPP
 ifeq ($(shell [ -e ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
@@ -167,6 +167,18 @@ DGCUT = $(dgcut:%.o=$(OBJDIR)/%.o)
 IDSDG = $(idsdg:%.o=$(OBJDIR)/%.o)
 DGIDS = $(dgids:%.o=$(OBJDIR)/%.o)
 
+$(OBJDIR)/%.mod : %.f90
+	${CPP} ${DEFINES} -P ${INCLUDE} $< > ${OBJDIR}/$*.f90
+	$(COMPILE) ${INCMODS} ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f90 ${FINCLUDE}
+	if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
+	if [ -f $*.mod ]; then /bin/mv $*.mod ${OBJDIR}; fi
+
+$(OBJDIR)/%.o : %.f90
+	${CPP} ${DEFINES} -P ${INCLUDE} $< > ${OBJDIR}/$*.f90
+	$(COMPILE) ${INCMODS} ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f90 ${FINCLUDE}
+	if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
+	if [ -f $*.mod ]; then /bin/mv $*.mod ${OBJDIR}; fi
+
 $(OBJDIR)/%.o : %.f
 	${CPP} ${DEFINES} -P ${INCLUDE} $< > ${OBJDIR}/$*.f
 #	$(COMPILE) ${INCMODS} ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o $<
@@ -262,17 +274,23 @@ TAGS:	tags
 tags:
 	rm -f TAGS ; etags src/*.f src/*.inc || touch TAGS
 
-depend: ${OBJS:.o=.f}
+depend: ${OBJS:.o=.f} ${OBJS90:.o=.f90}
 	@makedepend -f- ${INCLUDE} $^ | \
 	sed -e '3,$$s|^src/|${OBJDIR}/|' | \
 	sed -e 's,^${OBJDIR}/,\$${OBJDIR}/,' | \
 	sed -e 's,: ${SOLPSTOP},: $${SOLPSTOP},' > ${OBJDIR}/dependencies
+	@egrep -aiH '^ {6,}use ' $^ | grep -v 'IGNORE' | tr , ' '  | \
+	awk '{sub("\\.f:",".o:",$$1);sub("^.*/","$${OBJDIR}/",$$1); print $$1,"$${OBJDIR}/"tolower($$3)".mod"}' | \
+	sed -e 's|^src/|${OBJDIR}/|' | \
+	sed -e 's,^${OBJDIR}/,\$${OBJDIR}/,' | \
+	sed -e 's,: ${SOLPSTOP},: $${SOLPSTOP},' >> ${OBJDIR}/dependencies
 
 ${OBJDIR}/LISTOBJ: listobj
 
 listobj: ${OBJDIR}/dependencies
 	@cd src ; echo "OBJS =" *.f | sed -e 's/ [^ /]*\// /g' -e 's/\.f/.o/g' > $(OBJDIR)/LISTOBJ
-	@echo "SRCS =" src/*.f >> ${OBJDIR}/LISTOBJ
+	@cd src ; echo "OBJS90 =" *.f90 | sed -e 's/ [^ /]*\// /g' -e 's/\.f90/.o/g' >> $(OBJDIR)/LISTOBJ
+	@echo "SRCS =" src/*.f90 src/*.f >> ${OBJDIR}/LISTOBJ
 
 VERSION: ../src/git_version_DG.h
 

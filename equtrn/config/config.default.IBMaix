@@ -14,7 +14,15 @@ FFLAGS   = -O
 COMPILE  = ${FC} -c ${FFLAGS}
 CPP      = /lib/cpp
 
+ifdef SOLPS_CPP
 DEFINES  = ${SOLPS_CPP}
+else
+ifeq ($(shell `pkg-config --exist fundamental-constants`; echo $$?),0)
+DEFINES += -DCONSTANTS_PROVIDED
+INCMODS += `pkg-config fundamental-constants --cflags`
+endif
+endif
+
 LDLIBS   = ${LD_MSCL} -L/usr/local/lib -L/usr/lpp/xlC/lib
 LDFLAGS  = 
 LDEXTRA  =

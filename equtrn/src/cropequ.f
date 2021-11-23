@@ -12,8 +12,8 @@
 c
 c  version : 21.07.2000 16:44
 c
+      use eqdim
       implicit none
-#include "eqdim.inc"
       real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real(kind=R8) :: rcntc,psilim,btorc,rmin,rmax,zmin,zmax
       integer nr,nz,nrn,nzn,iret
@@ -79,9 +79,8 @@ c      tab=char(9)      !###
 
 c======================================================================
       subroutine crop(pfm,rgr,nr,zgr,nz,nrn,rmin,rmax,nzn,zmin,zmax)
-
+      use eqdim
       implicit none
-#include "eqdim.inc"
       integer ifail,nn,nr,j,i,nz,nrn,nzn
       real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz),
      &                 rmin,rmax,zmin,zmax,h,x

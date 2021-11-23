@@ -50,8 +50,8 @@ c
 #endif
       use ids_routines ! IGNORE
      , , only : imas_open_env, imas_close, ids_get, ids_deallocate
+      use eqdim
       implicit none
-#include "eqdim.inc"
       type(ids_equilibrium) :: eq !< IDS designed to store equilibrium data
       type(ids_wall) :: vessel    !< IDS designed to store wall data
       character(len=24), intent(in) :: treename   !< The name of the IMAS IDS database

@@ -18,8 +18,8 @@ c=====================================================
 c*** do arbitrary re-processing of the equilibrium
 c*** in this case symmetrize the equilibrium up-down
 c=====================================================
+      use eqdim
       implicit none
-#include "eqdim.inc"
       integer iret,nr,nz,ir,iz
       real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real(kind=R8) :: rcntc,psilim,btorc,psisymm

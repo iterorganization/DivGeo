@@ -13,7 +13,9 @@ c
 c=====================================================
 c*** Translation of TdeV equilibrium data into dg compatible format
 c=====================================================
-#include "eqdim.inc"
+      use eqdim
+      implicit none
+      integer iret, nr, nz
       real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real(kind=R8) :: rcntc,psilim,btorc
 c=====================================================

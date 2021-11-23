@@ -14,8 +14,8 @@ c======================================================================
 c*** Translation of equilibrium data from P. Barabasci
 c*** into dg compatible format
 c======================================================================
+      use eqdim
       implicit none
-#include "eqdim.inc"
       integer nr,nz,iret
       real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real(kind=R8) :: rcntc,psilim,btorc

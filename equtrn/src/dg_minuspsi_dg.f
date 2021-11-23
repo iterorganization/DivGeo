@@ -13,12 +13,11 @@ c
 c=====================================================
 c*** Change the sign of the flux
 c=====================================================
+      use eqdim
       implicit none
       integer iret,nr,nz,i,j
-#include "eqdim.inc"
       real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
-      real(kind=R8) :: rcntc,psilim,btorc,shift
-      character*256 filename
+      real(kind=R8) :: rcntc,psilim,btorc
 c=====================================================
 c
       call open_files(' ')

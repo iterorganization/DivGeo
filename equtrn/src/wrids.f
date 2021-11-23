@@ -8,9 +8,9 @@
 #endif
       use ids_routines ! IGNORE
      , , only : imas_create_env, ids_deallocate, ids_put, imas_close
+      use eqdim
       implicit none
 #include "git_version_DG.h"
-#include "eqdim.inc"
       type (ids_wall) :: vessel   !< IDS designed to store wall data
       character(len=256), intent(in) :: dg_file   !< DG template input file name
       character(len=24), intent(in) :: treename   !< The name of the IMAS IDS database

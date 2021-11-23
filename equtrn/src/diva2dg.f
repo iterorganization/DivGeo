@@ -13,7 +13,8 @@ c
 c=====================================================
 c*** Translation of efit equilibrium data into dg compatible format
 c=====================================================
-#include "eqdim.inc"
+      use eqdim
+      implicit none
       parameter (ngpf=257)
       real*8 gpr(ngpr),gpz(ngpz),
      1 pfl(ngpf),pc(ngpf),pcd(ngpf),pr(ngpf),prd(ngpf),q(ngpf),

@@ -1,8 +1,7 @@
 !> use splines to refine the equilibrium
       subroutine double(pfm,rgr,nr,zgr,nz)
-
+      use eqdim
       implicit none
-#include "eqdim.inc"
       integer ir,ifail,nn,nz2,iz,nr2,nr,j,i,nz
       real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real   pfms(nr,nz),rgrs(ngpr),zgrs(ngpz)
@@ -19,8 +18,8 @@ c----------------------------------------------------------------------
       rgrs(1:nr)=rgr(1:nr)
       zgrs(1:nz)=zgr(1:nz)
 
-      if(ngpr.lt.2*nr-1) stop '==== increase ngpr in eqdim.inc!'
-      if(ngpz.lt.2*nz-1) stop '==== increase ngpz in eqdim.inc!'
+      if(ngpr.lt.2*nr-1) stop '==== increase ngpr in eqdim.f90!'
+      if(ngpz.lt.2*nz-1) stop '==== increase ngpz in eqdim.f90!'
 
       nn=nr*nz
       call splbcb(rgrs, nr, zgrs, nz, pfms, nr, cx, nn*3, cy, nn*3,

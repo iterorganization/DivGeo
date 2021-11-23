@@ -16,7 +16,8 @@ c
 c=====================================================
 c*** Translation of efit equilibrium data into dg compatible format
 c=====================================================
-#include "eqdim.inc"
+      use eqdim
+      implicit none
       real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real(kind=R8) :: rcntc,psilim,btorc,rmin,rmax,zmin,zmax
       integer nr,nz,ix1,ix2,iy1,iy2,iret,ir,iz

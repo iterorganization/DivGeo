@@ -23,8 +23,8 @@ c=====================================================
 c
 c  version : 18.12.94 18:33
 c
+      use eqdim
       implicit none
-#include "eqdim.inc"
       integer lun,iret,ipestg,nr,nz
       real(kind=R8) :: fg(*),pg(*),ffg(*),ppg(*),pfm(ngpr,*),
      &  rgr(*),zgr(*)
@@ -32,10 +32,6 @@ c
      &  psimin,psilim,btorc
       integer i,j,l
       character zeile*80, title*80, date*8, cvect(80)*1
-c=====================================================
-      real(kind=R8) :: rr, zz, r, z
-      rr(r)=r/float(nr-1)*rdim+redge
-      zz(z)=(z-float(nz+1)/float(2))/float(nz-1)*zdim+zmsmid
 c=====================================================
 c
       write(*,*) 'Subroutine rdfiesta'
@@ -98,5 +94,26 @@ c
       do i=1,nz
         zgr(i)=zz(real(i,R8))
       enddo
+      return
 c
-      end
+      contains
+
+      function rr(r)
+      implicit none
+      real(kind=R8) :: rr
+      real(kind=R8), intent(in) :: r
+
+      rr = r/float(nr-1)*rdim+redge
+      return
+      end function rr
+
+      function zz(z)
+      implicit none
+      real(kind=R8) :: zz
+      real(kind=R8), intent(in) :: z
+
+      zz = (z-float(nz+1)/float(2))/float(nz-1)*zdim+zmsmid
+      return
+      end function zz
+
+      end subroutine rdfiesta

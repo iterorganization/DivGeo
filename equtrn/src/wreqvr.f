@@ -17,8 +17,10 @@ c***
 c*** Output:
 c***  iret    return code (0 means OK)
 c=====================================================
-#include "eqdim.inc"
-      real(kind=R8) pfm(ngpr,*),rgr(ngpr),zgr(*)
+      use eqdim
+      implicit none
+      integer lun, iret, i, j, nr, nz
+      real(kind=R8) :: pfm(ngpr,*), rgr(ngpr), zgr(*)
 c=====================================================
 c
       write(lun,*,err=999)

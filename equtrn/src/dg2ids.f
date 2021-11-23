@@ -39,8 +39,8 @@ c
 c=====================================================
 c*** Translation of DG template file into wall IDS
 c=====================================================
+      use eqdim
       implicit none
-#include "eqdim.inc"
       integer iret
       real(kind=R8) :: rwall(ngpr), zwall(ngpr)
       integer :: nunits, npts(ngpr)

@@ -23,10 +23,12 @@ c=====================================================
 c
 c  version : 05.08.95 16:50
 c
-#include "eqdim.inc"
+      use eqdim
+      implicit none
+      integer i, j, iret, lun, nr, nz
       real(kind=R8) rgr(*), zgr(*), pfm(ngpr, *)
 c... toroidal field in tesla, radius in m
-      real(kind=R8) btf, rtf, psib
+      real(kind=R8) btf, rtf, psib, upsib
       real ubtf, urtf
 c-----------------------------------------------------
 c

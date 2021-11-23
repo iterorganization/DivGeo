@@ -23,7 +23,8 @@ c
 c=====================================================
 c*** Translation of shotfile equilibrium data into dg compatible format
 c=====================================================
-#include "eqdim.inc"
+      use eqdim
+      implicit none
       parameter (ndim=1000, NdGC=100) 
       real*8 gpr(ngpr),gpz(ngpz)
       real*8 pfmd(ngpr,ngpz)

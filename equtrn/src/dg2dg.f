@@ -10,8 +10,8 @@
 c
 c  version : 16.01.2001 16:55
 c
+      use eqdim
       implicit none
-#include "eqdim.inc"
       real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real(kind=R8) :: rcntc,psilim,btorc
       integer nr,nz,iret

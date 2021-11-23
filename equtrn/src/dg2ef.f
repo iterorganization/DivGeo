@@ -13,8 +13,8 @@ c
 c=====================================================
 c*** Translation of dg compatible equilibrium data into efit format
 c=====================================================
+      use eqdim
       implicit none
-#include "eqdim.inc"
       integer i, j, ia, ja
       integer iret, nr, nz, ipestg
       real(kind=R8) :: fg(ngpr),pg(ngpr),ffg(ngpr),ppg(ngpr)
