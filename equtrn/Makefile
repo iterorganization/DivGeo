@@ -272,7 +272,7 @@ clean:
 TAGS:	tags
 
 tags:
-	rm -f TAGS ; etags src/*.f src/*.f90 c/*.inc || touch TAGS
+	rm -f TAGS ; etags src/*.f src/*.f90 src/*.inc || touch TAGS
 
 depend: ${OBJS:.o=.f} ${OBJS90:.o=.f90}
 	@makedepend -f- ${INCLUDE} $^ | \
