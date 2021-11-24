@@ -2,10 +2,10 @@
 MSCL_ROOT ?= /pfs/work/g2dpc/SOLPS-ITER/${COMPILER}/mscl
 LD_MSCL   ?= -L${MSCL_ROOT}/lib -lmscl
 
-FC       = ifort
-CPP      = /lib/cpp -C -traditional -ffreestanding
+FC         = ifort
+CPP        = /lib/cpp -C -traditional -ffreestanding
 
-LDEXTRA += -lxml2 -lstdc++
+LDEXTRA   += -lxml2 -lstdc++
 
 GGD_VERSION ?= `pkg-config ggd --modversion`
 
