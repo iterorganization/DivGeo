@@ -29,13 +29,14 @@ c
       real(kind=R8) rgr(*), zgr(*), pfm(ngpr, *)
 c... toroidal field in tesla, radius in m
       real(kind=R8) btf, rtf, psib, upsib
-      real ubtf, urtf
+      real(kind=R8) ubtf, urtf
 c-----------------------------------------------------
 c
 c*** Read the plasma equilibrium ...
 c
       iret=0
-      call rdeqjh(lun,nr,nz,upsib,ubtf,urtf,*99)
+      call rdeqjh(lun,nr,nz,upsib,ubtf,urtf,iret)
+      if (iret.eq.1) goto 99
       btf=ubtf
       rtf=urtf
       psib=upsib
@@ -80,5 +81,6 @@ c-----------------------------------------------------
 c
  99   print *,'==== rdeqjt: error in the input files'
       iret=8
+      return
 c
       end
