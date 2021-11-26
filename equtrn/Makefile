@@ -171,13 +171,17 @@ $(OBJDIR)/%.mod : %.f90
 	${CPP} ${DEFINES} -P ${INCLUDE} $< > ${OBJDIR}/$*.f90
 	$(COMPILE) ${INCMODS} ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f90 ${FINCLUDE}
 	if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
+	@if [ -f ${OBJDIR}/$*.o ]; then touch ${OBJDIR}/$*.o; fi
 	if [ -f $*.mod ]; then /bin/mv $*.mod ${OBJDIR}; fi
+	@if [ -f ${OBJDIR}/$*.mod ]; then touch ${OBJDIR}/$*.mod; fi
 
 $(OBJDIR)/%.o : %.f90
 	${CPP} ${DEFINES} -P ${INCLUDE} $< > ${OBJDIR}/$*.f90
 	$(COMPILE) ${INCMODS} ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f90 ${FINCLUDE}
 	if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
+	@if [ -f ${OBJDIR}/$*.o ]; then touch ${OBJDIR}/$*.o; fi
 	if [ -f $*.mod ]; then /bin/mv $*.mod ${OBJDIR}; fi
+	@if [ -f ${OBJDIR}/$*.mod ]; then touch ${OBJDIR}/$*.mod; fi
 
 $(OBJDIR)/%.o : %.f
 	${CPP} ${DEFINES} -P ${INCLUDE} $< > ${OBJDIR}/$*.f
