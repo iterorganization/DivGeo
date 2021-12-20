@@ -25,6 +25,7 @@ c*** Translation of shotfile equilibrium data into dg compatible format
 c=====================================================
       use eqdim
       implicit none
+      integer ndim, NdGC
       parameter (ndim=1000, NdGC=100) 
       real*8 gpr(ngpr),gpz(ngpz)
       real*8 pfmd(ngpr,ngpz)
@@ -41,7 +42,8 @@ c=====================================================
       real xyGC(1:Ndim,1:2)
       integer ixbeg(1:NdGC), lenix(1:NdGC), valix(1:NdGC)
       character*8 GCnam(1:NdGC)
-      integer ngc
+      integer ngc, ngr, ngz, lpfx
+      integer i, j, m, n, ierr, iret
 
 c=====================================================
 c
