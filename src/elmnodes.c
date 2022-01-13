@@ -392,20 +392,24 @@ Elem JoinElems(App a,Node n,int* pErr) {
   ValidatePtr(n,"JoinElems_");
   if (pErr==NULL) pErr=&errBuf;
 
-  if ((*pErr=IsIrregularNode(n,NULL))!=0) if (a==NULL) return NULL;
-  else FatalError("JoinElems()-!regular: fatal error 1");
+  if ((*pErr=IsIrregularNode(n,NULL))!=0) {
+    if (a==NULL) return NULL;
+  } else FatalError("JoinElems()-!regular: fatal error 1");
 
   e[0]=NodeElem1st(n,&ix);
   e[1]=Next(&ix);
   i= e[0]->n[1]==e[1]->n[2] ? 0:1;
-  if (NodesConnected(e[i]->n[2],e[1-i]->n[1])) if (a==NULL) {
-    *pErr=ERR_JOINCONNECTED;
-    return NULL;
-  } else FatalError("JoinElems()-connect: fatal error 2");
+  if (NodesConnected(e[i]->n[2],e[1-i]->n[1])) {
+    if (a==NULL) {
+      *pErr=ERR_JOINCONNECTED;
+      return NULL;
+    } else FatalError("JoinElems()-connect: fatal error 2");
+  }
 
-  if (IsLocked(e[0]) || IsLocked(e[1]) || IsLocked(e[0]->n[1]))
+  if (IsLocked(e[0]) || IsLocked(e[1]) || IsLocked(e[0]->n[1])) {
     if (a==NULL) {*pErr=ERR_LOCKED;return NULL;} else
       FatalError("JoinElems()-locks: fatal error 1");
+  }
 
   if (a==NULL) return e[0]; /* !NULL means join is possible */
 
@@ -1040,7 +1044,9 @@ static char* ReadHpglCommand(FILE* f) {
 
   while (1) {
     c=fgetc(f);
-    if (c==EOF) if (!i) return NULL; else break;
+    if (c==EOF) {
+      if (!i) return NULL; else break;
+    }
     if (isspace(c)) continue;
     if (c==';') break;
     buf[i++]=(char)tolower(c);

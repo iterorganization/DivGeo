@@ -49,26 +49,26 @@ static void UpdateInfoDlg(InfoDlg dlg) {
 
   dlg->alt=dlg->w->app->alt;
 
-  sprintf(s,"%d",GroupCount(dlg->w->app->nodes));
+  sprintf(s,"%u",(unsigned)GroupCount(dlg->w->app->nodes));
   SetLabelString(dlg->wNodes,s);
 
-  sprintf(s,"%d",GroupCount(dlg->w->app->elems));
+  sprintf(s,"%u",(unsigned)GroupCount(dlg->w->app->elems));
   SetLabelString(dlg->wElems,s);
 
-  sprintf(s,"%d",GroupCount(dlg->w->app->sources));
+  sprintf(s,"%u",(unsigned)GroupCount(dlg->w->app->sources));
   SetLabelString(dlg->wSources,s);
 
-  sprintf(s,"%d",GetUnusedNumberCount(dlg->w->app));
+  sprintf(s,"%u",(unsigned)GetUnusedNumberCount(dlg->w->app));
   SetLabelString(dlg->wUnusedNumbers,s);
 
   SetLabelString(dlg->wSurfaces,GetSurfacesStatsStr(dlg->w->app));
 
   SetLabelString(dlg->wGridPoints,GetGridPointStatsStr(dlg->w->app));
 
-  sprintf(s,"%d",GroupCount(dlg->w->app->separators));
+  sprintf(s,"%u",(unsigned)GroupCount(dlg->w->app->separators));
   SetLabelString(dlg->wSeparators,s);
 
-  sprintf(s,"%d",GroupCount(dlg->w->app->chords));
+  sprintf(s,"%u",(unsigned)GroupCount(dlg->w->app->chords));
   SetLabelString(dlg->wChords,s);
 }
 

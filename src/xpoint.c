@@ -1974,9 +1974,10 @@ int FindSurfaceOriginPointEx(App a,int zone,double level,
     if (ocy<a->equil->sy-2 && (EQL(ocx,ocy+1)-EQL(cx,cy))*s>0) {
       cx=ocx;cy=ocy+1;
     }
-    if (ocx==cx && ocy==cy)
+    if (ocx==cx && ocy==cy) {
       if (bPeakSearch) break;
       else return ERR_LEVELNOTFOUND;
+    }
 
     ol=EQL(ocx,ocy);
     l=EQL(cx,cy);

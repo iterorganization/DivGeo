@@ -951,7 +951,7 @@ char* GetObjDescription(View w,void* obj) {
         if (s!=NULL) {
           sprintf(buf+strlen(buf)," %s",s);
         } else if (GroupCount(vs->def->varSets)>1) {
-          sprintf(buf+strlen(buf)," #%d",GroupIndex(vs->def->varSets,vs)+1);
+          sprintf(buf+strlen(buf)," #%u",(unsigned)GroupIndex(vs->def->varSets,vs)+1);
         }
 
         return buf;

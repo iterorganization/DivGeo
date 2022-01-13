@@ -814,8 +814,8 @@ Chord FindChord(App a,double x1,double y1,double x2,double y2) {
   Index ix;
 
   for (ch=AppChord1st(a,&ix);ch!=NULL;ch=Next(&ix)) {
-    if (ch->x1==x1 && ch->y1==y1 && ch->x2==x2 && ch->y2==y2 ||
-        ch->x1==x2 && ch->y1==y2 && ch->x2==x1 && ch->y2==y1)
+    if ((ch->x1==x1 && ch->y1==y1 && ch->x2==x2 && ch->y2==y2) ||
+        (ch->x1==x2 && ch->y1==y2 && ch->x2==x1 && ch->y2==y1))
       return ch;
   }
 

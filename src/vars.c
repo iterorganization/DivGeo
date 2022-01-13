@@ -232,8 +232,9 @@ int SetVar(App a,void* object,VarDef vd,VarSet vs,void* newVal) {
 
   v=GetVarPtr(object,vd,vs);
   if (v!=NULL && v->val==newVal) return 0;
-  if (v==NULL || v->origin!=object)
+  if (v==NULL || v->origin!=object) {
     if (newVal==NULL) return 0; else v=AddVar(a,object,vd,vs);
+  }
 
   newVal==NULL ? DelVar(a,v) : ChangeVar(a,v,newVal);
 
@@ -627,8 +628,10 @@ Var GetVarPtrByType(App a,int type) {
 
   for (vdx=NULL,vs=AppVarSet1st(a,&ix);vs!=NULL;vs=Next(&ix))
     for (vd=Group1st(vs->def->varDefs,&ix1);vd!=NULL;vd=Next(&ix1))
-      if (vd->varType==type) if (vdx==NULL) vdx=vd,vsx=vs; else
+      if (vd->varType==type) {
+        if (vdx==NULL) vdx=vd,vsx=vs; else
         FatalError("GetVarByType()-multiple: fatal error 1");
+      }
   if (vdx==NULL) return NULL;
 
   return GetVarPtr(vsx,vdx,NULL);

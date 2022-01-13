@@ -49,6 +49,7 @@ DEFINES += -DIMAS -DUAL_MAJOR_VERSION=${UAL_MAJOR_VERSION} -DUAL_MINOR_VERSION=$
 endif
 endif
 
+INCMODS += -I${OBJDIR}
 
 #!!!Local Variables:
 #!!! mode: Makefile

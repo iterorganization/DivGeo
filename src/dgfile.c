@@ -458,7 +458,7 @@ static void WriteApp_File(App a,FILE* f) {
     g=CopyGroup(a->mark,NULL);
     RestrictGroupToType(g,T_MESHELEMENT);
     if (!IsEmptyGroup(g)) {
-      fprintf(f,"MarkedMeshElements112 %d\n",GroupCount(g));
+      fprintf(f,"MarkedMeshElements112 %u\n",(unsigned)GroupCount(g));
       for (me=Group1st(g,&ix);me!=NULL;me=Next(&ix)) {
         GetMeshElementId(me,&i,&j);
         fprintf(f,"%d %d\n",i,j);
@@ -469,7 +469,7 @@ static void WriteApp_File(App a,FILE* f) {
     g=CopyGroup(a->mark,NULL);
     RestrictGroupToType(g,T_MESHCELL);
     if (!IsEmptyGroup(g)) {
-      fprintf(f,"MarkedMeshCells112 %d\n",GroupCount(g));
+      fprintf(f,"MarkedMeshCells112 %u\n",(unsigned)GroupCount(g));
       for (mc=Group1st(g,&ix);mc!=NULL;mc=Next(&ix))
         fprintf(f,"%d\n",mc->eN);
     }
@@ -1124,9 +1124,9 @@ int SaveApp(App a,char* fName,int mode) {
   if (!IsEmptyGroup(a->gridPointSegs))
     fprintf(f,"Poloidal Cells:         %s\n",GetGridPointStatsStr(a));
   if (!IsEmptyGroup(a->separators))
-    fprintf(f,"Separators:             %u\n",GroupCount(a->separators));
+    fprintf(f,"Separators:             %u\n",(unsigned)GroupCount(a->separators));
   if (!IsEmptyGroup(a->sources))
-    fprintf(f,"Sources:                %u\n",GroupCount(a->sources));
+    fprintf(f,"Sources:                %u\n",(unsigned)GroupCount(a->sources));
 
   fprintf(f,
     "\n------------------------------------------------------------------------\n\n");

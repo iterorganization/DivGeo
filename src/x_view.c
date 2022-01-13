@@ -1558,7 +1558,7 @@ static void AddXViewVarsMenuItem(View w,VarSetDef vsd,XtCallbackProc cbp,
       XtAddCallback(wg,XmNactivateCallback,cbp,(XtPointer)vs);
       s=GetIndexVarValue(vs);
       if (s==NULL) {
-        sprintf(buf,"#%d",GroupIndex(vsd->varSets,vs)+1);
+        sprintf(buf,"#%u",(unsigned)GroupIndex(vsd->varSets,vs)+1);
         s=buf;
       }
       SetLabelString(wg,s);
