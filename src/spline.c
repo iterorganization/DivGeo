@@ -501,7 +501,7 @@ c
   int nm1,ib,i;
   double t;
 
-  /* Accomodate Fortran arrays */
+  /* Accommodate Fortran arrays */
 
   x--;
   y--;
