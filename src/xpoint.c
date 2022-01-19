@@ -525,7 +525,7 @@ static Group CalcSeparatrixLine(Equil eq,XPointTest xpt,Group xpg,int idx) {
     /*puts("F");*/return NULL;}    /* XPointTest */
 
   if (GroupCount(g)<3) {
-    FreeGroup(g); /*puts("2");*/return NULL;}  /* XPointTest$*/
+    FreeGroup(g); /*puts("2");*/return NULL;}  /* XPointTest */
 
   /* Order the line */
 
@@ -1085,7 +1085,7 @@ k++;
       }
     }
   }
-/*  printf("Comparisions:%d\n",k); */
+/*  printf("Comparisons:%d\n",k); */
 }
 
 static Group CalcGradientLine(Equil eq,int x0,int y0,int steps,int bMinMax) {

@@ -21,7 +21,7 @@ include 'mathematical_constants.f90'              ! IGNORE
 ! ngpr: number of points in the radial direction
 ! ngpz: number of points in the vertical direction
   integer ngpr, ngpz
-  parameter (ngpr=1175, ngpz=1175)
+  parameter (ngpr=1775, ngpz=1775)
 #ifndef CONSTANTS_PROVIDED
   real (kind=R8) :: pi
 #ifdef IMAS

@@ -85,13 +85,13 @@ static struct _NameRec meshSlidingModes[]={
 
 static struct _FlagsRec surfaceZoneFlags[]={
   {SZF_LIMITBYSURFACE,'i'},
-  {0,(int) NULL}
+  {0,0}
 };
 
 static struct _FlagsRec gridPointSegFlags[]={
   {GPSF_USED,'u'},
   {GPSF_TARGET_CW,'t'},
-  {0,(int) NULL}
+  {0,0}
 };
 
 App LoadNormalApp(XApp xap,char* fName,char** pMsg,int* err) {
@@ -1184,7 +1184,7 @@ App LoadApp(XApp xap,char* fName,char** pMsg,int* err) {
   return a;
 }
 
-/* Topology mgmt //////////////////////////////////////////////////// */
+/* Topology management ////////////////////////////////////////////// */
 
 int LoadTopology(App a,char* fName,int bDetectXPoints) {
   int version=0,i,i1,i2,i3,i4,i5,i6,i7,i8,r;
@@ -1228,6 +1228,7 @@ int LoadTopology(App a,char* fName,int bDetectXPoints) {
   if (!version) return ERR_BADFILE;
   switch(version) {
     case 114:
+    case 115:
       break;
     default:
       return ERR_OLD_FILE_NO_TOPOLOGY;
