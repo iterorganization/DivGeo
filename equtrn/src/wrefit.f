@@ -23,8 +23,8 @@ c=====================================================
 c
 c  version : 18.12.94 18:29
 c
+      use eqdim
       implicit none
-#include "eqdim.inc"
       integer i,j
       integer lun,iret,nr,nz,ipestg
       real(kind=R8) :: fg(*),pg(*),ffg(*),ppg(*),pfm(ngpr,*)

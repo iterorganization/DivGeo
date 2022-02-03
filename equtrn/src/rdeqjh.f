@@ -1,7 +1,12 @@
-      subroutine rdeqjh(lun,nr,nz,psib,btf,rtf,*)
+      subroutine rdeqjh(lun,nr,nz,psib,btf,rtf,iret)
 c
 c  version : 09.07.97 17:08
 c
+      use eqdim
+      implicit none
+      integer lun, nr, nz, iret
+      real(kind=R8) psib, btf, rtf
+      integer i, j, k, l
 c=====================================================
 c*** Reads the header of the equilibrium file and returns dimensions
 c*** and the value of the toroidal field, btf, measured at radius rtf -
@@ -13,6 +18,7 @@ c=====================================================
 c
       utb=char(9)
       rtf=-1.
+      iret=0
  10   read(lun,'(a80)',end=90) ss
       if(ss.eq.' ') go to 10
       k=0
@@ -77,6 +83,7 @@ c=====================================================
 c*** Error encountered
 c
  90   write (6,*) 'Wrong format of the equilibrium file - sorry!'
-      return 1
+      iret=1
+      return
 c=====================================================
       end

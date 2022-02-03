@@ -15,8 +15,8 @@ c=====================================================
 c
 c  version : 03.02.20 13:42
 c
+      use eqdim
       implicit none
-#include "eqdim.inc"
       integer, intent(in) :: lun
       integer, intent(inout) :: iret
       integer, intent(out) :: nunits

@@ -501,7 +501,7 @@ c
   int nm1,ib,i;
   double t;
 
-  /* Accomodate Fortran arrays */
+  /* Accommodate Fortran arrays */
 
   x--;
   y--;
@@ -517,7 +517,7 @@ c
 c
 c  set up tridiagonal system
 c
-c  b = diagonal, d = offdiagonal, c = right hand side.
+c  b = diagonal, d = off-diagonal, c = right hand side.
 c
 */
    d[1] = x[2] - x[1];

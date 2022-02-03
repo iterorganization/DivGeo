@@ -7,13 +7,17 @@ FFLAGS   = -g
 else
 FFLAGS   =
 endif
-COMPILE  = ${FC} -c ${FFLAGS}
+COMPILE  = ${FC} -c ${FFLAGS} -mdir ${OBJDIR} -I${OBJDIR}
 CPP      = /lib/cpp -traditional
 
 ifdef SOLPS_CPP
 DEFINES  = ${SOLPS_CPP}
 else
 DEFINES += -DNAGFOR
+ifeq ($(shell `pkg-config --exists fundamental-constants`; echo $$?),0)
+DEFINES += -DCONSTANTS_PROVIDED
+INCMODS += `pkg-config fundamental-constants --cflags`
+endif
 endif
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  =

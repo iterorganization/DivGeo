@@ -23,7 +23,9 @@ c
 c=====================================================
 c*** Translation of shotfile equilibrium data into dg compatible format
 c=====================================================
-#include "eqdim.inc"
+      use eqdim
+      implicit none
+      integer ndim, NdGC
       parameter (ndim=1000, NdGC=100) 
       real*8 gpr(ngpr),gpz(ngpz)
       real*8 pfmd(ngpr,ngpz)
@@ -40,7 +42,8 @@ c=====================================================
       real xyGC(1:Ndim,1:2)
       integer ixbeg(1:NdGC), lenix(1:NdGC), valix(1:NdGC)
       character*8 GCnam(1:NdGC)
-      integer ngc
+      integer ngc, ngr, ngz, lpfx
+      integer i, j, m, n, ierr, iret
 
 c=====================================================
 c
@@ -52,37 +55,37 @@ c
       iarg=iargc()
       write(*,*) 'iarg',iarg
       if(iarg.ge.2) then
-	call getarg(1,arg)
-	read(arg,*) nshot
-	call getarg(2,arg)
-	read(arg,*) tshot
-	if(iarg.ge.3) call getarg(3,dianam)
-	if(iarg.ge.4) call getarg(4,expnam)
-	if(iarg.ge.5) then
-	  call getarg(5,arg)
-	  read(arg,*) nedit
-	endif
+        call getarg(1,arg)
+        read(arg,*) nshot
+        call getarg(2,arg)
+        read(arg,*) tshot
+        if(iarg.ge.3) call getarg(3,dianam)
+        if(iarg.ge.4) call getarg(4,expnam)
+        if(iarg.ge.5) then
+          call getarg(5,arg)
+          read(arg,*) nedit
+        endif
       else
-	write(*,*) '1st arg == shot number'
-	write(*,*) '2nd arg == time'
-	write(*,*) '[3rd arg == diagnostic (EQI)]'
-	write(*,*) '[4th arg == experiment (AUGD)]'
-	write(*,*) '[5th arg == edition (0)]'
-	stop
+        write(*,*) '1st arg == shot number'
+        write(*,*) '2nd arg == time'
+        write(*,*) '[3rd arg == diagnostic (EQI)]'
+        write(*,*) '[4th arg == experiment (AUGD)]'
+        write(*,*) '[5th arg == edition (0)]'
+        stop
       endif
       write(*,*) expnam,dianam,nshot,tshot
       write(filename,
      1 '(i5.5,''.'',i4.4,''.'',a4,''.'',a3,''.'',i2.2,''.eq'')')
      1 nshot,nint(tshot*1000),expnam,dianam,nedit
- !       do i=1,10
- ! 	if(filename(i:i).eq.' ') filename(i:i)='0'
- !       enddo
- !       do i=21,22
- ! 	if(filename(i:i).eq.' ') filename(i:i)='0'
- !       enddo
- !       do i=11,lnblnk(filename)
- ! 	if(filename(i:i).eq.' ') filename(i:i)='_'
- !       enddo
+!       do i=1,10
+!         if(filename(i:i).eq.' ') filename(i:i)='0'
+!       enddo
+!       do i=21,22
+!         if(filename(i:i).eq.' ') filename(i:i)='0'
+!       enddo
+!       do i=11,lnblnk(filename)
+!         if(filename(i:i).eq.' ') filename(i:i)='_'
+!       enddo
       
       call kkEQintS(ierr,30)
       call kkEQPFM(ierr,expnam,dianam,nshot,nedit,tshot,mdim+1,
@@ -105,16 +108,16 @@ c
       btorc=bt(1)
       psilim=pfxx(1)/(2.0*3.14159 26535 89793 23846)
       do i=0,m
-	do j=0,n
-	  pfmd(i+1,j+1)=pfm(i,j)/(2.0*3.14159 26535 89793 23846)-psilim
-	enddo
+        do j=0,n
+          pfmd(i+1,j+1)=pfm(i,j)/(2.0*3.14159 26535 89793 23846)-psilim
+        enddo
       enddo
       do i=0,m
-	gpr(i+1)=ri(i)
+        gpr(i+1)=ri(i)
       enddo
       ngr=m+1
       do j=0,n
-	gpz(j+1)=zj(j)
+        gpz(j+1)=zj(j)
       enddo
       ngz=n+1
 
@@ -138,14 +141,14 @@ c
       open(2,file=filename)
       write(*,*) ierr, ngc
       do i=1, NGC
-	write(2,*)
-	write(2,*) '#',i,GCnam(i),valix(i)
-	write(2,*)
-	if(valix(i).ne.0) then
-	  do j=ixbeg(i),ixbeg(i)+lenix(i)-1
-	    write(2,*) xyGC(j,1), xyGC(j,2)
-	  enddo
-	endif
+        write(2,*)
+        write(2,*) '#',i,GCnam(i),valix(i)
+        write(2,*)
+        if(valix(i).ne.0) then
+          do j=ixbeg(i),ixbeg(i)+lenix(i)-1
+            write(2,*) xyGC(j,1), xyGC(j,2)
+          enddo
+        endif
       enddo
 
       end

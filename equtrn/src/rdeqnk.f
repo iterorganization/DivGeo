@@ -19,17 +19,13 @@ c=====================================================
 c
 c  version : 16.01.96 19:33
 c
+      use eqdim
       implicit none
-#include "eqdim.inc"
       integer i,j
       integer lun,iret,nr,nz
       real(kind=R8) :: pfm(ngpr,*),rgr(*),zgr(*)
       real(kind=R8) :: rmin,zmin,rmax,zmax,delr,delz,
      &  psilim,btorc,rcntc,fg,u
-c=====================================================
-      real(kind=R8) :: rr, zz
-      rr(i)=delr*(i-1)+rmin
-      zz(i)=delz*(i-1)+zmin
 c=====================================================
 c
       iret=0
@@ -72,5 +68,26 @@ c
       do i=1,nz
         zgr(i)=zz(i)
       enddo
+      return
 c
-      end
+      contains
+c
+      function rr(i)
+      implicit none
+      real(kind=R8) :: rr
+      integer i
+
+      rr = delr*(i-1)+rmin
+      return
+      end function rr
+
+      function zz(i)
+      implicit none
+      real(kind=R8) :: zz
+      integer i
+
+      zz = delz*(i-1)+zmin
+      return
+      end function zz
+
+      end subroutine rdeqnk

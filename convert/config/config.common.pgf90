@@ -1,0 +1,16 @@
+FC      = pgf90
+ifdef SOLPS_DEBUG
+FFLAGS += -g -C
+else
+FFLAGS += -O3
+endif
+
+COMPILE = ${FC} -c ${FFLAGS}
+
+LDLIBS  = ${LD_MSCL} -lstdc++
+LDEXTRA =
+
+#!!!Local Variables:
+#!!! mode: Makefile
+#!!! End:
+

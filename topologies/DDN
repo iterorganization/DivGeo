@@ -9,8 +9,8 @@ Last Modified time:     Mon Feb  8 20:03:03 1999
 
 Original filename:      /prg/b2/data/kuku/solps4.0/src/DivGeo/dg/topologies/DDN
 Equilibrium file:       /prg/b2/data/kuku/solps4.0/src/DivGeo/dg/class/iterm/equilibria/lam_006.equ
-Radial cells:           1SOL 0OSR 0TPF 0OSL 0BPF 0Core 
-Poloidal Cells:         1OU 1IU 1OM 1IM 1OL 1IL 
+Radial cells:           1SOL 0OSR 0TPF 0OSL 0BPF 0Core
+Poloidal Cells:         1OU 1IU 1OM 1IM 1OL 1IL
 
 ------------------------------------------------------------------------
 
@@ -101,11 +101,12 @@ EnumText102
 text101 0
 jsrss
 Sputtered atom
-text101 7
+text101 8
 Specification of the sputtered particle
 for physical sputtering (always atom)
 
-=< 0: the wall material
+= 0: the wall material (but sputtered particles are not followed)
+< 0: the wall material (sputtered particles are followed)
 > (NATMI+NMOLI+NIONI+NPLSI): mass&charge
 else: the sequential number of the atom
       in the list (4A)
@@ -142,7 +143,7 @@ The surface type (ILIIN in 2.3.B)
 
 14 : periodicity surface
  3 : mirror
- 2 : black hole
+ 2 : absorbing surface
  1 : material surface
  0 : no action
 -1 : switch in both directions
@@ -234,7 +235,7 @@ text101 4
 Energy of thermal particles
 >0 : monoenergetic particles, E=ewall
 =0 : Thompson distribution with EWBIN
-<0 : maxwellian with T=ewall
+<0 : Maxwellian with T=ewall
 Float -n+m-S-s-h-i 0 8
 EnumText102
 text101 0
@@ -259,14 +260,15 @@ EnumText102
 text101 0
 material
 Wall Material
-text101 2
+text101 3
 Chemical notation for the element of
 which the surface is made.
+Allowed values are: Be, C, Fe, SS, Mo, and W.
 Text -n+m-S-s-h-i 0 11
 EnumText102
 text101 0
 jlsptp
-Phys. sputter.
+Phys. sput. model
 text101 4
 Physical sputtering byte of ILSPT (6B)
 
@@ -444,12 +446,14 @@ EnumText102
 text101 0
 partlist
 Element List
-text101 5
-This allows you to select a part of the
-surface for plotting the distribution of
-neutral loading.
+text101 7
+This allows you to select a part of the surface for plotting the
+distribution of neutral loading. The selected elements should make a
+continuous chain.
 
-Targets cannot be treated this way!
+Targets cannot be treated this way! If they are specified as a part of the
+chain, their length counts in the reference distance but no neutral-related
+data is output.
 Elems -n-m-S-s-h-i 1 0
 EnumText102
 text101 0
@@ -477,7 +481,7 @@ text101 0
 0 1
 VarDefs102 1
 skipelem
-Skip this elements
+Skip these elements
 text101 2
 Skip these elements in the data prepared
 for Eirene
@@ -494,8 +498,8 @@ VarDefs102 2
 segmlist
 List of elements
 text101 4
-Region over which the wall loading can 
-be plotted in b2plot. 
+Region over which the wall loading can
+be plotted in b2plot.
 Parts corresponding to the targets will
 be replaced with grid edges in b2plot.
 Elems -n-m-S-s-h-i 0 0
@@ -504,7 +508,7 @@ text101 0
 starting
 Starting element
 text101 2
-This determines the direction of x-axis 
+This determines the direction of x-axis
 for the 1-D plots.
 Elem -n-m-S-s-h-i 0 1
 EnumText102
@@ -520,7 +524,7 @@ VarDefs102 1
 radpower
 Radiated power
 text101 2
-Power radiated from additional sources 
+Power radiated from additional sources
 (e. g., from the main plasma)  (MW)
 Float -n-m-S-s-h-i 0 0
 EnumText102
@@ -535,7 +539,7 @@ VarDefs102 1
 segmlist
 List of elements
 text101 3
-Structure used in calculation of 
+Structure used in calculation of
 radiation shadowing in b2plot.
 Must be continuous and closed.
 Elems -n-m-S-s-h-i 0 0
@@ -558,10 +562,10 @@ text101 0
 set_id
 Set identifier
 text101 7
-Identifier for the set of chords along which the profiles 
+Identifier for the set of chords along which the profiles
 of various data can be plotted in b2plot.
 
-The data for each chord will be stored as a separate file with the name 
+The data for each chord will be stored as a separate file with the name
 consisting of this field and a label associated with the chord:
 
   <set_id>.<chord_label>
@@ -587,7 +591,7 @@ VarDefs102 3
 set_id
 Set Identifier
 text101 6
-Identifier for the set of chords along which the line integration 
+Identifier for the set of chords along which the line integration
 can be performed in b2plot
 
 The data related to the set will be put in a file named
@@ -649,7 +653,7 @@ edge_pfr
 PFR edge
 text101 5
 Element to be linked to the grid corner
-from the PFR side of the target.
+from the PFR side of the OUTER target.
 
 The targets are numbered in B2 notation:
 clockwise starting from the lower left.
@@ -660,7 +664,7 @@ edge_sol
 SOL edge
 text101 5
 Element to be linked to the grid corner
-from the SOL side of the target.
+from the SOL side of the OUTER target.
 
 The targets are numbered in B2 notation:
 clockwise starting from the lower left.

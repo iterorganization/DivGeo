@@ -85,13 +85,13 @@ static struct _NameRec meshSlidingModes[]={
 
 static struct _FlagsRec surfaceZoneFlags[]={
   {SZF_LIMITBYSURFACE,'i'},
-  {0,(int) NULL}
+  {0,0}
 };
 
 static struct _FlagsRec gridPointSegFlags[]={
   {GPSF_USED,'u'},
   {GPSF_TARGET_CW,'t'},
-  {0,(int) NULL}
+  {0,0}
 };
 
 App LoadNormalApp(XApp xap,char* fName,char** pMsg,int* err) {
@@ -458,7 +458,7 @@ static void WriteApp_File(App a,FILE* f) {
     g=CopyGroup(a->mark,NULL);
     RestrictGroupToType(g,T_MESHELEMENT);
     if (!IsEmptyGroup(g)) {
-      fprintf(f,"MarkedMeshElements112 %d\n",GroupCount(g));
+      fprintf(f,"MarkedMeshElements112 %u\n",(unsigned)GroupCount(g));
       for (me=Group1st(g,&ix);me!=NULL;me=Next(&ix)) {
         GetMeshElementId(me,&i,&j);
         fprintf(f,"%d %d\n",i,j);
@@ -469,7 +469,7 @@ static void WriteApp_File(App a,FILE* f) {
     g=CopyGroup(a->mark,NULL);
     RestrictGroupToType(g,T_MESHCELL);
     if (!IsEmptyGroup(g)) {
-      fprintf(f,"MarkedMeshCells112 %d\n",GroupCount(g));
+      fprintf(f,"MarkedMeshCells112 %u\n",(unsigned)GroupCount(g));
       for (mc=Group1st(g,&ix);mc!=NULL;mc=Next(&ix))
         fprintf(f,"%d\n",mc->eN);
     }
@@ -1124,9 +1124,9 @@ int SaveApp(App a,char* fName,int mode) {
   if (!IsEmptyGroup(a->gridPointSegs))
     fprintf(f,"Poloidal Cells:         %s\n",GetGridPointStatsStr(a));
   if (!IsEmptyGroup(a->separators))
-    fprintf(f,"Separators:             %u\n",GroupCount(a->separators));
+    fprintf(f,"Separators:             %u\n",(unsigned)GroupCount(a->separators));
   if (!IsEmptyGroup(a->sources))
-    fprintf(f,"Sources:                %u\n",GroupCount(a->sources));
+    fprintf(f,"Sources:                %u\n",(unsigned)GroupCount(a->sources));
 
   fprintf(f,
     "\n------------------------------------------------------------------------\n\n");
@@ -1184,7 +1184,7 @@ App LoadApp(XApp xap,char* fName,char** pMsg,int* err) {
   return a;
 }
 
-/* Topology mgmt //////////////////////////////////////////////////// */
+/* Topology management ////////////////////////////////////////////// */
 
 int LoadTopology(App a,char* fName,int bDetectXPoints) {
   int version=0,i,i1,i2,i3,i4,i5,i6,i7,i8,r;
@@ -1228,6 +1228,7 @@ int LoadTopology(App a,char* fName,int bDetectXPoints) {
   if (!version) return ERR_BADFILE;
   switch(version) {
     case 114:
+    case 115:
       break;
     default:
       return ERR_OLD_FILE_NO_TOPOLOGY;

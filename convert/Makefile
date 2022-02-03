@@ -17,8 +17,15 @@ ifeq ($(shell [ -e ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER} ] && echo y
 else
   $(warning ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER} not found.)
 endif
+ifeq ($(shell [ -e ${SOLPSTOP}/SETUP/config.common.${COMPILER} ] && echo yes || echo no ),yes)
+  include ${SOLPSTOP}/SETUP/config.common.${COMPILER}
+  MAKES += ${SOLPSTOP}/SETUP/config.common.${COMPILER}
+endif
 else
   MAKES += ${SOLPSTOP}/SETUP/setup.csh.${HOST_NAME}.${COMPILER} ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}
+ifeq ($(shell [ -e ${SOLPSTOP}/SETUP/config.common.${COMPILER} ] && echo yes || echo no ),yes)
+  MAKES += ${SOLPSTOP}/SETUP/config.common.${COMPILER}
+endif
 endif
 ifeq ($(shell [ -e ${SOLPSTOP}/SETUP/setup.csh.${HOST_NAME}.${COMPILER}.local ] && echo yes || echo no ),yes)
   MAKES += ${SOLPSTOP}/SETUP/setup.csh.${HOST_NAME}.${COMPILER}.local
@@ -49,6 +56,11 @@ else
 $(error config/config.${HOST_NAME}.${COMPILER} not found.)
 endif
 
+ifeq ($(shell [ -e config/config.common.${COMPILER} ] && echo yes || echo no ),yes)
+include config/config.common.${COMPILER}
+MAKES+= config/config.common.${COMPILER}
+endif
+
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER}.local ] && echo yes || echo no ),yes)
 include config/config.${HOST_NAME}.${COMPILER}.local
 MAKES+= config/config.${HOST_NAME}.${COMPILER}.local
@@ -76,7 +88,7 @@ ${OBJDIR}/${PROGEIR}: $(EIRDG) $(MAKES)
 	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o ${OBJDIR}/${PROGEIR} $(EIRDG) $(LDLIBS) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROGTRIA}: $(TRIDG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o ${OBJDIR}/${PROGTRIA} $(TRIDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o ${OBJDIR}/${PROGTRIA} $(TRIDG) $(LDFLAGS) $(LDEXTRA)
 
 clean:
 	cd ${OBJDIR}; rm -rf *.o $(ALL)

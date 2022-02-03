@@ -2,56 +2,9 @@
 LD_MSCL ?= `pkg-config mscl --libs`
 
 FC       = ifort
-FC_VERSION = $(shell echo `ifort --version | head -1 | awk '{printf "%s ",$$3,"\n"}'`)
-ifeq (${FC_VERSION},12.0.2)
-ifdef SOLPS_DEBUG
-FFLAGS   = -g -C -vec_report0 -traceback
-else
-FFLAGS   = -O -vec_report0
-endif
-LDFLAGS  = -i_dynamic
-else
-ifdef SOLPS_DEBUG
-FFLAGS   = -g -C -traceback
-else
-FFLAGS   = -O
-endif
-LDFLAGS  =
-endif
-COMPILE  = ${FC} -c ${FFLAGS}
 CPP      = /lib/cpp -traditional -ffreestanding
 
-DEFINES  = ${SOLPS_CPP}
-LDLIBS   = ${LD_MSCL}
-
-ifdef IMAS_VERSION
 GGD_VERSION ?= `pkg-config ggd --modversion`
-UAL_MAJOR_VERSION ?= $(shell echo ${UAL_VERSION} | cut -d '.' -f1 )
-IMAS_MAJOR_VERSION ?= $(shell echo ${IMAS_VERSION} | cut -d '.' -f1 )
-IMAS_MINOR_VERSION ?= $(shell echo ${IMAS_VERSION} | cut -d '.' -f2 )
-ifeq ($(shell test ${IMAS_MINOR_VERSION} -ge 17; echo $$?),0)
-GGD_MINOR_VERSION ?= $(shell echo ${GGD_VERSION} | cut -d '.' -f2 )
-LD_UAL    ?= `pkg-config imas-ifort ggd --libs`
-INCMODS   += `pkg-config imas-ifort ggd --cflags`
-else
-ifeq ($(shell test ${IMAS_MINOR_VERSION} -ge 12; echo $$?),0)
-GGD_MINOR_VERSION ?= $(shell echo ${GGD_VERSION} | cut -d '.' -f2 )
-LD_UAL    ?= `pkg-config imas-ifort --libs` -lggd-ifort
-INCMODS   += `pkg-config imas-ifort --cflags`
-else
-GGD_MINOR_VERSION ?= 0
-LD_UAL    ?= `pkg-config imas-lowlevel imas-ifort --libs`
-INCMODS   += `pkg-config imas-lowlevel imas-ifort --cflags`
-endif
-endif
-ifndef SOLPS_CPP
-DEFINES   += -DIMAS -DUAL_MAJOR_VERSION=${UAL_MAJOR_VERSION} -DIMAS_MINOR_VERSION=${IMAS_MINOR_VERSION} -DGGD_MINOR_VERSION=${GGD_MINOR_VERSION}
-endif
-endif
-
-#LDWOS   = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
-#LDWOS   = -L/afs/ipp/aug/ads/lib64/@sys -lKK -lwoss -lddww -lpplotXt -lsocket
-#LDWOS   = -L/afs/ipp/aug-ads/@sys/lib64 -Wl,-R/afs/ipp/aug-ads/@sys/lib64 -lkk -lddww
 
 #!!!Local Variables:
 #!!! mode: Makefile

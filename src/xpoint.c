@@ -525,7 +525,7 @@ static Group CalcSeparatrixLine(Equil eq,XPointTest xpt,Group xpg,int idx) {
     /*puts("F");*/return NULL;}    /* XPointTest */
 
   if (GroupCount(g)<3) {
-    FreeGroup(g); /*puts("2");*/return NULL;}  /* XPointTest$*/
+    FreeGroup(g); /*puts("2");*/return NULL;}  /* XPointTest */
 
   /* Order the line */
 
@@ -1085,7 +1085,7 @@ k++;
       }
     }
   }
-/*  printf("Comparisions:%d\n",k); */
+/*  printf("Comparisons:%d\n",k); */
 }
 
 static Group CalcGradientLine(Equil eq,int x0,int y0,int steps,int bMinMax) {
@@ -1974,9 +1974,10 @@ int FindSurfaceOriginPointEx(App a,int zone,double level,
     if (ocy<a->equil->sy-2 && (EQL(ocx,ocy+1)-EQL(cx,cy))*s>0) {
       cx=ocx;cy=ocy+1;
     }
-    if (ocx==cx && ocy==cy)
+    if (ocx==cx && ocy==cy) {
       if (bPeakSearch) break;
       else return ERR_LEVELNOTFOUND;
+    }
 
     ol=EQL(ocx,ocy);
     l=EQL(cx,cy);

@@ -1316,8 +1316,9 @@ void TlRepositionElem(View w,int event,double x,double y) {
         d=Free(d);
         break;
       }
-      if (d->e!=NULL && d->sep!=NULL)
+      if (d->e!=NULL && d->sep!=NULL) {
         if (distE<distSep) d->sep=NULL; else d->e=NULL;
+      }
 
       SetViewFlags(w,w->showFlags|SHW_ELEMS|SHW_SEPARATORS);
       if (d->e!=NULL) {

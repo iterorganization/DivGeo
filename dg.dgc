@@ -1569,14 +1569,15 @@ EnumText102
 text101 0
 Help
 Help
-text101 7
+text101 8
 Here you can specify an AMDS model to be used for atomic and molecular
 reactions in Eirene.
-If no such reference is present, then the default reactions for each species
-are used.
-If this layer is present, then the defaults are not applied and all the
-needed reactions are to be specified in the AMDS models. Multiple layers of
-this type can be present.
+Multiple layers of this type can be present.
+For any species with no inelastic collisions listed in the chosen AMDS
+model(s), a set of default reactions will be used.
+For species involved as primaries in the AMDS model reactions, all the
+needed inelastic reactions are to be specified in the AMDS model(s).
+Default elastic collisions, when relevant, will still be added.
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
@@ -1927,14 +1928,14 @@ Group100 0
 Group100 0
 Click ? for help
 lm_cnfg
-Limiter configuration
+Limiter and linear configurations
 text101 0
 0 1
 VarDefs102 8
 Help
 Help
-text101 51
-This gives you a way - although a clumsy one - to treat a limiter
+text101 54
+This gives you a way - although a clumsy one - to treat limiter and linear
 configurations. The problem is that DG in its present state cannot produce
 correct output files if no x-point is specified, so that one has to cheat
 the code somehow. The temporary solution realised with this set of
@@ -1951,7 +1952,8 @@ null equilibrium.
 
 (3) Add a "Limiter configuration" variable, and cut and paste the name of
 the limiter equilibrium file into the "Real equilibrium" there. Specify some
-reasonable value for the "Core width".
+reasonable value for the "Core width". For linear cases, leave the "Real
+equilibrium" field as "-".
 
 (4) Create a "Structure" which contains the two fake SN targets - see p.(2),
 plus the one representing the limiter, plus some grid-limiting parts if
@@ -1971,13 +1973,15 @@ They must not be included in the "Elements not for Eirene" list.
 for the "Grid points" and the "SOL" and "Core" areas for the "Surfaces" are
 meaningful.
 
-(7) In "Global Eirene data", make sure that the "Major radius" is set to
-its real positive value.
+(7) For limiter cases, make sure that the "Major radius" is set to
+its real positive value in "Global Eirene data". For linear cases, set it
+to any positive number.
 
 (8) Follow the usual procedure: create output, do "lns", go to "carre" and
-create the grid, import the grid and look at it. You will have to play with
-the usual settings for the grid generation, such as the "Surfaces" and
-"Grid points" together with the "Carre guard length" in the
+create the limiter grid, import the grid and look at it. For linear cases,
+the grid must be provided independently. You will have to
+play with the usual settings for the grid generation, such as the "Surfaces"
+and "Grid points" together with the "Carre guard length" in the
 "Target specifications", and also with the "Core width" in the "Limiter
 configuration" in order to get the grid which suits you and is acceptable
 for the plasma modelling code (no pink segments in the grid). If you find
@@ -1997,11 +2001,12 @@ EnumText102
 text101 0
 lm_equ
 Real equilibrium
-text101 4
+text101 5
 Here you specify the real equilibrium file to be used for your grid. If it
 is located in the same directory, then only the filename without path is
 sufficient. Due to technical reasons, the length of this specification must
 not exceed 128 characters.
+For linear devices, leave this field with its default value of "-".
 Text -n-m-S-s-h-i 0 1
 EnumText102
 text101 0

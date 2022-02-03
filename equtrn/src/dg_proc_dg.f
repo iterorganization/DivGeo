@@ -14,8 +14,8 @@ c=====================================================
 c*** do arbitrary re-processing of the equilibrium
 c*** in this case chop off the first few columns
 c=====================================================
+      use eqdim
       implicit none
-#include "eqdim.inc"
       real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real(kind=R8) :: rcntc,psilim,btorc,shift
       character*256 filename

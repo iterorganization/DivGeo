@@ -117,16 +117,17 @@ void ConfigureXApp(XApp xap) {
     exit(10);
   }
 
-  if (xap->x->bCheckResources)
+  if (xap->x->bCheckResources) {
     if (xap->x->resourceFileVersion<0)
-      FatalError("DivGeo: no resources"); else
+      FatalError("DivGeo: no resources"); else {
     if (xap->x->resourceFileVersion!=DG_VERSION)
       FatalError("DivGeo: invalid resource file version\n"
         "DivGeo version:        %s\n"
         "Resource file version: %s\n",
         GetVersionStr(DG_VERSION),
         GetVersionStr(xap->x->resourceFileVersion));
-
+    }
+  }
 
   xap->x->helpFile=NULL;
   strcpy(helpFileName,xap->argv[0]);
@@ -471,7 +472,7 @@ static char* XAppResName(XApp xap,int id) {
 }
 
 void XAppPause(XApp xap,char* str) {
-  printf(str);                          /* relcheck_ignore_line */
+  printf("%s",str);                          /* relcheck_ignore_line */
   ProcessPending(xap->x->wShell);
   getchar();
 }

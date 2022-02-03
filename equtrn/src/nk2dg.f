@@ -13,8 +13,8 @@ c
 c=====================================================
 c*** Translation of equilibrium data from Naka to dg compatible format
 c=====================================================
+      use eqdim
       implicit none
-#include "eqdim.inc"
       integer iret,nr,nz
       real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real(kind=R8) :: rmin,zmin,rmax,zmax,delr,delz,

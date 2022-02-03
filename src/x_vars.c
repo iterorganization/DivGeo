@@ -444,11 +444,11 @@ static char* GetVarValueDescr(View w,void* value,VarDef vd) {
       return s;
     } */
     if (vd->varType & VTF_HASELEMS)
-      sprintf(s,"%d %s",GroupCount(g),GetStr(w,STR_ELEM));
+      sprintf(s,"%u %s",(unsigned)GroupCount(g),GetStr(w,STR_ELEM));
     else if (vd->varType & VTF_HASCHORDS)
-      sprintf(s,"%d %s",GroupCount(g),GetStr(w,STR_CHORD));
+      sprintf(s,"%u %s",(unsigned)GroupCount(g),GetStr(w,STR_CHORD));
     else if (vd->varType & VTF_HAS_MESH_OBJECTS)
-      sprintf(s,"%d %s",GroupCount(g),
+      sprintf(s,"%u %s",(unsigned)GroupCount(g),
       GetStr(w,vd->varType==VT_MESH_CELLS? STR_MESH_CELL : STR_MESH_ELEMENT));
     else assert(0);
     if (GroupCount(g)>1) strcat(s,"s");

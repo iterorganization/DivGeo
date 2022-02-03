@@ -8,7 +8,7 @@ ifndef COMPILER
 $(error COMPILER not defined)
 endif
 
-MAKES = Makefile 
+MAKES = Makefile
 # Include global SOLPS compiler settings
 ifndef SOLPS_CPP
 ifeq ($(shell [ -e ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
@@ -17,8 +17,15 @@ ifeq ($(shell [ -e ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER} ] && echo y
 else
   $(warning ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER} not found.)
 endif
+ifeq ($(shell [ -e ${SOLPSTOP}/SETUP/config.common.${COMPILER} ] && echo yes || echo no ),yes)
+  include ${SOLPSTOP}/SETUP/config.common.${COMPILER}
+  MAKES += ${SOLPSTOP}/SETUP/config.common.${COMPILER}
+endif
 else
   MAKES += ${SOLPSTOP}/SETUP/setup.csh.${HOST_NAME}.${COMPILER} ${SOLPSTOP}/SETUP/config.${HOST_NAME}.${COMPILER}
+ifeq ($(shell [ -e ${SOLPSTOP}/SETUP/config.common.${COMPILER} ] && echo yes || echo no ),yes)
+  MAKES += ${SOLPSTOP}/SETUP/config.common.${COMPILER}
+endif
 endif
 ifeq ($(shell [ -e ${SOLPSTOP}/SETUP/setup.csh.${HOST_NAME}.${COMPILER}.local ] && echo yes || echo no ),yes)
   MAKES += ${SOLPSTOP}/SETUP/setup.csh.${HOST_NAME}.${COMPILER}.local
@@ -112,7 +119,7 @@ shotfile2dg = shotfile2dg.o wreqdg.o
 jetppf2dg = jetppf2dg.o wreqdg.o
 dgsymmdg = dg_symm_dg.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o
 dgcut = dgcut.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o
-idsdg = ids2dg.o rdids.o wreqdg.o wrtrdg.o streql.o usrnam.o
+idsdg = ids2dg.o rdids.o wreqdg.o wrtrdg.o chcase.o streql.o usrnam.o
 dgids = dg2ids.o rdtrg.o wrids.o streql.o usrnam.o
 
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
@@ -120,6 +127,11 @@ include config/config.${HOST_NAME}.${COMPILER}
 MAKES += config/config.${HOST_NAME}.${COMPILER}
 else
 $(error config/config.${HOST_NAME}.${COMPILER} not found.)
+endif
+
+ifeq ($(shell [ -e config/config.common.${COMPILER} ] && echo yes || echo no ),yes)
+include config/config.common.${COMPILER}
+MAKES += config/config.common.${COMPILER}
 endif
 
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER}.local ] && echo yes || echo no ),yes)
@@ -155,12 +167,26 @@ DGCUT = $(dgcut:%.o=$(OBJDIR)/%.o)
 IDSDG = $(idsdg:%.o=$(OBJDIR)/%.o)
 DGIDS = $(dgids:%.o=$(OBJDIR)/%.o)
 
+$(OBJDIR)/%.mod : %.f90
+	${CPP} ${DEFINES} -P ${INCLUDE} $< > ${OBJDIR}/$*.f90
+	$(COMPILE) ${INCMODS} ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f90 ${FINCLUDE}
+	@if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
+	@if [ -f ${OBJDIR}/$*.o ]; then touch ${OBJDIR}/$*.o; fi
+	@if [ -f $*.mod ]; then /bin/mv $*.mod ${OBJDIR}; fi
+	@if [ -f ${OBJDIR}/$*.mod ]; then touch ${OBJDIR}/$*.mod; fi
+
+$(OBJDIR)/%.o : %.f90
+	${CPP} ${DEFINES} -P ${INCLUDE} $< > ${OBJDIR}/$*.f90
+	$(COMPILE) ${INCMODS} ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f90 ${FINCLUDE}
+	@if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
+	@if [ -f ${OBJDIR}/$*.o ]; then touch ${OBJDIR}/$*.o; fi
+	@if [ -f $*.mod ]; then /bin/mv $*.mod ${OBJDIR}; fi
+	@if [ -f ${OBJDIR}/$*.mod ]; then touch ${OBJDIR}/$*.mod; fi
+
 $(OBJDIR)/%.o : %.f
 	${CPP} ${DEFINES} -P ${INCLUDE} $< > ${OBJDIR}/$*.f
-#	$(COMPILE) ${INCMODS} ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o $<
 	$(COMPILE) ${INCMODS} ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f ${FINCLUDE}
-#	/bin/rm ${OBJDIR}/$*.f
-	if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
+	@if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
 
 all: VERSION $(ALL:%=$(OBJDIR)/%) .doxygen
 
@@ -173,70 +199,70 @@ ${OBJDIR}/${PROG_dg2dg}: $(DGDG) $(MAKES)
 	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGDG) $(LDLIBS) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_culham}: $(CULHAM) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(CULHAM) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(CULHAM) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_sst2dg}: $(SSTDG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(SSTDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(SSTDG) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_dg2ef}: $(DGEF) $(MAKES)
 	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGEF) $(LDLIBS) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_dg2vr}: $(DGVR) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGVR) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGVR) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_ef2dg}: $(EFDG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(EFDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(EFDG) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_fiesta2dg}: $(FIESTADG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(FIESTADG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(FIESTADG) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_cr2dg}: $(CRDG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(CRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(CRDG) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_vr2dg}: $(VRDG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(VRDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(VRDG) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_nk2dg}: $(NKDG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(NKDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(NKDG) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_nkn2dg}: $(NKNDG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(NKNDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(NKNDG) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_jt2dg}: $(JTDG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(JTDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(JTDG) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_risepsi}: $(RSPS) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(RSPS) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(RSPS) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_move_equ}: $(MVEQ) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(MVEQ) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(MVEQ) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_prinequ}: $(PREQ) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(PREQ) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(PREQ) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_pb2dg}: $(PBDG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(PBDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(PBDG) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_pt2dg}: $(PTDG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(PTDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(PTDG) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_dg_minuspsi_dg}: $(DGMINUSPSIDG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGMINUSPSIDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGMINUSPSIDG) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_shotfile2dg}: $(SHOTFILE2DG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(SHOTFILE2DG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDWOS)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(SHOTFILE2DG) $(LDFLAGS) $(LDEXTRA) $(LDWOS)
 
 ${OBJDIR}/${PROG_jetppf2dg}: $(JETPPF2DG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(JETPPF2DG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA) $(LDFLUSH)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(JETPPF2DG) $(LDFLAGS) $(LDEXTRA) $(LDFLUSH)
 
 ${OBJDIR}/${PROG_dg_symm_dg}: $(DGSYMMDG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGSYMMDG) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGSYMMDG) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_dgcut}: $(DGCUT) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGCUT) ${LDLIBS} $(LDFLAGS) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGCUT) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_ids2dg}: $(IDSDG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(IDSDG) ${LDLIBS} $(LDFLAGS) $(LD_UAL) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(IDSDG) $(LDFLAGS) $(LD_UAL) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_dg2ids}: $(DGIDS) $(MAKES)
 	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGIDS) $(LDFLAGS) $(LD_UAL) $(LDEXTRA)
@@ -248,19 +274,25 @@ clean:
 TAGS:	tags
 
 tags:
-	rm -f TAGS ; etags src/*.f src/*.inc || touch TAGS
+	rm -f TAGS ; etags src/*.f src/*.f90 src/*.inc || touch TAGS
 
-depend: ${OBJS:.o=.f}
+depend: ${OBJS:.o=.f} ${OBJS90:.o=.f90}
 	@makedepend -f- ${INCLUDE} $^ | \
 	sed -e '3,$$s|^src/|${OBJDIR}/|' | \
 	sed -e 's,^${OBJDIR}/,\$${OBJDIR}/,' | \
 	sed -e 's,: ${SOLPSTOP},: $${SOLPSTOP},' > ${OBJDIR}/dependencies
+	@egrep -aiH '^ {6,}use ' $^ | grep -v 'IGNORE' | tr , ' '  | \
+	awk '{sub("\\.f:",".o:",$$1);sub("^.*/","$${OBJDIR}/",$$1); print $$1,"$${OBJDIR}/"tolower($$3)".mod"}' | \
+	sed -e 's|^src/|${OBJDIR}/|' | \
+	sed -e 's,^${OBJDIR}/,\$${OBJDIR}/,' | \
+	sed -e 's,: ${SOLPSTOP},: $${SOLPSTOP},' >> ${OBJDIR}/dependencies
 
 ${OBJDIR}/LISTOBJ: listobj
 
 listobj: ${OBJDIR}/dependencies
 	@cd src ; echo "OBJS =" *.f | sed -e 's/ [^ /]*\// /g' -e 's/\.f/.o/g' > $(OBJDIR)/LISTOBJ
-	@echo "SRCS =" src/*.f >> ${OBJDIR}/LISTOBJ
+	@cd src ; echo "OBJS90 =" *.f90 | sed -e 's/ [^ /]*\// /g' -e 's/\.f90/.o/g' >> $(OBJDIR)/LISTOBJ
+	@echo "SRCS =" src/*.f90 src/*.f >> ${OBJDIR}/LISTOBJ
 
 VERSION: ../src/git_version_DG.h
 
@@ -275,7 +307,7 @@ ${OBJDIR}/dependencies:
 	${MAKE} listobj
 	${MAKE} depend
 
-.doxygen: ${SRCS} ${MAKES}
+.doxygen: ${SRCS} Doxyfile ${MAKES}
 	doxygen
 	cd doxygen/latex; ${MAKE}; cd .. ; ln -sf latex/refman.pdf .
 	touch $@

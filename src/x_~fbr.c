@@ -1711,7 +1711,7 @@ char* dgResources[]={
   "\n",
   "DivGeo*dlgVarsEdit.strOldVal:                   Current value: $(VALUE)\n",
   "DivGeo*dlgVarsEdit.strNewVal:                   New value: $(VALUE)\n",
-  "DivGeo*dlgVarsEdit.errBadScope:                 The scope of this variable does not permit comparisions\n",
+  "DivGeo*dlgVarsEdit.errBadScope:                 The scope of this variable does not permit comparisons\n",
   "DivGeo*dlgVarsEdit.errBadNumber:                The number entered is invalid.\n",
   "DivGeo*dlgVarsEdit.msgObjectsMatching:          $(COUNT) match(es)\n",
   "\n",

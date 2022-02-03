@@ -495,7 +495,7 @@ static void CbTopoSZSetBtn(Widget wg,XtPointer xtpD,XtPointer pcbs) {
   }
 
   if (FindGridPointSeg(dlg->w->app,gps1)==NULL ||
-      gps2>=0 && FindGridPointSeg(dlg->w->app,gps2)==NULL) {
+      (gps2>=0 && FindGridPointSeg(dlg->w->app,gps2)==NULL) ) {
     ErrorBox(dlg->wDlg,GetResourceString(dlg->wDlg,"errSZNotFoundGPZone",NULL,NULL));
     return;
   }
@@ -619,7 +619,9 @@ static void InitSZFromZone(TopologyDlg dlg,SurfaceZone sz) {
   if (sz!=NULL) sprintf(buf,"%d",sz->gpZone1);
   XmTextSetString(dlg->wSZgps1,buf);
 
-  if (sz!=NULL) if (sz->gpZone2<0) *buf=0; else sprintf(buf,"%d",sz->gpZone2);
+  if (sz!=NULL) {
+    if (sz->gpZone2<0) *buf=0; else sprintf(buf,"%d",sz->gpZone2);
+  }
   XmTextSetString(dlg->wSZgps2,buf);
 
   if (sz!=NULL) SetOptionMenuValue(dlg->wSZorient,(XtPointer)sz->orient);

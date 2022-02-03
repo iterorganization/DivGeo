@@ -6,6 +6,7 @@
 
       character*256 filename
       character*(*) outstring
+      logical ex
 #ifndef NAGFOR
       integer iargc
 #else
@@ -32,7 +33,10 @@
       open(2,file=filename)
       if(iargc().gt.2) then
          call getarg(3,filename)
-         if(filename.ne.'') open(3,file=filename)
+         if(filename.ne.'') then
+            inquire(file=filename, exist=ex)
+            if (ex) open(3,file=filename)
+         endif
       endif
 #else
       call get_command_argument(1,filename,lenval,ierror)
@@ -41,7 +45,10 @@
       open(2,file=filename)
       if(command_argument_count().gt.2) then
          call get_command_argument(3,filename,lenval,ierror)
-         if(filename.ne.'') open(3,file=filename)
+         if(filename.ne.'') then
+            inquire(file=filename, exist=ex)
+            if (ex) open(3,file=filename)
+         endif
       endif
 #endif
       return

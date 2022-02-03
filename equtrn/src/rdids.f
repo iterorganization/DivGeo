@@ -1,4 +1,19 @@
-      subroutine rdids(treename,shot,wall,run,wall_run,step,
+#if UAL_MAJOR_VERSION > 4
+#define GET_MAX_OCCURRENCES_PRESENT
+#else
+#if UAL_MAJOR_VERSION > 3
+#if UAL_MINOR_VERSION > 9
+#define GET_MAX_OCCURRENCES_PRESENT
+#else
+#if UAL_MINOR_VERSION > 8
+#if UAL_MICRO_VERSION > 2
+#define GET_MAX_OCCURRENCES_PRESENT
+#endif
+#endif
+#endif
+#endif
+#endif
+      subroutine rdids(treename,shot,wall,run,wall_run,occ,step,
      ,           username,database,version,
      ,           do_equilibrium,do_wall,
      ,           iret,ipestg,nr,nz,
@@ -8,7 +23,7 @@
 c=====================================================
 c*** where:
 c***
-c*** i)  nr, nz, and redge define the rectangular mesh used
+c*** i)  nr and nz define the size of the rectangular mesh used
 c***     to store the psi values,
 c***
 c*** ii) psimin is the flux value at the magnetic axis; psilim is the
@@ -24,9 +39,19 @@ c
 c  version : 03.02.20 13:42
 c
       use ids_schemas  ! IGNORE
+     , , only : ids_equilibrium, ids_wall
+#if IMAS_MINOR_VERSION > 8
+      use ids_schemas  ! IGNORE
+     , , only : IDS_REAL_INVALID, IDS_INT_INVALID
+#endif
+#ifdef GET_MAX_OCCURRENCES_PRESENT
       use ids_routines ! IGNORE
+     , , only : get_max_occurrences
+#endif
+      use ids_routines ! IGNORE
+     , , only : imas_open_env, imas_close, ids_get, ids_deallocate
+      use eqdim
       implicit none
-#include "eqdim.inc"
       type(ids_equilibrium) :: eq !< IDS designed to store equilibrium data
       type(ids_wall) :: vessel    !< IDS designed to store wall data
       character(len=24), intent(in) :: treename   !< The name of the IMAS IDS database
@@ -34,12 +59,14 @@ c
                                        !< If negative, do not read any equilibrium
       integer, intent(in) :: wall      !< The shot number of the IDS wall being read
                                        !< If negative, do not read wall description
+      integer, intent(in) :: occ       !< Occurrence index of the IDS equilibrium being read
+                                       !< Default is 1 (meaning the 2nd occurrence!)
       integer, intent(in) :: step      !< The time slice index of the IDS equilibrium being read
       integer, intent(in) :: run       !< The run number of the IDS equilibrium being read
       integer, intent(in) :: wall_run  !< The run number of the wall IDS being read
       character(len=24), intent(in) :: username   !< Creator/owner of the IMAS IDS database
-      character(len=24), intent(in) :: database   !< IMAS IDS database name
-            !< (i. e. solps-iter, iter, aug)
+      character(len=24), intent(inout) :: database   !< IMAS IDS database name
+            !< (i. e. solps-iter, ITER, aug)
       character(len=24), intent(in) :: version    !< Major version of the IMAS IDS database
       logical, intent(inout) :: do_equilibrium, do_wall
       integer, intent(out) :: iret,ipestg,nr,nz
@@ -49,7 +76,7 @@ c
       real(kind=R8), intent(out) :: rwall(ngpr), zwall(ngpr)
       integer, intent(out) :: nunits, npts(ngpr)
       integer :: nlimunits, nmobunits, nvslunits, nelem
-      integer i,j,k,icnt,jcnt,idx,status
+      integer i,j,k,icnt,jcnt,idx,status,igrid,iocc
 #if IMAS_MINOR_VERSION > 27
       integer iside, kk, ks, kkk, kks
       real(kind=R8) :: t1, t2, ra, rb, za, zb, rc, zc, rd, zd,
@@ -58,50 +85,106 @@ c
 #endif
 #if IMAS_MINOR_VERSION < 9
       real(kind=R8), parameter :: IDS_REAL_INVALID = -9.0E40_R8
+      integer, parameter :: IDS_INT_INVALID = -9999999
 #endif
+      character(len=24) :: md_base, eq_occ
+      logical streql, public
+      external streql
 
 c=====================================================
 c
       iret = 0
+      public = streql(username,'public')
       !! Create and modify new shot/run
       if (do_equilibrium) then
         call imas_open_env( treename, shot, run,
      &   idx, username, database, version, status )
-
+        if (status.ne.0) then
+          if (database.eq.'iter') then
+            call imas_open_env( treename, shot, run,
+     &       idx, username, 'ITER', version, status )
+          else if (database.eq.'ITER') then
+            call imas_open_env( treename, shot, run,
+     &       idx, username, 'iter', version, status )
+          end if
+        end if
+!! We take the 2nd occurrence of the equilibrium, i.e. the SPIDER equilibrium, not CHEASE
+#ifdef GET_MAX_OCCURRENCES_PRESENT
+        if (occ.gt.get_max_occurrences(eq))
+     &   stop 'Invalid equilibrium occurrence number !'
+#endif
+        if (occ.eq.0) then
+          eq_occ = "equilibrium"
+        else
+          eq_occ = "equilibrium/"//int2str(occ)
+        end if
 #if UAL_MAJOR_VERSION > 3
         if (status.eq.0)
-     &   call ids_get( idx, "equilibrium/1", eq, status )
+     &   call ids_get( idx, trim(eq_occ), eq, status )
 #else
-        call ids_get( idx, "equilibrium/1", eq )
+        call ids_get( idx, trim(eq_occ), eq )
 #endif
-        if (status.ne.0 .or.
-     &      eq%ids_properties%homogeneous_time < 0) then ! second attempt
+        iocc = occ
+        if (occ.ne.0.and. ! try the default occurrence if the non-default one failed
+     &   (status.ne.0 .or. eq%ids_properties%homogeneous_time < 0)) then
+          iocc = 0
           status = 0
+#if UAL_MAJOR_VERSION > 3
+          call ids_get( idx, "equilibrium", eq, status )
+          if (status.eq.0)
+     &     write(*,*) 'Reverting to default occurrence !'
+#else
+          call ids_get( idx, "equilibrium", eq )
+#endif
+        end if
+        if (.not.public.and.(status.ne.0 .or.
+     &      eq%ids_properties%homogeneous_time < 0)) then ! third attempt
+                                                          ! fetch from the public database
+          iocc = occ
+          status = 0
+          public = .true.
           call imas_close( idx, status )
           if (status.ne.0) stop 'Error closing IMAS database !'
+          if (database.eq.'iter') database = 'ITER'
           call imas_open_env( treename, shot, run,
      &     idx, "public", database, version, status )
 #if UAL_MAJOR_VERSION > 3
           if (status.eq.0)
-     &     call ids_get( idx, "equilibrium/1", eq, status )
+     &     call ids_get( idx, trim(eq_occ), eq, status )
 #else
-          call ids_get( idx, "equilibrium/1", eq )
+          call ids_get( idx, trim(eq_occ), eq )
 #endif
+          if (occ.ne.0.and. ! try the default occurrence if the non-default one failed
+     &     (status.ne.0 .or. eq%ids_properties%homogeneous_time < 0))
+     &     then
+            iocc = 0
+            status = 0
+#if UAL_MAJOR_VERSION > 3
+            call ids_get( idx, "equilibrium", eq, status )
+            if (status.eq.0)
+     &       write(*,*) 'Reverting to default occurrence !'
+#else
+            call ids_get( idx, "equilibrium", eq )
+#endif
+          end if
           if (status.eq.0 .and.
      &        eq%ids_properties%homogeneous_time .ge. 0) then
             write(*,*) 'Got IDS equilibrium from: '
-            write(*,'(2(a,i8),2(a,a24))')
-     .       ' Shot: ', shot, ' Run: ', run,
+            write(*,'(3(a,i8),a,a,a,a24)')
+     .       ' Shot: ', shot, ' Run: ', run, ' Occurrence: ', iocc,
      .       ' User: ', 'public', ' Database: ', trim(database)
           else
             do_equilibrium = .false.
             write(*,*) 'Error reading equilibrium IDS !'
           end if
-        else
+        else if (status.eq.0) then
           write(*,*) 'Got IDS equilibrium from: '
-          write(*,'(2(a,i8),2(a,a24))')
-     .     ' Shot: ', shot, ' Run: ', run,
+          write(*,'(3(a,i8),2(a,a24))')
+     .     ' Shot: ', shot, ' Run: ', run, ' Occurrence: ', iocc,
      .     ' User: ', trim(username), ' Database: ', trim(database)
+        else
+          do_equilibrium = .false.
+          write(*,*) 'Error reading equilibrium IDS !'
         end if
       end if
 
@@ -113,6 +196,15 @@ c
         end if
         call imas_open_env( treename, wall, wall_run,
      &     idx, username, database, version, status )
+        if (status.ne.0) then
+          if (database.eq.'iter') then
+            call imas_open_env( treename, wall, wall_run,
+     &       idx, username, 'ITER', version, status )
+          else if (database.eq.'ITER') then
+            call imas_open_env( treename, wall, wall_run,
+     &       idx, username, 'iter', version, status )
+          end if
+        end if
 #if UAL_MAJOR_VERSION > 3
         if (status.eq.0) call ids_get( idx, "wall", vessel, status )
 #else
@@ -123,8 +215,10 @@ c
           status = 0
           call imas_close( idx, status )
           if (status.ne.0) stop 'Error closing IMAS database !'
+          md_base = trim(database)//'_MD'
+          call chcase(1, md_base)
           call imas_open_env( treename, wall, wall_run,
-     &     idx, username, trim(database)//'_MD', version, status )
+     &     idx, username, trim(md_base), version, status )
 #if UAL_MAJOR_VERSION > 3
           if (status.eq.0) call ids_get( idx, "wall", vessel, status )
 #else
@@ -136,11 +230,13 @@ c
             write(*,'(2(a,i8),2(a,a24))')
      .       ' Shot: ', wall, ' Run: ', wall_run,
      .       ' User: ', trim(username),
-     .       ' Database: ', trim(database)//'_MD'
-          else
+     .       ' Database: ', trim(md_base)
+          else if (.not.streql(username,'public')) then
             status = 0
+            public = .true.
             call imas_close( idx, status )
             if (status.ne.0) stop 'Error closing IMAS database !'
+            if (database.eq.'iter') database = 'ITER'
             call imas_open_env( treename, wall, wall_run,
      &       idx, "public", database, version, status )
 #if UAL_MAJOR_VERSION > 3
@@ -159,7 +255,7 @@ c
               call imas_close( idx, status )
               if (status.ne.0) stop 'Error closing IMAS database !'
               call imas_open_env( treename, wall, wall_run,
-     &         idx, "public", trim(database)//'_MD', version, status )
+     &         idx, "public", trim(md_base), version, status )
 #if UAL_MAJOR_VERSION > 3
               if (status.eq.0)
      &         call ids_get( idx, "wall", vessel, status )
@@ -172,12 +268,15 @@ c
                 write(*,'(2(a,i8),2(a,a24))')
      .           ' Shot: ', wall, ' Run: ', wall_run,
      .           ' User: ', 'public',
-     .           ' Database: ', trim(database)//'_MD'
+     .           ' Database: ', trim(md_base)
               else
                 do_wall = .false.
                 write(*,*) 'Error reading wall description IDS !'
               end if
             end if
+          else if (status.ne.0) then
+            do_wall = .false.
+            write(*,*) 'Error reading wall description IDS !'
           end if
         else
           write(*,*) 'Got IDS wall data from: '
@@ -194,9 +293,15 @@ c
         if (status.eq.0 .and.
      &      vessel%ids_properties%homogeneous_time .ge. 0) then
           write(*,*) 'Got IDS wall data from: '
-          write(*,'(2(a,i8),2(a,a24))')
-     .     ' Shot: ', shot, ' Run: ', run,
-     .     ' User: ', trim(username), ' Database: ', trim(database)
+          if (.not.public) then
+            write(*,'(2(a,i8),2(a,a24))')
+     .       ' Shot: ', shot, ' Run: ', run,
+     .       ' User: ', trim(username), ' Database: ', trim(database)
+          else
+            write(*,'(2(a,i8),(a,a),(a,a24))')
+     .       ' Shot: ', wall, ' Run: ', wall_run,
+     .       ' User: ', 'public', ' Database: ', trim(database)
+          end if
         else
           do_wall = .false.
           write(*,*) 'Error reading wall description IDS !'
@@ -248,13 +353,26 @@ c
           do_equilibrium = .false.
         end if
 
-!! We take the 2nd occurence of the equilibrium, i.e. the SPIDER equilibrium, not CHEASE
+        igrid = IDS_INT_INVALID
         if (do_equilibrium) then
-          if (eq%time_slice(step)%profiles_2d(1)%grid_type%index.ne.1)
-     >     then
+          if (associated(eq%time_slice(step)%profiles_2d)) then
+            do i = 1, size(eq%time_slice(step)%profiles_2d)
+              if
+     .         (eq%time_slice(step)%profiles_2d(i)%grid_type%index.eq.1)
+     >          igrid = i
+            end do
+          end if
+          if (igrid.eq.IDS_INT_INVALID) then
             write(0,*) 'IDS equilibrium grid is not rectangular !'
-            write(0,*) 'Grid type : ',
-     .       eq%time_slice(step)%profiles_2d(2)%grid_type%index
+             if (.not.associated(eq%time_slice(step)%profiles_2d)) then
+               write(0,*) 'No profiles_2d grid declared !'
+             else if (size(eq%time_slice(step)%profiles_2d).eq.1) then
+               write(0,*) 'Grid type : ',
+     .          eq%time_slice(step)%profiles_2d(1)%grid_type%index
+             else
+               write(0,*) 'Grid types : ',
+     .          eq%time_slice(step)%profiles_2d(:)%grid_type%index
+             end if
             iret = 1
             do_equilibrium = .false.
           end if
@@ -269,8 +387,8 @@ c
         end if
 
         if (do_equilibrium) then
-          nr = size(eq%time_slice(step)%profiles_2d(1)%grid%dim1)
-          nz = size(eq%time_slice(step)%profiles_2d(1)%grid%dim2)
+          nr = size(eq%time_slice(step)%profiles_2d(igrid)%grid%dim1)
+          nz = size(eq%time_slice(step)%profiles_2d(igrid)%grid%dim2)
           ipestg = 3
           write(*,*) ' nr, nz : ', nr, nz
           if(nr.gt.ngpr) then
@@ -317,19 +435,20 @@ c
             psilim = 0.0_R8
           end if
           do i=1,nr
-            rgr(i) = eq%time_slice(step)%profiles_2d(1)%grid%dim1(i)
-            if (associated(eq%time_slice(step)%profiles_2d(1)%phi)) then
-              fg(i) = eq%time_slice(step)%profiles_2d(1)%phi(i,1)
+            rgr(i) = eq%time_slice(step)%profiles_2d(igrid)%grid%dim1(i)
+            if (associated(eq%time_slice(step)%profiles_2d(igrid)%phi))
+     .       then
+              fg(i) = eq%time_slice(step)%profiles_2d(igrid)%phi(i,1)
             else
               fg(i) = IDS_REAL_INVALID
             endif
           enddo
           do j=1,nz
-            zgr(j) = eq%time_slice(step)%profiles_2d(1)%grid%dim2(j)
+            zgr(j) = eq%time_slice(step)%profiles_2d(igrid)%grid%dim2(j)
           enddo
           do i=1,nr
             do j=1,nz
-              pfm(i,j) = eq%time_slice(step)%profiles_2d(1)%psi(i,j)
+              pfm(i,j) = eq%time_slice(step)%profiles_2d(igrid)%psi(i,j)
             enddo
           enddo
         end if
@@ -345,6 +464,11 @@ c
       zwall = 0.0_R8
 c
       if (do_wall) then
+#if IMAS_MINOR_VERSION > 32
+        if (vessel%temperature_reference%data .ne. IDS_REAL_INVALID)
+     .    write(0,*) 'Wall IDS has reference temperature ',
+     .                vessel%temperature_reference%data, ' K'
+#endif
         if (associated(vessel%description_2d(1)%limiter%unit)) then
           nlimunits = size(vessel%description_2d(1)%limiter%unit)
           nunits = nunits + nlimunits
@@ -791,5 +915,48 @@ cxpb Otherwise, X is the intersection of (12) and (34)
 c
       if (do_equilibrium) call ids_deallocate( eq )
       if (do_wall) call ids_deallocate( vessel )
+      return
 c
-      end
+      contains
+
+      function int2str(intval) result(string)
+      integer , intent(in) :: intval
+      character(len=2-max(sign(1,intval),0)+max(
+     ,    min(abs(intval)/10**1,1)*1,
+     ,    min(abs(intval)/10**2,1)*2,
+     ,    min(abs(intval)/10**3,1)*3,
+     ,    min(abs(intval)/10**4,1)*4,
+     ,    min(abs(intval)/10**5,1)*5,
+     ,    min(abs(intval)/10**6,1)*6,
+     ,    min(abs(intval)/10**7,1)*7,
+     ,    min(abs(intval)/10**8,1)*8,
+     ,    min(abs(intval)/10**9,1)*9) ) :: string
+      integer :: absn,j,k,is
+      absn = abs(intval)
+      if ( absn == intval ) then
+            is = 1
+      else
+            is = 2
+            string(1:1) = "-"
+      end if
+      do j=len(string),is,-1
+            k = modulo(absn,10)+1
+            string(j:j) = "0123456789"(k:k)
+            absn = absn / 10
+      end do
+      return
+      end function int2str
+
+  !> Write a real to a string with 15 digits
+  !> +1.23456789012345E000
+      function real2str(realval) result(string)
+      character(*), parameter :: SAMPLE = '+1.23456789012345E000'
+      !                                     0.10000000000000E+03
+      !                                    -0.10000000000000E+03
+      double precision, intent(in) :: realval
+      character(len(SAMPLE)) :: string
+
+      write( string, '(es21.14)' ) realval
+      end function real2str
+
+      end subroutine rdids
