@@ -4,17 +4,7 @@ ifndef LD_MSCL
 endif
 
 FC      = ifort
-ifdef SOLPS_DEBUG
-FFLAGS  = -g -C -traceback -debug all
-else
-FFLAGS  = -O3 -vec_report0
-endif
-
-COMPILE = ${FC} -c ${FFLAGS}
-CPP     = /lib/cpp -C -traditional
-
-LDLIBS  = ${LD_MSCL} -lstdc++
-LDEXTRA =
+CPP     = /lib/cpp -C -traditional -ffreestanding
 
 #!!!Local Variables:
 #!!! mode: Makefile
