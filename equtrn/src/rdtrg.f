@@ -29,7 +29,7 @@ c
       integer, allocatable :: j_block(:,:,:), k_block(:,:,:)
       integer ibeg(ngpr), iend(ngpr)
       character*80 zeile, altzeile
-      logical blank_line_format, j_merged
+      logical blank_line_format, j_merged, shared
       logical, allocatable :: closed(:)
       logical streql
       external streql
@@ -49,7 +49,7 @@ c
       npts = 0
       nunits = 0
       altzeile = 'undefined'
-      blank_line_format = .false.
+      blank_line_format = .true.
       do
    89   continue
         read(lun,'(A80)',end=90) zeile
@@ -74,10 +74,14 @@ c
 c We check that all the blank lines were not at the end of the file
       if (jcnt.eq.kcnt) blank_line_format = .false.
 c If there is only one unit, we differentiate by checking if
-c the second and third point of the list are different
-      if (nunits.eq.1 .and.
-     &   (pp(1,2).ne.pp(1,3) .or. pp(2,2).ne.pp(2,3)))
-     > blank_line_format = .true.
+c the first two segments share a vertex
+      shared = .false.
+      if (icnt.gt.4) shared =
+     & (pp(1,1).eq.pp(1,3) .and. pp(2,1).eq.pp(2,3)) .or.
+     & (pp(1,1).eq.pp(1,4) .and. pp(2,1).eq.pp(2,4)) .or.
+     & (pp(1,2).eq.pp(1,3) .and. pp(2,2).eq.pp(2,3)) .or.
+     & (pp(1,2).eq.pp(1,4) .and. pp(2,2).eq.pp(2,4))
+      if (nunits.eq.1 .and. shared) blank_line_format = .false.
 
       if (blank_line_format) then
         allocate(closed(nunits))

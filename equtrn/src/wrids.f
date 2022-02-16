@@ -1,4 +1,4 @@
-      subroutine wrids(iret,nunits,npts,rwall,zwall,dg_file,
+      subroutine wrids(iret,nunits,npts,rwall,zwall,ref_temp,dg_file,
      ,           treename,shot,run,username,database,version)
       use ids_schemas  ! IGNORE
      , , only : ids_wall
@@ -21,10 +21,9 @@
             !< (i. e. solps-iter, ITER, aug)
       character(len=24), intent(in) :: version    !< Major version of the IMAS IDS database
       integer, intent(out) :: iret
-      real(kind=R8), intent(in) :: rwall(ngpr), zwall(ngpr)
+      real(kind=R8), intent(in) :: rwall(ngpr), zwall(ngpr), ref_temp
       integer, intent(in) :: nunits, npts(ngpr)
       character*8 imas_version, ual_version, ggd_version
-      character*24 dg_version
       character*8 date
       character*10 ctime
       character*5 zone
@@ -59,21 +58,15 @@ c
      . ('GGD_VERSION',status=ierror, length=lenval)
       if (ierror.eq.0) call get_environment_variable
      . ('GGD_VERSION',value=ggd_version)
-      call get_environment_variable
-     . ('GIT_VERSION_DG',status=ierror, length=lenval)
-      if (ierror.eq.0) call get_environment_variable
-     . ('GIT_VERSION_DG',value=dg_version)
 #else
 #ifdef USE_PXFGETENV
       CALL PXFGETENV ('IMAS_VERSION', 0, imas_version, lenval, ierror)
       CALL PXFGETENV ('UAL_VERSION', 0, ual_version, lenval, ierror)
       CALL PXFGETENV ('GGD_VERSION', 0, ggd_version, lenval, ierror)
-      CALL PXFGETENV ('GIT_VERSION_DG', 0, dg_version, lenval, ierror)
 #else
       call getenv ('IMAS_VERSION', imas_version)
       call getenv ('UAL_VERSION', ual_version)
       call getenv ('GGD_VERSION', ggd_version)
-      call getenv ('GIT_VERSION_DG', dg_version)
 #endif
 #endif
 
@@ -101,12 +94,18 @@ c
 #endif
       allocate( vessel%time(1) )
       vessel%time(1) = 0.0_IDS_real
+      if (ref_temp.gt.0.0_R8) then
+        vessel%temperature_reference%data = ref_temp
+        allocate( vessel%temperature_reference%description(1) )
+        vessel%temperature_reference%description =
+     &   'DG2IDS input temperature'
+      end if
       allocate( vessel%code%name(1) )
       vessel%code%name = "DivGeo"
       allocate( vessel%code%version(1) )
       vessel%code%version = "2.11"
       allocate( vessel%code%commit(1) )
-      vessel%code%commit = dg_version
+      vessel%code%commit = GIT_VERSION_DG
       allocate( vessel%code%repository(1) )
       vessel%code%repository = "ssh://git.iter.org/bnd/divgeo.git"
       allocate( vessel%code%output_flag(1) )

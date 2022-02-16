@@ -5,13 +5,13 @@
 !!
 !!      @verbatim
 !!          $dg2ids --shot <shot> --run <run> --database <database> --version <version>
-!!          <DG input template file>
+!!          --temp_ref <Reference wall temperature (K)> <DG input template file>
 !!      @endverbatim
 !!
 !!      The command can be shortened as:
 !!
 !!      @verbatim
-!!          $dg2ids -s <shot> -r <run> -d <database> -v <version> <DG input template file>
+!!          $dg2ids -s <shot> -r <run> -d <database> -v <version> -t <wall_temperature> <DG input template file>
 !!      @endverbatim
 !!
 !!      The arguments marked with < ... > are the parameters of the wall IDS
@@ -21,6 +21,7 @@
 !!          - \b database: IMAS IDS database name
 !!                         (i. e. solps-iter, ITER, aug) (default: $DEVICE)
 !!          - \b version:  Major version of the IMAS IDS database (default: 3)
+!!          - \b temp_ref: Reference wall temperature (K) (optional)
 !!      Example of the command:
 !!      @verbatim
 !!          $dg2ids
@@ -51,12 +52,14 @@ c=====================================================
       character(len=24) :: database   !< IMAS IDS database name
                                       !< (i. e. solps-iter, ITER, aug)
       character(len=24) :: version    !< Major version of the IMAS IDS database
+      real(kind=R8)     :: ref_temp   !< Reference wall temperature (K)
       integer :: shot      !< The shot number of the wall IDS being written
       integer :: run       !< The run number of the wall IDS being written
 #ifndef NO_GETENV
       character(len=24) :: device_env
 #endif
     !! Dummy variables
+      character(len=24) :: temp_string
       character(len=24) :: shot_string
       character(len=24) :: run_string
       character(len=24) :: argName
@@ -84,6 +87,8 @@ c
       database = 'solps-iter'
       run_string = ' '
       shot_string = ' '
+      temp_string = ' '
+      ref_temp = 0.0_R8
 #ifndef NO_GETENV
       device_env = ' '
 #ifdef NAGFOR
@@ -124,10 +129,15 @@ c
               call get_command_argument( cptArg + 1, database )
             case("--version","-v")
               call get_command_argument( cptArg + 1, version )
+            case("--temp_ref","-t")
+              call get_command_argument( cptArg + 1, temp_string )
+              !! Transform dummy string variable to real
+              read( temp_string, *) ref_temp
           end select
         end do
-    !! If not at least shot, run, username and database were defined display
-    !! the error message and a full command example
+    !! If not at least input file,
+    !! IMAS data-entry shot, run, username, and database, were defined
+    !! display the error message and a full command example
       else if( narg.lt.5 .or. mod(narg,2).eq.0 .or. 
      &  streql(shot_string," ") .or. streql(run_string," ") ) then
         write(0,*) "ERROR! In order to run dg2ids input IDS, ",
@@ -136,16 +146,22 @@ c
      &   "Example (terminal): "
         write(0,*) "dg2ids --shot 1 --run 1 <DG_template_file>"
         write(0,*) "Other options are :"
-        write(0,*) " --username, --database, --version"
-        call exit(0)
+        write(0,*) " --username, --database, --temp_ref, --version"
+        call exit(1)
       end if
       if (.not.(0.lt.shot.and.shot.le.214748)) then
         write(0,*) 'Invalid shot number for equilibrium IDS'
-        call exit(0)
+        call exit(1)
       end if
       if (.not.(0.le.run.and.run.le.99999)) then
         write(0,*) 'Invalid equilibrium IDS run number'
-        call exit(0)
+        call exit(1)
+      end if
+      if (.not.streql(temp_string,' ')) then
+        if (ref_temp.le.0.0_R8) then
+          write(0,*) 'Invalid reference wall temperature'
+          call exit(1)
+        end if
       end if
       inquire(file=trim(dg_file),exist=ex)
       if (.not.ex) then
@@ -173,7 +189,7 @@ c
 c
       rwall = rwall / 1000.0_R8
       zwall = zwall / 1000.0_R8
-      call wrids(iret,nunits,npts,rwall,zwall,dg_file,
+      call wrids(iret,nunits,npts,rwall,zwall,ref_temp,dg_file,
      .           treename,shot,run,username,database,version)
       if(iret.ne.0) then
         print *,'==== dg2ids: error in wrids. iret = ',iret
