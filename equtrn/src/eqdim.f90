@@ -8,7 +8,9 @@ include 'mathematical_constants.f90'              ! IGNORE
   use mathematical_constants, only: PI => M_PI    ! IGNORE
 #else
 #ifdef IMAS
+#ifdef IMAS_MINOR_VERSION < 35
   use imas_constants_module, only: imas_constants ! IGNORE
+#endif
 #endif
 #endif
   implicit none
@@ -25,7 +27,11 @@ include 'mathematical_constants.f90'              ! IGNORE
 #ifndef CONSTANTS_PROVIDED
   real (kind=R8) :: pi
 #ifdef IMAS
+#ifdef IMAS_MINOR_VERSION < 35
   parameter (pi=imas_constants%pi)
+#else
+  parameter (pi=3.141592653589793_R8)
+#endif
 #else
   parameter (pi=3.141592653589793_R8)
 #endif

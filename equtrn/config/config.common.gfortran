@@ -26,8 +26,13 @@ ifeq ($(shell `pkg-config --exists fundamental-constants`; echo $$?),0)
 LD_UAL  := `pkg-config imas-gfortran --libs`
 INCMODS += `pkg-config imas-gfortran --cflags`
 else
+ifeq ($(shell test ${IMAS_MINOR_VERSION} -le 34; echo $$?),0)
 LD_UAL  := `pkg-config imas-gfortran imas-constants-gfortran --libs`
 INCMODS += `pkg-config imas-gfortran imas-constants-gfortran --cflags`
+else
+LD_UAL  := `pkg-config imas-gfortran --libs`
+INCMODS += `pkg-config imas-gfortran --cflags`
+endif
 endif
 ifeq ($(shell test ${IMAS_MINOR_VERSION} -ge 17; echo $$?),0)
 GGD_MINOR_VERSION ?= $(shell echo ${GGD_VERSION} | cut -d '.' -f2 )

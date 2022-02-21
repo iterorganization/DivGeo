@@ -28,6 +28,7 @@ ifeq ($(shell `pkg-config --exists fundamental-constants`; echo $$?),0)
 LD_UAL  := `pkg-config imas-pgi --libs`
 INCMODS += `pkg-config imas-pgi --cflags`
 else
+ifeq ($(shell test ${IMAS_MINOR_VERSION} -le 34; echo $$?),0)
 ifdef SOLPS_DEBUG
 LDEXTRA += `pkg-config imas-constants-pgi --libs`
 LD_UAL  := `pkg-config imas-pgi --libs`
@@ -35,6 +36,10 @@ else
 LD_UAL  := `pkg-config imas-pgi imas-constants-pgi --libs`
 endif
 INCMODS += `pkg-config imas-pgi imas-constants-pgi --cflags`
+else
+LD_UAL  := `pkg-config imas-pgi --libs`
+INCMODS += `pkg-config imas-pgi --cflags`
+endif
 endif
 ifeq ($(shell test ${IMAS_MINOR_VERSION} -ge 17; echo $$?),0)
 GGD_MINOR_VERSION ?= $(shell echo ${GGD_VERSION} | cut -d '.' -f2 )
