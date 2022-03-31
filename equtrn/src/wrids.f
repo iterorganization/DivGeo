@@ -74,8 +74,14 @@ c
       allocate( vessel%ids_properties%comment(1) )
       vessel%ids_properties%comment = "DivGeo template"
 #if IMAS_MINOR_VERSION > 14
+#if ( IMAS_MINOR_VERSION > 33 && 0 )
+      allocate( vessel%ids_properties%provenance%node(1) )
+      allocate( vessel%ids_properties%provenance%node(1)%sources(1) )
+      vessel%ids_properties%provenance%node(1)%sources(1) = dg_file
+#else
       allocate( vessel%ids_properties%source(1) )
       vessel%ids_properties%source = dg_file
+#endif
       allocate( vessel%ids_properties%provider(1) )
       vessel%ids_properties%provider = username
       allocate( vessel%ids_properties%creation_date(1) )
@@ -94,12 +100,14 @@ c
 #endif
       allocate( vessel%time(1) )
       vessel%time(1) = 0.0_IDS_real
+#if IMAS_MINOR_VERSION > 32
       if (ref_temp.gt.0.0_R8) then
         vessel%temperature_reference%data = ref_temp
         allocate( vessel%temperature_reference%description(1) )
         vessel%temperature_reference%description =
      &   'DG2IDS input temperature'
       end if
+#endif
       allocate( vessel%code%name(1) )
       vessel%code%name = "DivGeo"
       allocate( vessel%code%version(1) )
