@@ -74,7 +74,7 @@ c
       allocate( vessel%ids_properties%comment(1) )
       vessel%ids_properties%comment = "DivGeo template"
 #if IMAS_MINOR_VERSION > 14
-#if ( IMAS_MINOR_VERSION > 33 && 0 )
+#if IMAS_MINOR_VERSION > 33
       allocate( vessel%ids_properties%provenance%node(1) )
       allocate( vessel%ids_properties%provenance%node(1)%sources(1) )
       vessel%ids_properties%provenance%node(1)%sources(1) = dg_file
