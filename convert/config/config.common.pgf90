@@ -1,4 +1,7 @@
 FC      = pgf90
+ifndef SOLPS_CPP
+FFLAGS += -Mnorpath
+endif
 ifdef SOLPS_DEBUG
 FFLAGS += -g -C
 else
