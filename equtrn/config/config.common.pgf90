@@ -8,9 +8,9 @@ COMPILE  = ${FC} -c ${FFLAGS} -module ${OBJDIR}
 
 ifdef SOLPS_CPP
 DEFINES  = ${SOLPS_CPP}
-FFLAGS  += -Mnorpath
 else
 DEFINES += -DPGF90
+FFLAGS  += -Mnorpath
 ifeq ($(shell `pkg-config --exists fundamental-constants`; echo $$?),0)
 DEFINES += -DCONSTANTS_PROVIDED
 INCMODS += `pkg-config fundamental-constants --cflags`
