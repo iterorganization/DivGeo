@@ -162,11 +162,12 @@ EnumText102
 text101 0
 jlref
 Reflection Model
-text101 5
+text101 6
 Particle reflection model - ILREF (6B)
 
 1: TRIM or MARLOWE
 2: Modified Behrisch Matrix
+4: Pressure feedback model (using ILREF = 1 as underlying model)
 9: User-defined model
 Int -n+m-S-s-h-i 0 12
 EnumText102
@@ -977,11 +978,12 @@ EnumText102
 text101 0
 tgrefsw
 Reflection Model
-text101 5
+text101 6
 Particle reflection model - ILREF (6B)
 
 1: TRIM or MARLOWE
 2: Modified Behrisch Matrix
+4: Pressure feedback model (using ILREF = 1 as underlying model)
 9: User-defined model
 Int -n-m-S-s-h-i 0 8
 EnumText102
