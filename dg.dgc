@@ -53,7 +53,24 @@ Main
 General Surface Data
 text101 0
 1 1
-VarDefs102 19
+VarDefs102 21
+refcell
+Reference cell
+text101 3
+To be used in conjunction with ILREF=4 surfaces
+Cell index in Eirene grid of the pressure reference location
+(can only be found out after the Eirene grid has been imported)
+Int -n+m-S-s-h-i 0 20
+EnumText102
+text101 0
+refpress
+Reference pressure
+text101 2
+To be used in conjunction with ILREF=4 surfaces
+Reference pressure for pressure feedback loop scheme (in Pa)
+Float -n+m-S-s-h-i 0 21
+EnumText102
+text101 0
 jlsptc
 Chem. sputter.
 text101 4
@@ -162,13 +179,15 @@ EnumText102
 text101 0
 jlref
 Reflection Model
-text101 6
+text101 8
 Particle reflection model - ILREF (6B)
 
 1: TRIM or MARLOWE
 2: Modified Behrisch Matrix
 4: Pressure feedback model (using ILREF = 1 as underlying model)
 9: User-defined model
+
+If using ILREF=4, must also specify the reference pressure value and location
 Int -n+m-S-s-h-i 0 12
 EnumText102
 text101 0
@@ -247,7 +266,9 @@ of Eirene.
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
-Vars110 19
+Vars110 21
+0
+0.0
 0
 0
 1
@@ -511,8 +532,8 @@ Starting element
 text101 4
 This variable specifies the reference
 point for the table of neutral wall
-loading. Should be one of the edge ele-
-ments of the selected group.
+loading. Should be one of the edge elements
+of the selected group.
 Elem -n-m-S-s-h-i 0 2
 EnumText102
 text101 0
@@ -882,7 +903,25 @@ trg_spcf
 Target specification
 text101 0
 0 4
-VarDefs102 19
+VarDefs102 21
+trefcell
+Reference cell
+text101 4
+To be used when ILREF=4
+Cell index of the Eirene grid in which the reference pressure
+is measured
+(can only be provided once the Eirene grid is known)
+Int -n-m-S-s-h-i 0 19
+EnumText102
+text101 0
+trfpress
+Reference pressure
+text101 2
+To be used when ILREF=4
+Reference pressure (in Pa)
+Float -n-m-S-s-h-i 0 20
+EnumText102
+text101 0
 made_of
 Target material
 text101 2
@@ -978,13 +1017,15 @@ EnumText102
 text101 0
 tgrefsw
 Reflection Model
-text101 6
+text101 8
 Particle reflection model - ILREF (6B)
 
 1: TRIM or MARLOWE
 2: Modified Behrisch Matrix
 4: Pressure feedback model (using ILREF = 1 as underlying model)
 9: User-defined model
+
+If using ILREF=4, must also specify the reference pressure value and location
 Int -n-m-S-s-h-i 0 8
 EnumText102
 text101 0
@@ -1079,7 +1120,9 @@ This is the minimum number of histories to be followed for this stratum
 Int -n-m-S-s-h-i 0 16
 EnumText102
 text101 0
-Vars110 19
+Vars110 21
+0
+0.0
 C
 0
 -0.1
@@ -2694,7 +2737,9 @@ Click ? for help
 1
 D
 19
-Vars110 19
+Vars110 21
+0
+0.0
 C
 0
 -0.1
@@ -2715,7 +2760,9 @@ Group100 0
 Click ? for help
 0
 19
-Vars110 19
+Vars110 21
+0
+0.0
 C
 0
 -0.1
@@ -2735,7 +2782,7 @@ Group100 0
 Group100 0
 Click ? for help
 0
-24
+11
 Vars110 10
 0
 100
