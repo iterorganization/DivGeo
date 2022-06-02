@@ -17,10 +17,12 @@ ifdef SOLPS_CPP
 DEFINES  = ${SOLPS_CPP}
 else
 DEFINES += -DHPUX
-ifeq ($(shell `pkg-config --exists fundamental-constants`; echo $$?),0)
-DEFINES += -DCONSTANTS_PROVIDED
-INCMODS += `pkg-config fundamental-constants --cflags`
 endif
+ifeq ($(shell `pkg-config --exists fundamental-constants`; echo $$?),0)
+ifndef SOLPS_CPP
+DEFINES += -DCONSTANTS_PROVIDED
+endif
+INCMODS += `pkg-config fundamental-constants --cflags`
 endif
 
 LDLIBS   = -Wl,${LD_MSCL} -Wl,-L/usr/local/lib
