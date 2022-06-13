@@ -2014,7 +2014,7 @@ the "SOL edges". For the "PFR edges", create two fake elements and specify
 0 as the "Surface Type" in the "General Surface Data" for these two elements.
 They must not be included in the "Elements not for Eirene" list.
 
-(6) Create the "Surfaces" and "Grid points" as usual. Only the "Core" zone
+(6) Create the "Surfaces" and "Grid points" as usual. Only the "SOL" zone
 for the "Grid points" and the "SOL" and "Core" areas for the "Surfaces" are
 meaningful.
 
