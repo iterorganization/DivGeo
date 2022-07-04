@@ -510,8 +510,8 @@ Starting element
 text101 4
 This variable specifies the reference
 point for the table of neutral wall
-loading. Should be one of the edge ele-
-ments of the selected group.
+loading. Should be one of the edge elements
+of the selected group.
 Elem -n-m-S-s-h-i 0 2
 EnumText102
 text101 0
