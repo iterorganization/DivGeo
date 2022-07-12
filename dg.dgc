@@ -239,11 +239,13 @@ EnumText102
 text101 0
 jlsptp
 Phys. sput. model
-text101 4
+text101 6
 Physical sputtering byte of ILSPT (6B)
 
  0: no physical sputtering
  2: standard Roth-Bohdansky model
+ 9: Beryllium re-sputtering model
+   (only Be will be sputtered from this surface)
 Int -n+m-S-s-h-i 0 13
 EnumText102
 text101 0
@@ -986,11 +988,13 @@ EnumText102
 text101 0
 tgsppsw
 Phys. sput. model
-text101 4
+text101 6
 Physical sputtering byte of ILSPT (6B)
 
  0: no physical sputtering
  2: standard Roth-Bohdansky model
+ 9: Beryllium re-sputtering model
+   (only Be will be sputtered from this surface)
 Int -n-m-S-s-h-i 0 12
 EnumText102
 text101 0
