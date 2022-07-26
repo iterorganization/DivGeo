@@ -447,7 +447,7 @@ static void DwVarSetDefEdit(Widget wg,View w,int ev,void* obj,void* pDlg) {
   cols=max(cols,3);
   rows=max(rows,3);
   if (dlg->wVarDefs!=NULL) {
-    XtDestroyWidget(dlg->wVarDefs);
+    /*    XtDestroyWidget(dlg->wVarDefs); */
     dlg->wVarDefs=NULL;
   }
   dlg->wVarDefs=Cmw(XmCreateForm,dlg->wVarFrame,"varDefs",
