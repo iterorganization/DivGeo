@@ -104,6 +104,7 @@ c
 #endif
 #endif
       if (.not.streql(device_env,' ')) database = device_env
+      if (streql(database,'iter')) database = 'ITER'
 #endif
       
     !! Check if arguments are found
