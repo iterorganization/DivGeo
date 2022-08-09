@@ -393,8 +393,13 @@ Elem JoinElems(App a,Node n,int* pErr) {
   if (pErr==NULL) pErr=&errBuf;
 
   if ((*pErr=IsIrregularNode(n,NULL))!=0) {
-    if (a==NULL) return NULL;
-  } else FatalError("JoinElems()-!regular: fatal error 1");
+    if (a==NULL) {
+      return NULL;
+    }
+    else {
+      FatalError("JoinElems()-!regular: fatal error 1");
+    }
+  }
 
   e[0]=NodeElem1st(n,&ix);
   e[1]=Next(&ix);
