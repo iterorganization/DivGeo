@@ -62,7 +62,7 @@ c=====================================================
       character(len=24) :: temp_string
       character(len=24) :: shot_string
       character(len=24) :: run_string
-      character(len=24) :: argName
+      character(len=256) :: argName
       character(len=256) :: dg_file
 #ifdef USE_PXFGETENV
       integer lenval, ierror
@@ -82,7 +82,7 @@ c
     !! Set default values
       iret = 0
       treename = 'ids'
-      version = "3"
+      write(version,'(i1)') IMAS_MAJOR_VERSION
       username = usrnam()
       database = 'solps-iter'
       run_string = ' '
@@ -166,14 +166,16 @@ c
       end if
       inquire(file=trim(dg_file),exist=ex)
       if (.not.ex) then
-        print *,'==== dg2ids: error in opening DG template file '
-     .         ,trim(dg_file),'. File not found!'
+        write(*,'(3a)')
+     .   '==== dg2ids: error in opening DG template file ',
+     .    trim(dg_file),'. File not found!'
         goto 999
       else
         open(1,file=trim(dg_file),iostat=iret)
         if(iret.ne.0) then
-          print *,'==== dg2ids: error in opening DG template file '
-     .           ,trim(dg_file),'. iret = ',iret
+          write(*,'(3a,i4)')
+     .     '==== dg2ids: error in opening DG template file ',
+     .      trim(dg_file),'. iret = ',iret
           goto 999
         end if
       end if

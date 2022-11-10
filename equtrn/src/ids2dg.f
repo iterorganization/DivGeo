@@ -105,7 +105,7 @@ c
     !! Set default value for number of steps
       iret = 0
       treename = 'ids'
-      version = "3"
+      write(version,'(i1)') IMAS_MAJOR_VERSION
       username = usrnam()
       database = 'solps-iter'
       run_string = ' '
