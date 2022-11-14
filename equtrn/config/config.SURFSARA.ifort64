@@ -6,8 +6,10 @@ endif
 FC       = ifort
 CPP      = /lib/cpp -C -traditional
 
-ifdef IMAS_VERSION
+ifeq ($(shell `pkg-config --exists ggd`; echo $$?),0)
 GGD_VERSION ?= `pkg-config ggd --modversion`
+else
+GGD_VERSION ?= '0.0.0'
 endif
 
 #!!!Local Variables:

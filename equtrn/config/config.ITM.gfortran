@@ -10,7 +10,11 @@ FFLAGS   = -O
 endif
 CPP      = /lib/cpp -traditional
 
+ifeq ($(shell `pkg-config --exists ggd`; echo $$?),0)
 GGD_VERSION ?= `pkg-config ggd --modversion`
+else
+GGD_VERSION ?= '0.0.0'
+endif
 
 LDEXTRA += -lstdc++
 
