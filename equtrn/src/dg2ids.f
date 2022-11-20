@@ -55,20 +55,17 @@ c=====================================================
       real(kind=R8)     :: ref_temp   !< Reference wall temperature (K)
       integer :: shot      !< The shot number of the wall IDS being written
       integer :: run       !< The run number of the wall IDS being written
-#ifndef NO_GETENV
-      character(len=24) :: device_env
-#endif
     !! Dummy variables
       character(len=24) :: temp_string
       character(len=24) :: shot_string
       character(len=24) :: run_string
       character(len=256) :: argName
       character(len=256) :: dg_file
-#ifdef USE_PXFGETENV
+#ifndef NO_GETENV
+      character(len=24) :: device_env
       integer lenval, ierror
-#else
-#ifdef NAGFOR
-      integer lenval, ierror
+#ifndef USE_PXFGETENV
+      intrinsic get_environment_variable
 #endif
 #endif
       integer narg, cptArg
@@ -91,17 +88,13 @@ c
       ref_temp = 0.0_R8
 #ifndef NO_GETENV
       device_env = ' '
-#ifdef NAGFOR
-      call get_environment_variable
-     . ('DEVICE', status=ierror, length=lenval)
-      if (ierror.eq.0) call get_environment_variable
-     . ('DEVICE',value=device_env)
-#else
 #ifdef USE_PXFGETENV
       CALL PXFGETENV ('DEVICE', 0, device_env, lenval, ierror)
 #else
-      call getenv ('DEVICE', device_env)
-#endif
+      call get_environment_variable
+     . ('DEVICE', status=ierror, length=lenval)
+      if (ierror.eq.0) call get_environment_variable
+     . ('DEVICE', value=device_env)
 #endif
       if (.not.streql(device_env,' ')) database = device_env
       if (streql(database,'iter')) database = 'ITER'

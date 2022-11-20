@@ -11,11 +11,10 @@
 *     value of an appropriate environment variable.
 *     ------------------------------------------------------------------
       character usrnm*24
-#ifdef USE_PXFGETENV
+#ifndef NO_GETENV
       integer lenval, ierror
-#else
-#ifdef NAGFOR
-      integer lenval, ierror
+#ifndef USE_PXFGETENV
+      intrinsic get_environment_variable
 #endif
 #endif
       save usrnm
@@ -28,42 +27,32 @@
 *     ------------------------------------------------------------------
       if (usrnm.eq.' ') then
 *      (this is the first call to usrnam)
-#ifdef NAGFOR
-        call get_environment_variable('LOGNAME',
-     .   status=ierror, length=lenval)
-        if (ierror.eq.0)
-     >    call get_environment_variable('LOGNAME',value=usrnm)
-#else
+#ifndef NO_GETENV
 #ifdef USE_PXFGETENV
-        CALL PXFGETENV ('LOGNAME', 0, usrnm, lenval, ierror)
+       CALL PXFGETENV ('LOGNAME', 0, usrnm, lenval, ierror)
 #else
-       call getenv ('LOGNAME', usrnm)
-#endif
+       call get_environment_variable('LOGNAME',
+     .   status=ierror, length=lenval)
+       if (ierror.eq.0)
+     >    call get_environment_variable('LOGNAME', value=usrnm)
 #endif
        if (usrnm.eq.' ') then
-#ifdef NAGFOR
-        call get_environment_variable('USER',
-     .   status=ierror, length=lenval)
-        if (ierror.eq.0)
-     >    call get_environment_variable('USER',value=usrnm)
-#else
 #ifdef USE_PXFGETENV
         CALL PXFGETENV ('USER', 0, usrnm, lenval, ierror)
 #else
-        call getenv ('USER', usrnm)
-#endif
-#endif
-        if (usrnm.eq.' ') then
-#ifdef NAGFOR
-        call get_environment_variable('user',
+        call get_environment_variable('USER',
      .   status=ierror, length=lenval)
         if (ierror.eq.0)
-     >    call get_environment_variable('user',value=usrnm)
-#else
+     >    call get_environment_variable('USER', value=usrnm)
+#endif
+        if (usrnm.eq.' ') then
 #ifdef USE_PXFGETENV
-        CALL PXFGETENV ('user', 0, usrnm, lenval, ierror)
+         CALL PXFGETENV ('user', 0, usrnm, lenval, ierror)
 #else
-         call getenv ('user', usrnm)
+         call get_environment_variable('user',
+     .    status=ierror, length=lenval)
+         if (ierror.eq.0)
+     >    call get_environment_variable('user', value=usrnm)
 #endif
 #endif
          if (usrnm.eq.' ') then
@@ -75,4 +64,4 @@
       usrnam = usrnm
       return
 *     ------------------------------------------------------------------
-      end
+      end function usrnam

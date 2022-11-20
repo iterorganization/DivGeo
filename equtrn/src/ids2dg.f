@@ -75,9 +75,6 @@ c=====================================================
       integer :: step      !< The time slice index for the chosen IDS equilibrium
       integer :: run       !< The run number of the IDS equilibrium being read
       integer :: wall_run  !< The run number of the IDS wall being read
-#ifndef NO_GETENV
-      character(len=24) :: device_env
-#endif
     !! Dummy variables
       character(len=24) :: shot_string
       character(len=24) :: wall_string
@@ -87,11 +84,11 @@ c=====================================================
       character(len=24) :: wall_run_string
       character(len=24) :: argName
       character(len=24) :: dg_file
-#ifdef USE_PXFGETENV
+#ifndef NO_GETENV
+      character(len=24) :: device_env
       integer lenval, ierror
-#else
-#ifdef NAGFOR
-      integer lenval, ierror
+#ifndef USE_PXFGETENV
+      intrinsic get_environment_variable
 #endif
 #endif
       integer narg, cptArg
@@ -118,17 +115,13 @@ c
       occ = 1
 #ifndef NO_GETENV
       device_env = ' '
-#ifdef NAGFOR
-      call get_environment_variable
-     . ('DEVICE', status=ierror, length=lenval)
-      if (ierror.eq.0) call get_environment_variable
-     . ('DEVICE',value=device_env)
-#else
 #ifdef USE_PXFGETENV
       CALL PXFGETENV ('DEVICE', 0, device_env, lenval, ierror)
 #else
-      call getenv ('DEVICE', device_env)
-#endif
+      call get_environment_variable
+     . ('DEVICE', status=ierror, length=lenval)
+      if (ierror.eq.0) call get_environment_variable
+     . ('DEVICE', value=device_env)
 #endif
       if (.not.streql(device_env,' ')) database = device_env
       if (streql(database,'iter')) database = 'ITER'

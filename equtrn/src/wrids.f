@@ -32,11 +32,10 @@
 #if IMAS_MINOR_VERSION < 9
       integer, parameter :: IDS_REAL = R8
 #endif
-#ifdef USE_PXFGETENV
+#ifndef NO_GETENV
       integer lenval, ierror
-#else
-#ifdef NAGFOR
-      integer lenval, ierror
+#ifndef USE_PXFGETENV
+      intrinsic get_environment_variable
 #endif
 #endif
 c=====================================================
@@ -45,28 +44,33 @@ c
 
       !! Collect metadata
       call date_and_time (date, ctime, zone, tvalues)
-#ifdef NAGFOR
-      call get_environment_variable
-     . ('IMAS_VERSION',status=ierror, length=lenval)
-      if (ierror.eq.0) call get_environment_variable
-     . ('IMAS_VERSION',value=imas_version)
-      call get_environment_variable
-     . ('UAL_VERSION',status=ierror, length=lenval)
-      if (ierror.eq.0) call get_environment_variable
-     . ('UAL_VERSION',value=ual_version)
-      call get_environment_variable
-     . ('GGD_VERSION',status=ierror, length=lenval)
-      if (ierror.eq.0) call get_environment_variable
-     . ('GGD_VERSION',value=ggd_version)
+#ifdef NO_GETENV
+      write(imas_version,'(i1,a1,i2,a2)')  IMAS_MAJOR_VERSION,'.',
+     &                                     IMAS_MINOR_VERSION,'.0'
+      write(ual_version,'(i1,a1,i2,a1,i1)') UAL_MAJOR_VERSION,'.',
+     &                                      UAL_MINOR_VERSION,'.',
+     &                                      UAL_MICRO_VERSION
+      write(ggd_version,'(i1,a1,i2,a1,i1)') GGD_MAJOR_VERSION,'.',
+     &                                      GGD_MINOR_VERSION,'.',
+     &                                      GGD_MICRO_VERSION
 #else
 #ifdef USE_PXFGETENV
       CALL PXFGETENV ('IMAS_VERSION', 0, imas_version, lenval, ierror)
       CALL PXFGETENV ('UAL_VERSION', 0, ual_version, lenval, ierror)
       CALL PXFGETENV ('GGD_VERSION', 0, ggd_version, lenval, ierror)
 #else
-      call getenv ('IMAS_VERSION', imas_version)
-      call getenv ('UAL_VERSION', ual_version)
-      call getenv ('GGD_VERSION', ggd_version)
+      call get_environment_variable
+     . ('IMAS_VERSION', status=ierror, length=lenval)
+      if (ierror.eq.0) call get_environment_variable
+     . ('IMAS_VERSION', value=imas_version)
+      call get_environment_variable
+     . ('UAL_VERSION', status=ierror, length=lenval)
+      if (ierror.eq.0) call get_environment_variable
+     . ('UAL_VERSION', value=ual_version)
+      call get_environment_variable
+     . ('GGD_VERSION', status=ierror, length=lenval)
+      if (ierror.eq.0) call get_environment_variable
+     . ('GGD_VERSION', value=ggd_version)
 #endif
 #endif
 
