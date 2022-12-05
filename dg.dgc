@@ -1485,17 +1485,16 @@ EnumText102
 text101 0
 nfile
 nfile
-text101 10
-Control parameter for writing the interim files
-in Eirene.
-30000 means "read and write the time-dependent data (fort.15)"
-10000 means "only write these data"
-Normally, nfile=10000 is used for the test run of Eirene
+text101 9
+Control parameter for writing the interim files in Eirene.
+Consult the Eirene manual for the full list of options.
 
-!!! For the "new" Eirene (solps4.2 or higher), the time-dependent stratum is
-not needed, and the value of nfile should normally be 406 to ensure reading
-and writing of the neutral-related data on the triangular mesh, in the
-fort.11 and fort.13 files
+The default value for this switch (NFILE = JKLMN) is case-dependent.
+For SOLPS-ITER cases, Uinp will change 0 digits according to:
+If a census stratum is activated (NPRNLI <> 0), NFILEJ = 3.
+If MPI parallelization is requested (default), NFILEK = 5.
+If BGK species are present, NFILEJ = 8.
+For Eirene post-processing diagnostics, NFILEN = 6.
 Int -n-m-S-s-h-i 0 4
 EnumText102
 text101 0
@@ -1520,7 +1519,7 @@ Vars110 10
 Click ? for help
 0
 60
-406
+5006
 50000
 hepdt
 He pumping data
@@ -2796,7 +2795,7 @@ Vars110 10
 Click ? for help
 0
 60
-406
+5006
 50000
 MaxElemId101 0
 CreaTime101
