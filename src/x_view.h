@@ -42,7 +42,7 @@ struct _ViewExt {
     wCmRefresh,wSepRefresh,
     wShAxes,wShGrid,wShElems,wShNormals,wShNumbers,wShNodes,wShIrrNodes,
     wShTemplate,wShEquil,wShSurfaces,wShGridPoints,wShSonnet,wShSeparators,
-    wShSources,wShChords,wShMeshDetails,wShStretch,wShTopView,wSh3DChords,
+    wShSources,wShChords,wShMeshDetails,wShIrregCells,wShStretch,wShTopView,wSh3DChords,
     wCmAddVarSet,wCmDelVarSet,wMnAddVarSet,wMnDelVarSet,wMnVars,
     wSwMenu,wSwToolBar,wSwManualRefresh,
   /*  *wVarsMenuWidgets, -- Replaced with varsMenuWidgets group */

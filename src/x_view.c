@@ -470,6 +470,7 @@ View CreateXmView(XApp xap,App app) {
     "t?T:gridPoints",&w->x->wShGridPoints,CbChangeFlags,w,
     "t?T:sonnet",&w->x->wShSonnet,        CbChangeFlags,w,
     "t?T:meshDetails",&w->x->wShMeshDetails,CbChangeFlags,w,
+    "t?T:irregCells",&w->x->wShIrregCells,CbChangeFlags,w,
     "s:separator",
     "t?T:equil",&w->x->wShEquil,          CbChangeFlags,w,
     "t?T:template",&w->x->wShTemplate,    CbChangeFlags,w,
@@ -1481,6 +1482,7 @@ static void UpdateXViewShowFlags(View w) {
   XTBSS(w->x->wShSources,    !!(w->showFlags & SHW_SOURCES),   False);
   XTBSS(w->x->wShChords,     !!(w->showFlags & SHW_CHORDS),    False);
   XTBSS(w->x->wShMeshDetails,!!(w->showFlags & SHW_MESHDETAILS),False);
+  XTBSS(w->x->wShIrregCells, !!(w->showFlags & SHW_IRREGCELLS),False);
   XTBSS(w->x->wShStretch,    !!(w->showFlags & SHW_STRETCH),   False);
   XTBSS(w->x->wShTopView,    !!(w->showFlags & SHW_TOPVIEW),   False);
   XTBSS(w->x->wSh3DChords,   !!(w->showFlags & SHW_3DCHORDS),  False);
@@ -1508,6 +1510,7 @@ static void ProcessXViewShowFlags(View w) {
   XTBGS(w->x->wShSources)    ? (f |= SHW_SOURCES)    : (f &=~ SHW_SOURCES);
   XTBGS(w->x->wShChords)     ? (f |= SHW_CHORDS)     : (f &=~ SHW_CHORDS);
   XTBGS(w->x->wShMeshDetails)? (f |= SHW_MESHDETAILS): (f &=~ SHW_MESHDETAILS);
+  XTBGS(w->x->wShIrregCells)?  (f |= SHW_IRREGCELLS) : (f &=~ SHW_IRREGCELLS);
   XTBGS(w->x->wShStretch)    ? (f |= SHW_STRETCH)    : (f &=~ SHW_STRETCH);
   XTBGS(w->x->wShTopView)    ? (f |= SHW_TOPVIEW)    : (f &=~ SHW_TOPVIEW);
   XTBGS(w->x->wSh3DChords)   ? (f |= SHW_3DCHORDS)   : (f &=~ SHW_3DCHORDS);

@@ -24,6 +24,7 @@ static struct _FlagsRec showFlags[]={
   {SHW_TOOLBAR,'='},
   {SHW_XPOINTTESTS,'x'},
   {SHW_MESHDETAILS,'m'},
+  {SHW_IRREGCELLS,'4'},
   {SHW_STRETCH,'t'},
   {SHW_TOPVIEW,'v'},
   {SHW_3DCHORDS,'3'},

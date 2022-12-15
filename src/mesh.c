@@ -1765,6 +1765,7 @@ void DrawMeshElement(View w,MeshElement me,int mode) {
   for (i=0;i<2;i++)
     if (me->cells[i]!=NULL && IsIrregularMeshCell(me->cells[i]))
       {r=0;break;}
+  if ((~w->showFlags & SHW_IRREGCELLS)) r=1;
 
   /* If irregular, draw the "red line" */
 
