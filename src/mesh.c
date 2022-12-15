@@ -895,6 +895,15 @@ int IsIrregularMeshCell(MeshCell mc) {
   double x,y;
   int i,j,k;
 
+  // Do not check triangles
+   if (Point2PointDist(mc->points[0]->x,mc->points[0]->y,mc->points[1]->x,mc->points[1]->y) < 1.e-6 ||
+	Point2PointDist(mc->points[0]->x,mc->points[0]->y,mc->points[2]->x,mc->points[2]->y) < 1.e-6 ||
+	Point2PointDist(mc->points[0]->x,mc->points[0]->y,mc->points[3]->x,mc->points[3]->y) < 1.e-6 ||
+	Point2PointDist(mc->points[1]->x,mc->points[1]->y,mc->points[2]->x,mc->points[2]->y) < 1.e-6 ||
+	Point2PointDist(mc->points[1]->x,mc->points[1]->y,mc->points[3]->x,mc->points[3]->y) < 1.e-6 ||
+	Point2PointDist(mc->points[2]->x,mc->points[2]->y,mc->points[3]->x,mc->points[3]->y) < 1.e-6)
+     return 0;
+
   if (!VIntersect(
       mc->points[0]->x,mc->points[0]->y,
       mc->points[1]->x,mc->points[1]->y,
