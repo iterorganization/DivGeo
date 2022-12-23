@@ -1,4 +1,4 @@
-      subroutine rdeqlh(lun,nr,nz,btf,rtf,*)
+      subroutine rdeqlh(lun,nr,nz,btf,rtf,iret)
 c
 c  version : 16.09.2000 00:19
 c
@@ -8,7 +8,7 @@ c*** and the value of the toroidal field, btf, measured at radius rtf -
 c*** provided that this information is present in the equilibrium file.
 c
       implicit none
-      integer lun,nr,nz
+      integer lun,nr,nz,iret
       real btf,rtf
       integer i,j,k,l
       character ss*80, s(80), hh*80, h(80), utb
@@ -18,6 +18,7 @@ c=======================================================================
 c
       utb=char(9)
       rtf=-1.
+      iret=0
  10   read(lun,'(a)',end=90) ss
       if(ss.eq.' ') go to 10
       k=0
@@ -65,20 +66,25 @@ c
         end if !}
       end do !}
 
- 30   go to (31,32,33,34),j
-c-----------------------------------------------------------------------
- 31   read(hh,'(bn,i4)') nr
-      go to 10
- 32   read(hh,'(bn,i4)') nz
-      go to 10
- 33   read(hh,'(bn,e12.0)') btf
-      go to 10
- 34   read(hh,'(bn,e12.0)') rtf
+   30 continue
+      select case (j)
+      case (1)
+        read(hh,'(bn,i4)') nr
+      case (2)
+        read(hh,'(bn,i4)') nz
+      case (3)
+        read(hh,'(bn,e12.0)') btf
+      case (4)
+        read(hh,'(bn,e12.0)') rtf
+      case default
+        continue
+      end select
       go to 10
 c=======================================================================
 c*** Error encountered
 c
  90   write (6,*) 'Wrong format of the equilibrium file - sorry!'
-      return 1
+      iret = 1
+      return
 c=======================================================================
       end
