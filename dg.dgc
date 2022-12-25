@@ -1493,7 +1493,7 @@ The default value for this switch (NFILE = JKLMN) is case-dependent.
 For SOLPS-ITER cases, Uinp will change 0 digits according to:
 If a census stratum is activated (NPRNLI <> 0), NFILEJ = 3.
 If MPI parallelization is requested (default), NFILEK = 5.
-If BGK species are present, NFILEJ = 8.
+If BGK species are present, NFILEL = 8.
 For Eirene post-processing diagnostics, NFILEN = 6.
 Int -n-m-S-s-h-i 0 4
 EnumText102
@@ -1520,7 +1520,7 @@ Click ? for help
 0
 60
 5006
-50000
+0
 hepdt
 He pumping data
 text101 0
@@ -2796,7 +2796,7 @@ Click ? for help
 0
 60
 5006
-50000
+0
 MaxElemId101 0
 CreaTime101
 Fri Apr  1 14:38:31 2005
