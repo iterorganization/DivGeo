@@ -45,8 +45,9 @@ c
       !! Collect metadata
       call date_and_time (date, ctime, zone, tvalues)
 #ifdef NO_GETENV
-      write(imas_version,'(i1,a1,i2,a2)')  IMAS_MAJOR_VERSION,'.',
-     &                                     IMAS_MINOR_VERSION,'.0'
+      write(imas_version,'(i1,a1,i2,a1,i1)') IMAS_MAJOR_VERSION,'.',
+     &                                       IMAS_MINOR_VERSION,'.',
+     &                                       IMAS_MICRO_VERSION
       write(ual_version,'(i1,a1,i2,a1,i1)') UAL_MAJOR_VERSION,'.',
      &                                      UAL_MINOR_VERSION,'.',
      &                                      UAL_MICRO_VERSION
