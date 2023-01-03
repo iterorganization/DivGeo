@@ -289,7 +289,7 @@ depend: ${OBJS:.o=.f} ${OBJS90:.o=.f90}
 
 ${OBJDIR}/LISTOBJ: listobj
 
-listobj: ${OBJDIR}/dependencies
+listobj:
 	@cd src ; echo "OBJS =" *.f | sed -e 's/ [^ /]*\// /g' -e 's/\.f/.o/g' > $(OBJDIR)/LISTOBJ
 	@cd src ; echo "OBJS90 =" *.f90 | sed -e 's/ [^ /]*\// /g' -e 's/\.f90/.o/g' >> $(OBJDIR)/LISTOBJ
 	@echo "SRCS =" src/*.f90 src/*.f >> ${OBJDIR}/LISTOBJ
