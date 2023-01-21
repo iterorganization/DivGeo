@@ -12,67 +12,55 @@ else
 DEFINES += -DPGF90
 FFLAGS  += -Mnorpath
 endif
-ifeq ($(shell `pkg-config --exists fundamental-constants`; echo $$?),0)
-ifndef SOLPS_CPP
-DEFINES += -DCONSTANTS_PROVIDED
-endif
-INCMODS += `pkg-config fundamental-constants --cflags`
-endif
 LDLIBS  += ${LD_MSCL}
 LDFLAGS  =
 
-ifdef IMAS_VERSION
-UAL_MAJOR_VERSION ?= $(shell echo ${UAL_VERSION} | cut -d '.' -f1 )
-UAL_MINOR_VERSION ?= $(shell echo ${UAL_VERSION} | cut -d '.' -f2 )
-UAL_MICRO_VERSION ?= $(shell echo ${UAL_VERSION} | cut -d '.' -f3 )
-IMAS_MAJOR_VERSION ?= $(shell echo ${IMAS_VERSION} | cut -d '.' -f1 )
-IMAS_MINOR_VERSION ?= $(shell echo ${IMAS_VERSION} | cut -d '.' -f2 )
-IMAS_MICRO_VERSION ?= $(shell echo ${IMAS_VERSION} | cut -d '.' -f3 )
-ifeq ($(shell `pkg-config --exists fundamental-constants`; echo $$?),0)
-LD_UAL  := `pkg-config imas-pgi --libs`
-INCMODS += `pkg-config imas-pgi --cflags`
-else
-ifeq ($(shell test ${IMAS_MINOR_VERSION} -le 34; echo $$?),0)
-ifdef SOLPS_DEBUG
-LDEXTRA += `pkg-config imas-constants-pgi --libs`
-LD_UAL  := `pkg-config imas-pgi --libs`
-else
-LD_UAL  := `pkg-config imas-pgi imas-constants-pgi --libs`
-endif
-INCMODS += `pkg-config imas-pgi imas-constants-pgi --cflags`
-else
-LD_UAL  := `pkg-config imas-pgi --libs`
-INCMODS += `pkg-config imas-pgi --cflags`
-endif
-endif
-ifeq ($(shell test ${IMAS_MINOR_VERSION} -ge 17; echo $$?),0)
-GGD_MAJOR_VERSION ?= $(shell echo ${GGD_VERSION} | cut -d '.' -f1 )
-GGD_MINOR_VERSION ?= $(shell echo ${GGD_VERSION} | cut -d '.' -f2 )
-GGD_MICRO_VERSION ?= $(shell echo ${GGD_VERSION} | cut -d '.' -f3 )
-ifeq ($(shell test ${GGD_MAJOR_VERSION} -gt 0; echo $$?),0)
-LD_UAL  += `pkg-config ggd --libs`
-INCMODS += `pkg-config ggd --cflags`
-endif
-else
-ifeq ($(shell test ${IMAS_MINOR_VERSION} -ge 12; echo $$?),0)
-GGD_MAJOR_VERSION ?= $(shell echo ${GGD_VERSION} | cut -d '.' -f1 )
-GGD_MINOR_VERSION ?= $(shell echo ${GGD_VERSION} | cut -d '.' -f2 )
-GGD_MICRO_VERSION ?= $(shell echo ${GGD_VERSION} | cut -d '.' -f3 )
-ifeq ($(shell test ${GGD_MAJOR_VERSION} -gt 0; echo $$?),0)
-LD_UAL  += -lggd-pgi
-endif
-else
-GGD_MAJOR_VERSION ?= 0
-GGD_MINOR_VERSION ?= 0
-GGD_MICRO_VERSION ?= 0
-LD_UAL  += `pkg-config imas-lowlevel --libs`
-INCMODS += `pkg-config imas-lowlevel --cflags`
-endif
-endif
 ifndef SOLPS_CPP
-DEFINES += -DIMAS -DUAL_MAJOR_VERSION=${UAL_MAJOR_VERSION} -DUAL_MINOR_VERSION=${UAL_MINOR_VERSION} -DUAL_MICRO_VERSION=${UAL_MICRO_VERSION} -DIMAS_MAJOR_VERSION=${IMAS_MAJOR_VERSION} -DIMAS_MINOR_VERSION=${IMAS_MINOR_VERSION} -DIMAS_MICRO_VERSION=${IMAS_MICRO_VERSION} -DGGD_MAJOR_VERSION=${GGD_MAJOR_VERSION} -DGGD_MINOR_VERSION=${GGD_MINOR_VERSION} -DGGD_MICRO_VERSION=${GGD_MICRO_VERSION}
+  ifeq ($(shell `pkg-config --exists fundamental-constants`; echo $$?),0)
+    DEFINES += -DCONSTANTS_PROVIDED
+    IMAS_PKG_LIST = fundamental-constants
+  endif
+  ifdef IMAS_VERSION
+    UAL_MAJOR_VERSION ?= $(shell echo ${UAL_VERSION} | cut -d '.' -f1 )
+    UAL_MINOR_VERSION ?= $(shell echo ${UAL_VERSION} | cut -d '.' -f2 )
+    UAL_MICRO_VERSION ?= $(shell echo ${UAL_VERSION} | cut -d '.' -f3 )
+    IMAS_MAJOR_VERSION ?= $(shell echo ${IMAS_VERSION} | cut -d '.' -f1 )
+    IMAS_MINOR_VERSION ?= $(shell echo ${IMAS_VERSION} | cut -d '.' -f2 )
+    IMAS_MICRO_VERSION ?= $(shell echo ${IMAS_VERSION} | cut -d '.' -f3 )
+    IMAS_PKG_LIST += imas-pgi
+    ifneq ($(shell `pkg-config --exists fundamental-constants`; echo $$?),0)
+      ifeq ($(shell test ${IMAS_MINOR_VERSION} -le 34; echo $$?),0)
+        IMAS_PKG_LIST += imas-constants-gfortran
+      endif
+    endif
+    GGD_MAJOR_VERSION ?= $(shell echo ${GGD_VERSION} | cut -d '.' -f1 )
+    GGD_MINOR_VERSION ?= $(shell echo ${GGD_VERSION} | cut -d '.' -f2 )
+    GGD_MICRO_VERSION ?= $(shell echo ${GGD_VERSION} | cut -d '.' -f3 | cut -d '-' -f1 )
+    ifeq ($(shell test ${IMAS_MINOR_VERSION} -ge 17; echo $$?),0)
+      ifeq ($(shell test ${GGD_MAJOR_VERSION} -gt 0; echo $$?),0)
+        IMAS_PKG_LIST += ggd
+      endif
+    else
+      ifeq ($(shell test ${IMAS_MINOR_VERSION} -ge 12; echo $$?),0)
+        ifeq ($(shell test ${GGD_MAJOR_VERSION} -gt 0; echo $$?),0)
+          LD_GGD = -lggd-pgi
+        endif
+      else
+        IMAS_PKG_LIST += imas-lowlevel
+      endif
+    endif
+    LD_UAL := `pkg-config ${IMAS_PKG_LIST} --libs`
+    ifdef LD_GDD
+      LD_UAL += ${LD_GGD}
+    endif
+    DEFINES += -DIMAS -DUAL_MAJOR_VERSION=${UAL_MAJOR_VERSION} -DUAL_MINOR_VERSION=${UAL_MINOR_VERSION} -DUAL_MICRO_VERSION=${UAL_MICRO_VERSION} -DIMAS_MAJOR_VERSION=${IMAS_MAJOR_VERSION} -DIMAS_MINOR_VERSION=${IMAS_MINOR_VERSION} -DIMAS_MICRO_VERSION=${IMAS_MICRO_VERSION} -DGGD_MAJOR_VERSION=${GGD_MAJOR_VERSION} -DGGD_MINOR_VERSION=${GGD_MINOR_VERSION} -DGGD_MICRO_VERSION=${GGD_MICRO_VERSION}
+  endif
 endif
+
+ifdef IMAS_PKG_LIST
+  INCMODS += `pkg-config ${IMAS_PKG_LIST} --cflags`
 endif
+
 
 #!!!Local Variables:
 #!!! mode: Makefile
