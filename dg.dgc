@@ -21,22 +21,22 @@ Elems100 0
 XPointsEx114 0
 GridPointSegs114 0
 SurfaceZones114 6
-1 3 1011 -1 -i
+1 3 1011 -1 -i -1
 SOL
 Inner SOL
-2 1 -1 -1 -i
+2 1 -1 -1 -i -1
 OSR
 Outer SOL right
-3 2 -1 -1 -i
+3 2 -1 -1 -i -1
 TPF
 Top PFR
-4 2 -1 1 -i
+4 2 -1 1 -i -1
 OSL
 Outer SOL left
-5 5 -1 -1 -i
+5 5 -1 -1 -i -1
 BPF
 Bottom PFR
-6 4 -1 -1 +i
+6 4 -1 -1 +i -1
 Core
 Core
 SurfacesEx114 0
