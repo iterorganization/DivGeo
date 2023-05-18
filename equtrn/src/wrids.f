@@ -54,8 +54,7 @@ c
       write(ggd_version,'(i1,a1,i2,a1,i1)') GGD_MAJOR_VERSION,'.',
      &                                      GGD_MINOR_VERSION,'.',
      &                                      GGD_MICRO_VERSION
-#else
-#ifdef USE_PXFGETENV
+#elif defined(USE_PXFGETENV)
       CALL PXFGETENV ('IMAS_VERSION', 0, imas_version, lenval, ierror)
       CALL PXFGETENV ('UAL_VERSION', 0, ual_version, lenval, ierror)
       CALL PXFGETENV ('GGD_VERSION', 0, ggd_version, lenval, ierror)
@@ -72,7 +71,6 @@ c
      . ('GGD_VERSION', status=ierror, length=lenval)
       if (ierror.eq.0) call get_environment_variable
      . ('GGD_VERSION', value=ggd_version)
-#endif
 #endif
 
       vessel%ids_properties%homogeneous_time = 1
