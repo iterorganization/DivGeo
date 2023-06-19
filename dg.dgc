@@ -5,7 +5,7 @@ This file should not be modified manually.
 DG version:             2.11a
 File format version:    115
 Creation time:          Wed May 31 21:39:26 2023
-Last Modified time:     Wed May 31 21:42:17 2023
+Last Modified time:     Fri Jun  2 16:04:34 2023
 
 Original filename:      /vsc-hard-mounts/leuven-data/307/vsc30760/SOLPS/solps-iter-workshop-iter/dg.dgc
 GIT version:            3.0.8-51-g03af0c4-dirty
@@ -378,7 +378,7 @@ st
 Structure
 text101 0
 1 1
-VarDefs102 4
+VarDefs102 5
 target2
 Outer Target
 text101 5
@@ -446,11 +446,19 @@ Only the marked elements count here!
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
-Vars110 4
+vess_elm
+Vessel
+text101 1
+The elements forming the actual vessel wall.
+Elems -n-m-S-s-h-i 0 4
+EnumText102
+text101 0
+Vars110 5
 Group100 0
 Group100 0
 Group100 0
 Click ? for help
+Group100 0
 source
 Source points
 text101 0
@@ -2786,11 +2794,12 @@ VarSets100 7
 Vars110 21
 Press ? for help
 5
-Vars110 4
+Vars110 5
 Group100 0
 Group100 0
 Group100 0
 Click ? for help
+Group100 0
 21
 Vars110 6
 Click ? for help
@@ -2865,4 +2874,4 @@ TopoName114 *
 OutputMode109 Carre
 OutputFlags111 -V-S-T-s-g-c
 MeshSlidingOptions112 Surfaces 1.000000e+00 1
-ViewAttr115 -3.167455e+06 -1.395211e+06 3.180039e+06 1.395042e+06 0.000000e+00 -X+G+e-N-0-n+r-T-E-s+p-g-S-c-h+-+=+x-m+4-t-v+3
+ViewAttr115 -2.272189e+00 -9.988166e-01 2.272189e+00 9.988166e-01 0.000000e+00 -X+G+e-N-0-n+r-T-E-s+p-g-S-c-h+-+=+x-m+4-t-v+3
