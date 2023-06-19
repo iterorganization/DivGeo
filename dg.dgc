@@ -4,10 +4,10 @@ This file should not be modified manually.
 
 DG version:             2.11a
 File format version:    115
-Creation time:          Wed May 31 21:39:26 2023
-Last Modified time:     Fri Jun  2 16:04:34 2023
+Creation time:          Mon Jun 19 22:49:05 2023
+Last Modified time:     Mon Jun 19 22:51:41 2023
 
-Original filename:      /vsc-hard-mounts/leuven-data/307/vsc30760/SOLPS/solps-iter-workshop-iter/dg.dgc
+Original filename:      /vsc-hard-mounts/leuven-data/307/vsc30760/SOLPS/solps-iter-workshop-iter/modules/DivGeo/dg.dgc
 GIT version:            3.0.8-51-g03af0c4-dirty
 Radial cells:           1SOL 0OSR 0TPF 0OSL 0BPF 0Core 
 
@@ -2733,7 +2733,7 @@ crr_opts
 Carre2 setup
 text101 0
 1 1
-VarDefs102 5
+VarDefs102 6
 Help
 Help
 text101 2
@@ -2783,12 +2783,24 @@ using the cut-cell algorithm (carreMode = 2).
 Float -n-m-S-s-h-i 0 4
 EnumText102
 text101 0
-Vars110 5
+fclbl
+fcLbl
+text101 5
+fcLbl is a label used to describe (groups of) elements belonging to the same boundary condition and recycling stratum.
+
+Elements with the same index should form a single (open or closed) polygon.
+
+Make sure each element in the Vessel is assigned a value of fcLbl!
+Int -n+m-S-s-h-i 0 5
+EnumText102
+text101 0
+Vars110 6
 Click ? for help
 0
 0
 0
 0.01
+0
 VarSets100 7
 0
 Vars110 21
@@ -2861,7 +2873,7 @@ Group100 0
 0
 1
 39
-Vars110 5
+Vars110 6
 Click ? for help
 0
 0
@@ -2869,9 +2881,9 @@ Click ? for help
 0.01
 MaxElemId101 0
 CreaTime101
-Wed May 31 21:39:26 2023
+Mon Jun 19 22:49:05 2023
 TopoName114 *
 OutputMode109 Carre
 OutputFlags111 -V-S-T-s-g-c
 MeshSlidingOptions112 Surfaces 1.000000e+00 1
-ViewAttr115 -2.272189e+00 -9.988166e-01 2.272189e+00 9.988166e-01 0.000000e+00 -X+G+e-N-0-n+r-T-E-s+p-g-S-c-h+-+=+x-m+4-t-v+3
+ViewAttr115 -2.292366e+00 -9.988166e-01 2.292366e+00 9.988166e-01 0.000000e+00 -X+G+e-N-0-n+r-T-E-s+p-g-S-c-h+-+=+x-m+4-t-v+3
