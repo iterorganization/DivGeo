@@ -315,5 +315,8 @@ ${OBJDIR}/dependencies:
 DOC: .doxygen
 
 include ${OBJDIR}/dependencies
+ifeq ($(shell [ -e ${PWD}/config/dependencies.local ] && echo yes || echo no ),yes)
+include ${PWD}/config/dependencies.local
+endif
 
 
