@@ -10,6 +10,8 @@ ifndef COMPILER
 $(error COMPILER not defined)
 endif
 
+MAKETAGS ?= ctags -e -f
+
 MAKES = Makefile 
 # Include global SOLPS compiler settings
 ifndef SOLPS_CPP
@@ -89,7 +91,7 @@ neat:
 	/bin/rm -rf ${OBJDIR}/*.o ${OBJDIR}/*.bak
 
 tags:
-	rm -f TAGS ; ctags -e -f TAGS src/*.c src/*.h dg.dgc || touch TAGS
+	rm -f TAGS ; ${MAKETAGS} TAGS src/*.c src/*.h dg.dgc || touch TAGS
 
 depend: ${OBJS:.o=.c}
 	@-cd ${OBJDIR} ; ln -sf ${SRCDIR}/src/dg.dgh ${SRCDIR}/dg.dgc .
