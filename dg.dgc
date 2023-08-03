@@ -4,8 +4,8 @@ This file should not be modified manually.
 
 DG version:             2.11a
 File format version:    115
-Creation time:          Mon Jun 19 22:49:05 2023
-Last Modified time:     Mon Jun 19 22:51:41 2023
+Creation time:          Thu Aug  3 17:01:36 2023
+Last Modified time:     Thu Aug  3 17:16:19 2023
 
 Original filename:      /vsc-hard-mounts/leuven-data/307/vsc30760/SOLPS/solps-iter-workshop-iter/modules/DivGeo/dg.dgc
 GIT version:            3.0.8-51-g03af0c4-dirty
@@ -913,7 +913,7 @@ trg_spcf
 Target specification
 text101 0
 0 4
-VarDefs102 21
+VarDefs102 22
 trefcell
 Reference cell
 text101 4
@@ -1132,7 +1132,14 @@ This is the minimum number of histories to be followed for this stratum
 Int -n-m-S-s-h-i 0 16
 EnumText102
 text101 0
-Vars110 21
+tgfclbl
+fcLbl
+text101 1
+The face label fcLbl assigned to the target elements in the Carre2 setup layer.
+Int -n-m-S-s-h-i 0 21
+EnumText102
+text101 0
+Vars110 22
 0
 0.0
 C
@@ -1153,6 +1160,7 @@ C
 Group100 0
 Group100 0
 Click ? for help
+0
 0
 bnd_dvd
 Boundary divides
@@ -2821,7 +2829,7 @@ Click ? for help
 1
 D
 19
-Vars110 21
+Vars110 22
 0
 0.0
 C
@@ -2842,9 +2850,10 @@ C
 Group100 0
 Group100 0
 Click ? for help
+0
 0
 19
-Vars110 21
+Vars110 22
 0
 0.0
 C
@@ -2865,6 +2874,7 @@ C
 Group100 0
 Group100 0
 Click ? for help
+0
 0
 11
 Vars110 4
@@ -2881,7 +2891,7 @@ Click ? for help
 0.01
 MaxElemId101 0
 CreaTime101
-Mon Jun 19 22:49:05 2023
+Thu Aug  3 17:01:36 2023
 TopoName114 *
 OutputMode109 Carre
 OutputFlags111 -V-S-T-s-g-c
