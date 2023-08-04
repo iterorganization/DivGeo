@@ -4,8 +4,8 @@ This file should not be modified manually.
 
 DG version:             2.11a
 File format version:    115
-Creation time:          Fri Aug  4 11:20:48 2023
-Last Modified time:     Fri Aug  4 11:28:13 2023
+Creation time:          Fri Aug  4 17:39:50 2023
+Last Modified time:     Fri Aug  4 17:46:39 2023
 
 Original filename:      /vsc-hard-mounts/leuven-data/307/vsc30760/SOLPS/solps-iter-workshop-iter/modules/DivGeo/dg.dgc
 GIT version:            3.0.8-51-g03af0c4-dirty
@@ -2741,7 +2741,7 @@ crr_opts
 Carre2 setup
 text101 0
 1 1
-VarDefs102 6
+VarDefs102 7
 Help
 Help
 text101 2
@@ -2802,13 +2802,21 @@ Make sure each element in the Vessel is assigned a value of fcLbl!
 Int -n+m-S-s-h-i 0 5
 EnumText102
 text101 0
-Vars110 6
+pasmin
+pasmin
+text101 1
+Parameter defining the minimal poloidal spacing between grid lines.
+Float -n-m-S-s-h-i 0 6
+EnumText102
+text101 0
+Vars110 7
 Click ? for help
 0
 0
 0
 0.01
 0
+0.001
 vss_spcf
 Vessel specification
 text101 0
@@ -3088,15 +3096,16 @@ Group100 0
 0
 1
 39
-Vars110 6
+Vars110 7
 Click ? for help
 0
 0
 0
 0.01
+0.001
 MaxElemId101 0
 CreaTime101
-Fri Aug  4 11:20:48 2023
+Fri Aug  4 17:39:50 2023
 TopoName114 *
 OutputMode109 Carre
 OutputFlags111 -V-S-T-s-g-c
