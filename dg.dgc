@@ -4,8 +4,8 @@ This file should not be modified manually.
 
 DG version:             2.11a
 File format version:    115
-Creation time:          Thu Aug  3 17:01:36 2023
-Last Modified time:     Thu Aug  3 17:16:19 2023
+Creation time:          Fri Aug  4 11:20:48 2023
+Last Modified time:     Fri Aug  4 11:28:13 2023
 
 Original filename:      /vsc-hard-mounts/leuven-data/307/vsc30760/SOLPS/solps-iter-workshop-iter/modules/DivGeo/dg.dgc
 GIT version:            3.0.8-51-g03af0c4-dirty
@@ -48,7 +48,7 @@ MarkedElems100 0
 MarkedSeparators104 0
 MarkedSources104 0
 MarkedChords110 0
-VarSetDefs101 40
+VarSetDefs101 41
 Main
 General Surface Data
 text101 0
@@ -2809,6 +2809,211 @@ Click ? for help
 0
 0.01
 0
+vss_spcf
+Vessel specification
+text101 0
+0 100
+VarDefs102 19
+Help
+Help
+text101 7
+Here you specify the vessel wall properties for EIRENE. You must specify these
+for each value of fclbl assigned to a (group of) vessel element(s), except for
+the values of fclbl that correspond to a target, in which case the corresponding
+properties are defined in the "Target specification" group.
+
+The boundary conditions for neutrals are also set here - in a way similar to
+the specification of the "General surface data".
+Text +n-m-S-s-h-i 0 0
+EnumText102
+text101 0
+vsmadeof
+Vessel material
+text101 2
+Chemical notation for the element of
+which the vessel surface is made.
+Text -n-m-S-s-h-i 0 1
+EnumText102
+text101 0
+vsabsrp
+Absorption
+text101 2
+Fraction of incident particles absorbed
+by the vessel ( = 1-RECYCT).
+Float -n-m-S-s-h-i 0 2
+EnumText102
+text101 0
+vsewall
+Wall Temperature
+text101 4
+Energy of thermal particles
+>0 : monoenergetic particles, E=ewall
+=0 : Thompson distribution with EWBIN
+<0 : Maxwellian with T=ewall
+Float -n-m-S-s-h-i 0 3
+EnumText102
+text101 0
+vstrnsf
+Transparency out
+text101 3
+Fraction of the particles which penetrates
+the vessel from the plasma side
+(TRANSP1 or TRANSP2 in Eirene, block 6B)
+Float -n-m-S-s-h-i 0 4
+EnumText102
+text101 0
+vstrnsb
+Transparency In
+text101 3
+Fraction of particles which penetrate
+the vessel surface from the outside
+(TRANSP2 or TRANSP1 in Eirene, block 6B)
+Float -n-m-S-s-h-i 0 5
+EnumText102
+text101 0
+vsrefsw
+Reflection Model
+text101 8
+Particle reflection model - ILREF (6B)
+
+1: TRIM or MARLOWE
+2: Modified Behrisch Matrix
+4: Pressure feedback model (using ILREF = 1 as underlying model)
+9: User-defined model
+
+If using ILREF=4, must also specify the reference pressure value and location
+Int -n-m-S-s-h-i 0 6
+EnumText102
+text101 0
+vsspcsw
+Chem. sputter.
+text101 4
+Chemical sputtering byte of ILSPT (6B)
+
+0: no chemical sputtering
+1: standard model (constant yield)
+Int -n-m-S-s-h-i 0 7
+EnumText102
+text101 0
+vsspcgr
+Surface group
+text101 2
+Surface group for chemical sputtering
+(see "Chemical sputtering")
+Int -n-m-S-s-h-i 0 8
+EnumText102
+text101 0
+vsspcff
+Chem. sput. factor
+text101 2
+Additional, surface-related factor for
+the chemical sputter yield
+Float -n-m-S-s-h-i 0 9
+EnumText102
+text101 0
+vssppsw
+Phys. sput. model
+text101 6
+Physical sputtering byte of ILSPT (6B)
+
+0: no physical sputtering
+2: standard Roth-Bohdansky model
+9: Beryllium re-sputtering model
+  (only Be will be sputtered from this surface)
+Int -n-m-S-s-h-i 0 10
+EnumText102
+text101 0
+vssppsp
+Sputtered atom
+text101 6
+Specification of the sputtered particle
+for physical sputtering (always atom).
+
+=< 0: the wall material
+> (NATMI+NMOLI+NIONI+NPLSI): mass & charge
+else: the sequential number of the atom in the list (4A)
+Int -n-m-S-s-h-i 0 11
+EnumText102
+text101 0
+vssppff
+Phys. sput. factor
+text101 2
+Additional, surface-related factor for
+the physical sputter yield.
+Float -n-m-S-s-h-i 0 12
+EnumText102
+text101 0
+vsnhst
+Histories
+text101 2
+Maximum number of histories - affects the time
+allocation for the stratum in Eirene.
+Int -n-m-S-s-h-i 0 13
+EnumText102
+text101 0
+vsminhst
+Minimum histories
+text101 2
+Minimum number of histories to be followed 
+for this stratum.
+Int -n-m-S-s-h-i 0 14
+EnumText102
+text101 0
+vsnini
+RNG initialiser
+text101 4
+Value for initialisation of the random number generator.
+Either use a big odd number (to get the same seed every time)
+or -1 to obtain the seed from the CPU clock (which will
+be different every time)
+Int -n-m-S-s-h-i 0 15
+EnumText102
+text101 0
+vrefcell
+Reference cell
+text101 4
+To be used when ILREF=4
+Cell index of the Eirene grid in which the reference pressure
+is measured
+(can only be provided once the Eirene grid is known)
+Int -n-m-S-s-h-i 0 16
+EnumText102
+text101 0
+vrfpress
+Reference pressure
+text101 2
+To be used when ILREF=4
+Reference pressure (in Pa)
+Float -n-m-S-s-h-i 0 17
+EnumText102
+text101 0
+vsfclbl
+fcLbl
+text101 1
+The face label fcLbl assigned to the vessel elements in the Carre2 setup layer.
+Int -n-m-S-s-h-i 0 18
+EnumText102
+text101 0
+Vars110 19
+Click ? for help
+C
+0
+-0.1
+0
+0
+1
+1
+0
+1
+2
+0
+1
+25000
+0
+-1
+0
+0.0
+0
 VarSets100 7
 0
 Vars110 21
@@ -2891,7 +3096,7 @@ Click ? for help
 0.01
 MaxElemId101 0
 CreaTime101
-Thu Aug  3 17:01:36 2023
+Fri Aug  4 11:20:48 2023
 TopoName114 *
 OutputMode109 Carre
 OutputFlags111 -V-S-T-s-g-c
