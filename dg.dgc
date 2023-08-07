@@ -4,8 +4,8 @@ This file should not be modified manually.
 
 DG version:             2.11a
 File format version:    115
-Creation time:          Fri Aug  4 17:39:50 2023
-Last Modified time:     Fri Aug  4 17:46:39 2023
+Creation time:          Mon Aug  7 10:28:49 2023
+Last Modified time:     Mon Aug  7 10:38:40 2023
 
 Original filename:      /vsc-hard-mounts/leuven-data/307/vsc30760/SOLPS/solps-iter-workshop-iter/modules/DivGeo/dg.dgc
 GIT version:            3.0.8-51-g03af0c4-dirty
@@ -48,7 +48,7 @@ MarkedElems100 0
 MarkedSeparators104 0
 MarkedSources104 0
 MarkedChords110 0
-VarSetDefs101 41
+VarSetDefs101 42
 Main
 General Surface Data
 text101 0
@@ -3022,7 +3022,42 @@ C
 0
 0.0
 0
-VarSets100 7
+dfompimp
+Midplane definition
+text101 0
+0 1
+VarDefs102 3
+Help
+Help
+text101 2
+This layer allows to select elements that 
+form the OMP and IMP. 
+Text +n-m-S-s-h-i 0 0
+EnumText102
+text101 0
+omp_elm
+OMP
+text101 3
+The element that corresponds to the Outer Mid Plane.
+This element should completely intersect the mesh from
+core region to far SOL.
+Elem -n-m-S-s-h-i 0 1
+EnumText102
+text101 0
+imp_elm
+IMP
+text101 3
+The element that corresponds to the Inner Mid Plane.
+This element should completely intersect the mesh from
+core region to (inner) far SOL.
+Elem -n-m-S-s-h-i 0 2
+EnumText102
+text101 0
+Vars110 3
+Click ? for help
+Group100 0
+Group100 0
+VarSets100 8
 0
 Vars110 21
 Press ? for help
@@ -3103,9 +3138,14 @@ Click ? for help
 0
 0.01
 0.001
+41
+Vars110 3
+Click ? for help
+Group100 0
+Group100 0
 MaxElemId101 0
 CreaTime101
-Fri Aug  4 17:39:50 2023
+Mon Aug  7 10:28:49 2023
 TopoName114 *
 OutputMode109 Carre
 OutputFlags111 -V-S-T-s-g-c
