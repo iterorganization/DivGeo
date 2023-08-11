@@ -8,6 +8,8 @@ ifndef COMPILER
 $(error COMPILER not defined)
 endif
 
+MAKETAGS ?= ctags -e -f
+
 MAKES = Makefile
 # Include global SOLPS compiler settings
 ifndef SOLPS_CPP
@@ -96,5 +98,5 @@ clean:
 TAGS:	tags
 
 tags:
-	rm -f TAGS ; ctags -e -f TAGS src/*.f || touch TAGS
+	rm -f TAGS ; ${MAKETAGS} TAGS src/*.f || touch TAGS
 
