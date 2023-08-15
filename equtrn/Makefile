@@ -8,6 +8,8 @@ ifndef COMPILER
 $(error COMPILER not defined)
 endif
 
+MAKETAGS ?= ctags -e -f
+
 MAKES = Makefile
 # Include global SOLPS compiler settings
 ifndef SOLPS_CPP
@@ -274,7 +276,7 @@ clean:
 TAGS:	tags
 
 tags:
-	rm -f TAGS ; ctags -e -f TAGS src/*.f src/*.f90 src/*.inc || touch TAGS
+	rm -f TAGS ; ${MAKETAGS} TAGS src/*.f src/*.f90 src/*.inc || touch TAGS
 
 depend: ${OBJS:.o=.f} ${OBJS90:.o=.f90}
 	@makedepend -f- ${INCLUDE} $^ | \
@@ -315,5 +317,8 @@ ${OBJDIR}/dependencies:
 DOC: .doxygen
 
 include ${OBJDIR}/dependencies
+ifeq ($(shell [ -e ${PWD}/config/dependencies.local ] && echo yes || echo no ),yes)
+include ${PWD}/config/dependencies.local
+endif
 
 
