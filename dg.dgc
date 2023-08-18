@@ -4,11 +4,11 @@ This file should not be modified manually.
 
 DG version:             2.11a
 File format version:    115
-Creation time:          Mon Aug  7 11:36:12 2023
-Last Modified time:     Mon Aug  7 12:04:17 2023
+Creation time:          Fri Aug 18 06:41:09 2023
+Last Modified time:     Fri Aug 18 06:42:41 2023
 
-Original filename:      /vsc-hard-mounts/leuven-data/307/vsc30760/SOLPS/solps-iter-workshop-iter/modules/DivGeo/dg.dgc
-GIT version:            3.0.8-51-g03af0c4-dirty
+Original filename:      /home/ITER/bonninx/SOLPS-ITER_ExtendedGrids/modules/DivGeo/dg.dgc
+GIT version:            3.0.8-65-g289dd26
 Radial cells:           1SOL 0OSR 0TPF 0OSL 0BPF 0Core 
 
 ------------------------------------------------------------------------
@@ -48,7 +48,7 @@ MarkedElems100 0
 MarkedSeparators104 0
 MarkedSources104 0
 MarkedChords110 0
-VarSetDefs101 42
+VarSetDefs101 41
 Main
 General Surface Data
 text101 0
@@ -1405,37 +1405,6 @@ D2
 Click ? for help
 0
 0
-midplane
-Midplane location
-text101 0
-0 1
-VarDefs102 3
-jxi
-Inner midplane
-text101 1
-Grid cell marking the poloidal location of the inner midplane
-SetOfMeshCells -n-m-S-s-h-i 0 1
-EnumText102
-text101 0
-jxa
-Outer midplane
-text101 1
-Grid cell marking the poloidal location of the outer midplane
-SetOfMeshCells -n-m-S-s-h-i 0 2
-EnumText102
-text101 0
-Help
-Help
-text101 2
-Here you specify the location of the "outer" and "inner" midplane in the
-grid for the B2 output.
-Text +n-m-S-s-h-i 0 0
-EnumText102
-text101 0
-Vars110 3
-Group100 0
-Group100 0
-Click ? for help
 gleirdat
 Global Eirene data
 text101 0
@@ -3143,7 +3112,7 @@ Group100 0
 Group100 0
 0
 1
-39
+38
 Vars110 7
 Click ? for help
 0
@@ -3151,12 +3120,12 @@ Click ? for help
 0
 0.01
 0.001
-41
+40
 Vars110 3
 Click ? for help
 Group100 0
 Group100 0
-40
+39
 Vars110 19
 Click ? for help
 C
@@ -3193,9 +3162,9 @@ Click ? for help
 0
 MaxElemId101 0
 CreaTime101
-Mon Aug  7 11:36:12 2023
+Fri Aug 18 06:41:09 2023
 TopoName114 *
 OutputMode109 Carre
 OutputFlags111 -V-S-T-s-g-c
 MeshSlidingOptions112 Surfaces 1.000000e+00 1
-ViewAttr115 -2.292366e+00 -9.988166e-01 2.292366e+00 9.988166e-01 0.000000e+00 -X+G+e-N-0-n+r-T-E-s+p-g-S-c-h+-+=+x-m+4-t-v+3
+ViewAttr115 -3.191821e+00 -2.864290e+00 3.191821e+00 2.864290e+00 0.000000e+00 -X+G+e-N-0-n+r-T-E-s+p-g-S-c-h+-+=+x-m+4-t-v+3
