@@ -2,13 +2,13 @@ DivGeo config file>>
 
 This file should not be modified manually.
 
-DG version:             2.01
+DG version:             2.11a
 File format version:    115
-Creation time:          Fri Apr  1 14:38:31 2005
-Last Modified time:     Fri Aug 28 09:52:54 2015
+Creation time:          Fri Aug 18 09:00:52 2023
+Last Modified time:     Fri Aug 18 09:01:44 2023
 
-Original filename:      /home/ITER/bonninx/SOLPS-ITER_1/modules/DivGeo/dg.dgc
-GIT version:            DG-3.0.5-3-g6a6a2ef
+Original filename:      /home/ITER/bonninx/SOLPS-ITER_2/modules/DivGeo/dg.dgc
+GIT version:            3.0.8-56-gd11969d
 Radial cells:           1SOL 0OSR 0TPF 0OSL 0BPF 0Core
 
 ------------------------------------------------------------------------
@@ -43,7 +43,7 @@ SurfacesEx114 0
 GridPointsEx114 0
 Separators101 0
 Sources104 0
-Chords106 0
+Chords115 0
 MarkedElems100 0
 MarkedSeparators104 0
 MarkedSources104 0
@@ -1049,18 +1049,6 @@ allocation for the stratum in Eirene
 Int -n-m-S-s-h-i 0 15
 EnumText102
 text101 0
-tgtgrd
-CARRE guard length
-text101 6
-Specifies the distance (m) from the target, over which
-a smooth grid transformation from orthogonal to target-
-aligned is allowed in the CARRE grid generator.
-
-Should be bigger for more oblique targets, and can be 0
-for the normal target.
-Float -n-m-S-s-h-i 0 18
-EnumText102
-text101 0
 tgnini
 RNG initialiser
 text101 4
@@ -1124,6 +1112,18 @@ This is the minimum number of histories to be followed for this stratum
 Int -n-m-S-s-h-i 0 16
 EnumText102
 text101 0
+tgtgrd
+CARRE guard length
+text101 6
+Specifies the distance (m) from the target, over which
+a smooth grid transformation from orthogonal to target-
+aligned is allowed in the CARRE grid generator.
+
+Should be bigger for more oblique targets, and can be 0
+for a normal target.
+Float -n-m-S-s-h-i 0 18
+EnumText102
+text101 0
 Vars110 21
 0
 0.0
@@ -1140,12 +1140,12 @@ C
 1
 0
 25000
-0.2
 -1
 Group100 0
 Group100 0
 Click ? for help
 0
+0.2
 bnd_dvd
 Boundary divides
 text101 0
@@ -2721,9 +2721,9 @@ Vars110 3
 Press ? for help
 1.0
 Group100 0
-VarSets100 6
+VarSets100 5
 0
-Vars110 19
+Vars110 21
 Press ? for help
 5
 Vars110 4
@@ -2756,12 +2756,12 @@ C
 1
 0
 25000
-0.2
 -1
 Group100 0
 Group100 0
 Click ? for help
 0
+0.2
 19
 Vars110 21
 0
@@ -2779,29 +2779,17 @@ C
 1
 0
 25000
-0.2
 -1
 Group100 0
 Group100 0
 Click ? for help
 0
-11
-Vars110 10
-0
-100
-0
-1
-100
-Click ? for help
-0
-60
-5006
-0
+0.2
 MaxElemId101 0
 CreaTime101
-Fri Apr  1 14:38:31 2005
+Fri Aug 18 09:00:52 2023
 TopoName114 *
 OutputMode109 Carre
 OutputFlags111 -V-S-T-s-g-c
 MeshSlidingOptions112 Surfaces 1.000000e+00 1
-ViewAttr105 -4.831381e+04 -2.387755e+04 6.089845e+04 2.370779e+04 -X+G+e-N-0-n+r-T-E-s+p-g-S-c-h+-+=+x-m
+ViewAttr115 -4.831381e+04 -2.387755e+04 6.089845e+04 2.370779e+04 0.000000e+00 -X+G+e-N-0-n+r-T-E-s+p-g-S-c-h+-+=+x-m+4-t-v+3
