@@ -1494,7 +1494,7 @@ For SOLPS-ITER cases, Uinp will change 0 digits according to:
 If a census stratum is activated (NPRNLI <> 0), NFILEJ = 3.
 If MPI parallelization is requested (default), NFILEK = 5.
 If BGK species are present, NFILEL = 8.
-For Eirene post-processing diagnostics, NFILEN = 6.
+To turn on Eirene post-processing diagnostics, set NFILEN = 6.
 Int -n-m-S-s-h-i 0 4
 EnumText102
 text101 0
@@ -1519,7 +1519,7 @@ Vars110 10
 Click ? for help
 0
 60
-5006
+5000
 0
 hepdt
 He pumping data
