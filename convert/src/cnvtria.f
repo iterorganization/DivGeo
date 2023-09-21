@@ -28,8 +28,9 @@ c*** read *.npco_char
       read(*,*) npoint
       write(0,'(a,t15,i6)') 'npoint', npoint
       allocate(px(npoint),py(npoint))
-      read(*,*) px
-      read(*,*) py
+      do i=1,npoint
+        read(*,*) idum, px(i), py(i)
+      enddo
       write(0,*) '    reading *.npco_char is finished'
 c*** read *.elemente 
       read(*,*) ntria
