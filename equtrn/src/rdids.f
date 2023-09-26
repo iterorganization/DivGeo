@@ -36,7 +36,7 @@ c  version : 03.02.20 13:42
 c
       use ids_schemas  ! IGNORE
      , , only : ids_equilibrium, ids_wall
-#if IMAS_MINOR_VERSION > 8
+#if ( IMAS_MINOR_VERSION > 8 || IMAS_MAJOR_VERSION > 3 )
       use ids_schemas  ! IGNORE
      , , only : IDS_REAL_INVALID, IDS_INT_INVALID
 #endif
@@ -73,13 +73,13 @@ c
       integer, intent(out) :: nunits, npts(ngpr)
       integer :: nlimunits, nmobunits, nvslunits, nelem
       integer i,j,k,icnt,jcnt,idx,status,igrid,iocc
-#if IMAS_MINOR_VERSION > 27
+#if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
       integer iside, kk, ks, kkk, kks
       real(kind=R8) :: t1, t2, ra, rb, za, zb, rc, zc, rd, zd,
      .                 r1, r2, z1, z2, r3, z3, x4, z4, det, ! avoid clash with R4 type
      .                 rab_normal, rcd_normal, zab_normal, zcd_normal
 #endif
-#if IMAS_MINOR_VERSION < 9
+#if ( IMAS_MINOR_VERSION < 9 && IMAS_MAJOR_VERSION < 4 )
       real(kind=R8), parameter :: IDS_REAL_INVALID = -9.0E40_R8
       integer, parameter :: IDS_INT_INVALID = -9999999
 #endif
@@ -460,7 +460,7 @@ c
       zwall = 0.0_R8
 c
       if (do_wall) then
-#if IMAS_MINOR_VERSION > 32
+#if ( IMAS_MINOR_VERSION > 32 || IMAS_MAJOR_VERSION > 3 )
         if (vessel%temperature_reference%data .ne. IDS_REAL_INVALID)
      .    write(0,*) 'Wall IDS has reference temperature ',
      .                vessel%temperature_reference%data, ' K'
@@ -512,7 +512,7 @@ c
           end do
         end if
 c
-#if IMAS_MINOR_VERSION > 10
+#if ( IMAS_MINOR_VERSION > 10 || IMAS_MAJOR_VERSION > 3 )
         if (associated(vessel%description_2d(1)%mobile%unit)) then
           nmobunits = size(vessel%description_2d(1)%mobile%unit)
           nunits = nunits + nmobunits
@@ -585,7 +585,7 @@ c
               jcnt = jcnt + 1
               npts(jcnt)=size(vessel%description_2d(1)%
      .                        vessel%unit(i)%element(j)%outline%r)
-#if IMAS_MINOR_VERSION > 27
+#if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
               if (vessel%description_2d(1)%
      .            vessel%unit(i)%element(j)%outline%closed.eq.1)
      .         npts(jcnt)=npts(jcnt)+1
@@ -604,7 +604,7 @@ c
                 zwall(icnt+k)=vessel%description_2d(1)%
      .                        vessel%unit(i)%element(j)%outline%z(k)
               end do
-#if IMAS_MINOR_VERSION > 27
+#if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
               if (vessel%description_2d(1)%
      .            vessel%unit(i)%element(j)%outline%closed.eq.1) then
                 rwall(icnt+npts(jcnt))=rwall(icnt+1)
@@ -629,7 +629,7 @@ c
               jcnt = jcnt + 1
               npts(jcnt)=size(vessel%description_2d(1)%
      .                        vessel%unit(i)%annular%outline_inner%r)
-#if IMAS_MINOR_VERSION > 27
+#if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
               if (vessel%description_2d(1)%
      .            vessel%unit(i)%annular%outline_inner%closed.eq.1)
      .         npts(jcnt)=npts(jcnt)+1
@@ -650,7 +650,7 @@ c
                 zwall(icnt+k)=vessel%description_2d(1)%
      .                        vessel%unit(i)%annular%outline_inner%z(k)
               end do
-#if IMAS_MINOR_VERSION > 27
+#if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
               if (vessel%description_2d(1)%
      .            vessel%unit(i)%annular%outline_inner%closed.eq.1) then
                 rwall(icnt+npts(jcnt))=rwall(icnt+1)
@@ -678,7 +678,7 @@ c
               jcnt = jcnt + 1
               npts(jcnt)=size(vessel%description_2d(1)%
      .                        vessel%unit(i)%annular%outline_outer%r)
-#if IMAS_MINOR_VERSION > 27
+#if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
               if (vessel%description_2d(1)%
      .            vessel%unit(i)%annular%outline_outer%closed.eq.1)
      .         npts(jcnt)=npts(jcnt)+1
@@ -699,7 +699,7 @@ c
                 zwall(icnt+k)=vessel%description_2d(1)%
      .                        vessel%unit(i)%annular%outline_outer%z(k)
               end do
-#if IMAS_MINOR_VERSION > 27
+#if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
               if (vessel%description_2d(1)%
      .            vessel%unit(i)%annular%outline_outer%closed.eq.1) then
                 rwall(icnt+npts(jcnt))=rwall(icnt+1)
@@ -712,7 +712,7 @@ c
               icnt = icnt + npts(jcnt)
             end if
            end if
-#if IMAS_MINOR_VERSION > 27
+#if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
            if (associated(vessel%description_2d(1)%
      .               vessel%unit(i)%annular%centreline%r)) then
             if (size(vessel%description_2d(1)%

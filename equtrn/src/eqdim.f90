@@ -6,7 +6,7 @@ include 'mathematical_constants.f90'              ! IGNORE
   module eqdim
 #ifdef CONSTANTS_PROVIDED
   use mathematical_constants, only: PI => M_PI    ! IGNORE
-#elif ( defined(IMAS) && IMAS_MINOR_VERSION < 35 )
+#elif ( defined(IMAS) && ( IMAS_MINOR_VERSION < 35 && IMAS_MAJOR_VERSION < 4 ) )
   use imas_constants_module, only: imas_constants ! IGNORE
 #endif
   implicit none
@@ -23,7 +23,7 @@ include 'mathematical_constants.f90'              ! IGNORE
 #ifndef CONSTANTS_PROVIDED
   real (kind=R8) :: pi
 #ifdef IMAS
-#if IMAS_MINOR_VERSION < 35
+#if ( IMAS_MINOR_VERSION < 35 && IMAS_MAJOR_VERSION < 4 )
   parameter (pi=imas_constants%pi)
 #else
   parameter (pi=3.141592653589793_R8)
