@@ -2,7 +2,7 @@
      ,           treename,shot,run,username,database,version)
       use ids_schemas  ! IGNORE
      , , only : ids_wall
-#if IMAS_MINOR_VERSION > 8
+#if ( IMAS_MINOR_VERSION > 8 || IMAS_MAJOR_VERSION > 3 )
       use ids_schemas  ! IGNORE
      , , only : ids_real
 #endif
@@ -29,7 +29,7 @@
       character*5 zone
       integer tvalues(8)
       integer :: idx, i, j, icnt, jcnt, status
-#if IMAS_MINOR_VERSION < 9
+#if ( IMAS_MINOR_VERSION < 9 && IMAS_MAJOR_VERSION < 4 )
       integer, parameter :: IDS_REAL = R8
 #endif
 #ifndef NO_GETENV
@@ -76,8 +76,8 @@ c
       vessel%ids_properties%homogeneous_time = 1
       allocate( vessel%ids_properties%comment(1) )
       vessel%ids_properties%comment = "DivGeo template"
-#if IMAS_MINOR_VERSION > 14
-#if IMAS_MINOR_VERSION > 33
+#if ( IMAS_MINOR_VERSION > 14 || IMAS_MAJOR_VERSION > 3 )
+#if ( IMAS_MINOR_VERSION > 33 || IMAS_MAJOR_VERSION > 3 )
       allocate( vessel%ids_properties%provenance%node(1) )
       allocate( vessel%ids_properties%provenance%node(1)%sources(1) )
       vessel%ids_properties%provenance%node(1)%sources(1) = dg_file
@@ -90,7 +90,7 @@ c
       allocate( vessel%ids_properties%creation_date(1) )
       vessel%ids_properties%creation_date =
      & date//' '//ctime//' '//' '//zone
-#if IMAS_MINOR_VERSION > 21
+#if ( IMAS_MINOR_VERSION > 21 || IMAS_MAJOR_VERSION > 3 )
       allocate( vessel%ids_properties%version_put%data_dictionary(1) )
       vessel%ids_properties%version_put%data_dictionary = imas_version
       allocate( vessel%ids_properties%version_put%access_layer(1) )
@@ -103,7 +103,7 @@ c
 #endif
       allocate( vessel%time(1) )
       vessel%time(1) = 0.0_IDS_real
-#if IMAS_MINOR_VERSION > 32
+#if ( IMAS_MINOR_VERSION > 32 || IMAS_MAJOR_VERSION > 3 )
       if (ref_temp.gt.0.0_R8) then
         vessel%temperature_reference%data = ref_temp
         allocate( vessel%temperature_reference%description(1) )
@@ -121,7 +121,7 @@ c
       vessel%code%repository = "ssh://git.iter.org/bnd/divgeo.git"
       allocate( vessel%code%output_flag(1) )
       vessel%code%output_flag(1) = 0
-#if IMAS_MINOR_VERSION > 29
+#if ( IMAS_MINOR_VERSION > 29 || IMAS_MAJOR_VERSION > 3 )
       allocate( vessel%code%library(1) )
       allocate( vessel%code%library(1)%name(1) )
       vessel%code%library(1)%name = 'GGD'
