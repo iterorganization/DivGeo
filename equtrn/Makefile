@@ -264,10 +264,10 @@ ${OBJDIR}/${PROG_dgcut}: $(DGCUT) $(MAKES)
 	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGCUT) $(LDFLAGS) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_ids2dg}: $(IDSDG) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(IDSDG) $(LDFLAGS) $(LD_UAL) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(IDSDG) $(LDFLAGS) $(LD_AL) $(LDEXTRA)
 
 ${OBJDIR}/${PROG_dg2ids}: $(DGIDS) $(MAKES)
-	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGIDS) $(LDFLAGS) $(LD_UAL) $(LDEXTRA)
+	${FC} ${FFLAGS} ${FFLAGSEXTRA} -o $@ $(DGIDS) $(LDFLAGS) $(LD_AL) $(LDEXTRA)
 
 clean:
 	cd ${OBJDIR}; rm -rf *.o *.f *.f90 *.mod $(ALL) LISTOBJ dependencies*

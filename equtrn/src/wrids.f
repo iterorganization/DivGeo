@@ -23,7 +23,7 @@
       integer, intent(out) :: iret
       real(kind=R8), intent(in) :: rwall(ngpr), zwall(ngpr), ref_temp
       integer, intent(in) :: nunits, npts(ngpr)
-      character*8 imas_version, ual_version, ggd_version
+      character*8 imas_version, al_version, ggd_version
       character*8 date
       character*10 ctime
       character*5 zone
@@ -48,25 +48,36 @@ c
       write(imas_version,'(i1,a1,i2,a1,i1)') IMAS_MAJOR_VERSION,'.',
      &                                       IMAS_MINOR_VERSION,'.',
      &                                       IMAS_MICRO_VERSION
-      write(ual_version,'(i1,a1,i2,a1,i1)') UAL_MAJOR_VERSION,'.',
-     &                                      UAL_MINOR_VERSION,'.',
-     &                                      UAL_MICRO_VERSION
+      write(al_version,'(i1,a1,i2,a1,i1)') AL_MAJOR_VERSION,'.',
+     &                                     AL_MINOR_VERSION,'.',
+     &                                     AL_MICRO_VERSION
       write(ggd_version,'(i1,a1,i2,a1,i1)') GGD_MAJOR_VERSION,'.',
      &                                      GGD_MINOR_VERSION,'.',
      &                                      GGD_MICRO_VERSION
 #elif defined(USE_PXFGETENV)
       CALL PXFGETENV ('IMAS_VERSION', 0, imas_version, lenval, ierror)
-      CALL PXFGETENV ('UAL_VERSION', 0, ual_version, lenval, ierror)
+#if AL_MAJOR_VERSION > 4
+      CALL PXFGETENV ('AL_VERSION', 0, al_version, lenval, ierror)
+#else
+      CALL PXFGETENV ('UAL_VERSION', 0, al_version, lenval, ierror)
+#endif
       CALL PXFGETENV ('GGD_VERSION', 0, ggd_version, lenval, ierror)
 #else
       call get_environment_variable
      . ('IMAS_VERSION', status=ierror, length=lenval)
       if (ierror.eq.0) call get_environment_variable
      . ('IMAS_VERSION', value=imas_version)
+#if AL_MAJOR_VERSION > 4
+      call get_environment_variable
+     . ('AL_VERSION', status=ierror, length=lenval)
+      if (ierror.eq.0) call get_environment_variable
+     . ('AL_VERSION', value=al_version)
+#else
       call get_environment_variable
      . ('UAL_VERSION', status=ierror, length=lenval)
       if (ierror.eq.0) call get_environment_variable
-     . ('UAL_VERSION', value=ual_version)
+     . ('UAL_VERSION', value=al_version)
+#endif
       call get_environment_variable
      . ('GGD_VERSION', status=ierror, length=lenval)
       if (ierror.eq.0) call get_environment_variable
@@ -94,7 +105,7 @@ c
       allocate( vessel%ids_properties%version_put%data_dictionary(1) )
       vessel%ids_properties%version_put%data_dictionary = imas_version
       allocate( vessel%ids_properties%version_put%access_layer(1) )
-      vessel%ids_properties%version_put%access_layer = ual_version
+      vessel%ids_properties%version_put%access_layer = al_version
       allocate(
      & vessel%ids_properties%version_put%access_layer_language(1) )
       vessel%ids_properties%version_put%access_layer_language =
@@ -180,7 +191,7 @@ c
      & 0, 0, idx, username, database, version, status )
       if (status.ne.0) stop 'Error opening IMAS database !'
 
-#if UAL_MAJOR_VERSION > 3
+#if AL_MAJOR_VERSION > 3
       call ids_put( idx, "wall", vessel, status )
       if (status.ne.0) stop 'Error putting wall description IDS !'
 #else
