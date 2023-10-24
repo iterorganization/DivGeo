@@ -31,7 +31,7 @@ ifndef SOLPS_CPP
     IMAS_MINOR_VERSION ?= $(shell echo ${IMAS_VERSION} | cut -d '.' -f2 )
     IMAS_MICRO_VERSION ?= $(shell echo ${IMAS_VERSION} | cut -d '.' -f3 )
     ifeq ($(shell test ${AL_MAJOR_VERSION} -ge 5; echo $$?),0)
-      IMAS_PKG_LIST += al-gfortran
+      IMAS_PKG_LIST += al-fortran
     else
       IMAS_PKG_LIST += imas-gfortran
     endif
