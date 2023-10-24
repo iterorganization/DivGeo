@@ -30,7 +30,7 @@ LDLIBS   = ${LD_MSCL} -L/usr/local/lib -L/usr/lpp/xlC/lib
 LDFLAGS  = 
 LDEXTRA  =
 
-LDWOS    = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt
+LDWOS    = -L/usr/ads/lib -lKK -lwoss -lddww -lpplotXt
 
 #!!!Local Variables:
 #!!! mode: Makefile
