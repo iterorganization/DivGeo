@@ -25,7 +25,7 @@ endif
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  =
 
-LDWOS    = -L/usr/ads/lib/ -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
+LDWOS    = -L/usr/ads/lib -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
 LDFLUSH  = -lflush ${LD_NAG} -lppf
 
 #!!!Local Variables:
