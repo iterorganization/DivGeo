@@ -190,7 +190,11 @@ $(OBJDIR)/%.o : %.f
 	$(COMPILE) ${INCMODS} ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f ${FINCLUDE}
 	@if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
 
+ifndef NO_MANUAL
 all: VERSION $(ALL:%=$(OBJDIR)/%) .doxygen
+else
+all: VERSION $(ALL:%=$(OBJDIR)/%)
+endif
 
 .PHONY: VERSION clean listobj depend all tags force
 
