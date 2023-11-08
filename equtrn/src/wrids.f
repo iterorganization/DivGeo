@@ -7,7 +7,9 @@
      , , only : ids_real
 #endif
       use ids_routines ! IGNORE
-     , , only : imas_create_env, ids_deallocate, ids_put, imas_close
+     , , only : imas_create_env, ids_deallocate, ids_put, imas_close,
+     ,          ual_begin_pulse_action, ual_open_pulse, ual_close_pulse,
+     ,          HDF5_BACKEND, FORCE_OPEN_PULSE, CLOSE_PULSE
       use eqdim
       implicit none
 #include "git_version_DG.h"
@@ -150,8 +152,11 @@ c
       end do
 
       !! Create and modify new wall IDS
-      call imas_create_env( treename, shot, run,
-     & 0, 0, idx, username, database, version, status )
+c$$$      call imas_create_env( treename, shot, run,
+c$$$     & 0, 0, idx, username, database, version, status )
+      call ual_begin_pulse_action( HDF5_BACKEND, shot, run, username,
+     &                             database, version, idx )
+      call ual_open_pulse( idx, FORCE_OPEN_PULSE, '', status )
       if (status.ne.0) stop 'Error opening IMAS database !'
 
 #if UAL_MAJOR_VERSION > 3
@@ -161,7 +166,7 @@ c
       call ids_put( idx, "wall", vessel )
 #endif
       call ids_deallocate( vessel )
-      call imas_close( idx, status )
+      call ual_close_pulse( idx, CLOSE_PULSE, '', status )
       if (status.ne.0) stop 'Error closing IMAS database !'
 
       write(0,*) "Wall IDS write finished"
