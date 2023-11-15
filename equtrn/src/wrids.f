@@ -59,7 +59,7 @@ c
      . ('GGD_VERSION', value=ggd_version)
 #endif
 
-      vessel%ids_properties%homogeneous_time = 1
+      vessel%ids_properties%homogeneous_time = 2
       allocate( vessel%ids_properties%comment(1) )
       vessel%ids_properties%comment = "DivGeo template"
 #if ( IMAS_MINOR_VERSION > 14 || IMAS_MAJOR_VERSION > 3 )
@@ -77,8 +77,6 @@ c
       vessel%ids_properties%creation_date =
      & date//' '//ctime//' '//' '//zone
 #endif
-      allocate( vessel%time(1) )
-      vessel%time(1) = 0.0_IDS_real
 #if ( IMAS_MINOR_VERSION > 32 || IMAS_MAJOR_VERSION > 3 )
       if (ref_temp.gt.0.0_R8) then
         vessel%temperature_reference%data = ref_temp
@@ -95,8 +93,6 @@ c
       vessel%code%commit = GIT_VERSION_DG
       allocate( vessel%code%repository(1) )
       vessel%code%repository = "ssh://git.iter.org/bnd/divgeo.git"
-      allocate( vessel%code%output_flag(1) )
-      vessel%code%output_flag(1) = 0
 #if ( IMAS_MINOR_VERSION > 29 || IMAS_MAJOR_VERSION > 3 )
       allocate( vessel%code%library(1) )
       allocate( vessel%code%library(1)%name(1) )
@@ -111,16 +107,24 @@ c
       allocate( vessel%description_2d(1) )
       allocate( vessel%description_2d(1)%type%name(1) )
       vessel%description_2d(1)%type%name = "DG template"
-      vessel%description_2d(1)%type%index = 1
+      vessel%description_2d(1)%type%index = 2
       allocate( vessel%description_2d(1)%type%description(1) )
       vessel%description_2d(1)%type%description =
      . "DivGeo template file "//trim(dg_file)
       vessel%description_2d(1)%limiter%type%index = 1
+      allocate( vessel%description_2d(1)%limiter%type%name(1) )
+      vessel%description_2d(1)%limiter%type%name = "DG structure"
+      allocate( vessel%description_2d(1)%limiter%type%description(1) )
+      vessel%description_2d(1)%limiter%type%description =
+     . "DivGeo structure from template file "//trim(dg_file)
 
       icnt = 0
       jcnt = 0
       allocate( vessel%description_2d(1)%limiter%unit(nunits) )
       do i = 1, nunits
+        allocate( vessel%description_2d(1)%limiter%unit(i)%name(1) )
+        vessel%description_2d(1)%limiter%unit(i)%name =
+     .   "DivGeo structure number "//int2str(i)
         jcnt = icnt + npts(i)
         if (rwall(icnt+1).eq.rwall(jcnt) .and.
      &      zwall(icnt+1).eq.zwall(jcnt)) then
@@ -172,4 +176,4 @@ c$$$      call ual_open_pulse( idx, FORCE_OPEN_PULSE, '', status )
       write(0,*) "Wall IDS write finished"
       
       return
-      end
+      end subroutine wrids
