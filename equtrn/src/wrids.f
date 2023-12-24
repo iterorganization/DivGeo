@@ -163,7 +163,7 @@ c$$$     &                             database, version, idx )
 c$$$      call ual_open_pulse( idx, FORCE_OPEN_PULSE, '', status )
       if (status.ne.0) stop 'Error opening IMAS database !'
 
-#if UAL_MAJOR_VERSION > 3
+#if AL_MAJOR_VERSION > 3
       call ids_put( idx, "wall", vessel, status )
       if (status.ne.0) stop 'Error putting wall description IDS !'
 #else

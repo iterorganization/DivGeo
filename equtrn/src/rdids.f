@@ -1,10 +1,10 @@
-#if UAL_MAJOR_VERSION > 4
+#if AL_MAJOR_VERSION > 4
 #define GET_MAX_OCCURRENCES_PRESENT
-#elif UAL_MAJOR_VERSION > 3
-#if UAL_MINOR_VERSION > 9
+#elif AL_MAJOR_VERSION > 3
+#if AL_MINOR_VERSION > 9
 #define GET_MAX_OCCURRENCES_PRESENT
-#elif UAL_MINOR_VERSION > 8
-#if UAL_MICRO_VERSION > 2
+#elif AL_MINOR_VERSION > 8
+#if AL_MICRO_VERSION > 2
 #define GET_MAX_OCCURRENCES_PRESENT
 #endif
 #endif
@@ -114,7 +114,7 @@ c
         else
           eq_occ = "equilibrium/"//int2str(occ)
         end if
-#if UAL_MAJOR_VERSION > 3
+#if AL_MAJOR_VERSION > 3
         if (status.eq.0)
      &   call ids_get( idx, trim(eq_occ), eq, status )
 #else
@@ -125,7 +125,7 @@ c
      &   (status.ne.0 .or. eq%ids_properties%homogeneous_time < 0)) then
           iocc = 0
           status = 0
-#if UAL_MAJOR_VERSION > 3
+#if AL_MAJOR_VERSION > 3
           call ids_get( idx, "equilibrium", eq, status )
           if (status.eq.0)
      &     write(*,*) 'Reverting to default occurrence !'
@@ -144,7 +144,7 @@ c
           if (database.eq.'iter') database = 'ITER'
           call imas_open_env( treename, shot, run,
      &     idx, "public", database, version, status )
-#if UAL_MAJOR_VERSION > 3
+#if AL_MAJOR_VERSION > 3
           if (status.eq.0)
      &     call ids_get( idx, trim(eq_occ), eq, status )
 #else
@@ -155,7 +155,7 @@ c
      &     then
             iocc = 0
             status = 0
-#if UAL_MAJOR_VERSION > 3
+#if AL_MAJOR_VERSION > 3
             call ids_get( idx, "equilibrium", eq, status )
             if (status.eq.0)
      &       write(*,*) 'Reverting to default occurrence !'
@@ -201,7 +201,7 @@ c
      &       idx, username, 'iter', version, status )
           end if
         end if
-#if UAL_MAJOR_VERSION > 3
+#if AL_MAJOR_VERSION > 3
         if (status.eq.0) call ids_get( idx, "wall", vessel, status )
 #else
         if (status.eq.0) call ids_get( idx, "wall", vessel )
@@ -215,7 +215,7 @@ c
           call chcase(1, md_base)
           call imas_open_env( treename, wall, wall_run,
      &     idx, username, trim(md_base), version, status )
-#if UAL_MAJOR_VERSION > 3
+#if AL_MAJOR_VERSION > 3
           if (status.eq.0) call ids_get( idx, "wall", vessel, status )
 #else
           if (status.eq.0) call ids_get( idx, "wall", vessel )
@@ -235,7 +235,7 @@ c
             if (database.eq.'iter') database = 'ITER'
             call imas_open_env( treename, wall, wall_run,
      &       idx, "public", database, version, status )
-#if UAL_MAJOR_VERSION > 3
+#if AL_MAJOR_VERSION > 3
             if (status.eq.0) call ids_get( idx, "wall", vessel, status )
 #else
             if (status.eq.0) call ids_get( idx, "wall", vessel )
@@ -252,7 +252,7 @@ c
               if (status.ne.0) stop 'Error closing IMAS database !'
               call imas_open_env( treename, wall, wall_run,
      &         idx, "public", trim(md_base), version, status )
-#if UAL_MAJOR_VERSION > 3
+#if AL_MAJOR_VERSION > 3
               if (status.eq.0)
      &         call ids_get( idx, "wall", vessel, status )
 #else
@@ -281,7 +281,7 @@ c
      .     ' User: ', trim(username), ' Database: ', trim(database)
         end if
       else if (do_wall) then
-#if UAL_MAJOR_VERSION > 3
+#if AL_MAJOR_VERSION > 3
         call ids_get( idx, "wall", vessel, status )
 #else
         call ids_get( idx, "wall", vessel )
