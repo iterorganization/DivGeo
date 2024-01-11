@@ -9,7 +9,9 @@ CPP      = /lib/cpp -C -traditional -ffreestanding
 #LDWOS   = -L/usr/ads/lib -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNWspro/lib/ -lsocket
 #LDWOS   = -L/afs/ipp/aug/ads/lib64/@sys -lKK -lwoss -lddww -lpplotXt -lsocket
 #LDWOS   = -L/afs/ipp/aug-ads/@sys/lib64 -Wl,-R/afs/ipp/aug-ads/@sys/lib64 -lkk -lddww
-LDWOS   = -L/afs/ipp/aug-ads/@sys/lib64 -Wl,-R/afs/ipp/aug-ads/@sys/lib64 -lkk8 -lddww8
+#LDWOS   = -L/afs/ipp/aug-ads/@sys/lib64 -Wl,-R/afs/ipp/aug-ads/@sys/lib64 -lkk8 -lddww8
+AUGEXP = /shares/software/aug-dv/moduledata/ads/Linux-generic-x86_64/lib64
+LDWOS   = -L${AUGEXP} -Wl,-R${AUGEXP} -lkk8 -lddww8 -L${GCC_HOME}/lib64 -Wl,-R${GCC_HOME}/lib64 -lgfortran
 
 MAKETAGS = etags -o
 

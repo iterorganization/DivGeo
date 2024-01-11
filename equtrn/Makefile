@@ -87,7 +87,7 @@ endif
 endif
 
 ifeq (${HOST_NAME}, IPP)
-#ALL += ${PROG_shotfile2dg}   ### ToDo Need to find kk8
+ALL += ${PROG_shotfile2dg}
 endif
 
 ifeq (${HOST_NAME}, ITM)
