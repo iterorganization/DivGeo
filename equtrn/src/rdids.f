@@ -721,8 +721,10 @@ c
           do i=1,nlimunits
             npts(i)=
      .       size(vessel%description_2d(1)%limiter%unit(i)%outline%r)
+#if ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 )
             if (vessel%description_2d(1)%limiter%unit(i)%closed.eq.1)
      .       npts(i)=npts(i)+1
+#endif
           end do
           do i=1,nlimunits
             if (icnt+npts(i).gt.ngpr) then
@@ -739,11 +741,13 @@ c
               zwall(icnt+j)=
      .         vessel%description_2d(1)%limiter%unit(i)%outline%z(j)
             end do
+#if ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 )
             if (vessel%description_2d(1)%limiter%unit(i)%closed.eq.1)
      >       then
               rwall(icnt+npts(i))=rwall(icnt+1)
               zwall(icnt+npts(i))=zwall(icnt+1)
             end if
+#endif
             icnt = icnt + npts(i)
           end do
         end if
@@ -769,8 +773,10 @@ c
           do i=nlimunits+1,nlimunits+nmobunits
             npts(i)=
      .     size(vessel%description_2d(1)%mobile%unit(i)%outline(step)%r)
+#if ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 )
             if (vessel%description_2d(1)%mobile%unit(i)%closed.eq.1)
      .       npts(i)=npts(i)+1
+#endif
             if (icnt+npts(i).gt.ngpr) then
               write(0,*)
      .         'Number of wall points too large !, npts = ',
@@ -785,11 +791,13 @@ c
               zwall(icnt+j)=
      .       vessel%description_2d(1)%mobile%unit(i)%outline(step)%z(j)
             end do
+#if ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 )
             if (vessel%description_2d(1)%mobile%unit(i)%closed.eq.1)
      .       then
               rwall(icnt+npts(i))=rwall(icnt+1)
               zwall(icnt+npts(i))=zwall(icnt+1)
             end if
+#endif
             icnt = icnt + npts(i)
           end do
         end if
@@ -821,7 +829,7 @@ c
               jcnt = jcnt + 1
               npts(jcnt)=size(vessel%description_2d(1)%
      .                        vessel%unit(i)%element(j)%outline%r)
-#if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
+#if ( ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 ) && ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
               if (vessel%description_2d(1)%
      .            vessel%unit(i)%element(j)%outline%closed.eq.1)
      .         npts(jcnt)=npts(jcnt)+1
@@ -840,7 +848,8 @@ c
                 zwall(icnt+k)=vessel%description_2d(1)%
      .                        vessel%unit(i)%element(j)%outline%z(k)
               end do
-#if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
+#if ( ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 ) && ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
+
               if (vessel%description_2d(1)%
      .            vessel%unit(i)%element(j)%outline%closed.eq.1) then
                 rwall(icnt+npts(jcnt))=rwall(icnt+1)

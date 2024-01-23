@@ -185,6 +185,8 @@ c
      &      zwall(icnt+1).eq.zwall(jcnt)) then
 #if ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 )
           vessel%description_2d(1)%limiter%unit(i)%closed = 1
+#else
+          stop "This structure cannot be described with DD/3.40.0!"
 #endif
           allocate(vessel%
      .     description_2d(1)%limiter%unit(i)%outline%r(npts(i)-1) )
