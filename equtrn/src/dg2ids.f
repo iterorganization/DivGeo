@@ -304,7 +304,7 @@ c
         end if
       end if
 
-      if (streql(database,'iter')) database = 'ITER'
+      if (database.eq.'iter') database = 'ITER'
       if (index(ids_path,'imasdb/iter').gt.0) then
         l=index(ids_path,'imasdb/iter')
         write(ids_path(l+7:l+10),'(a4)') 'ITER'

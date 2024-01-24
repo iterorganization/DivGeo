@@ -150,19 +150,19 @@ c
               call imas_open_env( treename, shot, run,
      &         idx, username, 'iter', version, status )
               final_path = 'imas:mdsplus?user='//trim(username)//
-     &         '?database='//'iter'//'?shot='//int2str(shot)//
-     &         '?run='//int2str(run)
+     &         ';database='//'iter'//';shot='//int2str(shot)//
+     &         ';run='//int2str(run)//';version='//trim(version)
             else if (database.eq.'iter') then
               call imas_open_env( treename, shot, run,
      &         idx, username, 'ITER', version, status )
               final_path = 'imas:mdsplus?user='//trim(username)//
-     &         '?database='//'ITER'//'?shot='//int2str(shot)//
-     &         '?run='//int2str(run)
+     &         ';database='//'ITER'//';shot='//int2str(shot)//
+     &         ';run='//int2str(run)//';version='//trim(version)
             end if
           else
             final_path = 'imas:mdsplus?user='//trim(username)//
-     &       '?database='//trim(database)//'?shot='//int2str(shot)//
-     &       '?run='//int2str(run)
+     &       ';database='//trim(database)//';shot='//int2str(shot)//
+     &       ';run='//int2str(run)//';version='//trim(version)
           end if
         end if
 #else
@@ -234,8 +234,8 @@ c
      &       idx, "public", database, version, status )
             if (status.eq.0)
      >       final_path = 'imas:mdsplus?user='//'public'//
-     &        '?database='//trim(database)//'?shot='//int2str(shot)//
-     &        '?run='//int2str(run)
+     &        ';database='//trim(database)//';shot='//int2str(shot)//
+     &        ';run='//int2str(run)//';version='//trim(version)
           end if
 #else
           if (database.eq.'iter') database = 'ITER'
@@ -332,19 +332,19 @@ c
                 call imas_open_env( treename, wall, wall_run,
      &           idx, username, 'iter', version, status )
                 final_path = 'imas:mdsplus?user='//trim(username)//
-     &           '?database='//'iter'//'?shot='//int2str(wall)//
-     &           '?run='//int2str(wall_run)
+     &           ';database='//'iter'//';shot='//int2str(wall)//
+     &           ';run='//int2str(wall_run)//';version='//trim(version)
               else if (database.eq.'iter') then
                 call imas_open_env( treename, wall, wall_run,
      &           idx, username, 'ITER', version, status )
                 final_path = 'imas:mdsplus?user='//trim(username)//
-     &           '?database='//'ITER'//'?shot='//int2str(wall)//
-     &           '?run='//int2str(wall_run)
+     &           ';database='//'ITER'//';shot='//int2str(wall)//
+     &           ';run='//int2str(wall_run)//';version='//trim(version)
               end if
             else
               final_path = 'imas:mdsplus?user='//trim(username)//
-     &         '?database='//trim(database)//'?shot='//int2str(wall)//
-     &         '?run='//int2str(wall_run)
+     &         ';database='//trim(database)//';shot='//int2str(wall)//
+     &         ';run='//int2str(wall_run)//';version='//trim(version)
             end if
           end if
         else
@@ -388,8 +388,8 @@ c
             call imas_open_env( treename, wall, wall_run,
      &       idx, username, trim(md_base), version, status )
             final_path = 'imas:mdsplus?user='//trim(username)//
-     &       '?database='//trim(md_base)//'?shot='//int2str(wall)//
-     &       '?run='//int2str(wall_run)
+     &       ';database='//trim(md_base)//';shot='//int2str(wall)//
+     &       ';run='//int2str(wall_run)//';version='//trim(version)
           end if
 #else
           md_base = trim(database)//'_MD'
@@ -430,8 +430,8 @@ c
      &         idx, "public", database, version, status )
               if (status.eq.0)
      >         final_path = 'imas:mdsplus?user='//'public'//
-     &          '?database='//trim(database)//'?shot='//int2str(wall)//
-     &          '?run='//int2str(wall_run)
+     &          ';database='//trim(database)//';shot='//int2str(wall)//
+     &          ';run='//int2str(wall_run)//';version='//trim(version)
             end if
 #else
             if (database.eq.'iter') database = 'ITER'
@@ -469,8 +469,9 @@ c
                 call imas_open_env( treename, wall, wall_run,
      &           idx, "public", trim(md_base), version, status )
                 final_path = 'imas:mdsplus?user='//'public'//
-     &           '?database='//trim(md_base)//
-     &           '?shot='//int2str(wall)//'?run='//int2str(wall_run)
+     &           ';database='//trim(md_base)//
+     &           ';shot='//int2str(wall)//';run='//int2str(wall_run)//
+     &           ';version='//trim(version)
               end if
 #else
               call imas_open_env( treename, wall, wall_run,
@@ -849,7 +850,6 @@ c
      .                        vessel%unit(i)%element(j)%outline%z(k)
               end do
 #if ( ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 ) && ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
-
               if (vessel%description_2d(1)%
      .            vessel%unit(i)%element(j)%outline%closed.eq.1) then
                 rwall(icnt+npts(jcnt))=rwall(icnt+1)
