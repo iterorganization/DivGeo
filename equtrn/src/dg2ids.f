@@ -25,7 +25,7 @@
 !!      Example of the command:
 !!      @verbatim
 !!          $dg2ids
-!!          --shot 10 --run 3 --database iter --version 3 DG_template_file
+!!          --shot 10 --run 3 --database ITER --version 3 DG_template_file
 !!      @endverbatim
 !!
 !!-----------------------------------------------------------------------------
@@ -52,9 +52,9 @@ c=====================================================
       character(len=24) :: database   !< IMAS IDS database name
                                       !< (i. e. solps-iter, ITER, aug)
       character(len=24) :: version    !< Major version of the IMAS IDS database
-      real(kind=R8)     :: ref_temp   !< Reference wall temperature (K)
       integer :: shot      !< The shot number of the wall IDS being written
       integer :: run       !< The run number of the wall IDS being written
+      real(kind=R8)     :: ref_temp   !< Reference wall temperature (K)
     !! Dummy variables
       character(len=24) :: temp_string
       character(len=24) :: shot_string
@@ -99,8 +99,8 @@ c
       if (.not.streql(device_env,' ')) database = device_env
       if (streql(database,'iter')) database = 'ITER'
 #endif
-      
-    !! Check if arguments are found
+
+      !! Check if arguments are found
       narg = command_argument_count()
 
       if( narg > 0 ) then
@@ -129,12 +129,13 @@ c
               read( temp_string, *) ref_temp
           end select
         end do
-    !! If not at least input file,
-    !! IMAS data-entry shot, run, username, and database, were defined
-    !! display the error message and a full command example
-      else if( narg.lt.5 .or. mod(narg,2).eq.0 .or. 
+      end if
+      !! If not at least input file,
+      !! IMAS data entry shot, run, username, and database, were defined
+      !! display the error message and a full command example
+      if( narg.lt.5 .or. mod(narg,2).eq.0 .or.
      &  streql(shot_string," ") .or. streql(run_string," ") ) then
-        write(0,*) "ERROR! In order to run dg2ids input IDS, ",
+        write(0,*) "ERROR! In order to run dg2ids, ",
      &   "at least the shot and run variables and ",
      &   "the DG input template file must be defined. ",
      &   "Example (terminal): "

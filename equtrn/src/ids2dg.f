@@ -188,7 +188,8 @@ c
      &  (.not.do_equilibrium .and. .not.do_wall) ) then
         write(0,'(a)') 'Standard ids2dg usage:'
         write(0,'(a)')
-     &   'ids2dg -s <shot> -r <run> -w <wall> -R <wall_run> <DG_file>'
+     &   'ids2dg -s <shot> -r <run> -w <wall> -R <wall_run> '//
+     &   '<DG_file_stem>'
         write(0,'(a)') ' '
         write(0,'(a)') 'Available options are:'
         write(0,'(a)') '--shot, -s:               '//
@@ -240,8 +241,13 @@ c
         call exit(0)
       end if
 
-      write(*,*) 'Requesting IDS files: '
-      if (do_equilibrium) write(*,'(2(a,i8),2(a,a24),2(a,i8))')
+      if (do_equilibrium .and. do_wall) then
+        write(*,*) 'Requesting IDS files: '
+      else if (do_equilibrium .or. do_wall) then
+        write(*,*) 'Requesting IDS file: '
+      end if
+      if (do_equilibrium)
+     > write(*,'(2(a,i8),2(a,a24),2(a,i8))')
      . ' Shot: ', shot, ' Run: ', run,
      . ' User: ', trim(username), ' Database: ', trim(database),
      . ' Occurrence: ', occ, ' Step: ', step
