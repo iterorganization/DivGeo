@@ -15,10 +15,10 @@
 #include "git_version_DG.h"
       type (ids_wall) :: vessel   !< IDS designed to store wall data
       character(len=256), intent(in) :: dg_file   !< DG template input file name
+      character(len=24), intent(in) :: username   !< Creator/owner of the IMAS IDS database
       character(len=24), intent(in) :: treename   !< The name of the IMAS IDS database
       integer, intent(in) :: shot      !< The shot number of the wall IDS being written
       integer, intent(in) :: run       !< The run number of the wall IDS being written
-      character(len=24), intent(in) :: username   !< Creator/owner of the IMAS IDS database
       character(len=24), intent(in) :: database   !< IMAS IDS database name
             !< (i. e. solps-iter, ITER, aug)
       character(len=24), intent(in) :: version    !< Major version of the IMAS IDS database
@@ -106,15 +106,15 @@ c
 
       allocate( vessel%description_2d(1) )
       allocate( vessel%description_2d(1)%type%name(1) )
-      vessel%description_2d(1)%type%name = "DG template"
-      vessel%description_2d(1)%type%index = 2
       allocate( vessel%description_2d(1)%type%description(1) )
+      vessel%description_2d(1)%type%index = 2
+      vessel%description_2d(1)%type%name = "DG template"
       vessel%description_2d(1)%type%description =
      . "DivGeo template file "//trim(dg_file)
-      vessel%description_2d(1)%limiter%type%index = 1
       allocate( vessel%description_2d(1)%limiter%type%name(1) )
-      vessel%description_2d(1)%limiter%type%name = "DG structure"
       allocate( vessel%description_2d(1)%limiter%type%description(1) )
+      vessel%description_2d(1)%limiter%type%index = 1
+      vessel%description_2d(1)%limiter%type%name = "DG structure"
       vessel%description_2d(1)%limiter%type%description =
      . "DivGeo structure from template file "//trim(dg_file)
 
@@ -128,7 +128,11 @@ c
         jcnt = icnt + npts(i)
         if (rwall(icnt+1).eq.rwall(jcnt) .and.
      &      zwall(icnt+1).eq.zwall(jcnt)) then
+#if ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 )
           vessel%description_2d(1)%limiter%unit(i)%closed = 1
+#else
+          stop "This structure cannot be described with DD/3.40.0!"
+#endif
           allocate(vessel%
      .     description_2d(1)%limiter%unit(i)%outline%r(npts(i)-1) )
           allocate(vessel%
@@ -140,7 +144,9 @@ c
      .       = zwall(j)
           end do
         else
+#if ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 )
           vessel%description_2d(1)%limiter%unit(i)%closed = 0
+#endif
           allocate(
      .     vessel%description_2d(1)%limiter%unit(i)%outline%r(npts(i)) )
           allocate(

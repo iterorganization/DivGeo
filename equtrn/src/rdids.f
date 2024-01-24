@@ -45,7 +45,9 @@ c
      , , only : get_max_occurrences
 #endif
       use ids_routines ! IGNORE
-     , , only : imas_open_env, imas_close, ids_get, ids_deallocate
+     , , only : imas_close, ids_get, ids_deallocate
+      use ids_routines ! IGNORE
+     , , only : imas_open_env
       use eqdim
       implicit none
       type(ids_equilibrium) :: eq !< IDS designed to store equilibrium data
@@ -55,23 +57,23 @@ c
                                        !< If negative, do not read any equilibrium
       integer, intent(in) :: wall      !< The shot number of the IDS wall being read
                                        !< If negative, do not read wall description
-      integer, intent(in) :: occ       !< Occurrence index of the IDS equilibrium being read
-                                       !< Default is 1 (meaning the 2nd occurrence!)
-      integer, intent(in) :: step      !< The time slice index of the IDS equilibrium being read
       integer, intent(in) :: run       !< The run number of the IDS equilibrium being read
       integer, intent(in) :: wall_run  !< The run number of the wall IDS being read
-      character(len=24), intent(in) :: username   !< Creator/owner of the IMAS IDS database
       character(len=24), intent(inout) :: database   !< IMAS IDS database name
             !< (i. e. solps-iter, ITER, aug)
       character(len=24), intent(in) :: version    !< Major version of the IMAS IDS database
-      logical, intent(inout) :: do_equilibrium, do_wall
+      integer, intent(in) :: occ       !< Occurrence index of the IDS equilibrium being read
+                                       !< Default is 1 (meaning the 2nd occurrence!)
+      integer, intent(in) :: step      !< The time slice index of the IDS equilibrium being read
+      character(len=24), intent(in) :: username   !< Creator/owner of the IMAS IDS database
+      logical, intent(inout) :: do_equilibrium,do_wall
       integer, intent(out) :: iret,ipestg,nr,nz
       real(kind=R8), intent(out) :: fg(ngpr),rgr(ngpr),zgr(ngpz)
       real(kind=R8), intent(out) :: pfm(ngpr,ngpz)
       real(kind=R8), intent(out) :: rcntc,psimin,psilim,btorc
-      real(kind=R8), intent(out) :: rwall(ngpr), zwall(ngpr)
-      integer, intent(out) :: nunits, npts(ngpr)
-      integer :: nlimunits, nmobunits, nvslunits, nelem
+      real(kind=R8), intent(out) :: rwall(ngpr),zwall(ngpr)
+      integer, intent(out) :: nunits,npts(ngpr)
+      integer :: nlimunits, nmobunits,nvslunits,nelem
       integer i,j,k,icnt,jcnt,idx,status,igrid,iocc
 #if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
       integer iside, kk, ks, kkk, kks
@@ -83,13 +85,15 @@ c
       real(kind=R8), parameter :: IDS_REAL_INVALID = -9.0E40_R8
       integer, parameter :: IDS_INT_INVALID = -9999999
 #endif
-      character(len=24) :: md_base, eq_occ
+      character(len=24) :: md_base
+      character(len=24) :: eq_occ
       logical streql, public
       external streql
 
 c=====================================================
 c
       iret = 0
+      status = 0
       public = streql(username,'public')
       !! Create and modify new shot/run
       if (do_equilibrium) then
@@ -127,8 +131,8 @@ c
           status = 0
 #if AL_MAJOR_VERSION > 3
           call ids_get( idx, "equilibrium", eq, status )
-          if (status.eq.0)
-     &     write(*,*) 'Reverting to default occurrence !'
+          if (status.eq.0 .and. occ.ne.1)
+     >     write(*,*) 'Reverting to default occurrence !'
 #else
           call ids_get( idx, "equilibrium", eq )
 #endif
@@ -144,6 +148,11 @@ c
           if (database.eq.'iter') database = 'ITER'
           call imas_open_env( treename, shot, run,
      &     idx, "public", database, version, status )
+          if (status.ne.0) then
+            write(*,*)
+     &       "Could not open requested equilibrium IMAS data entry"
+            do_equilibrium = .false.
+          end if
 #if AL_MAJOR_VERSION > 3
           if (status.eq.0)
      &     call ids_get( idx, trim(eq_occ), eq, status )
@@ -157,7 +166,7 @@ c
             status = 0
 #if AL_MAJOR_VERSION > 3
             call ids_get( idx, "equilibrium", eq, status )
-            if (status.eq.0)
+            if (status.eq.0 .and. occ.ne.1)
      &       write(*,*) 'Reverting to default occurrence !'
 #else
             call ids_get( idx, "equilibrium", eq )
@@ -173,15 +182,13 @@ c
             do_equilibrium = .false.
             write(*,*) 'Error reading equilibrium IDS !'
           end if
-        else if (status.eq.0) then
-          write(*,*) 'Got IDS equilibrium from: '
-          write(*,'(3(a,i8),2(a,a24))')
-     .     ' Shot: ', shot, ' Run: ', run, ' Occurrence: ', iocc,
-     .     ' User: ', trim(username), ' Database: ', trim(database)
-        else
-          do_equilibrium = .false.
-          write(*,*) 'Error reading equilibrium IDS !'
         end if
+      end if
+      if (status.eq.0 .and. do_equilibrium) then
+        write(*,*) 'Got IDS equilibrium from: '
+        write(*,'(3(a,i8),2(a,a24))')
+     .   ' Shot: ', shot, ' Run: ', run, ' Occurrence: ', iocc,
+     .   ' User: ', trim(username), ' Database: ', trim(database)
       end if
 
       status = 0
@@ -291,7 +298,7 @@ c
           write(*,*) 'Got IDS wall data from: '
           if (.not.public) then
             write(*,'(2(a,i8),2(a,a24))')
-     .       ' Shot: ', shot, ' Run: ', run,
+     .       ' Shot: ', wall, ' Run: ', wall_run,
      .       ' User: ', trim(username), ' Database: ', trim(database)
           else
             write(*,'(2(a,i8),(a,a),(a,a24))')
@@ -485,8 +492,10 @@ c
           do i=1,nlimunits
             npts(i)=
      .       size(vessel%description_2d(1)%limiter%unit(i)%outline%r)
+#if ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 )
             if (vessel%description_2d(1)%limiter%unit(i)%closed.eq.1)
      .       npts(i)=npts(i)+1
+#endif
           end do
           do i=1,nlimunits
             if (icnt+npts(i).gt.ngpr) then
@@ -503,11 +512,13 @@ c
               zwall(icnt+j)=
      .         vessel%description_2d(1)%limiter%unit(i)%outline%z(j)
             end do
+#if ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 )
             if (vessel%description_2d(1)%limiter%unit(i)%closed.eq.1)
      >       then
               rwall(icnt+npts(i))=rwall(icnt+1)
               zwall(icnt+npts(i))=zwall(icnt+1)
             end if
+#endif
             icnt = icnt + npts(i)
           end do
         end if
@@ -533,8 +544,10 @@ c
           do i=nlimunits+1,nlimunits+nmobunits
             npts(i)=
      .     size(vessel%description_2d(1)%mobile%unit(i)%outline(step)%r)
+#if ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 )
             if (vessel%description_2d(1)%mobile%unit(i)%closed.eq.1)
      .       npts(i)=npts(i)+1
+#endif
             if (icnt+npts(i).gt.ngpr) then
               write(0,*)
      .         'Number of wall points too large !, npts = ',
@@ -549,11 +562,13 @@ c
               zwall(icnt+j)=
      .       vessel%description_2d(1)%mobile%unit(i)%outline(step)%z(j)
             end do
+#if ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 )
             if (vessel%description_2d(1)%mobile%unit(i)%closed.eq.1)
      .       then
               rwall(icnt+npts(i))=rwall(icnt+1)
               zwall(icnt+npts(i))=zwall(icnt+1)
             end if
+#endif
             icnt = icnt + npts(i)
           end do
         end if
@@ -585,7 +600,7 @@ c
               jcnt = jcnt + 1
               npts(jcnt)=size(vessel%description_2d(1)%
      .                        vessel%unit(i)%element(j)%outline%r)
-#if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
+#if ( ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 ) && ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
               if (vessel%description_2d(1)%
      .            vessel%unit(i)%element(j)%outline%closed.eq.1)
      .         npts(jcnt)=npts(jcnt)+1
@@ -604,7 +619,7 @@ c
                 zwall(icnt+k)=vessel%description_2d(1)%
      .                        vessel%unit(i)%element(j)%outline%z(k)
               end do
-#if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
+#if ( ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 ) && ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
               if (vessel%description_2d(1)%
      .            vessel%unit(i)%element(j)%outline%closed.eq.1) then
                 rwall(icnt+npts(jcnt))=rwall(icnt+1)
