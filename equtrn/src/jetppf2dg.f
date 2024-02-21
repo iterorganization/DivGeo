@@ -43,8 +43,12 @@ C
 C
       INTEGER    IREAD, IWRITE, IERRA
       INTEGER    NSHOT, NSEQ, NX, NY, RATIOX, RATIOY, IER
-      integer    iarg, iargc, lnblnk, i, j, iret
+      integer    iarg, iargc, i, j, iret
       INTEGER    IGO, IDUM, IERROR, NP, NR, NZ
+#ifndef GFORTRAN
+      integer    lnblnk
+      external   lnblnk
+#endif
 C
       REAL       TSHOT,WIDTH
 C
@@ -228,7 +232,7 @@ C
 C-----------------------------------------------------------------------
 C
       STOP
-      END
+      END PROGRAM JETPPF2DG
 C
 C+ ---------------------------------------------------------------------
 C
@@ -304,7 +308,7 @@ C
 C
 C
       RETURN
-      END
+      END SUBROUTINE ERRMSS
 C
 C
 C=======================================================================
@@ -345,4 +349,4 @@ C
 C
 C
       RETURN
-      END
+      END FUNCTION LENSTR

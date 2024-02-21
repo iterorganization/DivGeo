@@ -101,7 +101,10 @@ c
       character(len=256) :: olddir
       character(len=STRMAXLEN) :: uri
       character(len=:), allocatable :: message
+#ifndef GFORTRAN
       integer lnblnk
+      external lnblnk
+#endif
 #endif
       character(len=24) :: md_base
       character(len=24) :: eq_occ

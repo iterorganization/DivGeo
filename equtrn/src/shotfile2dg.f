@@ -32,7 +32,7 @@ c=====================================================
       real*8 rcntc,btorc,psilim
       character*256 arg,filename
       character expnam*4, dianam*3
-      integer nshot,nedit,iarg,iargc,lnblnk
+      integer nshot,nedit,iarg,iargc
       real tshot
       integer mdim,lpfxdim,lin
       parameter(mdim=256,lpfxdim=4,lin=1)
@@ -44,6 +44,10 @@ c=====================================================
       character*8 GCnam(1:NdGC)
       integer ngc, ngr, ngz, lpfx
       integer i, j, m, n, ierr, iret
+#ifndef GFORTRAN
+      integer lnblnk
+      external lnblnk
+#endif
 
 c=====================================================
 c
@@ -151,8 +155,9 @@ c
         endif
       enddo
 
-      end
+      end program shotfile2dg
 c
+#ifndef GFORTRAN
       integer function lnblnk(string)
 c
 c returns the position of the last non-blank character in "string"
@@ -167,4 +172,5 @@ c
       enddo
       lnblnk=0
       return
-      end
+      end function lnblnk
+#endif

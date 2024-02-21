@@ -75,7 +75,10 @@ c=====================================================
       character*256 home_dir, solpstop
       logical ex, absolute_path
       logical streql
+#ifndef GFORTRAN
       integer lnblnk
+      external lnblnk
+#endif
       external usrnam, streql
 
 c=====================================================
@@ -338,4 +341,4 @@ c
   999 continue
       close(1)
       stop
-      end
+      end program dg2ids
