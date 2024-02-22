@@ -75,10 +75,6 @@ c=====================================================
       character*256 home_dir, solpstop
       logical ex, absolute_path
       logical streql
-#ifndef GFORTRAN
-      integer lnblnk
-      external lnblnk
-#endif
       external usrnam, streql
 
 c=====================================================
@@ -167,7 +163,7 @@ c
               if (l.eq.0) then
                 m=index(path,'/')
               else
-                m=index(path(l+lnblnk(imasdir):256),'/')
+                m=index(path(l+len_trim(imasdir):256),'/')
               end if
               absolute_path = l.eq.1.or.(l.eq.0.and.m.eq.1)
               if (absolute_path) then
@@ -249,7 +245,7 @@ c
 #endif
       if (index(imasdir,trim(username)).eq.0) then
         l=index(imasdir,trim(run_user))
-        m=index(imasdir(l+lnblnk(run_user):256),'/')
+        m=index(imasdir(l+len_trim(run_user):256),'/')
         write(imasdir,'(a)')
      .   imasdir(1:l)//trim(username)//trim(imasdir(m+l:256))
       end if
@@ -260,8 +256,8 @@ c
      .   imasdir(1:l+6)//trim(database)//trim(imasdir(m+l+6:256))
       end if
       if (.not.streql(version,int2str(IMAS_MAJOR_VERSION))) then
-        l=lnblnk(version)
-        m=lnblnk(imasdir)
+        l=len_trim(version)
+        m=len_trim(imasdir)
 #if AL_MAJOR_VERSION > 4
         if(.not.streql(imasdir(m:m),version))
      >   write(imasdir,'(a)') imasdir(1:m-1)//trim(version)
@@ -270,7 +266,7 @@ c
      >   write(imasdir,'(a)') imasdir(1:m-3)//trim(version)//'/'
      &                                      //int2str(run/10000)
       else if (run.ge.10000) then
-        m=lnblnk(imasdir)
+        m=len_trim(imasdir)
         write(imasdir,'(a)') imasdir(1:m-1)//int2str(run/10000)
 #endif
       end if

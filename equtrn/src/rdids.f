@@ -101,10 +101,6 @@ c
       character(len=256) :: olddir
       character(len=STRMAXLEN) :: uri
       character(len=:), allocatable :: message
-#ifndef GFORTRAN
-      integer lnblnk
-      external lnblnk
-#endif
 #endif
       character(len=24) :: md_base
       character(len=24) :: eq_occ
@@ -462,9 +458,9 @@ c
               if (status.ne.0) stop 'Error closing IMAS database !'
 #if AL_MAJOR_VERSION > 4
               l=index(uri,'imasdb/')
-              m=index(uri(l+7:lnblnk(uri)),'/')
+              m=index(uri(l+7:len_trim(uri)),'/')
               write(olddir,'(a)')
-     &         uri(1:m+l+5)//'_MD'//uri(m+l+6:lnblnk(uri))
+     &         uri(1:m+l+5)//'_MD'//uri(m+l+6:len_trim(uri))
               uri = trim(olddir)
               call imas_open( uri, OPEN_PULSE, idx, status, message )
               if (status.eq.0) final_path = trim(uri)

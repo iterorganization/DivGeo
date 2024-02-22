@@ -45,10 +45,6 @@ C
       INTEGER    NSHOT, NSEQ, NX, NY, RATIOX, RATIOY, IER
       integer    iarg, iargc, i, j, iret
       INTEGER    IGO, IDUM, IERROR, NP, NR, NZ
-#ifndef GFORTRAN
-      integer    lnblnk
-      external   lnblnk
-#endif
 C
       REAL       TSHOT,WIDTH
 C
@@ -100,7 +96,7 @@ C
       do i=25,26
         if(filename(i:i).eq.' ') filename(i:i)='0'
       enddo
-      do i=12,lnblnk(filename)
+      do i=12,len_trim(filename)
         if(filename(i:i).eq.' ') filename(i:i)='_'
       enddo
 C
