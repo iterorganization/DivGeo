@@ -196,4 +196,4 @@ c
   999 continue
       close(1)
       stop
-      end
+      end program dg2ids

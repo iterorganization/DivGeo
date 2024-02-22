@@ -43,7 +43,7 @@ C
 C
       INTEGER    IREAD, IWRITE, IERRA
       INTEGER    NSHOT, NSEQ, NX, NY, RATIOX, RATIOY, IER
-      integer    iarg, iargc, lnblnk, i, j, iret
+      integer    iarg, iargc, i, j, iret
       INTEGER    IGO, IDUM, IERROR, NP, NR, NZ
 C
       REAL       TSHOT,WIDTH
@@ -96,7 +96,7 @@ C
       do i=25,26
         if(filename(i:i).eq.' ') filename(i:i)='0'
       enddo
-      do i=12,lnblnk(filename)
+      do i=12,len_trim(filename)
         if(filename(i:i).eq.' ') filename(i:i)='_'
       enddo
 C
@@ -228,7 +228,7 @@ C
 C-----------------------------------------------------------------------
 C
       STOP
-      END
+      END PROGRAM JETPPF2DG
 C
 C+ ---------------------------------------------------------------------
 C
@@ -304,7 +304,7 @@ C
 C
 C
       RETURN
-      END
+      END SUBROUTINE ERRMSS
 C
 C
 C=======================================================================
@@ -345,4 +345,4 @@ C
 C
 C
       RETURN
-      END
+      END FUNCTION LENSTR

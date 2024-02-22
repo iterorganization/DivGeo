@@ -303,4 +303,4 @@ c
      .   (iret.eq.1 .or. iret.eq.3 .or. iret.eq.4)) close(2)
       if (do_wall .or. (iret.eq.2 .or. iret.eq.5)) close(3)
       stop
-      end
+      end program ids2dg

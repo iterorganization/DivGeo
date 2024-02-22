@@ -20,8 +20,7 @@ c=====================================================
       real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real(kind=R8) :: rdim,zdim,rcntc,redge,zmsmid,rma,zma,
      &  psimin,psilim,btorc
-      real(kind=R8), parameter :: twopi =
-     *     2.0_R8*3.141592653589793238462643383280_R8
+      real(kind=R8), parameter :: twopi = 2.0_R8*pi
       character title*48
 c=====================================================
 c

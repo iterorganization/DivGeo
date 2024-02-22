@@ -32,7 +32,7 @@ c=====================================================
       real*8 rcntc,btorc,psilim
       character*256 arg,filename
       character expnam*4, dianam*3
-      integer nshot,nedit,iarg,iargc,lnblnk
+      integer nshot,nedit,iarg,iargc
       real tshot
       integer mdim,lpfxdim,lin
       parameter(mdim=256,lpfxdim=4,lin=1)
@@ -83,7 +83,7 @@ c
 !       do i=21,22
 !         if(filename(i:i).eq.' ') filename(i:i)='0'
 !       enddo
-!       do i=11,lnblnk(filename)
+!       do i=11,len_trim(filename)
 !         if(filename(i:i).eq.' ') filename(i:i)='_'
 !       enddo
       
@@ -106,10 +106,10 @@ c
 
       rcntc=rin(1)
       btorc=bt(1)
-      psilim=pfxx(1)/(2.0*3.14159 26535 89793 23846)
+      psilim=pfxx(1)/(2.0*pi)
       do i=0,m
         do j=0,n
-          pfmd(i+1,j+1)=pfm(i,j)/(2.0*3.14159 26535 89793 23846)-psilim
+          pfmd(i+1,j+1)=pfm(i,j)/(2.0*pi)-psilim
         enddo
       enddo
       do i=0,m
@@ -129,15 +129,13 @@ c
       write(*,*) 'ngr,ngz=',ngr,ngz
       call wreqdg(2,iret,ngr,ngz,psilim,btorc,rcntc,gpr,gpz,pfmd)
       if(iret.ne.0) then
-          print *,'==== shotfile2dg: error in wreqdg. iret = ',iret
+        print *,'==== shotfile2dg: error in wreqdg. iret = ',iret
       end if
 c
       call kkGCd0 (iERR ,expnam,dianam,nSHOT,nEDIT,
      & Ndim,xyGC,NdGC, NGC,ixbeg,lenix,valix,GCnam)
 
-      write(filename,
-     1 '(i5.5,''.str'')')
-     1 nshot
+      write(filename,'(i5.5,''.str'')') nshot
       open(2,file=filename)
       write(*,*) ierr, ngc
       do i=1, NGC
@@ -151,20 +149,6 @@ c
         endif
       enddo
 
-      end
+      stop
+      end program shotfile2dg
 c
-      integer function lnblnk(string)
-c
-c returns the position of the last non-blank character in "string"
-c
-      character*(*) string
-      integer i
-      do i=len(string),1,-1
-        if(string(i:i).ne.' ') then
-          lnblnk=i
-          return
-        endif
-      enddo
-      lnblnk=0
-      return
-      end
