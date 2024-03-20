@@ -1,0 +1,8 @@
+LIBS = -lXm -lXt -lX11 -lXext -lXmuu -lXft -lpthread -lm
+CFLAGS = -g
+CC = cc
+
+#!!!Local Variables:
+#!!! mode: Makefile
+#!!! End:
+
