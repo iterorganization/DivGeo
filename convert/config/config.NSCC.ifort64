@@ -5,7 +5,7 @@ endif
 
 FC      = ifort
 
-CPP     = /lib/cpp -C -traditional
+CPP     = /lib/cpp -traditional
 
 #!!!Local Variables:
 #!!! mode: Makefile
