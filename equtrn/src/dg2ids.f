@@ -3,16 +3,16 @@
 !!
 !!      In terminal, run the following command:
 !!
-!!      @verbatim
+!!      \verbatim
 !!          $dg2ids --shot <shot> --run <run> --database <database> --version <version>
 !!          --temp_ref <Reference wall temperature (K)> <DG input template file>
-!!      @endverbatim
+!!      \endverbatim
 !!
 !!      The command can be shortened as:
 !!
-!!      @verbatim
+!!      \verbatim
 !!          $dg2ids -s <shot> -r <run> -d <database> -v <version> -t <wall_temperature> <DG input template file>
-!!      @endverbatim
+!!      \endverbatim
 !!
 !!      The arguments marked with < ... > are the parameters of the wall IDS
 !!      where the data is to be stored:
@@ -23,10 +23,10 @@
 !!          - \b version:  Major version of the IMAS IDS database (default: 3)
 !!          - \b temp_ref: Reference wall temperature (K) (optional)
 !!      Example of the command:
-!!      @verbatim
+!!      \verbatim
 !!          $dg2ids
 !!          --shot 10 --run 3 --database ITER --version 3 DG_template_file
-!!      @endverbatim
+!!      \endverbatim
 !!
 !!-----------------------------------------------------------------------------
 
@@ -46,7 +46,7 @@ c=====================================================
       real(kind=R8) :: rwall(ngpr), zwall(ngpr)
       integer :: nunits, npts(ngpr)
 
-    !! Local variables
+      !! Local variables
       character(len=256) :: path      !< The path where the IDS will be written
       character(len=24) :: treename   !< The name of the IMAS IDS database
       character(len=24) :: username   !< Creator/owner of the IMAS IDS database
@@ -56,7 +56,8 @@ c=====================================================
       integer :: shot      !< The shot number of the wall IDS being written
       integer :: run       !< The run number of the wall IDS being written
       real(kind=R8)     :: ref_temp   !< Reference wall temperature (K)
-    !! Dummy variables
+
+      !! Dummy variables
       character(len=24) :: temp_string
       character(len=24) :: shot_string
       character(len=24) :: run_string
@@ -79,7 +80,7 @@ c=====================================================
 
 c=====================================================
 c
-    !! Set default values
+      !! Set default values
       iret = 0
       run_user = usrnam()
       username = run_user
