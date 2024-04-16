@@ -1,5 +1,5 @@
-#LIBS = -lXm -lXt -lX11 -lXext -lXmuu -lXp -lXft -lpthread -lm -L/usr/X11R6/lib
-LIBS = -lXm -lXt -lX11 -lXext -lXmuu -lXft -lpthread -lm -L/usr/X11R6/lib
+#LIBS = -lXm -lXt -lX11 -lXext -lXmuu -lXp -lXft -lpthread -lm
+LIBS = -lXm -lXt -lX11 -lXext -lXmuu -lXft -lpthread -lm
 
 #!!!Local Variables:
 #!!! mode: Makefile
