@@ -84,8 +84,8 @@ c
       real(kind=R8), intent(out) :: rcntc,psimin,psilim,btorc
       real(kind=R8), intent(out) :: rwall(ngpr),zwall(ngpr)
       integer, intent(out) :: nunits,npts(ngpr)
-      integer :: nlimunits, nmobunits,nvslunits,nelem
-      integer i,j,k,icnt,jcnt,idx,status,igrid,iocc
+      integer :: nlimunits,nmobunits,nvslunits,nelem
+      integer i,j,k,icnt,jcnt,kcnt,idx,status,igrid,iocc
 #if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
       integer iside, kk, ks, kkk, kks
       real(kind=R8) :: t1, t2, ra, rb, za, zb, rc, zc, rd, zd,
@@ -721,7 +721,7 @@ c
           do i=1,nlimunits
             npts(i)=
      .       size(vessel%description_2d(1)%limiter%unit(i)%outline%r)
-#if ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 )
+#if ( IMAS_MAJOR_VERSION < 4 && ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
             if (vessel%description_2d(1)%limiter%unit(i)%closed.eq.1)
      .       npts(i)=npts(i)+1
 #endif
@@ -741,7 +741,7 @@ c
               zwall(icnt+j)=
      .         vessel%description_2d(1)%limiter%unit(i)%outline%z(j)
             end do
-#if ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 )
+#if ( IMAS_MAJOR_VERSION < 4 && ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
             if (vessel%description_2d(1)%limiter%unit(i)%closed.eq.1)
      >       then
               rwall(icnt+npts(i))=rwall(icnt+1)
@@ -773,7 +773,7 @@ c
           do i=nlimunits+1,nlimunits+nmobunits
             npts(i)=
      .     size(vessel%description_2d(1)%mobile%unit(i)%outline(step)%r)
-#if ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 )
+#if ( IMAS_MAJOR_VERSION < 4 && ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
             if (vessel%description_2d(1)%mobile%unit(i)%closed.eq.1)
      .       npts(i)=npts(i)+1
 #endif
@@ -791,7 +791,7 @@ c
               zwall(icnt+j)=
      .       vessel%description_2d(1)%mobile%unit(i)%outline(step)%z(j)
             end do
-#if ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 )
+#if ( IMAS_MAJOR_VERSION < 4 && ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
             if (vessel%description_2d(1)%mobile%unit(i)%closed.eq.1)
      .       then
               rwall(icnt+npts(i))=rwall(icnt+1)
@@ -829,7 +829,7 @@ c
               jcnt = jcnt + 1
               npts(jcnt)=size(vessel%description_2d(1)%
      .                        vessel%unit(i)%element(j)%outline%r)
-#if ( ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 ) && ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
+#if ( IMAS_MAJOR_VERSION == 3 && IMAS_MINOR_VERSION > 27 && ( IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
               if (vessel%description_2d(1)%
      .            vessel%unit(i)%element(j)%outline%closed.eq.1)
      .         npts(jcnt)=npts(jcnt)+1
@@ -848,7 +848,7 @@ c
                 zwall(icnt+k)=vessel%description_2d(1)%
      .                        vessel%unit(i)%element(j)%outline%z(k)
               end do
-#if ( ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 ) && ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
+#if ( IMAS_MAJOR_VERSION == 3 && IMAS_MINOR_VERSION > 27 && ( IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
               if (vessel%description_2d(1)%
      .            vessel%unit(i)%element(j)%outline%closed.eq.1) then
                 rwall(icnt+npts(jcnt))=rwall(icnt+1)
@@ -873,11 +873,11 @@ c
               jcnt = jcnt + 1
               npts(jcnt)=size(vessel%description_2d(1)%
      .                        vessel%unit(i)%annular%outline_inner%r)
-#if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
+#if ( IMAS_MAJOR_VERSION == 3 && IMAS_MINOR_VERSION > 27 && ( IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
               if (vessel%description_2d(1)%
      .            vessel%unit(i)%annular%outline_inner%closed.eq.1)
      .         npts(jcnt)=npts(jcnt)+1
-#else
+#elif IMAS_MAJOR_VERSION < 4
               npts(jcnt)=npts(jcnt)+1 ! Outline is assumed closed in older DD versions
 #endif
               if (icnt+npts(jcnt).gt.ngpr) then
@@ -894,13 +894,13 @@ c
                 zwall(icnt+k)=vessel%description_2d(1)%
      .                        vessel%unit(i)%annular%outline_inner%z(k)
               end do
-#if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
+#if ( IMAS_MINOR_VERSION > 27 && IMAS_MAJOR_VERSION == 3 && ( IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
               if (vessel%description_2d(1)%
      .            vessel%unit(i)%annular%outline_inner%closed.eq.1) then
                 rwall(icnt+npts(jcnt))=rwall(icnt+1)
                 zwall(icnt+npts(jcnt))=zwall(icnt+1)
               end if
-#else
+#elif IMAS_MAJOR_VERSION < 4
               rwall(icnt+npts(jcnt))=rwall(icnt+1)
               zwall(icnt+npts(jcnt))=zwall(icnt+1)
 #endif
@@ -922,11 +922,11 @@ c
               jcnt = jcnt + 1
               npts(jcnt)=size(vessel%description_2d(1)%
      .                        vessel%unit(i)%annular%outline_outer%r)
-#if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
+#if ( IMAS_MINOR_VERSION > 27 && IMAS_MAJOR_VERSION == 3 && ( IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
               if (vessel%description_2d(1)%
      .            vessel%unit(i)%annular%outline_outer%closed.eq.1)
      .         npts(jcnt)=npts(jcnt)+1
-#else
+#elif IMAS_MAJOR_VERSION < 4
               npts(jcnt)=npts(jcnt)+1 ! Outline is assumed closed in older DD versions
 #endif
               if (icnt+npts(jcnt).gt.ngpr) then
@@ -943,13 +943,13 @@ c
                 zwall(icnt+k)=vessel%description_2d(1)%
      .                        vessel%unit(i)%annular%outline_outer%z(k)
               end do
-#if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
+#if ( IMAS_MINOR_VERSION > 27 && IMAS_MAJOR_VERSION == 3 && ( IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
               if (vessel%description_2d(1)%
      .            vessel%unit(i)%annular%outline_outer%closed.eq.1) then
                 rwall(icnt+npts(jcnt))=rwall(icnt+1)
                 zwall(icnt+npts(jcnt))=zwall(icnt+1)
               end if
-#else
+#elif IMAS_MAJOR_VERSION < 4
               rwall(icnt+npts(jcnt))=rwall(icnt+1)
               zwall(icnt+npts(jcnt))=zwall(icnt+1)
 #endif
@@ -959,13 +959,28 @@ c
 #if ( IMAS_MINOR_VERSION > 27 || IMAS_MAJOR_VERSION > 3 )
            if (associated(vessel%description_2d(1)%
      .               vessel%unit(i)%annular%centreline%r)) then
-            if (size(vessel%description_2d(1)%
-     .               vessel%unit(i)%annular%centreline%r).gt.0) then
+            kcnt = size(vessel%description_2d(1)%
+     .                  vessel%unit(i)%annular%centreline%r)
+            if (kcnt.gt.0) then
+#if ( IMAS_MAJOR_VERSION == 3 && ( IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
               if (maxval(vessel%description_2d(1)%
      .                   vessel%unit(i)%annular%thickness(:)).gt.0.0_R8
      .             .and. vessel%description_2d(1)%
      .                   vessel%unit(i)%annular%centreline%closed.eq.1)
      .         then
+#else
+              if (maxval(vessel%description_2d(1)%
+     .                   vessel%unit(i)%annular%thickness(:)).gt.0.0_R8
+     .             .and. vessel%description_2d(1)%
+     .                   vessel%unit(i)%annular%centreline%r(1).eq.
+     .                   vessel%description_2d(1)%
+     .                   vessel%unit(i)%annular%centreline%r(kcnt)
+     .             .and. vessel%description_2d(1)%
+     .                   vessel%unit(i)%annular%centreline%z(1).eq.
+     .                   vessel%description_2d(1)%
+     .                   vessel%unit(i)%annular%centreline%z(kcnt))
+     .         then
+#endif
                 nvslunits = nvslunits + 1 ! We count the inner and outer contours
                                           ! for closed structures as two separate units
                 nunits = nunits + 2
@@ -984,17 +999,41 @@ c
      .           maxval(vessel%description_2d(1)%
      .                  vessel%unit(i)%annular%thickness(:)).le.0.0_R8)
      .           cycle ! No thickness, so only one contour
-                if (iside.eq.-1.or.vessel%description_2d(1)%vessel%
+#if ( IMAS_MAJOR_VERSION == 3 && ( IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
+                if (iside.eq.-1.or.
+     .              vessel%description_2d(1)%vessel%
      .              unit(i)%annular%centreline%closed.eq.1)
      >           jcnt = jcnt + 1
                 if (vessel%description_2d(1)%
      .              vessel%unit(i)%annular%centreline%closed.eq.1) then
-                  npts(jcnt)=size(vessel%description_2d(1)%vessel%
-     .                            unit(i)%annular%centreline%r)+1
+                  npts(jcnt)=kcnt+1
                 else
-                  npts(jcnt)=2*size(vessel%description_2d(1)%vessel%
-     .                              unit(i)%annular%centreline%r)+1
+                  npts(jcnt)=2*kcnt+1
                 end if
+#else
+                if (iside.eq.-1.or.
+     .             (vessel%description_2d(1)%vessel%
+     .              unit(i)%annular%centreline%r(1).eq.
+     .              vessel%description_2d(1)%vessel%
+     .              unit(i)%annular%centreline%r(kcnt).and.
+     .              vessel%description_2d(1)%vessel%
+     .              unit(i)%annular%centreline%z(1).eq.
+     .              vessel%description_2d(1)%vessel%
+     .              unit(i)%annular%centreline%z(kcnt)))
+     >           jcnt = jcnt + 1
+                if (vessel%description_2d(1)%vessel%
+     .              unit(i)%annular%centreline%r(1).eq.
+     .              vessel%description_2d(1)%vessel%
+     .              unit(i)%annular%centreline%r(kcnt).and.
+     .              vessel%description_2d(1)%vessel%
+     .              unit(i)%annular%centreline%z(1).eq.
+     .              vessel%description_2d(1)%vessel%
+     .              unit(i)%annular%centreline%z(kcnt)) then
+                  npts(jcnt)=kcnt
+                else
+                  npts(jcnt)=2*kcnt+1
+                end if
+#endif
                 if (icnt+npts(jcnt).gt.ngpr) then
                   write(0,*)
      .             'Number of wall points too large !, npts = ',
@@ -1013,13 +1052,22 @@ cxpb If [A,B] || [C,D], then
 cxpb If thickness stayed constant, points 2 and 3 are the same and so is X
 cxpb If thickness changed, X is mid-point of [2,3]
 cxpb Otherwise, X is the intersection of (12) and (34)
-                do k=1,size(vessel%description_2d(1)%
-     .                      vessel%unit(i)%annular%centreline%r)-1
-                  if (k.eq.size(vessel%description_2d(1)%
-     .                      vessel%unit(i)%annular%centreline%r)-1) then
+                do k=1,kcnt-1
+                  if (k.eq.kcnt-1) then
+#if ( IMAS_MAJOR_VERSION == 3 && ( IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
                     if (vessel%description_2d(1)%
      .                  vessel%unit(i)%annular%centreline%closed.eq.1)
      .               then
+#else
+                    if (vessel%description_2d(1)%vessel%
+     .                  unit(i)%annular%centreline%r(1).eq.
+     .                  vessel%description_2d(1)%vessel%
+     .                  unit(i)%annular%centreline%r(kcnt).and.
+     .                  vessel%description_2d(1)%vessel%
+     .                  unit(i)%annular%centreline%z(1).eq.
+     .                  vessel%description_2d(1)%vessel%
+     .                  unit(i)%annular%centreline%z(kcnt)) then
+#endif
                       kk = 1
                       kkk = 2
                     else
@@ -1030,13 +1078,27 @@ cxpb Otherwise, X is the intersection of (12) and (34)
                     kk = k+1
                     kkk = kk+1
                   endif
+#if ( IMAS_MAJOR_VERSION == 3 && ( IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
                   if (iside.eq.1 .and. vessel%description_2d(1)%
      .             vessel%unit(i)%annular%centreline%closed.eq.0) then
-                    ks = 2*size(vessel%description_2d(1)%vessel%
-     .                          unit(i)%annular%centreline%r)+1-kk
+#else
+                  if (iside.eq.1 .or.
+     .                vessel%description_2d(1)%vessel%
+     .                unit(i)%annular%centreline%r(1).ne.
+     .                vessel%description_2d(1)%vessel%
+     .                unit(i)%annular%centreline%r(kcnt) .or.
+     .                vessel%description_2d(1)%vessel%
+     .                unit(i)%annular%centreline%z(1).ne.
+     .                vessel%description_2d(1)%vessel%
+     .                unit(i)%annular%centreline%z(kcnt)) then
+#endif
+                    ks = 2*kcnt+1-kk
                   else if (kk.eq.1) then
-                    ks = size(vessel%description_2d(1)%vessel%
-     .                        unit(i)%annular%centreline%r)
+#if IMAS_MAJOR_VERSION < 4
+                    ks = kcnt
+#else
+                    ks = kcnt-1
+#endif
                   else
                     ks = kk
                   end if
@@ -1063,10 +1125,21 @@ cxpb Otherwise, X is the intersection of (12) and (34)
                     r2 = rb+rab_normal*(t1/2.)*iside
                     z2 = zb+zab_normal*(t1/2.)*iside
                   end if
-                  if (kk.ne.size(vessel%description_2d(1)%vessel%
-     .                           unit(i)%annular%centreline%r).or.
+#if ( IMAS_MAJOR_VERSION == 3 && ( IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
+                  if (kk.ne.kcnt.or.
      .                vessel%description_2d(1)%vessel%
      .                unit(i)%annular%centreline%closed.eq.1) then ! we are not at the open end
+#else
+                  if (kk.ne.kcnt.or.
+     .               (vessel%description_2d(1)%vessel%
+     .                  unit(i)%annular%centreline%r(1).eq.
+     .                  vessel%description_2d(1)%vessel%
+     .                  unit(i)%annular%centreline%r(kcnt).and.
+     .                  vessel%description_2d(1)%vessel%
+     .                  unit(i)%annular%centreline%z(1).eq.
+     .                  vessel%description_2d(1)%vessel%
+     .                  unit(i)%annular%centreline%z(kcnt))) then ! we are not at the open end
+#endif
                     rc = vessel%description_2d(1)%
      .                   vessel%unit(i)%annular%centreline%r(kk)
                     zc = vessel%description_2d(1)%
@@ -1106,8 +1179,11 @@ cxpb Otherwise, X is the intersection of (12) and (34)
      .                               /det
                     end if
                     if (kk.eq.1) then ! The last and first points coincide
-                      kks=size(vessel%description_2d(1)%
-     .                         vessel%unit(i)%annular%centreline%r)+1
+#if IMAS_MAJOR_VERSION < 4
+                      kks=kcnt+1
+#else
+                      kks=kcnt
+#endif
                       rwall(icnt+kk)=rwall(icnt+ks)
                       zwall(icnt+kk)=zwall(icnt+ks)
                       rwall(icnt+kks)=rwall(icnt+ks)
@@ -1142,8 +1218,20 @@ cxpb Otherwise, X is the intersection of (12) and (34)
                     endif
                   endif
                 end do
+#if ( IMAS_MAJOR_VERSION == 3 && ( IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 ) )
                 if (iside.eq.1 .or. vessel%description_2d(1)%vessel%
      .                          unit(i)%annular%centreline%closed.eq.1)
+#else
+                if (iside.eq.1 .or.
+     .             (vessel%description_2d(1)%vessel%
+     .              unit(i)%annular%centreline%r(1).eq.
+     .              vessel%description_2d(1)%vessel%
+     .              unit(i)%annular%centreline%r(kcnt).and.
+     .              vessel%description_2d(1)%vessel%
+     .              unit(i)%annular%centreline%z(1).eq.
+     .              vessel%description_2d(1)%vessel%
+     .              unit(i)%annular%centreline%z(kcnt)))
+#endif
      .           icnt = icnt + npts(jcnt)
               end do
             end if

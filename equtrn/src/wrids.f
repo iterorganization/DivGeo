@@ -181,6 +181,7 @@ c
      &   wall_component_identifier%other )
 #endif
         jcnt = icnt + npts(i)
+#if IMAS_MAJOR_VERSION < 4
         if (rwall(icnt+1).eq.rwall(jcnt) .and.
      &      zwall(icnt+1).eq.zwall(jcnt)) then
 #if ( IMAS_MAJOR_VERSION != 3 || IMAS_MINOR_VERSION != 40 || IMAS_MICRO_VERSION != 0 )
@@ -213,6 +214,18 @@ c
      .       = zwall(j)
           end do
         end if
+#else
+        allocate(
+     .   vessel%description_2d(1)%limiter%unit(i)%outline%r(npts(i)) )
+        allocate(
+     .   vessel%description_2d(1)%limiter%unit(i)%outline%z(npts(i)) )
+        do j = icnt+1, jcnt
+          vessel%description_2d(1)%limiter%unit(i)%outline%r(j-icnt)
+     .     = rwall(j)
+          vessel%description_2d(1)%limiter%unit(i)%outline%z(j-icnt)
+     .     = zwall(j)
+        end do
+#endif
         icnt = jcnt
       end do
 
