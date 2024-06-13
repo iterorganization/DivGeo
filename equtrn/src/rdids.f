@@ -64,9 +64,9 @@ c
       character(len=256), intent(in) :: wall_path !< Path to the wall IDS to be read
 #endif
       character(len=24), intent(in) :: treename   !< The name of the IMAS IDS database
-      integer, intent(in) :: shot      !< The shot number of the IDS equilibrium being read
+      integer, intent(in) :: shot      !< The pulse (previously shot) number of the IDS equilibrium being read
                                        !< If negative, do not read any equilibrium
-      integer, intent(in) :: wall      !< The shot number of the IDS wall being read
+      integer, intent(in) :: wall      !< The pulse (previously shot) number of the IDS wall being read
                                        !< If negative, do not read wall description
       integer, intent(in) :: run       !< The run number of the IDS equilibrium being read
       integer, intent(in) :: wall_run  !< The run number of the wall IDS being read

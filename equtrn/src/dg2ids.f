@@ -4,19 +4,19 @@
 !!      In terminal, run the following command:
 !!
 !!      \verbatim
-!!          $dg2ids --shot <shot> --run <run> --database <database> --version <version>
+!!          $dg2ids --pulse <shot> --run <run> --database <database> --version <version>
 !!          --temp_ref <Reference wall temperature (K)> <DG input template file>
 !!      \endverbatim
 !!
 !!      The command can be shortened as:
 !!
 !!      \verbatim
-!!          $dg2ids -s <shot> -r <run> -d <database> -v <version> -t <wall_temperature> <DG input template file>
+!!          $dg2ids -s <pulse> -r <run> -d <database> -v <version> -t <wall_temperature> <DG input template file>
 !!      \endverbatim
 !!
 !!      The arguments marked with < ... > are the parameters of the wall IDS
 !!      where the data is to be stored:
-!!          - \b shot:     The shot number of the wall IDS being written
+!!          - \b pulse:    The pulse (previously shot) number of the wall IDS being written
 !!          - \b run:      The run number of the wall IDS being written
 !!          - \b database: IMAS IDS database name
 !!                         (i. e. solps-iter, ITER, aug) (default: $DEVICE)
@@ -25,7 +25,7 @@
 !!      Example of the command:
 !!      \verbatim
 !!          $dg2ids
-!!          --shot 10 --run 3 --database ITER --version 3 DG_template_file
+!!          --pulse 10 --run 3 --database ITER --version 3 DG_template_file
 !!      \endverbatim
 !!
 !!-----------------------------------------------------------------------------
@@ -53,7 +53,8 @@ c=====================================================
       character(len=24) :: database   !< IMAS IDS database name
                                       !< (i. e. solps-iter, ITER, aug)
       character(len=24) :: version    !< Major version of the IMAS IDS database
-      integer :: shot      !< The shot number of the wall IDS being written
+      integer :: shot      !< The pulse (previously shot) number of the
+                           !< wall IDS being written
       integer :: run       !< The run number of the wall IDS being written
       real(kind=R8)     :: ref_temp   !< Reference wall temperature (K)
 
@@ -173,7 +174,7 @@ c
                 ids_path = trim(imasdir)//'/'//trim(path)
               end if
 #endif
-            case("--shot","-s")
+            case("--pulse","--shot","-s")
               call get_command_argument( cptArg + 1, shot_string )
               !! Transform dummy string variable to integer
               read( shot_string, *) shot
@@ -202,16 +203,19 @@ c
      &   ((streql(shot_string," ") .or. streql(run_string," ")) .and.
      &     streql(path," ")) ) then
         write(0,*) "ERROR! In order to run dg2ids, ",
-     &   "at least the shot and run or path variables and ",
+     &   "at least the pulse and run or path variables and ",
+     &   "the DG input template file must be defined. ",
+     &   "Example (terminal): "
+        write(0,*) "dg2ids --pulse 1 --run 1 <DG_template_file>"
 #else
       if( narg.lt.5 .or. mod(narg,2).eq.0 .or.
      &  streql(shot_string," ") .or. streql(run_string," ") ) then
         write(0,*) "ERROR! In order to run dg2ids, ",
      &   "at least the shot and run variables and ",
-#endif
      &   "the DG input template file must be defined. ",
      &   "Example (terminal): "
         write(0,*) "dg2ids --shot 1 --run 1 <DG_template_file>"
+#endif
         write(0,*) "Other options are :"
 #if AL_MAJOR_VERSION > 4
         write(0,*)
@@ -224,7 +228,7 @@ c
 #if AL_MAJOR_VERSION > 4
       if (.not.streql(shot_string,' ')) then
         if (0.gt.shot) then
-          write(0,*) 'Invalid shot number for equilibrium IDS'
+          write(0,*) 'Invalid pulse number for equilibrium IDS'
           call exit(1)
         end if
       end if
