@@ -44,17 +44,13 @@ c
 #endif
 #ifdef GET_MAX_OCCURRENCES_PRESENT
       use ids_routines ! IGNORE
-     , , only : get_max_occurrences_equilibrium
+     , , only : get_max_occurrences
 #endif
       use ids_routines ! IGNORE
-     , , only : imas_close,
-     ,          ids_deallocate_struct_wall,
-     ,          ids_deallocate_struct_equilibrium,
-     ,          get_struct_ids_wall, get_struct_ids_equilibrium
+     , , only : imas_close, ids_get, ids_deallocate
 #if AL_MAJOR_VERSION > 4
       use ids_routines ! IGNORE
-     , , only : imas_open,
-     ,          OPEN_PULSE, STRMAXLEN
+     , , only : imas_open, OPEN_PULSE, STRMAXLEN
 #endif
       use ids_routines ! IGNORE
      , , only : imas_open_env
@@ -183,7 +179,7 @@ c
 #endif
 !! We take the 2nd occurrence of the equilibrium, i.e. the SPIDER equilibrium, not CHEASE
 #ifdef GET_MAX_OCCURRENCES_PRESENT
-        if (occ.gt.get_max_occurrences_equilibrium(eq))
+        if (occ.gt.get_max_occurrences(eq))
      &   stop 'Invalid equilibrium occurrence number !'
 #endif
         if (occ.eq.0) then
@@ -193,10 +189,9 @@ c
         end if
 #if AL_MAJOR_VERSION > 3
         if (status.eq.0)
-     &   call get_struct_ids_equilibrium( idx, trim(eq_occ), eq,
-     &    status )
+     &   call ids_get( idx, trim(eq_occ), eq, status )
 #else
-        call get_struct_ids_equilibrium( idx, trim(eq_occ), eq )
+        call ids_get( idx, trim(eq_occ), eq )
 #endif
         iocc = occ
         if (occ.ne.0.and. ! try the default occurrence if the non-default one failed
@@ -204,12 +199,11 @@ c
           iocc = 0
           status = 0
 #if AL_MAJOR_VERSION > 3
-          call get_struct_ids_equilibrium( idx, "equilibrium", eq,
-     &     status )
+          call ids_get( idx, "equilibrium", eq, status )
           if (status.eq.0 .and. occ.ne.1)
      >     write(*,*) 'Reverting to default occurrence !'
 #else
-          call get_struct_ids_equilibrium( idx, "equilibrium", eq )
+          call ids_get( idx, "equilibrium", eq )
 #endif
         end if
         if (.not.public.and.(status.ne.0 .or.
@@ -254,10 +248,9 @@ c
           end if
 #if AL_MAJOR_VERSION > 3
           if (status.eq.0)
-     &     call get_struct_ids_equilibrium( idx, trim(eq_occ), eq,
-     &      status )
+     &     call ids_get( idx, trim(eq_occ), eq, status )
 #else
-          call get_struct_ids_equilibrium( idx, trim(eq_occ), eq )
+          call ids_get( idx, trim(eq_occ), eq )
 #endif
           if (occ.ne.0.and. ! try the default occurrence if the non-default one failed
      &     (status.ne.0 .or. eq%ids_properties%homogeneous_time < 0))
@@ -265,12 +258,11 @@ c
             iocc = 0
             status = 0
 #if AL_MAJOR_VERSION > 3
-            call get_struct_ids_equilibrium( idx, "equilibrium", eq,
-     &       status )
+            call ids_get( idx, "equilibrium", eq, status )
             if (status.eq.0 .and. occ.ne.1)
      &       write(*,*) 'Reverting to default occurrence !'
 #else
-            call get_struct_ids_equilibrium( idx, "equilibrium", eq )
+            call ids_get( idx, "equilibrium", eq )
 #endif
           end if
           if (status.eq.0 .and.
@@ -371,11 +363,9 @@ c
         end if
 #endif
 #if AL_MAJOR_VERSION > 3
-        if (status.eq.0)
-     &   call get_struct_ids_wall( idx, "wall", vessel, status )
+        if (status.eq.0) call ids_get( idx, "wall", vessel, status )
 #else
-        if (status.eq.0)
-     &   call get_struct_ids_wall( idx, "wall", vessel )
+        if (status.eq.0) call ids_get( idx, "wall", vessel )
 #endif
         if (status.ne.0 .or.
      &      vessel%ids_properties%homogeneous_time < 0) then
@@ -407,11 +397,9 @@ c
      &     idx, username, trim(md_base), version, status )
 #endif
 #if AL_MAJOR_VERSION > 3
-          if (status.eq.0)
-     &     call get_struct_ids_wall( idx, "wall", vessel, status )
+          if (status.eq.0) call ids_get( idx, "wall", vessel, status )
 #else
-          if (status.eq.0)
-     &     call get_struct_ids_wall( idx, "wall", vessel )
+          if (status.eq.0) call ids_get( idx, "wall", vessel )
 #endif
           if (status.eq.0 .and.
      &        vessel%ids_properties%homogeneous_time .ge. 0) then
@@ -450,11 +438,9 @@ c
      &       idx, "public", database, version, status )
 #endif
 #if AL_MAJOR_VERSION > 3
-            if (status.eq.0)
-     &       call get_struct_ids_wall( idx, "wall", vessel, status )
+            if (status.eq.0) call ids_get( idx, "wall", vessel, status )
 #else
-            if (status.eq.0)
-     &       call get_struct_ids_wall( idx, "wall", vessel )
+            if (status.eq.0) call ids_get( idx, "wall", vessel )
 #endif
             if (status.eq.0 .and.
      &          vessel%ids_properties%homogeneous_time .ge. 0) then
@@ -492,10 +478,9 @@ c
 #endif
 #if AL_MAJOR_VERSION > 3
               if (status.eq.0)
-     &         call get_struct_ids_wall( idx, "wall", vessel, status )
+     &         call ids_get( idx, "wall", vessel, status )
 #else
-              if (status.eq.0)
-     &         call get_struct_ids_wall( idx, "wall", vessel )
+              if (status.eq.0) call ids_get( idx, "wall", vessel )
 #endif
               if (status.eq.0 .and.
      &            vessel%ids_properties%homogeneous_time .ge. 0) then
@@ -529,9 +514,9 @@ c
         end if
       else if (do_wall) then
 #if AL_MAJOR_VERSION > 3
-        call get_struct_ids_wall( idx, "wall", vessel, status )
+        call ids_get( idx, "wall", vessel, status )
 #else
-        call get_struct_ids_wall( idx, "wall", vessel )
+        call ids_get( idx, "wall", vessel )
 #endif
         if (status.eq.0 .and.
      &      vessel%ids_properties%homogeneous_time .ge. 0) then
@@ -1256,8 +1241,8 @@ cxpb Otherwise, X is the intersection of (12) and (34)
         end if
       end if
 c
-      if (do_equilibrium) call ids_deallocate_struct_equilibrium( eq )
-      if (do_wall) call ids_deallocate_struct_wall( vessel )
+      if (do_equilibrium) call ids_deallocate( eq )
+      if (do_wall) call ids_deallocate( vessel )
       return
 
       end subroutine rdids

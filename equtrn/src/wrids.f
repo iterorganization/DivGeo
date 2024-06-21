@@ -11,8 +11,7 @@
      , , only : ids_real
 #endif
       use ids_routines ! IGNORE
-     , , only : ids_deallocate_struct_wall, put_struct_ids_wall,
-     ,          imas_close
+     , , only : ids_deallocate, ids_put, imas_close
 #if ( IMAS_MINOR_VERSION > 39 || IMAS_MAJOR_VERSION > 3 )
 #if AL_MAJOR_VERSION > 4
       use al_wall_component_identifier              ! IGNORE
@@ -245,12 +244,12 @@ c
 #endif
 
 #if AL_MAJOR_VERSION > 3
-      call put_struct_ids_wall( idx, "wall", vessel, status )
+      call ids_put( idx, "wall", vessel, status )
       if (status.ne.0) stop 'Error putting wall description IDS !'
 #else
-      call put_struct_ids_wall( idx, "wall", vessel )
+      call ids_put( idx, "wall", vessel )
 #endif
-      call ids_deallocate_struct_wall( vessel )
+      call ids_deallocate( vessel )
       call imas_close( idx, status )
       if (status.ne.0) stop 'Error closing IMAS database !'
 

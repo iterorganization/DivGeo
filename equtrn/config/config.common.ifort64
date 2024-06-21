@@ -86,6 +86,9 @@ endif
 
 ifdef IMAS_PKG_LIST
   INCMODS += `pkg-config ${IMAS_PKG_LIST} --cflags`
+  ifeq ($(shell test ${COMPILER_MAJOR_VERSION} -ge 2021; echo $$?),0)
+    FFLAGS += -diag-disable:5462
+  endif
 endif
 
 
