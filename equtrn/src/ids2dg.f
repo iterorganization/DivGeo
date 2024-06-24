@@ -4,7 +4,7 @@
 !!      In terminal, run the following command:
 !!
 !!      \verbatim
-!!          $ids2dg --shot <shot> --run <run> --wall <wall> --wall_run <wall_run>
+!!          $ids2dg --pulse <pulse> --run <run> --wall <wall> --wall_run <wall_run>
 !!          --step <step> --occurrence <occurrence>
 !!          --username <username> --database <database> --version <version>
 !!          <DG output filename stem>
@@ -13,7 +13,7 @@
 !!      The command can be shortened as:
 !!
 !!      \verbatim
-!!          $ids2dg -s <shot> -r <run> -w <wall> -R <wall_run>
+!!          $ids2dg -s <pulse> -r <run> -w <wall> -R <wall_run>
 !!          -S <step> -o <occurrence>
 !!          -u <username> -d <database> -v <version> <DG output filename stem>
 !!      \endverbatim
@@ -23,10 +23,10 @@
 !!          - \b path:       The path of the equilibrium IDS being read
 !!                           (if missing and shot not defined, no equilibrium will be read)
 !!          - \b wall_path:  The path of the wall IDS being read (default: same as <path>)
-!!          - \b shot:       The shot number of the equilibrium IDS being read
+!!          - \b pulse:      The pulse (previously shot) number of the equilibrium IDS being read
 !!                           (if the number is negative, no equilibrium will be translated)
 !!          - \b run:        The run number of the equilibrium IDS being read
-!!          - \b wall:       The shot number of the wall IDS being read (default: same as <shot>)
+!!          - \b wall:       The pulse number of the wall IDS being read (default: same as <pulse>)
 !!                           (if the number is negative, no wall description will be translated)
 !!          - \b wall_run:   The run number of the wall IDS being read (default: same as <run>)
 !!          - \b occurrence: The occurrence index of the equilibrium IDS to be read (default: 1)
@@ -39,7 +39,7 @@
 !!      Example of the command:
 !!      \verbatim
 !!          $ids2dg
-!!          --shot 1512 --run 6 --username penkod --database solps-iter --version 3 DG_case_file
+!!          --pulse 1512 --run 6 --username penkod --database solps-iter --version 3 DG_case_file
 !!      \endverbatim
 !!
 !!-----------------------------------------------------------------------------
@@ -70,9 +70,9 @@ c=====================================================
       character(len=24) :: database   !< IMAS IDS database name
                                       !< (i. e. solps-iter, ITER, aug)
       character(len=24) :: version    !< Major version of the IMAS IDS database
-      integer :: shot      !< The shot number of the IDS equilibrium being read
+      integer :: shot      !< The pulse (previously shot) number of the IDS equilibrium being read
                            !< If negative, no equilibrium IDS is translated
-      integer :: wall      !< The shot number of the IDS wall being read
+      integer :: wall      !< The pulse number of the IDS wall being read
                            !< If negative, no wall description IDS is translated
       integer :: occ       !< The occurrence index for the chosen IDS equilibrium
       integer :: step      !< The time slice index for the chosen IDS equilibrium
@@ -242,7 +242,7 @@ c
             if (.not.wall_absolute)
      >       wall_path = trim(wall_path(m+l+len_trim(imasdir):256))
 #endif
-          case("--shot","-s")
+          case("--pulse","--shot","-s")
             call get_command_argument( cptArg + 1, shot_string )
             !! Transform dummy string variable to integer
             read( shot_string, *) shot
@@ -292,38 +292,49 @@ c
         wall_run = run
         write(wall_run_string,'(i6)') wall_run
       end if
-    !! If not at least shot and run or path, username and database were defined,
-    !! display the error message and a full command example
 #if AL_MAJOR_VERSION > 4
+    !! If not at least pulse and run or path, username and database were defined,
+    !! display the error message and a full command example
       if( narg.lt.3 .or. mod(narg,2).eq.0 .or.
      &  (do_equilibrium .and.
      &   streql(path," ") .and. streql(run_string," ")) .or.
      &  (do_wall .and.
      &   streql(wall_path," ") .and. streql(wall_run_string," ")) .or.
+     &  (.not.do_equilibrium .and. .not.do_wall) ) then
+        write(0,'(a)') 'Standard ids2dg usage:'
+        write(0,'(a)')
+     &   'ids2dg -s <pulse> -r <run> -w <wall> -R <wall_run> '//
+     &   '<DG_file_stem>'
 #else
+    !! If not at least shot and run or path, username and database were defined,
+    !! display the error message and a full command example
       if( narg.lt.5 .or. mod(narg,2).eq.0 .or.
      &  (do_equilibrium .and. streql(run_string," ")) .or.
      &  (do_wall .and. streql(wall_run_string," ")) .or.
-#endif
      &  (.not.do_equilibrium .and. .not.do_wall) ) then
         write(0,'(a)') 'Standard ids2dg usage:'
         write(0,'(a)')
      &   'ids2dg -s <shot> -r <run> -w <wall> -R <wall_run> '//
      &   '<DG_file_stem>'
+#endif
         write(0,'(a)') ' '
         write(0,'(a)') 'Available options are:'
 #if AL_MAJOR_VERSION > 4
         write(0,'(a)') '--path, -p:               '//
      &   'Directory path to the equilibrium IDS to import '//
-     &   '(if this and "shot" missing, '//
+     &   '(if this and "pulse" missing, '//
      &   'do not import an equilibrium IDS)'
         write(0,'(a)') '--wall_path, -P:          '//
      &   'Directory path to the wall IDS to import '//
      &   '(if missing, same as for the equilibrium IDS)'
-#endif
+        write(0,'(a)') '--pulse, --shot, -s:      '//
+     &   'Pulse number of the equilibrium IDS to import '//
+     &   '(if negative, do not import an equilibrium IDS)'
+#else
         write(0,'(a)') '--shot, -s:               '//
      &   'Shot number of the equilibrium IDS to import '//
      &   '(if negative, do not import an equilibrium IDS)'
+#endif
         write(0,'(a)') '--run,  -r:               '//
      &   'Run number of the equilibrium IDS to import'
         write(0,'(a)') '--occurrence, -o:         '//
@@ -331,10 +342,17 @@ c
      &   '(default: 1)'
         write(0,'(a)') '--step, -S:               '//
      &   'Time step of the equilibrium IDS to import (default: 1)'
+#if AL_MAJOR_VERSION > 4
+        write(0,'(a)') '--wall, -w:               '//
+     &   'Pulse number of the wall description IDS to import '//
+     &   '(if negative, do not import a wall description IDS) '//
+     &   '(default: same as pulse value)'
+#else
         write(0,'(a)') '--wall, -w:               '//
      &   'Shot number of the wall description IDS to import '//
      &   '(if negative, do not import a wall description IDS) '//
      &   '(default: same as shot value)'
+#endif
         write(0,'(a)') '--wall_run, -R:           '//
      &   'Run number of the wall description IDS to import '//
      &   '(default: same as run value)'
