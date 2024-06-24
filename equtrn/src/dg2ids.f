@@ -3,16 +3,16 @@
 !!
 !!      In terminal, run the following command:
 !!
-!!      @verbatim
+!!      \verbatim
 !!          $dg2ids --shot <shot> --run <run> --database <database> --version <version>
 !!          --temp_ref <Reference wall temperature (K)> <DG input template file>
-!!      @endverbatim
+!!      \endverbatim
 !!
 !!      The command can be shortened as:
 !!
-!!      @verbatim
+!!      \verbatim
 !!          $dg2ids -s <shot> -r <run> -d <database> -v <version> -t <wall_temperature> <DG input template file>
-!!      @endverbatim
+!!      \endverbatim
 !!
 !!      The arguments marked with < ... > are the parameters of the wall IDS
 !!      where the data is to be stored:
@@ -23,10 +23,10 @@
 !!          - \b version:  Major version of the IMAS IDS database (default: 3)
 !!          - \b temp_ref: Reference wall temperature (K) (optional)
 !!      Example of the command:
-!!      @verbatim
+!!      \verbatim
 !!          $dg2ids
 !!          --shot 10 --run 3 --database ITER --version 3 DG_template_file
-!!      @endverbatim
+!!      \endverbatim
 !!
 !!-----------------------------------------------------------------------------
 

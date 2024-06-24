@@ -3,20 +3,20 @@
 !!
 !!      In terminal, run the following command:
 !!
-!!      @verbatim
+!!      \verbatim
 !!          $ids2dg --shot <shot> --run <run> --wall <wall> --wall_run <wall_run>
 !!          --step <step> --occurrence <occurrence>
 !!          --username <username> --database <database> --version <version>
 !!          <DG output filename stem>
-!!      @endverbatim
+!!      \endverbatim
 !!
 !!      The command can be shortened as:
 !!
-!!      @verbatim
+!!      \verbatim
 !!          $ids2dg -s <shot> -r <run> -w <wall> -R <wall_run>
 !!          -S <step> -o <occurrence>
 !!          -u <username> -d <database> -v <version> <DG output filename stem>
-!!      @endverbatim
+!!      \endverbatim
 !!
 !!      The arguments marked with < ... > are the parameters of the IDS database
 !!      where the data is to be stored:
@@ -34,10 +34,10 @@
 !!                           (i. e. solps-iter, ITER, aug) (default: $DEVICE)
 !!          - \b version:    Major version of the IMAS IDS database (default: 3)
 !!      Example of the command:
-!!      @verbatim
+!!      \verbatim
 !!          $ids2dg
 !!          --shot 1512 --run 6 --username penkod --database solps-iter --version 3 DG_case_file
-!!      @endverbatim
+!!      \endverbatim
 !!
 !!-----------------------------------------------------------------------------
 
@@ -61,7 +61,7 @@ c=====================================================
       real(kind=R8) :: rwall(ngpr), zwall(ngpr)
       integer :: nunits, npts(ngpr)
 
-    !! Local variables
+      !! Local variables
       character(len=24) :: treename   !< The name of the IMAS IDS database
       character(len=24) :: username   !< Creator/owner of the IMAS IDS database
       character(len=24) :: database   !< IMAS IDS database name
@@ -75,7 +75,8 @@ c=====================================================
       integer :: step      !< The time slice index for the chosen IDS equilibrium
       integer :: run       !< The run number of the IDS equilibrium being read
       integer :: wall_run  !< The run number of the IDS wall being read
-    !! Dummy variables
+
+      !! Dummy variables
       character(len=24) :: shot_string
       character(len=24) :: wall_string
       character(len=24) :: step_string
@@ -99,7 +100,7 @@ c=====================================================
 
 c=====================================================
 c
-    !! Set default value for number of steps
+      !! Set default value for number of steps
       iret = 0
       treename = 'ids'
       write(version,'(i1)') IMAS_MAJOR_VERSION

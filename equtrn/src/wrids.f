@@ -177,9 +177,6 @@ c
       !! Create and modify new wall IDS
       call imas_create_env( treename, shot, run,
      & 0, 0, idx, username, database, version, status )
-c$$$      call ual_begin_pulse_action( HDF5_BACKEND, shot, run, username,
-c$$$     &                             database, version, idx )
-c$$$      call ual_open_pulse( idx, FORCE_OPEN_PULSE, '', status )
       if (status.ne.0) stop 'Error opening IMAS database !'
 
 #if AL_MAJOR_VERSION > 3
