@@ -3,16 +3,16 @@ LD_MSCL ?= `pkg-config mscl --libs`
 
 FC      = nagfor
 ifdef SOLPS_DEBUG
-FFLAGS  = -g -C
+FFLAGS   = -g -C
 else
-FFLAGS  = -O3
+FFLAGS   = -O3
 endif
 
-COMPILE = ${FC} -c ${FFLAGS}
-CPP     = /lib/cpp -C -traditional
+COMPILE  = ${FC} -c ${FFLAGS}
+CPP      = /lib/cpp -C -traditional
 
-LDLIBS  = ${LD_MSCL} -lstdc++
-LDEXTRA =
+LDLIBS   = ${LD_MSCL} -lstdc++
+LDEXTRA  =
 
 #!!!Local Variables:
 #!!! mode: Makefile
