@@ -3,10 +3,10 @@ LD_MSCL ?= `pkg-config mscl --libs`
 
 FC      = gfortran
 ifdef SOLPS_DEBUG
-FFLAGS  = -fcheck=all -fbacktrace
+FFLAGS   = -fcheck=all -fbacktrace
 endif
 
-CPP     = /lib/cpp -traditional
+CPP      = /lib/cpp -traditional
 
 #!!!Local Variables:
 #!!! mode: Makefile
