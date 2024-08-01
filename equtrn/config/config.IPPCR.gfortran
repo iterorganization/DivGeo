@@ -1,11 +1,14 @@
 # check if necessary variables are correctly defined
-LD_MSCL ?= -L${SOLPSLIB} -lmscl
-
-FC       = ftn
-ifdef SOLPS_DEBUG
-FFLAGS   = -fbounds-check -fcheck=all -fbacktrace
+ifndef LD_MSCL
+  $(error LD_MSCL not defined)
 endif
 
+FC       = gfortran
+ifdef SOLPS_DEBUG
+FFLAGS   = -fcheck=all -fbacktrace
+else
+FFLAGS   = -O
+endif
 CPP      = /lib/cpp -traditional
 
 #!!!Local Variables:
