@@ -1,7 +1,7 @@
 # check if necessary variables are correctly defined
 LD_MSCL ?= `pkg-config mscl --libs`
 
-FC      = gfortran
+FC       = gfortran
 ifdef SOLPS_DEBUG
 FFLAGS   = -fcheck=all -fbacktrace
 endif
