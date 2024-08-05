@@ -12,6 +12,9 @@ endif
 
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  =
+ifdef SOLPS_DEBUG
+FFLAGS  += -diag-disable:10440
+endif
 ifeq ($(shell test ${COMPILER_MAJOR_VERSION} -le 12; echo $$?),0)
 FFLAGS  += -vec_report0
 LDFLAGS += -i_dynamic

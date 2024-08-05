@@ -1,7 +1,12 @@
 # check if necessary variables are correctly defined
 LD_MSCL ?= `pkg-config mscl --libs`
 
-FC      = ifort
+OS = $(shell grep -m1 NAME /etc/os-release | cut -d '"' -f 2 | cut -d ' ' -f 1 )
+ifeq (,$(findstring CentOS,$(OS)))
+FC       ?= ifort
+else
+FC       ?= ifx
+endif
 
 CPP     = /lib/cpp -C -traditional
 

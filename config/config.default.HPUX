@@ -3,7 +3,7 @@ CFLAGS =
 CC = gcc
 INCLUDES = -I /usr/include/X11R5
 DEFINES = -DHPUX
-LD = gcc
+LD = ${CC}
 
 #!!!Local Variables:
 #!!! mode: Makefile
