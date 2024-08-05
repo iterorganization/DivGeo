@@ -3,7 +3,7 @@ IRISLIB   ?= /fusion/projects/codes/solps/SOLPS-ITER/public_lib/GA.gfortran
 MSCL_ROOT ?= ${IRISLIB}
 LD_MSCL   ?= -L${MSCL_ROOT} -lmscl
 
-FC         = gfortran
+FC        ?= gfortran
 ifdef SOLPS_DEBUG
 FFLAGS     = -fcheck=all -fbacktrace
 endif
