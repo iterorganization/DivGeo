@@ -39,9 +39,16 @@ ifndef SOLPS_CPP
     IMAS_MINOR_VERSION ?= $(shell echo ${IMAS_VERSION} | cut -d '.' -f2 )
     IMAS_MICRO_VERSION ?= $(shell echo ${IMAS_VERSION} | cut -d '.' -f3 )
     ifeq ($(shell test ${AL_MAJOR_VERSION} -ge 5; echo $$?),0)
-      IMAS_PKG_LIST += al-fortran
+      IMAS_PKG_LIST += al-fortran al-identifiers-fortran
     else
       IMAS_PKG_LIST += imas-ifort
+      ifeq ($(shell test ${IMAS_MAJOR_VERSION} -ge 4; echo $$?),0)
+        IMAS_PKG_LIST += imas-identifiers-ifort
+      else
+        ifeq ($(shell test ${IMAS_MINOR_VERSION} -ge 31; echo $$?),0)
+          IMAS_PKG_LIST += imas-identifiers-ifort
+        endif
+      endif
     endif
     ifneq ($(shell `pkg-config --exists fundamental-constants`; echo $$?),0)
       ifeq ($(shell test ${IMAS_MAJOR_VERSION} -le 3; echo $$?),0)
@@ -82,6 +89,9 @@ endif
 
 ifdef IMAS_PKG_LIST
   INCMODS += `pkg-config ${IMAS_PKG_LIST} --cflags`
+  ifeq ($(shell test ${COMPILER_MAJOR_VERSION} -ge 2021; echo $$?),0)
+    FFLAGS += -diag-disable:5462
+  endif
 endif
 
 

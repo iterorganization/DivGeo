@@ -9,10 +9,12 @@
 #endif
 #endif
 #endif
-      subroutine rdids(treename,shot,wall,run,wall_run,occ,step,
-     ,           username,database,version,
-     ,           do_equilibrium,do_wall,
-     ,           iret,ipestg,nr,nz,
+      subroutine rdids(do_equilibrium,do_wall,occ,step,
+#if AL_MAJOR_VERSION > 4
+     ,           imas_home,eq_path,wall_path,
+#endif
+     ,           treename,shot,wall,run,wall_run,database,version,
+     ,           username,iret,ipestg,nr,nz,
      ,           rcntc,psimin,psilim,
      ,           btorc,fg,pfm,rgr,zgr,
      ,           nunits,npts,rwall,zwall)
@@ -46,16 +48,25 @@ c
 #endif
       use ids_routines ! IGNORE
      , , only : imas_close, ids_get, ids_deallocate
+#if AL_MAJOR_VERSION > 4
+      use ids_routines ! IGNORE
+     , , only : imas_open, OPEN_PULSE, STRMAXLEN
+#endif
       use ids_routines ! IGNORE
      , , only : imas_open_env
       use eqdim
       implicit none
       type(ids_equilibrium) :: eq !< IDS designed to store equilibrium data
       type(ids_wall) :: vessel    !< IDS designed to store wall data
+#if AL_MAJOR_VERSION > 4
+      character(len=256), intent(in) :: imas_home !< Root path to the IMAS public directory
+      character(len=256), intent(in) :: eq_path   !< Path to the equilibrium IDS to be read
+      character(len=256), intent(in) :: wall_path !< Path to the wall IDS to be read
+#endif
       character(len=24), intent(in) :: treename   !< The name of the IMAS IDS database
-      integer, intent(in) :: shot      !< The shot number of the IDS equilibrium being read
+      integer, intent(in) :: shot      !< The pulse (previously shot) number of the IDS equilibrium being read
                                        !< If negative, do not read any equilibrium
-      integer, intent(in) :: wall      !< The shot number of the IDS wall being read
+      integer, intent(in) :: wall      !< The pulse (previously shot) number of the IDS wall being read
                                        !< If negative, do not read wall description
       integer, intent(in) :: run       !< The run number of the IDS equilibrium being read
       integer, intent(in) :: wall_run  !< The run number of the wall IDS being read
@@ -85,8 +96,15 @@ c
       real(kind=R8), parameter :: IDS_REAL_INVALID = -9.0E40_R8
       integer, parameter :: IDS_INT_INVALID = -9999999
 #endif
+#if AL_MAJOR_VERSION > 4
+      integer l, m
+      character(len=256) :: olddir
+      character(len=STRMAXLEN) :: uri
+      character(len=:), allocatable :: message
+#endif
       character(len=24) :: md_base
       character(len=24) :: eq_occ
+      character(len=256) :: final_path
       logical streql, public
       external streql
 
@@ -97,6 +115,56 @@ c
       public = streql(username,'public')
       !! Create and modify new shot/run
       if (do_equilibrium) then
+#if AL_MAJOR_VERSION > 4
+        uri = 'imas:mdsplus?path='//trim(eq_path)
+        call imas_open( uri, OPEN_PULSE, idx, status, message )
+        if (status.ne.0) then
+          l=index(eq_path,'imasdb/iter')
+          m=index(eq_path,'imasdb/ITER')
+          if (l.gt.0) then
+            write(olddir,'(a)')
+     .       eq_path(1:l-1)//'imasdb/ITER'//eq_path(l+11:256)
+            uri = 'imas:mdsplus?path='//trim(olddir)
+            call imas_open( uri, OPEN_PULSE, idx, status, message )
+          else if (m.gt.0) then
+            write(olddir,'(a)')
+     .       eq_path(1:m-1)//'imasdb/iter'//eq_path(m+11:256)
+            uri = 'imas:mdsplus?path='//trim(olddir)
+            call imas_open( uri, OPEN_PULSE, idx, status, message )
+          end if
+        end if
+        if (status.eq.0) final_path = trim(uri)
+        ! Revert to AL4 format if file not yet found
+        if (status.ne.0 .and. shot.gt.0 .and. run.ge.0) then
+          write(*,'(a)') 'Did not find equilibrium file using AL5 path.'
+          write(*,'(a/2(a,i8),2(a,a24),2(a,i8))')
+     &     'Trying AL4 file with :',
+     &     ' Shot: ', shot, ' Run: ', run,
+     &     ' User: ', trim(username), ' Database: ', trim(database),
+     &     ' Occurrence: ', occ, ' Step: ', step
+          call imas_open_env( treename, shot, run,
+     &     idx, username, database, version, status )
+          if (status.ne.0) then
+            if (database.eq.'ITER') then
+              call imas_open_env( treename, shot, run,
+     &         idx, username, 'iter', version, status )
+              final_path = 'imas:mdsplus?user='//trim(username)//
+     &         ';database='//'iter'//';shot='//int2str(shot)//
+     &         ';run='//int2str(run)//';version='//trim(version)
+            else if (database.eq.'iter') then
+              call imas_open_env( treename, shot, run,
+     &         idx, username, 'ITER', version, status )
+              final_path = 'imas:mdsplus?user='//trim(username)//
+     &         ';database='//'ITER'//';shot='//int2str(shot)//
+     &         ';run='//int2str(run)//';version='//trim(version)
+            end if
+          else
+            final_path = 'imas:mdsplus?user='//trim(username)//
+     &       ';database='//trim(database)//';shot='//int2str(shot)//
+     &       ';run='//int2str(run)//';version='//trim(version)
+          end if
+        end if
+#else
         call imas_open_env( treename, shot, run,
      &   idx, username, database, version, status )
         if (status.ne.0) then
@@ -108,6 +176,7 @@ c
      &       idx, username, 'iter', version, status )
           end if
         end if
+#endif
 !! We take the 2nd occurrence of the equilibrium, i.e. the SPIDER equilibrium, not CHEASE
 #ifdef GET_MAX_OCCURRENCES_PRESENT
         if (occ.gt.get_max_occurrences(eq))
@@ -145,9 +214,33 @@ c
           public = .true.
           call imas_close( idx, status )
           if (status.ne.0) stop 'Error closing IMAS database !'
+#if AL_MAJOR_VERSION > 4
+          l=index(eq_path,'imasdb')
+          uri = 'imas:mdsplus?path='//trim(imas_home)//'/shared/imasdb'
+     &                              //eq_path(l+6:256)
+          call imas_open( uri, OPEN_PULSE, idx, status, message )
+          if (status.eq.0) final_path = trim(uri)
+          if (status.ne.0 .and. shot.gt.0 .and. run.ge.0) then
+            if (database.eq.'iter') database = 'ITER'
+            write(*,'(a)')
+     &       'Did not find equilibrium file using AL5 path.'
+            write(*,'(a/2(a,i8),(3a,a24),2(a,i8))')
+     &       'Trying AL4 file with :',
+     &       ' Shot: ', shot, ' Run: ', run,
+     &       ' User: ', 'public', ' Database: ', trim(database),
+     &       ' Occurrence: ', occ, ' Step: ', step
+            call imas_open_env( treename, shot, run,
+     &       idx, "public", database, version, status )
+            if (status.eq.0)
+     >       final_path = 'imas:mdsplus?user='//'public'//
+     &        ';database='//trim(database)//';shot='//int2str(shot)//
+     &        ';run='//int2str(run)//';version='//trim(version)
+          end if
+#else
           if (database.eq.'iter') database = 'ITER'
           call imas_open_env( treename, shot, run,
      &     idx, "public", database, version, status )
+#endif
           if (status.ne.0) then
             write(*,*)
      &       "Could not open requested equilibrium IMAS data entry"
@@ -175,9 +268,14 @@ c
           if (status.eq.0 .and.
      &        eq%ids_properties%homogeneous_time .ge. 0) then
             write(*,*) 'Got IDS equilibrium from: '
+#if AL_MAJOR_VERSION > 4
+            write(*,'(3a,i8)')
+     .       ' URI : ', trim(uri), ' Occurrence: ', iocc
+#else
             write(*,'(3(a,i8),a,a,a,a24)')
      .       ' Shot: ', shot, ' Run: ', run, ' Occurrence: ', iocc,
      .       ' User: ', 'public', ' Database: ', trim(database)
+#endif
           else
             do_equilibrium = .false.
             write(*,*) 'Error reading equilibrium IDS !'
@@ -186,17 +284,72 @@ c
       end if
       if (status.eq.0 .and. do_equilibrium) then
         write(*,*) 'Got IDS equilibrium from: '
+#if AL_MAJOR_VERSION > 4
+        write(*,'(3a,i8)')
+     .   ' URI : ', trim(final_path), ' Occurrence: ', iocc
+#else
         write(*,'(3(a,i8),2(a,a24))')
      .   ' Shot: ', shot, ' Run: ', run, ' Occurrence: ', iocc,
      .   ' User: ', trim(username), ' Database: ', trim(database)
+#endif
       end if
 
       status = 0
+#if AL_MAJOR_VERSION > 4
+      if (do_wall.and..not.streql(wall_path,eq_path)) then
+#else
       if (do_wall.and.wall.ne.shot) then
+#endif
         if (do_equilibrium) then
           call imas_close ( idx, status )
           if (status.ne.0) stop 'Error closing IMAS database !'
         end if
+#if AL_MAJOR_VERSION > 4
+        uri = 'imas:mdsplus?path='//trim(wall_path)
+        call imas_open( uri, OPEN_PULSE, idx, status, message )
+        if (status.ne.0) then
+          l=index(wall_path,'imasdb/iter')
+          m=index(wall_path,'imasdb/ITER')
+          if (l.gt.0) then
+            write(olddir,'(a)')
+     .       wall_path(1:l-1)//'imasdb/ITER'//wall_path(l+11:256)
+            uri = 'imas:mdsplus?path='//trim(olddir)
+            call imas_open( uri, OPEN_PULSE, idx, status, message )
+          else if (m.gt.0) then
+            write(olddir,'(a)')
+     .       wall_path(1:m-1)//'imasdb/iter'//wall_path(m+11:256)
+            uri = 'imas:mdsplus?path='//trim(olddir)
+            call imas_open( uri, OPEN_PULSE, idx, status, message )
+          end if
+          if (status.eq.0) final_path = trim(uri)
+          ! Revert to AL4 format if file not yet found
+          if (status.ne.0 .and. wall.gt.0 .and. wall_run.ge.0) then
+            call imas_open_env( treename, wall, wall_run,
+     &       idx, username, database, version, status )
+            if (status.ne.0) then
+              if (database.eq.'ITER') then
+                call imas_open_env( treename, wall, wall_run,
+     &           idx, username, 'iter', version, status )
+                final_path = 'imas:mdsplus?user='//trim(username)//
+     &           ';database='//'iter'//';shot='//int2str(wall)//
+     &           ';run='//int2str(wall_run)//';version='//trim(version)
+              else if (database.eq.'iter') then
+                call imas_open_env( treename, wall, wall_run,
+     &           idx, username, 'ITER', version, status )
+                final_path = 'imas:mdsplus?user='//trim(username)//
+     &           ';database='//'ITER'//';shot='//int2str(wall)//
+     &           ';run='//int2str(wall_run)//';version='//trim(version)
+              end if
+            else
+              final_path = 'imas:mdsplus?user='//trim(username)//
+     &         ';database='//trim(database)//';shot='//int2str(wall)//
+     &         ';run='//int2str(wall_run)//';version='//trim(version)
+            end if
+          end if
+        else
+          final_path = trim(uri)
+        end if
+#else
         call imas_open_env( treename, wall, wall_run,
      &     idx, username, database, version, status )
         if (status.ne.0) then
@@ -208,6 +361,7 @@ c
      &       idx, username, 'iter', version, status )
           end if
         end if
+#endif
 #if AL_MAJOR_VERSION > 3
         if (status.eq.0) call ids_get( idx, "wall", vessel, status )
 #else
@@ -218,10 +372,30 @@ c
           status = 0
           call imas_close( idx, status )
           if (status.ne.0) stop 'Error closing IMAS database !'
+#if AL_MAJOR_VERSION > 4
+          l=index(wall_path,'imasdb/')
+          m=index(wall_path(l+7:256),'/')
+          write(olddir,'(a)')
+     &     wall_path(1:m+l+5)//'_MD'//wall_path(m+l+6:256)
+          uri = 'imas:mdsplus?path='//trim(olddir)
+          call imas_open( uri, OPEN_PULSE, idx, status, message )
+          if (status.eq.0) final_path = trim(uri)
+          ! Revert to AL4 format if file not yet found
+          if (status.ne.0 .and. wall.gt.0 .and. wall_run.ge.0) then
+            md_base = trim(database)//'_MD'
+            call chcase(1, md_base)
+            call imas_open_env( treename, wall, wall_run,
+     &       idx, username, trim(md_base), version, status )
+            final_path = 'imas:mdsplus?user='//trim(username)//
+     &       ';database='//trim(md_base)//';shot='//int2str(wall)//
+     &       ';run='//int2str(wall_run)//';version='//trim(version)
+          end if
+#else
           md_base = trim(database)//'_MD'
           call chcase(1, md_base)
           call imas_open_env( treename, wall, wall_run,
      &     idx, username, trim(md_base), version, status )
+#endif
 #if AL_MAJOR_VERSION > 3
           if (status.eq.0) call ids_get( idx, "wall", vessel, status )
 #else
@@ -230,18 +404,39 @@ c
           if (status.eq.0 .and.
      &        vessel%ids_properties%homogeneous_time .ge. 0) then
             write(*,*) 'Got IDS wall data from: '
+#if AL_MAJOR_VERSION > 4
+            write(*,'(2a)') ' URI : ', trim(final_path)
+#else
             write(*,'(2(a,i8),2(a,a24))')
      .       ' Shot: ', wall, ' Run: ', wall_run,
      .       ' User: ', trim(username),
      .       ' Database: ', trim(md_base)
+#endif
           else if (.not.streql(username,'public')) then
             status = 0
             public = .true.
             call imas_close( idx, status )
             if (status.ne.0) stop 'Error closing IMAS database !'
+#if AL_MAJOR_VERSION > 4
+            l=index(wall_path,'imasdb')
+             uri = 'imas:mdsplus?path='
+     &        //trim(imas_home)//'/shared/imasdb'//wall_path(l+6:256)
+            call imas_open( uri, OPEN_PULSE, idx, status, message )
+            if (status.eq.0) final_path = trim(uri)
+            if (status.ne.0 .and. wall.gt.0 .and. wall_run.ge.0) then
+              if (database.eq.'iter') database = 'ITER'
+              call imas_open_env( treename, wall, wall_run,
+     &         idx, "public", database, version, status )
+              if (status.eq.0)
+     >         final_path = 'imas:mdsplus?user='//'public'//
+     &          ';database='//trim(database)//';shot='//int2str(wall)//
+     &          ';run='//int2str(wall_run)//';version='//trim(version)
+            end if
+#else
             if (database.eq.'iter') database = 'ITER'
             call imas_open_env( treename, wall, wall_run,
      &       idx, "public", database, version, status )
+#endif
 #if AL_MAJOR_VERSION > 3
             if (status.eq.0) call ids_get( idx, "wall", vessel, status )
 #else
@@ -250,15 +445,37 @@ c
             if (status.eq.0 .and.
      &          vessel%ids_properties%homogeneous_time .ge. 0) then
               write(*,*) 'Got IDS wall data from: '
+#if AL_MAJOR_VERSION > 4
+              write(*,'(2a)') ' URI : ', trim(final_path)
+#else
               write(*,'(2(a,i8),2(a,a24))')
      .         ' Shot: ', wall, ' Run: ', wall_run,
      .         ' User: ', 'public', ' Database: ', trim(database)
+#endif
             else
               status = 0
               call imas_close( idx, status )
               if (status.ne.0) stop 'Error closing IMAS database !'
+#if AL_MAJOR_VERSION > 4
+              l=index(uri,'imasdb/')
+              m=index(uri(l+7:len_trim(uri)),'/')
+              write(olddir,'(a)')
+     &         uri(1:m+l+5)//'_MD'//uri(m+l+6:len_trim(uri))
+              uri = trim(olddir)
+              call imas_open( uri, OPEN_PULSE, idx, status, message )
+              if (status.eq.0) final_path = trim(uri)
+              if (status.ne.0 .and. wall.gt.0 .and. wall_run.ge.0) then
+                call imas_open_env( treename, wall, wall_run,
+     &           idx, "public", trim(md_base), version, status )
+                final_path = 'imas:mdsplus?user='//'public'//
+     &           ';database='//trim(md_base)//
+     &           ';shot='//int2str(wall)//';run='//int2str(wall_run)//
+     &           ';version='//trim(version)
+              end if
+#else
               call imas_open_env( treename, wall, wall_run,
      &         idx, "public", trim(md_base), version, status )
+#endif
 #if AL_MAJOR_VERSION > 3
               if (status.eq.0)
      &         call ids_get( idx, "wall", vessel, status )
@@ -268,10 +485,14 @@ c
               if (status.eq.0 .and.
      &            vessel%ids_properties%homogeneous_time .ge. 0) then
                 write(*,*) 'Got IDS wall data from: '
+#if AL_MAJOR_VERSION > 4
+                write(*,'(2a)') ' URI : ', trim(final_path)
+#else
                 write(*,'(2(a,i8),2(a,a24))')
      .           ' Shot: ', wall, ' Run: ', wall_run,
      .           ' User: ', 'public',
      .           ' Database: ', trim(md_base)
+#endif
               else
                 do_wall = .false.
                 write(*,*) 'Error reading wall description IDS !'
@@ -283,9 +504,13 @@ c
           end if
         else
           write(*,*) 'Got IDS wall data from: '
+#if AL_MAJOR_VERSION > 4
+          write(*,'(2a)') ' URI : ', trim(final_path)
+#else
           write(*,'(2(a,i8),2(a,a24))')
      .     ' Shot: ', wall, ' Run: ', wall_run,
      .     ' User: ', trim(username), ' Database: ', trim(database)
+#endif
         end if
       else if (do_wall) then
 #if AL_MAJOR_VERSION > 3
@@ -296,6 +521,9 @@ c
         if (status.eq.0 .and.
      &      vessel%ids_properties%homogeneous_time .ge. 0) then
           write(*,*) 'Got IDS wall data from: '
+#if AL_MAJOR_VERSION > 4
+          write(*,'(2a)') ' URI : ', trim(final_path)
+#else
           if (.not.public) then
             write(*,'(2(a,i8),2(a,a24))')
      .       ' Shot: ', wall, ' Run: ', wall_run,
@@ -305,6 +533,7 @@ c
      .       ' Shot: ', wall, ' Run: ', wall_run,
      .       ' User: ', 'public', ' Database: ', trim(database)
           end if
+#endif
         else
           do_wall = .false.
           write(*,*) 'Error reading wall description IDS !'

@@ -1,5 +1,9 @@
       subroutine wrids(iret,nunits,npts,rwall,zwall,ref_temp,dg_file,
+#if AL_MAJOR_VERSION > 4
+     ,           username,ids_path)
+#else
      ,           treename,shot,run,username,database,version)
+#endif
       use ids_schemas  ! IGNORE
      , , only : ids_wall
 #if ( IMAS_MINOR_VERSION > 8 || IMAS_MAJOR_VERSION > 3 )
@@ -7,21 +11,43 @@
      , , only : ids_real
 #endif
       use ids_routines ! IGNORE
-     , , only : imas_create_env, ids_deallocate, ids_put, imas_close,
-     ,          ual_begin_pulse_action, ual_open_pulse, ual_close_pulse,
-     ,          HDF5_BACKEND, FORCE_OPEN_PULSE, CLOSE_PULSE
+     , , only : ids_deallocate, ids_put, imas_close
+#if ( IMAS_MINOR_VERSION > 39 || IMAS_MAJOR_VERSION > 3 )
+#if AL_MAJOR_VERSION > 4
+      use al_wall_component_identifier              ! IGNORE
+     , , only : wall_component_identifier
+      use al_wall_description_2d_type_identifier    ! IGNORE
+     , , only : wall_description_2d_type_identifier
+#else
+      use imas_wall_component_identifier            ! IGNORE
+     , , only : wall_component_identifier
+      use imas_wall_description_2d_type_identifier  ! IGNORE
+     , , only : wall_description_2d_type_identifier
+#endif
+#endif
+#if AL_MAJOR_VERSION > 4
+      use ids_routines ! IGNORE
+     & , only : imas_open, FORCE_CREATE_PULSE, STRMAXLEN
+#else
+      use ids_routines ! IGNORE
+     & , only : imas_create_env
+#endif
       use eqdim
       implicit none
 #include "git_version_DG.h"
       type (ids_wall) :: vessel   !< IDS designed to store wall data
       character(len=256), intent(in) :: dg_file   !< DG template input file name
       character(len=24), intent(in) :: username   !< Creator/owner of the IMAS IDS database
+#if AL_MAJOR_VERSION > 4
+      character(len=256) :: ids_path   !< The path of the directory where the IDS is written
+#else
       character(len=24), intent(in) :: treename   !< The name of the IMAS IDS database
-      integer, intent(in) :: shot      !< The shot number of the wall IDS being written
+      integer, intent(in) :: shot      !< The pulse (previously shot) number of the wall IDS being written
       integer, intent(in) :: run       !< The run number of the wall IDS being written
       character(len=24), intent(in) :: database   !< IMAS IDS database name
             !< (i. e. solps-iter, ITER, aug)
       character(len=24), intent(in) :: version    !< Major version of the IMAS IDS database
+#endif
       integer, intent(out) :: iret
       real(kind=R8), intent(in) :: rwall(ngpr), zwall(ngpr), ref_temp
       integer, intent(in) :: nunits, npts(ngpr)
@@ -33,6 +59,10 @@
       integer :: idx, i, j, icnt, jcnt, status
 #if ( IMAS_MINOR_VERSION < 9 && IMAS_MAJOR_VERSION < 4 )
       integer, parameter :: IDS_REAL = R8
+#endif
+#if AL_MAJOR_VERSION > 4
+      character(len=:), allocatable :: message
+      character(len=STRMAXLEN) :: uri
 #endif
 #ifndef NO_GETENV
       integer lenval, ierror
@@ -107,10 +137,21 @@ c
       allocate( vessel%description_2d(1) )
       allocate( vessel%description_2d(1)%type%name(1) )
       allocate( vessel%description_2d(1)%type%description(1) )
+#if ( IMAS_MINOR_VERSION > 39 || IMAS_MAJOR_VERSION > 3 )
+      vessel%description_2d(1)%type%index =
+     . wall_description_2d_type_identifier%multiple_units_no_vessel
+      vessel%description_2d(1)%type%name =
+     . wall_description_2d_type_identifier%name(
+     . wall_description_2d_type_identifier%multiple_units_no_vessel )
+      vessel%description_2d(1)%type%description =
+     . wall_description_2d_type_identifier%description(
+     . wall_description_2d_type_identifier%multiple_units_no_vessel )
+#else
       vessel%description_2d(1)%type%index = 2
       vessel%description_2d(1)%type%name = "DG template"
       vessel%description_2d(1)%type%description =
      . "DivGeo template file "//trim(dg_file)
+#endif
       allocate( vessel%description_2d(1)%limiter%type%name(1) )
       allocate( vessel%description_2d(1)%limiter%type%description(1) )
       vessel%description_2d(1)%limiter%type%index = 1
@@ -125,6 +166,20 @@ c
         allocate( vessel%description_2d(1)%limiter%unit(i)%name(1) )
         vessel%description_2d(1)%limiter%unit(i)%name =
      .   "DivGeo structure number "//int2str(i)
+#if ( IMAS_MINOR_VERSION > 39 || IMAS_MAJOR_VERSION > 3 )
+        vessel%description_2d(1)%limiter%unit(i)%component_type%
+     &   index = wall_component_identifier%other
+        allocate( vessel%description_2d(1)%limiter%unit(i)%
+     &   component_type%name(1) )
+        vessel%description_2d(1)%limiter%unit(i)%component_type%
+     &   name = wall_component_identifier%name(
+     &   wall_component_identifier%other )
+        allocate( vessel%description_2d(1)%limiter%unit(i)%
+     &   component_type%description(1) )
+        vessel%description_2d(1)%limiter%unit(i)%component_type%
+     &   description = wall_component_identifier%description(
+     &   wall_component_identifier%other )
+#endif
         jcnt = icnt + npts(i)
 #if IMAS_MAJOR_VERSION < 4
         if (rwall(icnt+1).eq.rwall(jcnt) .and.
@@ -175,9 +230,18 @@ c
       end do
 
       !! Create and modify new wall IDS
+#if AL_MAJOR_VERSION > 4
+      uri = 'imas:mdsplus?path='//trim(ids_path)
+      call imas_open( uri, FORCE_CREATE_PULSE, idx, status, message )
+      if (status.ne.0) then
+        write(0,*) trim(message)
+        stop
+      end if
+#else
       call imas_create_env( treename, shot, run,
      & 0, 0, idx, username, database, version, status )
       if (status.ne.0) stop 'Error opening IMAS database !'
+#endif
 
 #if AL_MAJOR_VERSION > 3
       call ids_put( idx, "wall", vessel, status )
@@ -186,7 +250,7 @@ c
       call ids_put( idx, "wall", vessel )
 #endif
       call ids_deallocate( vessel )
-      call ual_close_pulse( idx, CLOSE_PULSE, '', status )
+      call imas_close( idx, status )
       if (status.ne.0) stop 'Error closing IMAS database !'
 
       write(0,*) "Wall IDS write finished"
