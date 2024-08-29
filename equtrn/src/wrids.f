@@ -95,8 +95,16 @@ c
 #if ( IMAS_MINOR_VERSION > 14 || IMAS_MAJOR_VERSION > 3 )
 #if ( IMAS_MINOR_VERSION > 33 || IMAS_MAJOR_VERSION > 3 )
       allocate( vessel%ids_properties%provenance%node(1) )
+#if ( IMAS_MINOR_VERSION > 41 || IMAS_MAJOR_VERSION > 3 )
+      allocate( vessel%ids_properties%provenance%node(1)%reference(1) )
+      allocate(
+     . vessel%ids_properties%provenance%node(1)%reference(1)%name(1) )
+      vessel%ids_properties%provenance%node(1)%reference(1)%name(1) =
+     . dg_file
+#else
       allocate( vessel%ids_properties%provenance%node(1)%sources(1) )
       vessel%ids_properties%provenance%node(1)%sources(1) = dg_file
+#endif
 #else
       allocate( vessel%ids_properties%source(1) )
       vessel%ids_properties%source = dg_file
