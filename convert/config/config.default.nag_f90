@@ -3,7 +3,7 @@ ifndef LD_MSCL
   $(error LD_MSCL not defined)
 endif
 
-FC     ?= nagfor
+FC      = nagfor
 ifdef SOLPS_DEBUG
 FFLAGS  = -g -C
 else

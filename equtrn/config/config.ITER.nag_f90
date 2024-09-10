@@ -1,7 +1,7 @@
 # check if necessary variables are correctly defined
 LD_MSCL ?= `pkg-config mscl --libs`
 
-FC      ?= nagfor
+FC       = nagfor
 ifdef SOLPS_DEBUG
 FFLAGS   = -g
 else
