@@ -4,7 +4,6 @@ ifndef MSCL_ROOT
 endif
 LD_MSCL ?= -L{MSCL_ROOT} -lmscl
 
-FC      ?= ifort
 CPP      = /lib/cpp -traditional
 
 #!!!Local Variables:
