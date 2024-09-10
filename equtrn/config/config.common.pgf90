@@ -1,4 +1,6 @@
-FC      ?= pgf90
+ifeq (${FC},f77)
+FC       = pgf90
+endif
 ifdef SOLPS_DEBUG
 FFLAGS  += -g
 else

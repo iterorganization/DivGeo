@@ -1,3 +1,6 @@
+ifeq (${FC},f77)
+FC = gfortran
+endif
 ifdef SOLPS_DEBUG
 FFLAGS  += -g -ffpe-trap=denormal -ffpe-trap=invalid -ffpe-trap=zero -ftrapv -fsignaling-nans
 endif
