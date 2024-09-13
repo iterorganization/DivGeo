@@ -13,6 +13,7 @@ ifdef SOLPS_CPP
   ifeq ($(shell `pkg-config --exists fundamental-constants`; echo $$?),0)
     DEFINES += -DCONSTANTS_PROVIDED
     IMAS_PKG_LIST = fundamental-constants
+    INCLUDE += `pkg-config fundamental-constants --cflags`
   endif
 endif
 
