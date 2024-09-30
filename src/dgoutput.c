@@ -962,7 +962,7 @@ int CheckVar(App a,Group* pgObjects,VarDef vd,VarSet vs,int* pErr) {
   if (pErr!=NULL) *pErr=0;
 
   if (!(vd->flags & VFM_MULTIPLE)) {
-    if (e=CheckValue(a,GetVar(vs,vd,NULL),vd->varType,&obj)) {
+    if ((e=CheckValue(a,GetVar(vs,vd,NULL),vd->varType,&obj))) {
       if (!err) err=e;
       if (err!=e) err=ERR_MULTIPLEERRORS;
       if (pgObjects!=NULL) if (obj!=NULL) GroupAdd(*pgObjects,obj);
@@ -972,7 +972,7 @@ int CheckVar(App a,Group* pgObjects,VarDef vd,VarSet vs,int* pErr) {
 
   if (vd->flags & VF_FORELEMS) {
     for (obj=AppElem1st(a,&ix);obj!=NULL;obj=Next(&ix)) {
-      if (e=CheckValue(a,GetVar(obj,vd,vs),vd->varType,NULL)) {
+      if ((e=CheckValue(a,GetVar(obj,vd,vs),vd->varType,NULL))) {
         if (!err) err=e;
         if (err!=e) err=ERR_MULTIPLEERRORS;
         if (pgObjects!=NULL) GroupAdd(*pgObjects,obj);
@@ -983,7 +983,7 @@ int CheckVar(App a,Group* pgObjects,VarDef vd,VarSet vs,int* pErr) {
 
   if (vd->flags & VF_FORSEPARATORS) {
     for (obj=AppSeparator1st(a,&ix);obj!=NULL;obj=Next(&ix)) {
-      if (e=CheckValue(a,GetVar(obj,vd,vs),vd->varType,NULL)) {
+      if ((e=CheckValue(a,GetVar(obj,vd,vs),vd->varType,NULL))) {
         if (!err) err=e;
         if (err!=e) err=ERR_MULTIPLEERRORS;
         if (pgObjects!=NULL) GroupAdd(*pgObjects,obj);
@@ -994,7 +994,7 @@ int CheckVar(App a,Group* pgObjects,VarDef vd,VarSet vs,int* pErr) {
 
   if (vd->flags & VF_FORSOURCES) {
     for (obj=AppSource1st(a,&ix);obj!=NULL;obj=Next(&ix)) {
-      if (e=CheckValue(a,GetVar(obj,vd,vs),vd->varType,NULL)) {
+      if ((e=CheckValue(a,GetVar(obj,vd,vs),vd->varType,NULL))) {
         if (!err) err=e;
         if (err!=e) err=ERR_MULTIPLEERRORS;
         if (pgObjects!=NULL) GroupAdd(*pgObjects,obj);

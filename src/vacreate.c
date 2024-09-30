@@ -114,7 +114,7 @@ static ArgList MakeVaArgList(va_list* pvl,int* pN) {
   String p0;
   XtArgVal p1;
 
-  memset(&a, sizeof(a), 0);
+  memset(&a, (int)sizeof(a), (0));
 
 #ifdef DEBUG_SETVALUES
   puts("MakeVaArgList");                /* relcheck_ignore_line */
