@@ -1,5 +1,5 @@
 LIBS = -lXm -lXt -lX11 -lXext -lXmuu -lXp -lXft -lpthread -lm
-CFLAGS = -g
+CFLAGS = -g -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast
 
 #!!!Local Variables:
 #!!! mode: Makefile
