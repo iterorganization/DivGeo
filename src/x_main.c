@@ -9,9 +9,9 @@ XApp xap;
 App a;
 View w=NULL;
 
-int AAmain(int argc,char** argv);
+void AAmain(int argc,char** argv);
 
-int AAmain(int argc,char** argv) {
+void AAmain(int argc,char** argv) {
 if (getchar()!='\n') {
   a=CreateApp();
   assert(AddEquil(a,"i.eq")==0);

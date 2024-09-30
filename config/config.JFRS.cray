@@ -1,6 +1,5 @@
 LIBS = -lXm -lXt -lX11 -lXext -lXmuu -lXp -lXft -lpthread -lm -dynamic
 CFLAGS = -g
-CC = cc
 
 #!!!Local Variables:
 #!!! mode: Makefile
