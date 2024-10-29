@@ -4,11 +4,11 @@ This file should not be modified manually.
 
 DG version:             2.11a
 File format version:    115
-Creation time:          Fri Aug 18 08:13:08 2023
-Last Modified time:     Fri Aug 18 08:20:18 2023
+Creation time:          Tue Oct 29 14:16:58 2024
+Last Modified time:     Tue Oct 29 14:22:21 2024
 
-Original filename:      /home/ITER/bonninx/SOLPS-ITER_ExtendedGrids/dg.dgc
-GIT version:            3.0.8-66-g08e73d0
+Original filename:      /vsc-hard-mounts/leuven-data/307/vsc30760/SOLPS/solps-iter-wg-workflow/modules/DivGeo/dg.dgc
+GIT version:            3.0.8-103-g2ff197a
 Radial cells:           1SOL 0OSR 0TPF 0OSL 0BPF 0Core 
 
 ------------------------------------------------------------------------
@@ -2734,20 +2734,6 @@ the Carre2 operating mode and input parameters.
 Text +n-m-S-s-h-i 0 0
 EnumText102
 text101 0
-crr_mode
-carreMode
-text101 8
-This variable specifies the carre operating mode.
-
-0: Standard algorithm (default).
-
-1: Standard algorithm, but including automated generation of addition virtual structures for target or vessel mode grids.
-   Requires gridExtensionMode 1 (for preprocessing of target mode grids) or 2 (for preprocessing of vessel mode grids). 
-
-2: Cut-cell algorithm. Required for target and vessel mode grids.
-Int -n-m-S-s-h-i 0 1
-EnumText102
-text101 0
 grd_mode
 gridExtensionMode
 text101 5
@@ -2793,14 +2779,30 @@ Parameter defining the minimal poloidal spacing between grid lines.
 Float -n-m-S-s-h-i 0 6
 EnumText102
 text101 0
+crr_mode
+carreMode
+text101 10
+This variable specifies the carre operating mode.
+
+0: Standard algorithm (default).
+
+1: Standard algorithm, but including automated generation of addition virtual structures for target or vessel mode grids.
+   Requires gridExtensionMode 1 (for preprocessing of target mode grids) or 2 (for preprocessing of vessel mode grids). 
+
+2: Cut-cell algorithm (original version). For target and vessel mode grids.
+
+3: Cut-cell algorithm (modified). Recommended option for target and vessel mode grids. Avoids further splitting of base grid cells.
+Int -n-m-S-s-h-i 0 1
+EnumText102
+text101 0
 Vars110 7
 Click ? for help
-0
 0
 0
 0.01
 0
 0.001
+0
 vss_spcf
 Vessel specification
 text101 0
@@ -3113,9 +3115,9 @@ Vars110 7
 Click ? for help
 0
 0
-0
 0.01
 0.001
+0
 40
 Vars110 3
 Click ? for help
@@ -3158,9 +3160,9 @@ Click ? for help
 0
 MaxElemId101 0
 CreaTime101
-Fri Aug 18 08:13:08 2023
+Tue Oct 29 14:16:58 2024
 TopoName114 *
 OutputMode109 Carre
 OutputFlags111 -V-S-T-s-g-c
 MeshSlidingOptions112 Surfaces 1.000000e+00 1
-ViewAttr115 -8.575926e+00 -6.193724e+00 8.575926e+00 6.193724e+00 0.000000e+00 -X+G+e-N-0-n+r-T-E-s+p-g-S-c-h+-+=+x-m+4-t-v+3
+ViewAttr115 -3.119200e+01 -1.267175e+01 3.119200e+01 1.267175e+01 0.000000e+00 -X+G+e-N-0-n+r-T-E-s+p-g-S-c-h+-+=+x-m+4-t-v+3
