@@ -1,4 +1,4 @@
-FC      = pgf90
+FC     ?= pgf90
 ifndef SOLPS_CPP
 FFLAGS += -Mnorpath
 endif

@@ -1,7 +1,7 @@
 # check if necessary variables are correctly defined
 LD_MSCL ?= -L${SOLPSLIB} -lmscl
 
-FC       = ftn
+FC      ?= ftn
 ifdef SOLPS_DEBUG
 FFLAGS   = -O0 -fpe0
 endif

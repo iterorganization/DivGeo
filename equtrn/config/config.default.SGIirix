@@ -25,7 +25,7 @@ ifdef IMAS_PKG_LIST
 endif
 
 LDLIBS   = ${LD_MSCL} -L/afs/ipp-garching.mpg.de/@sys/lib -L/usr/local/lib -L/usr/lpp/xlC/lib
-LDFLAGS  = ${LD_NAG} -lslap -lmach -lblas -lxersla ${LD_SONNET} -lnagblas -lC -ldumsgi
+LDFLAGS  = ${LD_NAG} -lslap -lmach -lblas -lxersla -lnagblas -lC -ldumsgi
 LDEXTRA  =
 
 # LDUMLIB = -lnagblas -lC
