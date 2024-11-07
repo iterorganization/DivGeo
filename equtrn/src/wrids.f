@@ -42,7 +42,7 @@
       character(len=256) :: ids_path   !< The path of the directory where the IDS is written
 #else
       character(len=24), intent(in) :: treename   !< The name of the IMAS IDS database
-      integer, intent(in) :: shot      !< The shot number of the wall IDS being written
+      integer, intent(in) :: shot      !< The pulse (previously shot) number of the wall IDS being written
       integer, intent(in) :: run       !< The run number of the wall IDS being written
       character(len=24), intent(in) :: database   !< IMAS IDS database name
             !< (i. e. solps-iter, ITER, aug)
