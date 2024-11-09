@@ -3,6 +3,11 @@ ifndef LD_MSCL
   $(error LD_MSCL not defined)
 endif
 
+ifdef SOLPS_DEBUG
+FFLAGS   = -fcheck=all -fbacktrace
+else
+FFLAGS   = -O
+endif
 CPP      = /lib/cpp -traditional
 
 #!!!Local Variables:
