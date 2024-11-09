@@ -679,7 +679,7 @@ View CreateXmView(XApp xap,App app) {
     /* Printing Window ID and Process ID */
     Window x11w;
     x11w = XtWindow(w->x->wShell);
-    fprintf(stdout, "DivGeo WID: %ld\nDivGeo PID: %ld\n", x11w, getpid());
+    fprintf(stdout, "DivGeo WID: %ld\nDivGeo PID: %d\n", x11w, getpid());
     fflush(stdout);
   }
 

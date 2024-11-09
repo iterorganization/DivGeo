@@ -1,4 +1,6 @@
+ifeq (${FC},f77)
 FC       = pgf90
+endif
 ifdef SOLPS_DEBUG
 FFLAGS  += -g
 else
@@ -18,6 +20,7 @@ LDFLAGS  =
 ifndef SOLPS_CPP
   ifeq ($(shell `pkg-config --exists fundamental-constants`; echo $$?),0)
     DEFINES += -DCONSTANTS_PROVIDED
+    INCLUDE += `pkg-config fundamental-constants --cflags`
     IMAS_PKG_LIST = fundamental-constants
   endif
   ifdef IMAS_VERSION
@@ -75,7 +78,7 @@ ifndef SOLPS_CPP
       endif
     endif
     LD_AL := `pkg-config ${IMAS_PKG_LIST} --libs`
-    ifdef LD_GDD
+    ifdef LD_GGD
       LD_AL += ${LD_GGD}
     endif
     DEFINES += -DIMAS -DAL_MAJOR_VERSION=${AL_MAJOR_VERSION} -DAL_MINOR_VERSION=${AL_MINOR_VERSION} -DAL_MICRO_VERSION=${AL_MICRO_VERSION} -DIMAS_MAJOR_VERSION=${IMAS_MAJOR_VERSION} -DIMAS_MINOR_VERSION=${IMAS_MINOR_VERSION} -DIMAS_MICRO_VERSION=${IMAS_MICRO_VERSION} -DGGD_MAJOR_VERSION=${GGD_MAJOR_VERSION} -DGGD_MINOR_VERSION=${GGD_MINOR_VERSION} -DGGD_MICRO_VERSION=${GGD_MICRO_VERSION}

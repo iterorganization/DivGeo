@@ -45,6 +45,7 @@ OBJDIR = ${PWD}/builds/${HOST_NAME}.${COMPILER}${EXT_DEBUG}
 
 VPATH = src
 INCLUDE = -I../src
+INCMODS += -I${OBJDIR}
 FINCLUDE =
 ifeq ($(shell [ -d ${FLUSH}/source/default/commons ] && echo yes || echo no ),yes)
 FINCLUDE += -I${FLUSH}/source/default/commons
@@ -170,7 +171,7 @@ IDSDG = $(idsdg:%.o=$(OBJDIR)/%.o)
 DGIDS = $(dgids:%.o=$(OBJDIR)/%.o)
 
 $(OBJDIR)/%.mod : %.f90
-	${CPP} ${DEFINES} -P ${INCLUDE} $< > ${OBJDIR}/$*.f90
+	${CPP} ${DEFINES} -P ${SOLPSINCLUDE} ${INCLUDE} $< > ${OBJDIR}/$*.f90
 	$(COMPILE) ${INCMODS} ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f90 ${FINCLUDE}
 	@if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
 	@if [ -f ${OBJDIR}/$*.o ]; then touch ${OBJDIR}/$*.o; fi
@@ -178,7 +179,7 @@ $(OBJDIR)/%.mod : %.f90
 	@if [ -f ${OBJDIR}/$*.mod ]; then touch ${OBJDIR}/$*.mod; fi
 
 $(OBJDIR)/%.o : %.f90
-	${CPP} ${DEFINES} -P ${INCLUDE} $< > ${OBJDIR}/$*.f90
+	${CPP} ${DEFINES} -P ${SOLPSINCLUDE} ${INCLUDE} $< > ${OBJDIR}/$*.f90
 	$(COMPILE) ${INCMODS} ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f90 ${FINCLUDE}
 	@if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
 	@if [ -f ${OBJDIR}/$*.o ]; then touch ${OBJDIR}/$*.o; fi
@@ -186,7 +187,7 @@ $(OBJDIR)/%.o : %.f90
 	@if [ -f ${OBJDIR}/$*.mod ]; then touch ${OBJDIR}/$*.mod; fi
 
 $(OBJDIR)/%.o : %.f
-	${CPP} ${DEFINES} -P ${INCLUDE} $< > ${OBJDIR}/$*.f
+	${CPP} ${DEFINES} -P ${SOLPSINCLUDE} ${INCLUDE} $< > ${OBJDIR}/$*.f
 	$(COMPILE) ${INCMODS} ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f ${FINCLUDE}
 	@if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
 
