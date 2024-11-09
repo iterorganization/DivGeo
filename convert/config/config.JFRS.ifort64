@@ -3,10 +3,10 @@ LD_MSCL ?= -L${SOLPSLIB} -lmscl
 
 FC       = ftn
 ifdef SOLPS_DEBUG
-FFLAGS  = -O0 -fpe0
+FFLAGS   = -O0 -fpe0
 endif
 
-CPP     = /lib/cpp -C -traditional
+CPP      = /lib/cpp -C -traditional
 
 #!!!Local Variables:
 #!!! mode: Makefile
