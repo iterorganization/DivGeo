@@ -43,6 +43,7 @@ endif
 
 OBJDIR = ${PWD}/builds/${HOST_NAME}.${COMPILER}${EXT_DEBUG}
 
+SRCDIR = ${PWD}/src
 VPATH = src
 INCLUDE = -I../src
 INCMODS += -I${OBJDIR}
@@ -99,31 +100,33 @@ ifdef IMAS_VERSION
 ALL += ${PROG_ids2dg} ${PROG_dg2ids}
 endif
 
-creq = cropequ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o eqdim.o
-dgdg = dg2dg.o rdeqdg.o wreqdg.o rdeqlh.o double.o open_files.o eqdim.o
-dgminuspsidg = dg_minuspsi_dg.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o eqdim.o
-dgef = dg2ef.o rdeqdg.o wrefit.o rdeqlh.o open_files.o eqdim.o
-efdg = ef2dg.o wreqdg.o rdefit.o open_files.o eqdim.o
-fiestadg = fiesta2dg.o wreqdg.o rdfiesta.o open_files.o eqdim.o
-crdg = cr2dg.o wreqdg.o rdcreate.o open_files.o eqdim.o
-vrdg = vr2dg.o wreqdg.o rdeqvr.o open_files.o eqdim.o
-nkdg = nk2dg.o wreqdg.o rdeqnk.o open_files.o eqdim.o
-nkndg = nkn2dg.o wreqdg.o rdeqnk2.o eqdim.o
-jtdg = jt2dg.o rdeqjt.o wreqdg.o rdeqjh.o open_files.o eqdim.o
-dgvr = dg2vr.o rdeqdg.o wreqvr.o rdeqlh.o open_files.o eqdim.o
-rsps = risepsi.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o eqdim.o
-mveq = move_equ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o eqdim.o
-preq = prinequ.o rdeqdg.o rdeqlh.o eqdim.o
-pbdg = pb2dg.o rdeqpb.o wreqdg.o open_files.o eqdim.o
-ptdg = pt2dg.o eqdim.o
-culham = culham.o rdefit.o wreqdg.o open_files.o double.o eqdim.o
-sstdg = sst2dg.o wreqdg.o open_files.o eqdim.o
-shotfile2dg = shotfile2dg.o wreqdg.o eqdim.o
-jetppf2dg = jetppf2dg.o wreqdg.o eqdim.o
-dgsymmdg = dg_symm_dg.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o eqdim.o
-dgcut = dgcut.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o eqdim.o
-idsdg = ids2dg.o rdids.o wreqdg.o wrtrdg.o chcase.o streql.o usrnam.o eqdim.o
-dgids = dg2ids.o rdtrg.o wrids.o streql.o usrnam.o eqdim.o
+EQDIMOBJ = eqdim.o eqdim_constants.o
+
+creq = cropequ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o ${EQDIMOBJ}
+dgdg = dg2dg.o rdeqdg.o wreqdg.o rdeqlh.o double.o open_files.o ${EQDIMOBJ}
+dgminuspsidg = dg_minuspsi_dg.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o ${EQDIMOBJ}
+dgef = dg2ef.o rdeqdg.o wrefit.o rdeqlh.o open_files.o ${EQDIMOBJ}
+efdg = ef2dg.o wreqdg.o rdefit.o open_files.o ${EQDIMOBJ}
+fiestadg = fiesta2dg.o wreqdg.o rdfiesta.o open_files.o ${EQDIMOBJ}
+crdg = cr2dg.o wreqdg.o rdcreate.o open_files.o ${EQDIMOBJ}
+vrdg = vr2dg.o wreqdg.o rdeqvr.o open_files.o ${EQDIMOBJ}
+nkdg = nk2dg.o wreqdg.o rdeqnk.o open_files.o ${EQDIMOBJ}
+nkndg = nkn2dg.o wreqdg.o rdeqnk2.o ${EQDIMOBJ}
+jtdg = jt2dg.o rdeqjt.o wreqdg.o rdeqjh.o open_files.o ${EQDIMOBJ}
+dgvr = dg2vr.o rdeqdg.o wreqvr.o rdeqlh.o open_files.o ${EQDIMOBJ}
+rsps = risepsi.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o ${EQDIMOBJ}
+mveq = move_equ.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o ${EQDIMOBJ}
+preq = prinequ.o rdeqdg.o rdeqlh.o ${EQDIMOBJ}
+pbdg = pb2dg.o rdeqpb.o wreqdg.o open_files.o ${EQDIMOBJ}
+ptdg = pt2dg.o ${EQDIMOBJ}
+culham = culham.o rdefit.o wreqdg.o open_files.o double.o ${EQDIMOBJ}
+sstdg = sst2dg.o wreqdg.o open_files.o ${EQDIMOBJ}
+shotfile2dg = shotfile2dg.o wreqdg.o ${EQDIMOBJ}
+jetppf2dg = jetppf2dg.o wreqdg.o ${EQDIMOBJ}
+dgsymmdg = dg_symm_dg.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o ${EQDIMOBJ}
+dgcut = dgcut.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o ${EQDIMOBJ}
+idsdg = ids2dg.o rdids.o wreqdg.o wrtrdg.o chcase.o streql.o usrnam.o ${EQDIMOBJ}
+dgids = dg2ids.o rdtrg.o wrids.o streql.o usrnam.o ${EQDIMOBJ}
 
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
 include config/config.${HOST_NAME}.${COMPILER}
@@ -170,6 +173,8 @@ DGCUT = $(dgcut:%.o=$(OBJDIR)/%.o)
 IDSDG = $(idsdg:%.o=$(OBJDIR)/%.o)
 DGIDS = $(dgids:%.o=$(OBJDIR)/%.o)
 
+MODLISTF90 = ${SRCDIR}/*.f90
+
 $(OBJDIR)/%.mod : %.f90
 	${CPP} ${DEFINES} -P ${SOLPSINCLUDE} ${INCLUDE} $< > ${OBJDIR}/$*.f90
 	$(COMPILE) ${INCMODS} ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f90 ${FINCLUDE}
@@ -180,6 +185,7 @@ $(OBJDIR)/%.mod : %.f90
 
 $(OBJDIR)/%.o : %.f90
 	${CPP} ${DEFINES} -P ${SOLPSINCLUDE} ${INCLUDE} $< > ${OBJDIR}/$*.f90
+	sleep 1
 	$(COMPILE) ${INCMODS} ${FFLAGSEXTRA} -o ${OBJDIR}/$*.o ${OBJDIR}/$*.f90 ${FINCLUDE}
 	@if [ -f $*.o ]; then /bin/mv $*.o ${OBJDIR}; fi
 	@if [ -f ${OBJDIR}/$*.o ]; then touch ${OBJDIR}/$*.o; fi
@@ -284,15 +290,26 @@ tags:
 	rm -f TAGS ; ${MAKETAGS} TAGS src/*.f src/*.f90 src/*.inc || touch TAGS
 
 depend: ${OBJS:.o=.f} ${OBJS90:.o=.f90}
-	@makedepend -f- ${INCLUDE} $^ | \
+	@makedepend ${DEFINES} -f- ${SOLPSINCLUDE} ${INCLUDE} $^ | \
 	sed -e '3,$$s|^src/|${OBJDIR}/|' | \
 	sed -e 's,^${OBJDIR}/,\$${OBJDIR}/,' | \
 	sed -e 's,: ${SOLPSTOP},: $${SOLPSTOP},' > ${OBJDIR}/dependencies
-	@egrep -aiH '^ {6,}use ' $^ | grep -v 'IGNORE' | tr , ' '  | \
-	awk '{sub("\\.f:",".o:",$$1);sub("^.*/","$${OBJDIR}/",$$1); print $$1,"$${OBJDIR}/"tolower($$3)".mod"}' | \
+	@echo '#1 ' >> ${OBJDIR}/dependencies
+	@egrep -aiH '^ {0,}use ' $^ | grep -v 'IGNORE' | tr , ' '  | \
+	awk '{sub("\\.f:",".o:",$$1);sub("\\.f90:",".o:",$$1);sub("^.*/","$${OBJDIR}/",$$1); print $$1,"$${OBJDIR}/"tolower($$3)".mod"}' | \
 	sed -e 's|^src/|${OBJDIR}/|' | \
 	sed -e 's,^${OBJDIR}/,\$${OBJDIR}/,' | \
 	sed -e 's,: ${SOLPSTOP},: $${SOLPSTOP},' >> ${OBJDIR}/dependencies
+ifeq ($(shell `pkg-config --exists fundamental-constants`; echo $$?),0)
+ifneq (${MOD},o)
+	@echo '#2 ' >> ${OBJDIR}/dependencies
+	@egrep -aiH '^ {0,}use ' ${MODLISTF90} | grep -v 'IGNORE' | tr , ' ' | \
+	awk '{sub("\\.f90:",".${MOD}:",$$1);sub("^.*/","$${OBJDIR}/",$$1); print $$1,"$${OBJDIR}/"tolower($$3)".${MOD}"}' | \
+	sed -e 's|^src/|${OBJDIR}/|' | \
+	sed -e 's,^${OBJDIR}/,\$${OBJDIR}/,' | \
+	sed -e 's,: ${SOLPSTOP},: $${SOLPSTOP},' >> ${OBJDIR}/dependencies
+endif
+endif
 
 ${OBJDIR}/LISTOBJ: listobj
 

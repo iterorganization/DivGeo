@@ -98,6 +98,9 @@ endif
 
 INCMODS += -I${OBJDIR}
 
+MOD = mod
+
+
 #!!!Local Variables:
 #!!! mode: Makefile
 #!!! End:
