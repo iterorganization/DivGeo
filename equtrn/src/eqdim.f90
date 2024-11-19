@@ -1,10 +1,7 @@
 
-#ifdef CONSTANTS_PROVIDED
-include 'mathematical_constants.f90'              ! IGNORE
-#endif
-
   module eqdim
 #ifdef CONSTANTS_PROVIDED
+  use eqdim_constants
   use mathematical_constants, only: PI => M_PI    ! IGNORE
 #elif ( defined(IMAS) && ( IMAS_MINOR_VERSION < 35 && IMAS_MAJOR_VERSION < 4 ) )
   use imas_constants_module, only: imas_constants ! IGNORE

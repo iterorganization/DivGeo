@@ -25,6 +25,8 @@ ifdef IMAS_PKG_LIST
   INCMODS += `pkg-config ${IMAS_PKG_LIST} --cflags`
 endif
 
+MOD = mod
+
 LDLIBS   = ${LD_MSCL} -L/afs/ipp-garching.mpg.de/@sys/lib -L/usr/local/lib -L/usr/lpp/xlC/lib
 LDFLAGS  = ${LD_NAG} -lslap -lmach -lblas -lxersla -lnagblas -lC -ldumsgi
 LDEXTRA  =

@@ -98,6 +98,8 @@ ifdef IMAS_PKG_LIST
   endif
 endif
 
+MOD = mod
+
 
 #!!!Local Variables:
 #!!! mode: Makefile
