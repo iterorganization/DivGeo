@@ -24,6 +24,8 @@ ifdef IMAS_PKG_LIST
   INCMODS += `pkg-config ${IMAS_PKG_LIST} --cflags`
 endif
 
+MOD = mod
+
 LDLIBS   = ${LD_MSCL}
 LDFLAGS  = 
 

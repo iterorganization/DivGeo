@@ -91,6 +91,8 @@ ifdef IMAS_PKG_LIST
   INCMODS += `pkg-config ${IMAS_PKG_LIST} --cflags`
 endif
 
+MOD = mod
+
 INCMODS += -I${OBJDIR}
 
 #!!!Local Variables:
