@@ -627,7 +627,7 @@ static void InitSZFromZone(TopologyDlg dlg,SurfaceZone sz) {
   if (sz!=NULL) SetOptionMenuValue(dlg->wSZorient,(XtPointer)sz->orient);
 
   if (sz!=NULL)
-    XmToggleButtonSetState(dlg->wSZClosed,sz->flags & SZF_LIMITBYSURFACE!=0,0);
+    XmToggleButtonSetState(dlg->wSZClosed,((sz->flags) & (SZF_LIMITBYSURFACE!=0)),0);
 }
 
 static void DwTopoDlg(Widget wg,View w,int ev,void* obj,void* pDlg) {
