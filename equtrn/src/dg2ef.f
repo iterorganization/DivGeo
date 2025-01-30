@@ -15,7 +15,7 @@ c*** Translation of dg compatible equilibrium data into efit format
 c=====================================================
       use eqdim
       implicit none
-      integer i, j, ia, ja
+      integer i, j, ia, ja, idum(1)
       integer iret, nr, nz, ipestg
       real(kind=R8) :: fg(ngpr),pg(ngpr),ffg(ngpr),ppg(ngpr)
       real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
@@ -23,9 +23,6 @@ c=====================================================
      ,  psimin,psilim,btorc
       real(kind=R8) :: u
       character title*40, date*9
-      integer lvdmin
-      real(kind=R8) :: vmin
-      external vmin, lvdmin
       data title/'Conversion from the dg format'/
 c=====================================================
 c
@@ -50,11 +47,12 @@ c
       psilim=0.
       psimin=1.e30
       do 100 j=nz,1,-1
-          u=vmin(pfm(1,j),nr)
+          u=minval(pfm(1:nr,j))
           if(u.lt.psimin) then
               psimin=u
               ja=j
-              ia=lvdmin(pfm(1,j),nr)
+              idum=minloc(pfm(1:nr,j))
+              ia=idum(1)
           end if
  100  continue
       redge=rgr(1)
@@ -63,7 +61,6 @@ c
       zmsmid=0.5*(zgr(nz)+zgr(1))
       rma=float(ia)/(nr-1)*rdim+redge
       zma=(float(ja)-(nz+1)/2)/(nz-1)*zdim
-
 c
       call wrefit(2,iret,title,date,ipestg,nr,nz,
      ,           rdim,zdim,zmsmid,rcntc,redge,rma,zma,psimin,psilim,
