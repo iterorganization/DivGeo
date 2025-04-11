@@ -684,10 +684,12 @@ text101 0
 VarDefs102 2
 segmlist
 List of elements
-text101 3
-Structure used in calculation of
-radiation shadowing in b2plot.
+text101 5
+Structure used in calculation of radiation shadowing in b2plot.
 Must be continuous and closed.
+All elements must have their surface normals pointing AWAY from the plasma.
+If it contains elements with a non-zero Carre2 face label index,
+all the elements with that index must be included.
 Elems -n-m-S-s-h-i 0 1
 EnumText102
 text101 0
