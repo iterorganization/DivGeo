@@ -252,7 +252,8 @@ c
         l=index(imasdir,trim(run_user))
         m=index(imasdir(l+len_trim(run_user):256),'/')
         write(imasdir,'(a)')
-     .   imasdir(1:l)//trim(username)//trim(imasdir(m+l:256))
+     .   imasdir(1:l-1)//trim(username)//
+     .   trim(imasdir(m+l+len_trim(run_user)-1:256))
       end if
       if (index(imasdir,'imasdb/'//trim(database)).eq.0) then
         l=index(imasdir,'imasdb/')
