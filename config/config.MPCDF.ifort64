@@ -1,7 +1,8 @@
-#LIBS = -lXm -lXt -lX11 -lXext -lXmuu -lXp -lXft -lpthread -lm
-LIBS = -lXm -lXt -lX11 -lXext -lXmuu -lXft -lpthread -lm
+LIBS = -lXm -lXt -lX11 -lXext -lXmuu -lXft -lpthread -lm -L/usr/lib
 
 #!!!Local Variables:
 #!!! mode: Makefile
 #!!! End:
+
+
 
