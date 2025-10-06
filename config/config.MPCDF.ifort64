@@ -4,5 +4,3 @@ LIBS = -lXm -lXt -lX11 -lXext -lXmuu -lXft -lpthread -lm
 #!!! mode: Makefile
 #!!! End:
 
-
-
