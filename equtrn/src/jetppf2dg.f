@@ -203,7 +203,7 @@ c         PSI(I,J)=PSI(I,J)*TWOPI
 c       ENDDO
 c     ENDDO
 C
-C.. Ouput
+C.. Output
 C
       rcntc=xp0/1d2
       btorc=bt/1d4
