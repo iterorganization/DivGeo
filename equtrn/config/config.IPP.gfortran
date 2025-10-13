@@ -1,0 +1,14 @@
+ifdef SOLPS_DEBUG
+FFLAGS   = -fcheck=all -fbacktrace
+else
+FFLAGS   = -O
+endif
+CPP      = /lib/cpp -traditional
+
+AUGEXP = /shares/software/aug-dv/moduledata/ads/Linux-generic-x86_64/lib64
+LDWOS   = -L${AUGEXP} -Wl,-R${AUGEXP} -lkk8 -lddww8
+
+#!!!Local Variables:
+#!!! mode: Makefile
+#!!! End:
+
