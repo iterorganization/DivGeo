@@ -17,8 +17,7 @@
      , , only : set_wall_component_identifier => set_identifier
       use al_wall_description_2d_type_identifier    ! IGNORE
      , , only : set_wall_description_identifier => set_identifier
-#endif
-#if ( IMAS_MINOR_VERSION > 39 || IMAS_MAJOR_VERSION > 3 )
+#elif ( IMAS_MINOR_VERSION > 39 || IMAS_MAJOR_VERSION > 3 )
 #if AL_MAJOR_VERSION > 4
       use al_wall_component_identifier              ! IGNORE
      , , only : wall_component_identifier
