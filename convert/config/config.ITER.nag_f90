@@ -1,5 +1,5 @@
 # check if necessary variables are correctly defined
-LD_MSCL ?= `pkg-config mscl --libs`
+LD_MSCL ?= $(shell pkg-config mscl --libs)
 
 FC       = nagfor
 ifdef SOLPS_DEBUG

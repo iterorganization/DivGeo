@@ -1,6 +1,6 @@
 # check if necessary variables are correctly defined
 MSCL_ROOT ?= ${EBROOTMSCL}
-LD_MSCL   ?= `pkg-config mscl --libs`
+LD_MSCL   ?= $(shell pkg-config mscl --libs)
 
 CPP        = /lib/cpp -C -traditional -ffreestanding
 

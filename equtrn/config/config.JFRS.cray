@@ -16,10 +16,11 @@ DEFINES  = ${SOLPS_CPP}
 endif
 ifeq ($(shell `pkg-config --exists fundamental-constants`; echo $$?),0)
 ifndef SOLPS_CPP
-DEFINES += -DCONSTANTS_PROVIDED
+CONSTANTS_MINOR_VERSION = $(shell pkg-config fundamental-constants --modversion | cut -d '.' -f 2)
+DEFINES += -DCONSTANTS_PROVIDED -DCONSTANTS_MINOR_VERSION=${CONSTANTS_MINOR_VERSION}
 endif
-INCLUDE += `pkg-config fundamental-constants --cflags`
-INCMODS += `pkg-config fundamental-constants --cflags`
+INCLUDE += $(shell pkg-config fundamental-constants --cflags)
+INCMODS += $(shell pkg-config fundamental-constants --cflags)
 endif
 
 LDLIBS   = ${LD_MSCL}
@@ -84,7 +85,7 @@ ifndef SOLPS_CPP
         endif
       endif
     endif
-    LD_AL := `pkg-config ${IMAS_PKG_LIST} --libs`
+    LD_AL := $(shell pkg-config ${IMAS_PKG_LIST} --libs)
     ifdef LD_GGD
       LD_AL += ${LD_GGD}
     endif
@@ -93,7 +94,7 @@ ifndef SOLPS_CPP
 endif
 
 ifdef IMAS_PKG_LIST
-  INCMODS += `pkg-config ${IMAS_PKG_LIST} --cflags`
+  INCMODS += $(shell pkg-config ${IMAS_PKG_LIST} --cflags)
 endif
 
 INCMODS += -I${OBJDIR}
