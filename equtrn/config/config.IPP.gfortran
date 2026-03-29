@@ -11,4 +11,3 @@ LDWOS   = -L${AUGEXP} -Wl,-R${AUGEXP} -lkk8 -lddww8
 #!!!Local Variables:
 #!!! mode: Makefile
 #!!! End:
-

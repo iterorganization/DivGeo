@@ -39,4 +39,3 @@ LDFLUSH  = -lflush ${LD_NAG} -lppf
 #!!!Local Variables:
 #!!! mode: Makefile
 #!!! End:
-
