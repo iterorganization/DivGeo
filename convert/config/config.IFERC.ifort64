@@ -1,7 +1,7 @@
 # check if necessary variables are correctly defined
 LD_MSCL ?= ${MSCL_ROOT}/lib -lmscl
 
-CPP     = /lib/cpp -C -traditional
+CPP      = /lib/cpp -C -traditional
 
 #!!!Local Variables:
 #!!! mode: Makefile
