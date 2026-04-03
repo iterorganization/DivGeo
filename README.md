@@ -27,6 +27,6 @@ Boltzmannstraße 2, D-85748 Garching, Germany
 Copyright (c) 2008-2015, LSPM, CNRS
 1, place Aristide-Briand, 92195 Meudon Cedex, France
 
-Copyright (c) 2015-2025, ITER Organization
+Copyright (c) 2015-2026, ITER Organization
 Route de Vinon-sur-Verdon, CS 90 046, 
 13067 St. Paul Lez Durance Cedex, France
