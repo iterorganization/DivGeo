@@ -12,7 +12,12 @@
 #endif
       use ids_routines ! IGNORE
      , , only : ids_deallocate, ids_put, imas_close
-#if ( IMAS_MINOR_VERSION > 39 || IMAS_MAJOR_VERSION > 3 )
+#if ( IMAS_MAJOR_VERSION > 4 || ( IMAS_MAJOR_VERSION == 4 && IMAS_MINOR_VERSION > 0 ) )
+      use al_wall_component_identifier              ! IGNORE
+     , , only : set_wall_component_identifier => set_identifier
+      use al_wall_description_2d_type_identifier    ! IGNORE
+     , , only : set_wall_description_identifier => set_identifier
+#elif ( IMAS_MINOR_VERSION > 39 || IMAS_MAJOR_VERSION > 3 )
 #if AL_MAJOR_VERSION > 4
       use al_wall_component_identifier              ! IGNORE
      , , only : wall_component_identifier
@@ -143,9 +148,12 @@ c
 #endif
 
       allocate( vessel%description_2d(1) )
+#if ( IMAS_MAJOR_VERSION > 4 || ( IMAS_MAJOR_VERSION == 4 && IMAS_MINOR_VERSION > 0 ) )
+      call set_wall_description_identifier(
+     . vessel%description_2d(1)%type, "multiple_units_no_vessel" )
+#elif ( IMAS_MINOR_VERSION > 39 || IMAS_MAJOR_VERSION > 3 )
       allocate( vessel%description_2d(1)%type%name(1) )
       allocate( vessel%description_2d(1)%type%description(1) )
-#if ( IMAS_MINOR_VERSION > 39 || IMAS_MAJOR_VERSION > 3 )
       vessel%description_2d(1)%type%index =
      . wall_description_2d_type_identifier%multiple_units_no_vessel
       vessel%description_2d(1)%type%name =
@@ -155,6 +163,8 @@ c
      . wall_description_2d_type_identifier%description(
      . wall_description_2d_type_identifier%multiple_units_no_vessel )
 #else
+      allocate( vessel%description_2d(1)%type%name(1) )
+      allocate( vessel%description_2d(1)%type%description(1) )
       vessel%description_2d(1)%type%index = 2
       vessel%description_2d(1)%type%name = "DG template"
       vessel%description_2d(1)%type%description =
@@ -174,7 +184,11 @@ c
         allocate( vessel%description_2d(1)%limiter%unit(i)%name(1) )
         vessel%description_2d(1)%limiter%unit(i)%name =
      .   "DivGeo structure number "//int2str(i)
-#if ( IMAS_MINOR_VERSION > 39 || IMAS_MAJOR_VERSION > 3 )
+#if ( IMAS_MAJOR_VERSION > 4 || ( IMAS_MAJOR_VERSION == 4 && IMAS_MINOR_VERSION > 0 ) )
+        call set_wall_component_identifier(
+     &   vessel%description_2d(1)%limiter%unit(i)%component_type,
+     &   "other" )
+#elif ( IMAS_MINOR_VERSION > 39 || IMAS_MAJOR_VERSION > 3 )
         vessel%description_2d(1)%limiter%unit(i)%component_type%
      &   index = wall_component_identifier%other
         allocate( vessel%description_2d(1)%limiter%unit(i)%

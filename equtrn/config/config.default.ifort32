@@ -11,14 +11,15 @@ CPP      = /lib/cpp -C -traditional
 ifdef SOLPS_CPP
   DEFINES  = ${SOLPS_CPP}
   ifeq ($(shell `pkg-config --exists fundamental-constants`; echo $$?),0)
-    DEFINES += -DCONSTANTS_PROVIDED
+    CONSTANTS_MINOR_VERSION = $(shell pkg-config fundamental-constants --modversion | cut -d '.' -f 2)
+    DEFINES += -DCONSTANTS_PROVIDED -DCONSTANTS_MINOR_VERSION=${CONSTANTS_MINOR_VERSION}
     IMAS_PKG_LIST = fundamental-constants
-    INCLUDE += `pkg-config fundamental-constants --cflags`
+    INCLUDE += $(shell pkg-config fundamental-constants --cflags)
   endif
 endif
 
 ifdef IMAS_PKG_LIST
-  INCMODS += `pkg-config ${IMAS_PKG_LIST} --cflags`
+  INCMODS += $(shell pkg-config ${IMAS_PKG_LIST} --cflags)
 endif
 
 MOD = mod
@@ -31,4 +32,3 @@ LDWOS    = -L/usr/ads/lib -lKK -lwoss -lddww -lpplotXt -R/usr/ads/lib/:/opt/SUNW
 #!!!Local Variables:
 #!!! mode: Makefile
 #!!! End:
-

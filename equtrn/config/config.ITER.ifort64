@@ -1,5 +1,11 @@
 # check if necessary variables are correctly defined
-LD_MSCL ?= `pkg-config mscl --libs`
+LD_MSCL ?= $(shell pkg-config mscl --libs)
+
+OS = $(shell grep -m1 NAME /etc/os-release | cut -d '"' -f 2 | cut -d ' ' -f 1 )
+# Avoid usage of ifx compiler until its many issues are fixed
+# ifeq (,$(findstring CentOS,$(OS)))
+# FC       = ifx
+# endif
 
 CPP      = /lib/cpp -traditional -ffreestanding
 
@@ -12,4 +18,3 @@ endif
 #!!!Local Variables:
 #!!! mode: Makefile
 #!!! End:
-
