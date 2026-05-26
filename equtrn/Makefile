@@ -80,7 +80,7 @@ PROG_dgcut = dgcut
 
 .PHONY: DOC listobj
 
-ALL = ${PROG_cropequ} ${PROG_dg2dg} ${PROG_dg2ef} ${PROG_ef2dg} ${PROG_fiesta2dg} ${PROG_cr2dg} ${PROG_vr2dg} ${PROG_nk2dg} ${PROG_dg2vr} ${PROG_risepsi} ${PROG_prinequ} ${PROG_jt2dg} ${PROG_pb2dg} ${PROG_pt2dg} ${PROG_dg_symm_dg} ${PROG_dg_minuspsi_dg} ${PROG_move_equ} ${PROG_dgcut}
+ALL = ${PROG_cropequ} ${PROG_dg2dg} ${PROG_dg2ef} ${PROG_ef2dg} ${PROG_fiesta2dg} ${PROG_cr2dg} ${PROG_vr2dg} ${PROG_nk2dg} ${PROG_dg2vr} ${PROG_risepsi} ${PROG_prinequ} ${PROG_jt2dg} ${PROG_pb2dg} ${PROG_pt2dg} ${PROG_nkn2dg} ${PROG_move_equ} ${PROG_dg_symm_dg} ${PROG_dg_minuspsi_dg} ${PROG_dgcut}
 
 ifeq (${HOST_NAME}, JET)
 ifeq (${COMPILER},pgf90)
@@ -340,7 +340,7 @@ ${OBJDIR}/dependencies:
 	${MAKE} listobj
 	${MAKE} depend
 
-.doxygen: ${SRCS} Doxyfile ${MAKES}
+.doxygen: ${SRCS} Doxyfile doxygen-patch.sty ${MAKES}
 	doxygen
 	cd doxygen/latex; ${MAKE}; cd .. ; ln -sf latex/refman.pdf .
 	touch $@
@@ -351,5 +351,4 @@ include ${OBJDIR}/dependencies
 ifeq ($(shell [ -e ${PWD}/config/dependencies.local ] && echo yes || echo no ),yes)
 include ${PWD}/config/dependencies.local
 endif
-
 
