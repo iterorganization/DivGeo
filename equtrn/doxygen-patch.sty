@@ -1,0 +1,8 @@
+% Patch for tabulary incompatibility with LaTeX >= 2022-11-01
+% The \insert@pcolumn macro was removed from the LaTeX kernel's array
+% infrastructure, breaking the abandoned tabulary package used by Doxygen.
+\makeatletter
+\providecommand{\insert@pcolumn}[1]{%
+  \multicolumn{1}{#1}%
+}
+\makeatother
