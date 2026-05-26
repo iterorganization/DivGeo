@@ -988,7 +988,7 @@ Widget OpenInvalidVarsDlg(View w) {
     ResetInvalidVarsDlg(wDlg);
     XtManageChild(wDlg);
   }
-
+  return wDlg;
 }
 
 /* Callbacks **********************************************************/
