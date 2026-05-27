@@ -340,7 +340,7 @@ ${OBJDIR}/dependencies:
 	${MAKE} listobj
 	${MAKE} depend
 
-.doxygen: ${SRCS} Doxyfile doxygen-patch.sty ${MAKES}
+.doxygen: ${SRCS} Doxyfile doxygen-patch.sty latex_header.tex tabu_doxygen.sty longtable_doxygen.sty ${MAKES}
 	doxygen
 	cd doxygen/latex; ${MAKE}; cd .. ; ln -sf latex/refman.pdf .
 	touch $@
