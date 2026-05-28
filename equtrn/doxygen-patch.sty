@@ -6,3 +6,174 @@
   \multicolumn{1}{#1}%
 }
 \makeatother
+
+% Patch for longtabu* incompatibility with TeX Live 2025 (array.sty >= 2020/02/10).
+%
+% Doxygen 1.14 uses longtabu* (from the unmaintained tabu package) for all
+% parameter/return-value tables.  tabu v2.8 hangs in pdfTeX >= 1.40.26 due to
+% an infinite \scantokens loop, and v2.9 (TABU-FIXED) has group-balance issues
+% with the revised array.sty shipped in TeX Live 2025.
+%
+% Fix: redefine every longtabu*-based Doxy* environment to use standard
+% longtable with proportional p{} columns instead.  longtable is already
+% loaded (via longtable_doxygen.sty) so no extra \usepackage is needed.
+%
+% Column specs use only the built-in array.sty tokens >, p, | and do NOT
+% use \newcolumntype names.  This avoids any dependency on the NC@list
+% mechanism, which tabu temporarily replaces during its own table setup.
+%
+% Conditionals use \ifx instead of \ifthenelse to avoid the ifthen.sty
+% \xdef-based machinery interacting with longtable's \@mkpream conditional
+% processing after many pages of content.
+
+% Shared length register for column widths.
+\newlength{\DxyColW}
+
+% Compute equal column width for N columns filling \linewidth.
+% Uses \dimexpr arithmetic: (\linewidth - (N+1)*rule - 2N*tabcolsep) / N
+\newcommand{\DxySetColW}[1]{%
+  \setlength{\DxyColW}{\dimexpr
+    (\linewidth - \arrayrulewidth*(#1+1) - \tabcolsep*2*#1)/#1
+  \relax}%
+}
+
+% Helper macro: Doxygen header row spanning #1 cols, with title #2.
+% Emits \endfirsthead and \endhead markers required by longtable.
+\makeatletter
+\newcommand{\DoxyTableHeader}[2]{%
+  \multicolumn{#1}{l}{\hspace{-6pt}\bfseries\fontseries{bc}\selectfont\color{darkgray}#2}\\[1ex]%
+  \hline%
+  \endfirsthead%
+  \multicolumn{#1}{l}{\hspace{-6pt}\bfseries\fontseries{bc}\selectfont\color{darkgray}#2}\\[1ex]%
+  \hline%
+  \endhead%
+}
+\makeatother
+
+% Used by parameter lists  (\begin{DoxyParams}[opt]{Title})
+%   opt empty  -> 2 cols: name | description
+%   opt = 1    -> 3 cols: in/out | name | description
+%   opt = 2    -> 4 cols: in/out | type | name | description
+%
+% All \ifx conditionals are resolved BEFORE \begin{longtable} is called
+% (stored as \dxy@start) so that no outer conditionals remain open when
+% longtable's \@mkpream processes the column preamble.  Open conditionals
+% inside \halign's body confuse \@mkpream's own \ifcase stack.
+\makeatletter
+\renewenvironment{DoxyParams}[2][]{%
+  \par%
+  \def\dxy@opt{#1}%
+  \def\dxy@one{1}%
+  \ifx\dxy@opt\@empty
+    \def\dxy@ncols{2}%
+    \def\dxy@start{\DxySetColW{2}%
+      \begin{longtable}{|>{\raggedright\arraybackslash}p{\DxyColW}%
+                        |>{\raggedright\arraybackslash}p{\DxyColW}|}}%
+  \else\ifx\dxy@opt\dxy@one
+    \def\dxy@ncols{3}%
+    \def\dxy@start{\DxySetColW{3}%
+      \begin{longtable}{|>{\raggedright\arraybackslash}p{\DxyColW}%
+                        |>{\raggedright\arraybackslash}p{\DxyColW}%
+                        |>{\raggedright\arraybackslash}p{\DxyColW}|}}%
+  \else
+    \def\dxy@ncols{4}%
+    \def\dxy@start{\DxySetColW{4}%
+      \begin{longtable}{|>{\raggedright\arraybackslash}p{\DxyColW}%
+                        |>{\raggedright\arraybackslash}p{\DxyColW}%
+                        |>{\raggedright\arraybackslash}p{\DxyColW}%
+                        |>{\raggedright\arraybackslash}p{\DxyColW}|}}%
+  \fi\fi
+  % All conditionals resolved; open longtable now
+  \dxy@start
+  \DoxyTableHeader{\dxy@ncols}{#2}%
+}{%
+  \end{longtable}%
+  \vspace{6pt}%
+}
+\makeatother
+
+% Used for fields of simple structs (3 cols: type | name | description)
+\renewenvironment{DoxyFields}[1]{%
+  \par\DxySetColW{3}%
+  \begin{longtable}{|>{\raggedleft\arraybackslash}p{\DxyColW}|>{\raggedright\arraybackslash}p{\DxyColW}|>{\raggedright\arraybackslash}p{\DxyColW}|}%
+  \DoxyTableHeader{3}{#1}%
+}{%
+  \end{longtable}%
+  \vspace{6pt}%
+}
+
+% Used for fields of simple class-style enums
+%   opt empty  -> 3 cols: name | value | description
+%   opt = 2    -> 2 cols: name | description
+% Conditionals resolved before \begin{longtable} (same reason as DoxyParams).
+\makeatletter
+\renewenvironment{DoxyEnumFields}[2][]{%
+  \par%
+  \def\dxy@opt{#1}%
+  \def\dxy@two{2}%
+  \ifx\dxy@opt\dxy@two
+    \def\dxy@ncols{2}%
+    \def\dxy@start{\DxySetColW{2}%
+      \begin{longtable}{|>{\raggedleft\arraybackslash}p{\DxyColW}%
+                        |>{\raggedright\arraybackslash}p{\DxyColW}|}}%
+  \else
+    \def\dxy@ncols{3}%
+    \def\dxy@start{\DxySetColW{3}%
+      \begin{longtable}{|>{\raggedright\arraybackslash}p{\DxyColW}%
+                        |>{\raggedleft\arraybackslash}p{\DxyColW}%
+                        |>{\raggedright\arraybackslash}p{\DxyColW}|}}%
+  \fi
+  \dxy@start
+  \DoxyTableHeader{\dxy@ncols}{#2}%
+}{%
+  \end{longtable}%
+  \vspace{6pt}%
+}
+\makeatother
+
+% Used by return value lists (2 cols: value | description)
+\renewenvironment{DoxyRetVals}[1]{%
+  \par\DxySetColW{2}%
+  \begin{longtable}{|>{\raggedleft\arraybackslash}p{\DxyColW}|>{\raggedright\arraybackslash}p{\DxyColW}|}%
+  \DoxyTableHeader{2}{#1}%
+}{%
+  \end{longtable}%
+  \vspace{6pt}%
+}
+
+% Used by exception lists (2 cols: exception | description)
+\renewenvironment{DoxyExceptions}[1]{%
+  \par\DxySetColW{2}%
+  \begin{longtable}{|>{\raggedleft\arraybackslash}p{\DxyColW}|>{\raggedright\arraybackslash}p{\DxyColW}|}%
+  \DoxyTableHeader{2}{#1}%
+}{%
+  \end{longtable}%
+  \vspace{6pt}%
+}
+
+% Used by template parameter lists (2 cols: name | description)
+\renewenvironment{DoxyTemplParams}[1]{%
+  \par\DxySetColW{2}%
+  \begin{longtable}{|>{\raggedleft\arraybackslash}p{\DxyColW}|>{\raggedright\arraybackslash}p{\DxyColW}|}%
+  \DoxyTableHeader{2}{#1}%
+}{%
+  \end{longtable}%
+  \vspace{6pt}%
+}
+
+% Used for Markdown tables (\begin{TabularC}{N})
+% *{N}{col} uses array.sty's built-in * repetition -- no custom column types.
+\renewenvironment{TabularC}[1]{%
+  \DxySetColW{#1}%
+  \begin{longtable}{*{#1}{|>{\raggedright\arraybackslash}p{\DxyColW}}|}%
+}{%
+  \end{longtable}\par%
+}
+
+% TabularNC used tabu; replace with longtable to match TabularC.
+\renewenvironment{TabularNC}[1]{%
+  \DxySetColW{#1}%
+  \begin{longtable}{*{#1}{|>{\raggedright\arraybackslash}p{\DxyColW}}|}%
+}{%
+  \end{longtable}\par%
+}

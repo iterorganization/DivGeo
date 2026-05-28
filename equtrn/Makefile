@@ -342,6 +342,13 @@ ${OBJDIR}/dependencies:
 
 .doxygen: ${SRCS} Doxyfile doxygen-patch.sty latex_header.tex tabu_doxygen.sty longtable_doxygen.sty ${MAKES}
 	doxygen
+	# Remove the early \usepackage{array} block that Doxygen inserts as a
+	# workaround for the old tabu package.  Now that tabu is replaced by our
+	# longtable-based patch, loading array before infwarerr breaks array's
+	# own \@preamerr (it calls a pre-infwarerr \GenericError).  Without this
+	# block, array is loaded normally inside doxygen.sty (via longtable),
+	# which is after infwarerr -- so all error-handling macros are consistent.
+	perl -i -0pe 's/[ \t]*\\ifx\\requestedLaTeXdate\\undefined\n[ \t]*\\usepackage\{array\}[^\n]*\n[ \t]*\\else\n[ \t]*\\usepackage\{array\}[^\n]*\n[ \t]*\\fi\n//' doxygen/latex/refman.tex
 	cd doxygen/latex; ${MAKE}; cd .. ; ln -sf latex/refman.pdf .
 	touch $@
 
