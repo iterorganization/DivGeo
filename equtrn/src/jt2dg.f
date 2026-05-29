@@ -25,8 +25,8 @@ c
 
       call rdeqjt(1,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
-          print *,'==== jt2dg: error in rdefit. iret =',iret
-          stop
+        print *,'==== jt2dg: error in rdeqjt. iret =',iret
+        stop
       end if
 c
       do i=1,nr
@@ -37,7 +37,7 @@ c
       print *,'psilim = ',psilim
       call wreqdg(2,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
-          print *,'==== ef2dg: error in wreqdg. iret = ',iret
+        print *,'==== jt2dg: error in wreqdg. iret = ',iret
       end if
 c
       end

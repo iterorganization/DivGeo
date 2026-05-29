@@ -90,7 +90,7 @@ c
       psilim=0
       call wreqdg(2,iret,ngr,ngz,psilim,btorc,rcntc,gpr,gpz,pfm)
       if(iret.ne.0) then
-          print *,'==== ef2dg: error in wreqdg. iret = ',iret
+        print *,'==== diva2dg: error in wreqdg. iret = ',iret
       end if
 c
       end
