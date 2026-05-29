@@ -1,0 +1,12 @@
+% longtable_doxygen.sty
+%
+% Drop-in replacement for Doxygen's bundled frozen longtable v4.11.
+%
+% The frozen copy (v4.11) bundled in Doxygen 1.14.0 is incompatible with
+% the array.sty shipped in TeX Live 2025: its LT@startpbox/LT@endpbox
+% definitions cause an extra \egroup in every p-column, triggering
+% "Extra }, or forgotten \endgroup" errors.
+%
+% This wrapper simply loads the up-to-date system longtable package instead.
+\ProvidesPackage{longtable_doxygen}
+\RequirePackage{longtable}

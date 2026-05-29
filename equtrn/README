@@ -13,6 +13,34 @@ doxygen
 
 =========================================================================================
 
+Building the Doxygen PDF manual — TeX Live compatibility notes:
+
+Doxygen 1.14.0 bundles frozen LaTeX packages that are incompatible with TeX Live 2025:
+  - tabu_doxygen.sty   (bundled v2.8, broken with pdfTeX >= 1.40.26)
+  - longtable_doxygen.sty  (bundled v4.11/2014, incompatible with LaTeX kernel >= 2020)
+
+Symptom: the PDF build fails with:
+  ! Undefined control sequence.
+  l.20 \begin{DoxyParams}[1]{Parameters}
+
+Root cause: tabu_doxygen.sty hangs in an infinite \scantokens loop during package
+loading, preventing doxygen.sty from finishing, so \DoxyParams is never defined.
+
+Fix applied (2026-05-27): project-controlled replacements are provided in:
+  equtrn/tabu_doxygen.sty      — tabu v2.9 (TABU-FIXED), with corrected \tabu@textbar
+  equtrn/longtable_doxygen.sty — longtable v4.24 from TeX Live 2025
+
+These are listed in Doxyfile under LATEX_EXTRA_FILES so Doxygen overwrites its
+broken bundled copies at every build. They are also listed as Makefile dependencies
+of the .doxygen target.
+
+Required modules to build:
+  module use /work/imas/etc/modules/all
+  module load Doxygen/1.14.0-GCCcore-14.3.0
+  module load texlive/20250308-intel-compilers-2025.2.0
+
+=========================================================================================
+
 2008.07.18: DPC
 
 Added jetppf2dg: used for reading a JET PPF equilibrium and writing a
