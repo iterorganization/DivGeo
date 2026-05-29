@@ -284,6 +284,7 @@ static Widget OpenVarSetDefCreateDlg(View w) {
     Form2Table(wg);
     XtManageChild(wDlg);
   }
+  return wDlg;
 }
 
 static void CbVarSetDefCreateOk(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
@@ -1107,6 +1108,7 @@ static Widget OpenVarDefCreateDlg(View w,VarSetDef vsd,int row,int col) {
 
   dlg->row=row;
   dlg->col=col;
+  return wDlg;
 }
 
 static void DwVarDefCreate(Widget wg,View w,int ev,void* obj,void* pDlg) {

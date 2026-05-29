@@ -1,0 +1,18 @@
+%% tabu_doxygen.sty  -- minimal stub for TeX Live 2025
+%%
+%% The real tabu v2.8 is incompatible with pdfTeX >= 1.40.26 and TeX Live 2025.
+%% Since all tabu-based Doxy* environments are replaced by longtable equivalents
+%% in doxygen-patch.sty, the full tabu package is not needed.
+%%
+\ProvidesPackage{tabu_doxygen}[2025/01/01 v2.8-stub for TeX Live 2025]
+
+%% \tabulinesep is used in doxygen.sty environment bodies (which are all
+%% overridden by doxygen-patch.sty, so this macro is never actually called).
+\newcommand*{\tabulinesep}{}
+
+%% Stub environments -- never invoked (all containing Doxy* environments are
+%% replaced by doxygen-patch.sty before any document content is processed).
+\newenvironment{longtabu}[1]{}{}
+\expandafter\let\csname longtabu*\endcsname\longtabu
+\expandafter\let\csname endlongtabu*\endcsname\endlongtabu
+\newenvironment{tabu}[1]{}{}

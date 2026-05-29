@@ -224,7 +224,10 @@ Widget OpenGluePointsDlg(View w) {
       "-#:",
       NULL);
     XtManageChild(dlg->wDlg);
-  } else XtPopup(XtParent(wDlg),XtGrabNone);
+  } else {
+    XtPopup(XtParent(wDlg),XtGrabNone);
+  }
+  return wDlg;
 }
 
 void CbGluePointsDlgOk(Widget wg,XtPointer xtpD,XtPointer pcbs) {
@@ -306,7 +309,10 @@ Widget OpenGlueElemsDlg(View w) {
       "-#:",
       NULL);
     XtManageChild(dlg->wDlg);
-  } else XtPopup(XtParent(wDlg),XtGrabNone);
+  } else {
+    XtPopup(XtParent(wDlg),XtGrabNone);
+  }
+  return wDlg;
 }
 
 void CbGlueElemsDlgOk(Widget wg,XtPointer xtpD,XtPointer pcbs) {
