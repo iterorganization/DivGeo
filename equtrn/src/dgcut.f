@@ -32,8 +32,8 @@ c      tab=char(9)
  
       call rdeqdg(1,iret,nr,nz,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
-          print *,'==== dgcut: error in rdefit. iret =',iret
-          stop
+        print *,'==== dgcut: error in rdeqdg. iret =',iret
+        stop
       end if
 
       rmin=rgr(1)

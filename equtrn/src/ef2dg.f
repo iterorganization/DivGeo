@@ -29,14 +29,14 @@ c
      ,           rdim,zdim,zmsmid,rcntc,redge,rma,zma,psimin,psilim,
      ,           btorc,fg,pg,ffg,ppg,pfm,rgr,zgr)
       if(iret.ne.0) then
-          print *,'==== ef2dg: error in rdefit. iret =',iret
-          stop
+        print *,'==== ef2dg: error in rdefit. iret =',iret
+        stop
       end if
 c
       print *,'psilim = ',psilim
       call wreqdg(2,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
-          print *,'==== ef2dg: error in wreqdg. iret = ',iret
+        print *,'==== ef2dg: error in wreqdg. iret = ',iret
       end if
 c
       end

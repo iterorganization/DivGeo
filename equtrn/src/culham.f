@@ -38,8 +38,8 @@ c      tab=char(9)
      ,           rdim,zdim,zmsmid,rcntc,redge,rma,zma,psimin,psilim,
      ,           btorc,fg,pg,ffg,ppg,pfm,rgr,zgr)
       if(iret.ne.0) then
-          print *,'==== ef2dg: error in rdefit. iret =',iret
-          stop
+        print *,'==== culham: error in rdefit. iret =',iret
+        stop
       end if
 
 c need to add something here to remove the first few columns
@@ -56,7 +56,7 @@ c      psilim=0
 
       call wreqdg(2,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
-	  print *,'==== dg2dg: error in wreqdg. iret = ',iret
+	print *,'==== culham: error in wreqdg. iret = ',iret
       end if
 
       end

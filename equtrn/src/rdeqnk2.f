@@ -1,4 +1,4 @@
-      subroutine rdeqnk2(lun,ngpr,ngpz,iret, nr,nz,
+      subroutine rdeqnk2(lun,iret,nr,nz,
      ,           rmin,zmin,rmax,zmax,delr,delz,psilim,
      ,           btorc,rcntc,fg,pfm,rgr,zgr)
 c=====================================================
@@ -19,12 +19,13 @@ c=====================================================
 c
 c  version : 16.01.96 19:33
 c
-      real*8 pfm(ngpr,*),rgr(*),zgr(*)
-      real*8 rmin,zmin,rmax,zmax,delr,delz,psilim,btorc,rcntc,fg,u
-c=====================================================
-      rr(i)=delr*(i-1)+rmin
-      zz(i)=delz*(i-1)+zmin
-c=====================================================
+      use eqdim
+      implicit none
+      integer i,j
+      integer lun,iret,nr,nz
+      real(kind=R8) :: pfm(ngpr,*),rgr(*),zgr(*)
+      real(kind=R8) :: rmin,zmin,rmax,zmax,delr,delz,
+     &  psilim,btorc,rcntc,fg,u
 c
       iret=0
       rewind lun
@@ -36,20 +37,20 @@ c
       read(lun,*)
       read(lun,*) nr,nz
       if(nr.gt.ngpr) then
-          print *,'=== rdefit: nr > ngpr'
-          iret=2
+        print *,'=== rdeqnk2: nr > ngpr'
+        iret=2
       end if
       if(nz.gt.ngpz) then
-          print *,'=== rdefit: nz > ngpz'
-          iret=2
+        print *,'=== rdeqnk2: nz > ngpz'
+        iret=2
       end if
       if(nr.le.0) then
-          print *,'=== rdefit: nr < 1'
-          iret=4
+        print *,'=== rdeqnk2: nr < 1'
+        iret=4
       end if
       if(nz.le.0) then
-          print *,'=== rdefit: nz < 1'
-          iret=4
+        print *,'=== rdeqnk2: nz < 1'
+        iret=4
       end if
       if(iret.ne.0) return
 c
@@ -69,5 +70,26 @@ c
       do i=1,nz
         zgr(i)=zz(i)
       enddo
+      return
 c
-      end
+      contains
+c
+      function rr(i)
+      implicit none
+      real(kind=R8) :: rr
+      integer i
+
+      rr = delr*(i-1)+rmin
+      return
+      end function rr
+
+      function zz(i)
+      implicit none
+      real(kind=R8) :: zz
+      integer i
+
+      zz = delz*(i-1)+zmin
+      return
+      end function zz
+
+      end subroutine rdeqnk2

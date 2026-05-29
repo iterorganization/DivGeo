@@ -36,20 +36,20 @@ c
       read(lun,*)
       read(lun,*) nr,nz
       if(nr.gt.ngpr) then
-          print *,'=== rdefit: nr > ngpr'
-          iret=2
+        print *,'=== rdeqnk: nr > ngpr'
+        iret=2
       end if
       if(nz.gt.ngpz) then
-          print *,'=== rdefit: nz > ngpz'
-          iret=2
+        print *,'=== rdeqnk: nz > ngpz'
+        iret=2
       end if
       if(nr.le.0) then
-          print *,'=== rdefit: nr < 1'
-          iret=4
+        print *,'=== rdeqnk: nr < 1'
+        iret=4
       end if
       if(nz.le.0) then
-          print *,'=== rdefit: nz < 1'
-          iret=4
+        print *,'=== rdeqnk: nz < 1'
+        iret=4
       end if
       if(iret.ne.0) return
 c
