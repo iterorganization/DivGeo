@@ -355,7 +355,14 @@ ${OBJDIR}/dependencies:
 DOC: .doxygen
 
 include ${OBJDIR}/dependencies
+
+# Override the %.o pattern rule for the two modules files below with an explicit
+# rule whose recipe is a no-op (@:) to avoid race conditions
+${OBJDIR}/eqdim_constants.o: ${OBJDIR}/eqdim_constants.mod
+	@:
+${OBJDIR}/eqdim.o: ${OBJDIR}/eqdim.mod
+	@:
+
 ifeq ($(shell [ -e ${PWD}/config/dependencies.local ] && echo yes || echo no ),yes)
 include ${PWD}/config/dependencies.local
 endif
-
