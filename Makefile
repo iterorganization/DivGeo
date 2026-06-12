@@ -51,6 +51,8 @@ VPATH  = src
 
 SRCDIR = ${PWD}
 
+$(shell awk 'FNR==1{if(!/^OBJS *=/){e=1;exit}} END{exit e}' \
+        ${OBJDIR}/LISTOBJ 2>/dev/null || rm -f ${OBJDIR}/LISTOBJ)
 include ${OBJDIR}/LISTOBJ
 
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
@@ -112,7 +114,7 @@ src/git_version_DG.h: force
 ${OBJDIR}/dependencies:
 	-mkdir -p ${OBJDIR}
 	-cd ${OBJDIR} ; ln -sf ${SRCDIR}/src/dg.dgh ${SRCDIR}/dg.dgc .
-	touch ${OBJDIR}/dependencies
+	printf '# Dummy dependencies file for DivGeo\n' > ${OBJDIR}/dependencies
 	${MAKE} VERSION
 	${MAKE} tags
 	${MAKE} listobj
@@ -120,6 +122,7 @@ ${OBJDIR}/dependencies:
 
 ${OBJDIR}/LISTOBJ: listobj
 
+$(shell [ -s ${OBJDIR}/dependencies ] || rm -f ${OBJDIR}/dependencies)
 include ${OBJDIR}/dependencies
 
 
