@@ -102,7 +102,7 @@ depend: ${OBJS:.o=.c}
 	sed 's,: ${SOLPSTOP},: $${SOLPSTOP},' > ${OBJDIR}/dependencies
 
 listobj:
-	@P=${OBJDIR}; cd src ; rm -f $${P}/LISTOBJ; touch $${P}/LISTOBJ; \
+	@P=${OBJDIR}; mkdir -p $${P}; cd src ; rm -f $${P}/LISTOBJ; touch $${P}/LISTOBJ; \
 	echo "OBJS =" *.c | sed -e 's/ [^ /]*\// /g' -e 's/\.c/.o/g' -e 's/res2fbr\.o//g' > $${P}/LISTOBJ
 
 VERSION: src/git_version_DG.h
