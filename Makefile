@@ -108,8 +108,8 @@ listobj:
 VERSION: src/git_version_DG.h
 
 src/git_version_DG.h: force
-	@echo "#define GIT_VERSION_DG \"`git describe --tags --dirty --always`\"" > src/git_version_new.h
-	@if cmp -s src/git_version_new.h src/git_version_DG.h; then rm src/git_version_new.h; else mv src/git_version_new.h src/git_version_DG.h; fi
+	@N=src/git_version_new.$$$$.h; echo "#define GIT_VERSION_DG \"`git describe --tags --dirty --always`\"" > $$N; \
+	if cmp -s $$N src/git_version_DG.h; then rm -f $$N; else mv $$N src/git_version_DG.h; fi
 
 ${OBJDIR}/dependencies:
 	-mkdir -p ${OBJDIR}
