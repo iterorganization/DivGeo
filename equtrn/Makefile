@@ -338,8 +338,8 @@ listobj:
 VERSION: ../src/git_version_DG.h
 
 ../src/git_version_DG.h: force
-	@echo "#define GIT_VERSION_DG \"`git describe --dirty --always`\"" > ../src/git_version_new.h
-	@if cmp -s ../src/git_version_new.h ../src/git_version_DG.h; then rm ../src/git_version_new.h; else mv ../src/git_version_new.h ../src/git_version_DG.h; fi
+	@echo "#define GIT_VERSION_DG \"`git describe --dirty --always`\"" > ${OBJDIR}/git_version_new.h
+	@if cmp -s ${OBJDIR}/git_version_new.h ../src/git_version_DG.h; then rm ${OBJDIR}/git_version_new.h; else mv ${OBJDIR}/git_version_new.h ../src/git_version_DG.h; fi
 
 ${OBJDIR}/dependencies:
 	-mkdir -p ${OBJDIR}
