@@ -97,9 +97,11 @@ tags:
 
 depend: ${OBJS:.o=.c}
 	@-cd ${OBJDIR} ; ln -sf ${SRCDIR}/src/dg.dgh ${SRCDIR}/dg.dgc .
+ifndef NO_MOTIF
 	@$(CC) ${INCLUDES} -M $^ | sed '/^[^ ]*.o: / s|^|${OBJDIR}/|' | \
 	sed -e 's,^${OBJDIR}/,\$${OBJDIR}/,' | \
 	sed 's,: ${SOLPSTOP},: $${SOLPSTOP},' > ${OBJDIR}/dependencies
+endif
 
 listobj:
 	@P=${OBJDIR}; mkdir -p $${P}; cd src ; rm -f $${P}/LISTOBJ; touch $${P}/LISTOBJ; \
