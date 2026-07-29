@@ -329,6 +329,7 @@ endif
 ${OBJDIR}/LISTOBJ: listobj
 
 listobj:
+	@mkdir -p $(OBJDIR)
 	@set -e; _tmpf=$$(mktemp $(OBJDIR)/LISTOBJ.XXXXXX); \
 	 ( cd src; echo "OBJS =" *.f | sed -e 's/ [^ /]*\// /g' -e 's/\.f/.o/g' ) > $$_tmpf; \
 	 ( cd src; echo "OBJS90 =" *.f90 | sed -e 's/ [^ /]*\// /g' -e 's/\.f90/.o/g' ) >> $$_tmpf; \
