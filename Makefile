@@ -51,6 +51,8 @@ VPATH  = src
 
 SRCDIR = ${PWD}
 
+$(shell awk 'FNR==1{if(!/^OBJS *=/){e=1;exit}} END{exit e}' \
+        ${OBJDIR}/LISTOBJ 2>/dev/null || rm -f ${OBJDIR}/LISTOBJ)
 include ${OBJDIR}/LISTOBJ
 
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
@@ -95,24 +97,26 @@ tags:
 
 depend: ${OBJS:.o=.c}
 	@-cd ${OBJDIR} ; ln -sf ${SRCDIR}/src/dg.dgh ${SRCDIR}/dg.dgc .
+ifndef NO_MOTIF
 	@$(CC) ${INCLUDES} -M $^ | sed '/^[^ ]*.o: / s|^|${OBJDIR}/|' | \
 	sed -e 's,^${OBJDIR}/,\$${OBJDIR}/,' | \
 	sed 's,: ${SOLPSTOP},: $${SOLPSTOP},' > ${OBJDIR}/dependencies
+endif
 
 listobj:
-	@P=${OBJDIR}; cd src ; rm -f $${P}/LISTOBJ; touch $${P}/LISTOBJ; \
+	@P=${OBJDIR}; mkdir -p $${P}; cd src ; rm -f $${P}/LISTOBJ; touch $${P}/LISTOBJ; \
 	echo "OBJS =" *.c | sed -e 's/ [^ /]*\// /g' -e 's/\.c/.o/g' -e 's/res2fbr\.o//g' > $${P}/LISTOBJ
 
 VERSION: src/git_version_DG.h
 
 src/git_version_DG.h: force
-	@echo "#define GIT_VERSION_DG \"`git describe --tags --dirty --always`\"" > src/git_version_new.h
-	@if cmp -s src/git_version_new.h src/git_version_DG.h; then rm src/git_version_new.h; else mv src/git_version_new.h src/git_version_DG.h; fi
+	@echo "#define GIT_VERSION_DG \"`git describe --tags --dirty --always`\"" > ${OBJDIR}/git_version_new.h
+	@if cmp -s ${OBJDIR}/git_version_new.h src/git_version_DG.h; then rm ${OBJDIR}/git_version_new.h; else mv ${OBJDIR}/git_version_new.h src/git_version_DG.h; fi
 
 ${OBJDIR}/dependencies:
 	-mkdir -p ${OBJDIR}
 	-cd ${OBJDIR} ; ln -sf ${SRCDIR}/src/dg.dgh ${SRCDIR}/dg.dgc .
-	touch ${OBJDIR}/dependencies
+	printf '# Dummy dependencies file for DivGeo\n' > ${OBJDIR}/dependencies
 	${MAKE} VERSION
 	${MAKE} tags
 	${MAKE} listobj
@@ -120,6 +124,7 @@ ${OBJDIR}/dependencies:
 
 ${OBJDIR}/LISTOBJ: listobj
 
+$(shell [ -s ${OBJDIR}/dependencies ] || rm -f ${OBJDIR}/dependencies)
 include ${OBJDIR}/dependencies
 
 

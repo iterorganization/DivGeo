@@ -154,6 +154,12 @@ $(error LD_MSCL not defined. Run the install_dependencies script first.)
 endif
 endif
 
+# Validate LISTOBJ before including it.  If it is absent or corrupted (e.g.
+# left over from a previously interrupted parallel build) delete it so that
+# the missing-file recovery path below triggers a clean atomic regeneration
+# via the "${OBJDIR}/LISTOBJ: listobj" rule.
+$(shell awk 'FNR==1{if(!/^OBJS *=/){e=1;exit}} FNR==2{if(!/^OBJS90 *=/){e=1;exit}} END{exit e}' \
+        $(OBJDIR)/LISTOBJ 2>/dev/null || rm -f $(OBJDIR)/LISTOBJ)
 include $(OBJDIR)/LISTOBJ
 
 CREQ = $(creq:%.o=$(OBJDIR)/%.o)
@@ -323,19 +329,22 @@ endif
 ${OBJDIR}/LISTOBJ: listobj
 
 listobj:
-	@cd src ; echo "OBJS =" *.f | sed -e 's/ [^ /]*\// /g' -e 's/\.f/.o/g' > $(OBJDIR)/LISTOBJ
-	@cd src ; echo "OBJS90 =" *.f90 | sed -e 's/ [^ /]*\// /g' -e 's/\.f90/.o/g' >> $(OBJDIR)/LISTOBJ
-	@echo "SRCS =" src/*.f90 src/*.f >> ${OBJDIR}/LISTOBJ
+	@mkdir -p $(OBJDIR)
+	@set -e; _tmpf=$$(mktemp $(OBJDIR)/LISTOBJ.XXXXXX); \
+	 ( cd src; echo "OBJS =" *.f | sed -e 's/ [^ /]*\// /g' -e 's/\.f/.o/g' ) > $$_tmpf; \
+	 ( cd src; echo "OBJS90 =" *.f90 | sed -e 's/ [^ /]*\// /g' -e 's/\.f90/.o/g' ) >> $$_tmpf; \
+	 echo "SRCS =" src/*.f90 src/*.f >> $$_tmpf; \
+	 mv $$_tmpf $(OBJDIR)/LISTOBJ
 
 VERSION: ../src/git_version_DG.h
 
 ../src/git_version_DG.h: force
-	@echo "#define GIT_VERSION_DG \"`git describe --dirty --always`\"" > ../src/git_version_new.h
-	@if cmp -s ../src/git_version_new.h ../src/git_version_DG.h; then rm ../src/git_version_new.h; else mv ../src/git_version_new.h ../src/git_version_DG.h; fi
+	@echo "#define GIT_VERSION_DG \"`git describe --dirty --always`\"" > ${OBJDIR}/git_version_new.h
+	@if cmp -s ${OBJDIR}/git_version_new.h ../src/git_version_DG.h; then rm ${OBJDIR}/git_version_new.h; else mv ${OBJDIR}/git_version_new.h ../src/git_version_DG.h; fi
 
 ${OBJDIR}/dependencies:
 	-mkdir -p ${OBJDIR}
-	touch ${OBJDIR}/dependencies
+	printf '# Dummy dependencies file for DivGeo/equtrn\n' > ${OBJDIR}/dependencies
 	${MAKE} VERSION
 	${MAKE} listobj
 	${MAKE} depend
@@ -354,8 +363,17 @@ ${OBJDIR}/dependencies:
 
 DOC: .doxygen
 
+# Delete empty/stale dependencies file so make rebuilds it via its rule.
+$(shell [ -s ${OBJDIR}/dependencies ] || rm -f ${OBJDIR}/dependencies)
 include ${OBJDIR}/dependencies
+
+# Override the %.o pattern rule for the two modules files below with an explicit
+# rule whose recipe is a no-op (@:) to avoid race conditions
+${OBJDIR}/eqdim_constants.o: ${OBJDIR}/eqdim_constants.mod
+	@:
+${OBJDIR}/eqdim.o: ${OBJDIR}/eqdim.mod
+	@:
+
 ifeq ($(shell [ -e ${PWD}/config/dependencies.local ] && echo yes || echo no ),yes)
 include ${PWD}/config/dependencies.local
 endif
-

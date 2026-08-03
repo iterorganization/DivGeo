@@ -1,0 +1,6 @@
+CPP     = /lib/cpp -traditional
+
+#!!!Local Variables:
+#!!! mode: Makefile
+#!!! End:
+

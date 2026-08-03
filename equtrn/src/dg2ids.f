@@ -83,6 +83,7 @@ c=====================================================
 c
       !! Set default values
       iret = 0
+      imasdir = ' '
       run_user = usrnam()
       username = run_user
       solpstop = ' '
@@ -126,10 +127,11 @@ c
       if (.not.streql(device_env,' ')) database = device_env
       if (streql(database,'iter')) database = 'ITER'
 #endif
-      imasdir = trim(home_dir)//'/public/imasdb/'
-     &        //trim(database)//'/'//trim(version)
+      if (streql(imasdir,' '))
+     >  imasdir = trim(home_dir)//'/public/imasdb/'
+     &          //trim(database)//'/'//trim(version)
 #if AL_MAJOR_VERSION < 5
-     &        //'/0'
+     &          //'/0'
 #endif
       absolute_path = .false.
 
