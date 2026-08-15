@@ -350,7 +350,22 @@ ${OBJDIR}/dependencies:
 	${MAKE} depend
 
 .doxygen: ${SRCS} Doxyfile doxygen-patch.sty latex_header.tex tabu_doxygen.sty longtable_doxygen.sty ${MAKES}
-	doxygen
+	@doxver=`doxygen --version`; \
+	doxyfile=Doxyfile; \
+	case "$$doxver" in \
+	  1.[0-9].*|1.10.*|1.11.*|1.12.*|1.13.*) \
+	    echo "Doxygen $$doxver: using built-in LaTeX header for compatibility"; \
+	    doxyfile=Doxyfile.no_latex_header; \
+	    sed 's/^LATEX_HEADER[[:blank:]]*=.*/LATEX_HEADER           =/' Doxyfile > $$doxyfile; \
+	    ;; \
+	  *) \
+	    echo "Doxygen $$doxver: using latex_header.tex"; \
+	    ;; \
+	esac; \
+	doxygen $$doxyfile; \
+	status=$$?; \
+	if [ "$$doxyfile" != Doxyfile ]; then rm -f $$doxyfile; fi; \
+	exit $$status
 	# Remove the early \usepackage{array} block that Doxygen inserts as a
 	# workaround for the old tabu package.  Now that tabu is replaced by our
 	# longtable-based patch, loading array before infwarerr breaks array's
