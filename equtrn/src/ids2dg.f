@@ -132,6 +132,7 @@ c
       wall = 0
       step = 1
       occ = 1
+      imasdir = ' '
       imas_home = ' '
       eq_absolute = .false.
       wall_absolute = .false.
@@ -168,10 +169,11 @@ c
       if (.not.streql(device_env,' ')) database = device_env
       if (streql(database,'iter')) database = 'ITER'
 #endif
-      imasdir = trim(home_dir)//'/public/imasdb/'
-     &        //trim(database)//'/'//trim(version)
+      if (streql(imasdir,' '))
+     >   imasdir = trim(home_dir)//'/public/imasdb/'
+     &           //trim(database)//'/'//trim(version)
 #if AL_MAJOR_VERSION < 5
-     &        //'/0'
+     &           //'/0'
 #endif
       
     !! Check if arguments are found

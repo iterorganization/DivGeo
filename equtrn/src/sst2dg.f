@@ -28,14 +28,14 @@ c
 
       ngr=65
       ngz=65
-      zfac=-0.005
+      zfac=-0.005_R8
       do i=1,ngr
 	do j=1,ngz
 	  read(1,*) gpr(i),gpz(j),pfm(i,j)
 	  pfm(i,j)=pfm(i,j)+gpz(j)*zfac
 	enddo
       enddo
-      psilim=0.0634-0.355983*zfac
+      psilim=0.0634_R8-0.355983_R8*zfac
       pfm(1:ngr,1:ngz)=pfm(1:ngr,1:ngz)-psilim
       btorc=3
       rcntc=1.1
@@ -44,7 +44,7 @@ c
 
       call wreqdg(2,iret,ngr,ngz,psilim,btorc,rcntc,gpr,gpz,pfm)
       if(iret.ne.0) then
-          print *,'==== ef2dg: error in wreqdg. iret = ',iret
+        print *,'==== sst2dg: error in wreqdg. iret = ',iret
       end if
 c
       end

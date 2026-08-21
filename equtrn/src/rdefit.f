@@ -45,22 +45,22 @@ c
       title=zeile(1:l-20)
       write(*,*) ipestg,nr,nz
       if(nr.gt.ngpr) then
-          write (6,'(a,i4,a,i4,a)') 
-     .     '=== rdefit: nr (',nr,') > ngpr (',ngpr,')'
-          iret=2
+        write (6,'(a,i4,a,i4,a)')
+     .   '=== rdefit: nr (',nr,') > ngpr (',ngpr,')'
+        iret=2
       end if
       if(nz.gt.ngpz) then
-          write (6,'(a,i4,a,i4,a)') 
-     .     '=== rdefit: nz (',nz,') > ngpz (',ngpz,')'
-          iret=2
+        write (6,'(a,i4,a,i4,a)')
+     .   '=== rdefit: nz (',nz,') > ngpz (',ngpz,')'
+        iret=2
       end if
       if(nr.le.0) then
-          write (6,'(a,i4,a)') '=== rdefit: nr (',nr,') < 1'
-          iret=4
+        write (6,'(a,i4,a)') '=== rdefit: nr (',nr,') < 1'
+        iret=4
       end if
       if(nz.le.0) then
-          write (6,'(a,i4,a)') '=== rdefit: nz (',nz,') < 1'
-          iret=4
+        write (6,'(a,i4,a)') '=== rdefit: nz (',nz,') < 1'
+        iret=4
       end if
       if(iret.ne.0) return
 c

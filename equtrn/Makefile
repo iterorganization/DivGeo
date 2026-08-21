@@ -80,7 +80,7 @@ PROG_dgcut = dgcut
 
 .PHONY: DOC listobj
 
-ALL = ${PROG_cropequ} ${PROG_dg2dg} ${PROG_dg2ef} ${PROG_ef2dg} ${PROG_fiesta2dg} ${PROG_cr2dg} ${PROG_vr2dg} ${PROG_nk2dg} ${PROG_dg2vr} ${PROG_risepsi} ${PROG_prinequ} ${PROG_jt2dg} ${PROG_pb2dg} ${PROG_pt2dg} ${PROG_dg_symm_dg} ${PROG_dg_minuspsi_dg} ${PROG_move_equ} ${PROG_dgcut}
+ALL = ${PROG_cropequ} ${PROG_dg2dg} ${PROG_dg2ef} ${PROG_ef2dg} ${PROG_fiesta2dg} ${PROG_cr2dg} ${PROG_vr2dg} ${PROG_nk2dg} ${PROG_dg2vr} ${PROG_risepsi} ${PROG_prinequ} ${PROG_jt2dg} ${PROG_pb2dg} ${PROG_pt2dg} ${PROG_nkn2dg} ${PROG_move_equ} ${PROG_dg_symm_dg} ${PROG_dg_minuspsi_dg} ${PROG_dgcut}
 
 ifeq (${HOST_NAME}, JET)
 ifeq (${COMPILER},pgf90)
@@ -111,7 +111,7 @@ fiestadg = fiesta2dg.o wreqdg.o rdfiesta.o open_files.o ${EQDIMOBJ}
 crdg = cr2dg.o wreqdg.o rdcreate.o open_files.o ${EQDIMOBJ}
 vrdg = vr2dg.o wreqdg.o rdeqvr.o open_files.o ${EQDIMOBJ}
 nkdg = nk2dg.o wreqdg.o rdeqnk.o open_files.o ${EQDIMOBJ}
-nkndg = nkn2dg.o wreqdg.o rdeqnk2.o ${EQDIMOBJ}
+nkndg = nkn2dg.o wreqdg.o rdeqnk2.o open_files.o ${EQDIMOBJ}
 jtdg = jt2dg.o rdeqjt.o wreqdg.o rdeqjh.o open_files.o ${EQDIMOBJ}
 dgvr = dg2vr.o rdeqdg.o wreqvr.o rdeqlh.o open_files.o ${EQDIMOBJ}
 rsps = risepsi.o rdeqdg.o wreqdg.o rdeqlh.o open_files.o ${EQDIMOBJ}
@@ -154,6 +154,12 @@ $(error LD_MSCL not defined. Run the install_dependencies script first.)
 endif
 endif
 
+# Validate LISTOBJ before including it.  If it is absent or corrupted (e.g.
+# left over from a previously interrupted parallel build) delete it so that
+# the missing-file recovery path below triggers a clean atomic regeneration
+# via the "${OBJDIR}/LISTOBJ: listobj" rule.
+$(shell awk 'FNR==1{if(!/^OBJS *=/){e=1;exit}} FNR==2{if(!/^OBJS90 *=/){e=1;exit}} END{exit e}' \
+        $(OBJDIR)/LISTOBJ 2>/dev/null || rm -f $(OBJDIR)/LISTOBJ)
 include $(OBJDIR)/LISTOBJ
 
 CREQ = $(creq:%.o=$(OBJDIR)/%.o)
@@ -323,33 +329,66 @@ endif
 ${OBJDIR}/LISTOBJ: listobj
 
 listobj:
-	@cd src ; echo "OBJS =" *.f | sed -e 's/ [^ /]*\// /g' -e 's/\.f/.o/g' > $(OBJDIR)/LISTOBJ
-	@cd src ; echo "OBJS90 =" *.f90 | sed -e 's/ [^ /]*\// /g' -e 's/\.f90/.o/g' >> $(OBJDIR)/LISTOBJ
-	@echo "SRCS =" src/*.f90 src/*.f >> ${OBJDIR}/LISTOBJ
+	@mkdir -p $(OBJDIR)
+	@set -e; _tmpf=$$(mktemp $(OBJDIR)/LISTOBJ.XXXXXX); \
+	 ( cd src; echo "OBJS =" *.f | sed -e 's/ [^ /]*\// /g' -e 's/\.f/.o/g' ) > $$_tmpf; \
+	 ( cd src; echo "OBJS90 =" *.f90 | sed -e 's/ [^ /]*\// /g' -e 's/\.f90/.o/g' ) >> $$_tmpf; \
+	 echo "SRCS =" src/*.f90 src/*.f >> $$_tmpf; \
+	 mv $$_tmpf $(OBJDIR)/LISTOBJ
 
 VERSION: ../src/git_version_DG.h
 
 ../src/git_version_DG.h: force
-	@echo "#define GIT_VERSION_DG \"`git describe --dirty --always`\"" > ../src/git_version_new.h
-	@if cmp -s ../src/git_version_new.h ../src/git_version_DG.h; then rm ../src/git_version_new.h; else mv ../src/git_version_new.h ../src/git_version_DG.h; fi
+	@echo "#define GIT_VERSION_DG \"`git describe --dirty --always`\"" > ${OBJDIR}/git_version_new.h
+	@if cmp -s ${OBJDIR}/git_version_new.h ../src/git_version_DG.h; then rm ${OBJDIR}/git_version_new.h; else mv ${OBJDIR}/git_version_new.h ../src/git_version_DG.h; fi
 
 ${OBJDIR}/dependencies:
 	-mkdir -p ${OBJDIR}
-	touch ${OBJDIR}/dependencies
+	printf '# Dummy dependencies file for DivGeo/equtrn\n' > ${OBJDIR}/dependencies
 	${MAKE} VERSION
 	${MAKE} listobj
 	${MAKE} depend
 
-.doxygen: ${SRCS} Doxyfile ${MAKES}
-	doxygen
+.doxygen: ${SRCS} Doxyfile doxygen-patch.sty latex_header.tex tabu_doxygen.sty longtable_doxygen.sty ${MAKES}
+	@doxver=`doxygen --version`; \
+	doxyfile=Doxyfile; \
+	case "$$doxver" in \
+	  1.[0-9].*|1.10.*|1.11.*|1.12.*|1.13.*) \
+	    echo "Doxygen $$doxver: using built-in LaTeX header for compatibility"; \
+	    doxyfile=Doxyfile.no_latex_header; \
+	    sed 's/^LATEX_HEADER[[:blank:]]*=.*/LATEX_HEADER           =/' Doxyfile > $$doxyfile; \
+	    ;; \
+	  *) \
+	    echo "Doxygen $$doxver: using latex_header.tex"; \
+	    ;; \
+	esac; \
+	doxygen $$doxyfile; \
+	status=$$?; \
+	if [ "$$doxyfile" != Doxyfile ]; then rm -f $$doxyfile; fi; \
+	exit $$status
+	# Remove the early \usepackage{array} block that Doxygen inserts as a
+	# workaround for the old tabu package.  Now that tabu is replaced by our
+	# longtable-based patch, loading array before infwarerr breaks array's
+	# own \@preamerr (it calls a pre-infwarerr \GenericError).  Without this
+	# block, array is loaded normally inside doxygen.sty (via longtable),
+	# which is after infwarerr -- so all error-handling macros are consistent.
+	perl -i -0pe 's/[ \t]*\\ifx\\requestedLaTeXdate\\undefined\n[ \t]*\\usepackage\{array\}[^\n]*\n[ \t]*\\else\n[ \t]*\\usepackage\{array\}[^\n]*\n[ \t]*\\fi\n//' doxygen/latex/refman.tex
 	cd doxygen/latex; ${MAKE}; cd .. ; ln -sf latex/refman.pdf .
 	touch $@
 
 DOC: .doxygen
 
+# Delete empty/stale dependencies file so make rebuilds it via its rule.
+$(shell [ -s ${OBJDIR}/dependencies ] || rm -f ${OBJDIR}/dependencies)
 include ${OBJDIR}/dependencies
+
+# Override the %.o pattern rule for the two modules files below with an explicit
+# rule whose recipe is a no-op (@:) to avoid race conditions
+${OBJDIR}/eqdim_constants.o: ${OBJDIR}/eqdim_constants.mod
+	@:
+${OBJDIR}/eqdim.o: ${OBJDIR}/eqdim.mod
+	@:
+
 ifeq ($(shell [ -e ${PWD}/config/dependencies.local ] && echo yes || echo no ),yes)
 include ${PWD}/config/dependencies.local
 endif
-
-

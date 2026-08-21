@@ -15,6 +15,7 @@ c*** Translation of equilibrium data from Naka to dg compatible format
 c=====================================================
       use eqdim
       implicit none
+      integer iret,nr,nz
       real(kind=R8) :: pfm(ngpr,ngpz),rgr(ngpr),zgr(ngpz)
       real(kind=R8) :: rmin,zmin,rmax,zmax,delr,delz,
      &  psilim,btorc,rcntc,fg
@@ -26,14 +27,14 @@ c
      ,           rmin,zmin,rmax,zmax,delr,delz,psilim,
      ,           btorc,rcntc,fg,pfm,rgr,zgr)
       if(iret.ne.0) then
-          print *,'==== nk2dg: error in rdeqnk. iret =',iret
-          stop
+        print *,'==== nkn2dg: error in rdeqnk. iret =',iret
+        stop
       end if
 c
       print *,'psilim = ',psilim
       call wreqdg(2,iret,nr,nz,psilim,btorc,rcntc,rgr,zgr,pfm)
       if(iret.ne.0) then
-          print *,'==== nk2dg: error in wreqdg. iret = ',iret
+        print *,'==== nkn2dg: error in wreqdg. iret = ',iret
       end if
 c
       end
