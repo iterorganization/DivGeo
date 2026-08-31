@@ -1061,15 +1061,13 @@ EnumText102
 text101 0
 tgtgrd
 CARRE guard length
-text101 8
+text101 6
 Specifies the distance (m) from the target, over which
-a smooth grid transformation from orthogonal to target-
-aligned is allowed in the CARRE grid generator.
+a smooth grid transformation from orthogonal to (virtual) 
+target-aligned is allowed in the CARRE grid generator.
 
 Should be bigger for more oblique targets, and can be 0
 for a normal target.
-
-Should be 0 when building a target mode or vessel mode grid.
 Float -n-m-S-s-h-i 0 18
 EnumText102
 text101 0
