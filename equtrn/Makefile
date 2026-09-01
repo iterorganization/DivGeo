@@ -126,7 +126,7 @@ jetppf2dg = jetppf2dg.o wreqdg.o ${EQDIMOBJ}
 dgsymmdg = dg_symm_dg.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o ${EQDIMOBJ}
 dgcut = dgcut.o rdeqdg.o rdeqlh.o wreqdg.o open_files.o ${EQDIMOBJ}
 idsdg = ids2dg.o rdids.o wreqdg.o wrtrdg.o chcase.o streql.o usrnam.o ${EQDIMOBJ}
-dgids = dg2ids.o rdtrg.o wrids.o streql.o usrnam.o ${EQDIMOBJ}
+dgids = dg2ids.o rdtrg.o wrids.o chcase.o streql.o usrnam.o ${EQDIMOBJ}
 
 ifeq ($(shell [ -e config/config.${HOST_NAME}.${COMPILER} ] && echo yes || echo no ),yes)
 include config/config.${HOST_NAME}.${COMPILER}

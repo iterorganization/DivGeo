@@ -11,7 +11,7 @@
 #endif
       subroutine rdids(do_equilibrium,do_wall,occ,step,
 #if AL_MAJOR_VERSION > 4
-     ,           imas_home,eq_path,wall_path,
+     ,           imas_home,ids_backend,eq_path,wall_path,
 #endif
      ,           treename,shot,wall,run,wall_run,database,version,
      ,           username,iret,ipestg,nr,nz,
@@ -62,6 +62,7 @@ c
       character(len=256), intent(in) :: imas_home !< Root path to the IMAS public directory
       character(len=256), intent(in) :: eq_path   !< Path to the equilibrium IDS to be read
       character(len=256), intent(in) :: wall_path !< Path to the wall IDS to be read
+      character(len=24), intent(in) :: ids_backend !< The IMAS backend being used
 #endif
       character(len=24), intent(in) :: treename   !< The name of the IMAS IDS database
       integer, intent(in) :: shot      !< The pulse (previously shot) number of the IDS equilibrium being read
@@ -116,7 +117,7 @@ c
       !! Create and modify new shot/run
       if (do_equilibrium) then
 #if AL_MAJOR_VERSION > 4
-        uri = 'imas:mdsplus?path='//trim(eq_path)
+        uri = 'imas:'//trim(ids_backend)//'?path='//trim(eq_path)
         call imas_open( uri, OPEN_PULSE, idx, status, message )
         if (status.ne.0) then
           l=index(eq_path,'imasdb/iter')
@@ -124,12 +125,12 @@ c
           if (l.gt.0) then
             write(olddir,'(a)')
      .       eq_path(1:l-1)//'imasdb/ITER'//eq_path(l+11:256)
-            uri = 'imas:mdsplus?path='//trim(olddir)
+            uri = 'imas:'//trim(ids_backend)//'?path='//trim(olddir)
             call imas_open( uri, OPEN_PULSE, idx, status, message )
           else if (m.gt.0) then
             write(olddir,'(a)')
      .       eq_path(1:m-1)//'imasdb/iter'//eq_path(m+11:256)
-            uri = 'imas:mdsplus?path='//trim(olddir)
+            uri = 'imas:'//trim(ids_backend)//'?path='//trim(olddir)
             call imas_open( uri, OPEN_PULSE, idx, status, message )
           end if
         end if
@@ -148,18 +149,21 @@ c
             if (database.eq.'ITER') then
               call imas_open_env( treename, shot, run,
      &         idx, username, 'iter', version, status )
-              final_path = 'imas:mdsplus?user='//trim(username)//
+              final_path = 'imas:'//trim(ids_backend)//
+     &         '?user='//trim(username)//
      &         ';database='//'iter'//';shot='//int2str(shot)//
      &         ';run='//int2str(run)//';version='//trim(version)
             else if (database.eq.'iter') then
               call imas_open_env( treename, shot, run,
      &         idx, username, 'ITER', version, status )
-              final_path = 'imas:mdsplus?user='//trim(username)//
+              final_path = 'imas:'//trim(ids_backend)//
+     &         '?user='//trim(username)//
      &         ';database='//'ITER'//';shot='//int2str(shot)//
      &         ';run='//int2str(run)//';version='//trim(version)
             end if
           else
-            final_path = 'imas:mdsplus?user='//trim(username)//
+            final_path = 'imas:'//trim(ids_backend)//
+     &       '?user='//trim(username)//
      &       ';database='//trim(database)//';shot='//int2str(shot)//
      &       ';run='//int2str(run)//';version='//trim(version)
           end if
@@ -216,8 +220,9 @@ c
           if (status.ne.0) stop 'Error closing IMAS database !'
 #if AL_MAJOR_VERSION > 4
           l=index(eq_path,'imasdb')
-          uri = 'imas:mdsplus?path='//trim(imas_home)//'/shared/imasdb'
-     &                              //eq_path(l+6:256)
+          uri = 'imas:'//trim(ids_backend)//
+     &          '?path='//trim(imas_home)//'/shared/imasdb'
+     &                  //eq_path(l+6:256)
           call imas_open( uri, OPEN_PULSE, idx, status, message )
           if (status.eq.0) final_path = trim(uri)
           if (status.ne.0 .and. shot.gt.0 .and. run.ge.0) then
@@ -232,7 +237,8 @@ c
             call imas_open_env( treename, shot, run,
      &       idx, "public", database, version, status )
             if (status.eq.0)
-     >       final_path = 'imas:mdsplus?user='//'public'//
+     >       final_path = 'imas:'//trim(ids_backend)//
+     &        '?user='//'public'//
      &        ';database='//trim(database)//';shot='//int2str(shot)//
      &        ';run='//int2str(run)//';version='//trim(version)
           end if
@@ -305,7 +311,7 @@ c
           if (status.ne.0) stop 'Error closing IMAS database !'
         end if
 #if AL_MAJOR_VERSION > 4
-        uri = 'imas:mdsplus?path='//trim(wall_path)
+        uri = 'imas:'//trim(ids_backend)//'?path='//trim(wall_path)
         call imas_open( uri, OPEN_PULSE, idx, status, message )
         if (status.ne.0) then
           l=index(wall_path,'imasdb/iter')
@@ -313,12 +319,12 @@ c
           if (l.gt.0) then
             write(olddir,'(a)')
      .       wall_path(1:l-1)//'imasdb/ITER'//wall_path(l+11:256)
-            uri = 'imas:mdsplus?path='//trim(olddir)
+            uri = 'imas:'//trim(ids_backend)//'?path='//trim(olddir)
             call imas_open( uri, OPEN_PULSE, idx, status, message )
           else if (m.gt.0) then
             write(olddir,'(a)')
      .       wall_path(1:m-1)//'imasdb/iter'//wall_path(m+11:256)
-            uri = 'imas:mdsplus?path='//trim(olddir)
+            uri = 'imas:'//trim(ids_backend)//'?path='//trim(olddir)
             call imas_open( uri, OPEN_PULSE, idx, status, message )
           end if
           if (status.eq.0) final_path = trim(uri)
@@ -330,18 +336,21 @@ c
               if (database.eq.'ITER') then
                 call imas_open_env( treename, wall, wall_run,
      &           idx, username, 'iter', version, status )
-                final_path = 'imas:mdsplus?user='//trim(username)//
+                final_path = 'imas:'//trim(ids_backend)//
+     &           '?user='//trim(username)//
      &           ';database='//'iter'//';shot='//int2str(wall)//
      &           ';run='//int2str(wall_run)//';version='//trim(version)
               else if (database.eq.'iter') then
                 call imas_open_env( treename, wall, wall_run,
      &           idx, username, 'ITER', version, status )
-                final_path = 'imas:mdsplus?user='//trim(username)//
+                final_path = 'imas:'//trim(ids_backend)//
+     &           '?user='//trim(username)//
      &           ';database='//'ITER'//';shot='//int2str(wall)//
      &           ';run='//int2str(wall_run)//';version='//trim(version)
               end if
             else
-              final_path = 'imas:mdsplus?user='//trim(username)//
+              final_path = 'imas:'//trim(ids_backend)//
+     &         '?user='//trim(username)//
      &         ';database='//trim(database)//';shot='//int2str(wall)//
      &         ';run='//int2str(wall_run)//';version='//trim(version)
             end if
@@ -377,7 +386,7 @@ c
           m=index(wall_path(l+7:256),'/')
           write(olddir,'(a)')
      &     wall_path(1:m+l+5)//'_MD'//wall_path(m+l+6:256)
-          uri = 'imas:mdsplus?path='//trim(olddir)
+          uri = 'imas:'//trim(ids_backend)//'?path='//trim(olddir)
           call imas_open( uri, OPEN_PULSE, idx, status, message )
           if (status.eq.0) final_path = trim(uri)
           ! Revert to AL4 format if file not yet found
@@ -386,7 +395,8 @@ c
             call chcase(1, md_base)
             call imas_open_env( treename, wall, wall_run,
      &       idx, username, trim(md_base), version, status )
-            final_path = 'imas:mdsplus?user='//trim(username)//
+            final_path = 'imas:'//trim(ids_backend)//
+     &       '?user='//trim(username)//
      &       ';database='//trim(md_base)//';shot='//int2str(wall)//
      &       ';run='//int2str(wall_run)//';version='//trim(version)
           end if
@@ -419,7 +429,7 @@ c
             if (status.ne.0) stop 'Error closing IMAS database !'
 #if AL_MAJOR_VERSION > 4
             l=index(wall_path,'imasdb')
-             uri = 'imas:mdsplus?path='
+             uri = 'imas:'//trim(ids_backend)//'?path='
      &        //trim(imas_home)//'/shared/imasdb'//wall_path(l+6:256)
             call imas_open( uri, OPEN_PULSE, idx, status, message )
             if (status.eq.0) final_path = trim(uri)
@@ -428,7 +438,8 @@ c
               call imas_open_env( treename, wall, wall_run,
      &         idx, "public", database, version, status )
               if (status.eq.0)
-     >         final_path = 'imas:mdsplus?user='//'public'//
+     >         final_path = 'imas:'//trim(ids_backend)//
+     &          '?user='//'public'//
      &          ';database='//trim(database)//';shot='//int2str(wall)//
      &          ';run='//int2str(wall_run)//';version='//trim(version)
             end if
@@ -467,7 +478,8 @@ c
               if (status.ne.0 .and. wall.gt.0 .and. wall_run.ge.0) then
                 call imas_open_env( treename, wall, wall_run,
      &           idx, "public", trim(md_base), version, status )
-                final_path = 'imas:mdsplus?user='//'public'//
+                final_path = 'imas:'//trim(ids_backend)//
+     &           '?user='//'public'//
      &           ';database='//trim(md_base)//
      &           ';shot='//int2str(wall)//';run='//int2str(wall_run)//
      &           ';version='//trim(version)
