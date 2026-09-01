@@ -35,6 +35,7 @@
 !!          - \b username:   Creator/owner of the IMAS IDS database (default: $USER)
 !!          - \b database:   IMAS IDS database name
 !!                           (i. e. solps-iter, ITER, aug) (default: $DEVICE)
+!!          - \b backend:    IMAS backend to use (default: HDF5)
 !!          - \b version:    Major version of the IMAS IDS database (default: 3)
 !!      Example of the command:
 !!      \verbatim
@@ -65,11 +66,12 @@ c=====================================================
       integer :: nunits, npts(ngpr)
 
       !! Local variables
-      character(len=24) :: treename   !< The name of the IMAS IDS database
-      character(len=24) :: username   !< Creator/owner of the IMAS IDS database
-      character(len=24) :: database   !< IMAS IDS database name
-                                      !< (i. e. solps-iter, ITER, aug)
-      character(len=24) :: version    !< Major version of the IMAS IDS database
+      character(len=24) :: ids_backend !< The name of the IMAS IDS database
+      character(len=24) :: treename    !< The name of the IMAS IDS database
+      character(len=24) :: username    !< Creator/owner of the IMAS IDS database
+      character(len=24) :: database    !< IMAS IDS database name
+                                       !< (i. e. solps-iter, ITER, aug)
+      character(len=24) :: version     !< Major version of the IMAS IDS database
       integer :: shot      !< The pulse (previously shot) number of the IDS equilibrium being read
                            !< If negative, no equilibrium IDS is translated
       integer :: wall      !< The pulse number of the IDS wall being read
@@ -80,6 +82,7 @@ c=====================================================
       integer :: wall_run  !< The run number of the IDS wall being read
 
       !! Dummy variables
+      character(len=24) :: backend_string
       character(len=24) :: shot_string
       character(len=24) :: wall_string
       character(len=24) :: step_string
@@ -119,6 +122,7 @@ c
       wall_path = ' '
 #endif
       treename = 'ids'
+      ids_backend = 'hdf5'
       write(version,'(i1)') IMAS_MAJOR_VERSION
       username = usrnam()
       database = 'solps-iter'
@@ -272,6 +276,10 @@ c
             read( wall_run_string, *) wall_run
           case("--username","--user","-u")
             call get_command_argument( cptArg + 1, user_string )
+          case("--backend","-b")
+            call get_command_argument( cptArg + 1, backend_string )
+            call chcase( 0, backend_string )
+            ids_backend = backend_string
           case("--database","--device","-d")
             call get_command_argument( cptArg + 1, database )
           case("--version","-v")
@@ -364,9 +372,13 @@ c
         write(0,'(a)') '--database, --device, -d: '//
      &   'Device database name to be read '//
      &   '(default is $DEVICE if defined, "solps-iter" otherwise)'
+        write(0,'(a)') '--backend, -b:            '//
+     &   'IMAS backend to be used '//
+     &   '(default is HDF5, only available for Access Layer 5)'
         write(0,'(a)') '--version, -v:            '//
      &   'IMAS version being used '//
-     &   '(only supported and default value: 3)'
+     &   '(must be at least 3 and no more than '//
+     &    int2str(IMAS_MAJOR_VERSION)//')'
         call exit(0)
       end if
 #if AL_MAJOR_VERSION < 5
@@ -486,7 +498,7 @@ c
 
       call rdids(do_equilibrium,do_wall,occ,step,
 #if AL_MAJOR_VERSION > 4
-     ,           imas_home,eq_path,wall_path,
+     ,           imas_home,ids_backend,eq_path,wall_path,
 #endif
      ,           treename,shot,wall,run,wall_run,database,version,
      ,           username,iret,ipestg,nr,nz,

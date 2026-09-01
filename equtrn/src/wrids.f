@@ -1,6 +1,6 @@
       subroutine wrids(iret,nunits,npts,rwall,zwall,ref_temp,dg_file,
 #if AL_MAJOR_VERSION > 4
-     ,           username,ids_path)
+     ,           username,ids_path,ids_backend)
 #else
      ,           treename,shot,run,username,database,version)
 #endif
@@ -45,6 +45,7 @@
       character(len=24), intent(in) :: username   !< Creator/owner of the IMAS IDS database
 #if AL_MAJOR_VERSION > 4
       character(len=256) :: ids_path   !< The path of the directory where the IDS is written
+      character(len=24), intent(in) :: ids_backend !< The IMAS backend to be used
 #else
       character(len=24), intent(in) :: treename   !< The name of the IMAS IDS database
       integer, intent(in) :: shot      !< The pulse (previously shot) number of the wall IDS being written
@@ -253,7 +254,7 @@ c
 
       !! Create and modify new wall IDS
 #if AL_MAJOR_VERSION > 4
-      uri = 'imas:mdsplus?path='//trim(ids_path)
+      uri = 'imas:'//trim(ids_backend)//'?path='//trim(ids_path)
       call imas_open( uri, FORCE_CREATE_PULSE, idx, status, message )
       if (status.ne.0) then
         write(0,*) trim(message)

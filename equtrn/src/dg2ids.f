@@ -20,7 +20,9 @@
 !!          - \b run:      The run number of the wall IDS being written
 !!          - \b database: IMAS IDS database name
 !!                         (i. e. solps-iter, ITER, aug) (default: $DEVICE)
-!!          - \b version:  Major version of the IMAS IDS database (default: 3)
+!!          - \b backend:  IMAS backend to be used (default: HDF5)
+!!                         (only available with IMAS Access Layer 5)
+!!          - \b version:  Major version of the IMAS IDS database (default: $IMAS_MAJOR_VERSION)
 !!          - \b temp_ref: Reference wall temperature (K) (optional)
 !!      Example of the command:
 !!      \verbatim
@@ -47,18 +49,20 @@ c=====================================================
       integer :: nunits, npts(ngpr)
 
       !! Local variables
-      character(len=256) :: path      !< The path where the IDS will be written
-      character(len=24) :: treename   !< The name of the IMAS IDS database
-      character(len=24) :: username   !< Creator/owner of the IMAS IDS database
-      character(len=24) :: database   !< IMAS IDS database name
-                                      !< (i. e. solps-iter, ITER, aug)
-      character(len=24) :: version    !< Major version of the IMAS IDS database
+      character(len=256) :: path       !< The path where the IDS will be written
+      character(len=24) :: ids_backend !< The IMAS backend to be used
+      character(len=24) :: treename    !< The name of the IMAS IDS database
+      character(len=24) :: username    !< Creator/owner of the IMAS IDS database
+      character(len=24) :: database    !< IMAS IDS database name
+                                       !< (i. e. solps-iter, ITER, aug)
+      character(len=24) :: version     !< Major version of the IMAS IDS database
       integer :: shot      !< The pulse (previously shot) number of the
                            !< wall IDS being written
       integer :: run       !< The run number of the wall IDS being written
-      real(kind=R8)     :: ref_temp   !< Reference wall temperature (K)
+      real(kind=R8)     :: ref_temp    !< Reference wall temperature (K)
 
       !! Dummy variables
+      character(len=24) :: backend_string
       character(len=24) :: temp_string
       character(len=24) :: shot_string
       character(len=24) :: run_string
@@ -88,6 +92,7 @@ c
       username = run_user
       solpstop = ' '
       database = 'solps-iter'
+      backend_string = 'hdf5'
       home_dir = '/home/'//trim(run_user)
       write(version,'(i1)') IMAS_MAJOR_VERSION
 #if AL_MAJOR_VERSION > 4
@@ -188,6 +193,10 @@ c
               call get_command_argument( cptArg + 1, username )
             case("--database","--device","-d")
               call get_command_argument( cptArg + 1, database )
+            case("--backend","-b")
+              call get_command_argument( cptArg + 1, backend_string )
+              call chcase( 0, backend_string )
+              ids_backend = backend_string
             case("--version","-v")
               call get_command_argument( cptArg + 1, version )
             case("--temp_ref","-t")
@@ -221,7 +230,8 @@ c
         write(0,*) "Other options are :"
 #if AL_MAJOR_VERSION > 4
         write(0,*)
-     &     " --path, --username, --database, --temp_ref, --version"
+     &     " --path, --username, --database, --temp_ref,"//
+     &     " --backend, --version"
 #else
         write(0,*) " --username, --database, --temp_ref, --version"
 #endif
@@ -334,7 +344,7 @@ c
       zwall = zwall / 1000.0_R8
       call wrids(iret,nunits,npts,rwall,zwall,ref_temp,dg_file,
 #if AL_MAJOR_VERSION > 4
-     .           username,ids_path)
+     .           username,ids_path,ids_backend)
 #else
      .           treename,shot,run,username,database,version)
 #endif
