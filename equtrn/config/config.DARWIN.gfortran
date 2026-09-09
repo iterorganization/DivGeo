@@ -5,6 +5,8 @@ FFLAGS   = -O
 endif
 CPP      = /usr/bin/cpp -traditional
 
+LD_AL = $(shell pkg-config ${IMAS_PKG_LIST} --libs | sed -E 's/-Wl,--defsym,[^[:space:]]+[[:space:]]*//g')
+
 #!!!Local Variables:
 #!!! mode: Makefile
 #!!! End:
