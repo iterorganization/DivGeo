@@ -257,8 +257,13 @@ c
       uri = 'imas:'//trim(ids_backend)//'?path='//trim(ids_path)
       call imas_open( uri, FORCE_CREATE_PULSE, idx, status, message )
       if (status.ne.0) then
-        write(0,*) trim(message)
-        stop
+        if ( allocated(message) ) then
+          write(0,*) trim(message)
+          stop
+        else
+          write(0,*) 'imas_open failed with status = ' , status
+          stop
+        end if
       end if
 #else
       call imas_create_env( treename, shot, run,
