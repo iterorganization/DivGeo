@@ -48,7 +48,7 @@ MarkedElems100 0
 MarkedSeparators104 0
 MarkedSources104 0
 MarkedChords110 0
-VarSetDefs101 41
+VarSetDefs101 42
 Main
 General Surface Data
 text101 0
@@ -3043,7 +3043,52 @@ Vars110 3
 Click ? for help
 Group100 0
 Group100 0
-VarSets100 9
+void_bnd
+Plasma-void boundary specification
+text101 0
+0 100
+VarDefs102 4
+Help
+Help
+text101 0
+Text +n-m-S-s-h-i 0 0
+EnumText102
+text101 0
+srt_edge
+Starting edge
+text101 5
+Element to be linked to the grid corner at the starting edge of the plasma-void boundary.
+
+This element must protrude outside the grid: do not specify the very edge of
+the vessel part if the grid is limited by this element! In this case, take the
+adjacent element outside the vessel part instead.
+Elem -n-m-S-s-h-i 0 1
+EnumText102
+text101 0
+end_edge
+Ending edge
+text101 5
+Element to be linked to the grid corner at the ending edge of the plasma-void boundary.
+
+This element must protrude outside the grid: do not specify the very edge of
+the vessel part if the grid is limited by this element! In this case, take the
+adjacent element outside the vessel part instead.
+Elem -n-m-S-s-h-i 0 2
+EnumText102
+text101 0
+vdfclbl
+fcLbl
+text101 1
+The face label fcLbl assigned to the void boundary.
+Int -n-m-S-s-h-i 0 3
+EnumText102
+text101 0
+Vars110 4
+Click ? for help
+Group100 0
+Group100 0
+0
+VarSets100 10
 0
 Vars110 21
 Press ? for help
@@ -3158,6 +3203,11 @@ D2
 Click ? for help
 0
 0
+18
+Vars110 3
+Group100 0
+Group100 0
+Click ? for help
 MaxElemId101 0
 CreaTime101
 Tue Oct 29 14:16:58 2024
