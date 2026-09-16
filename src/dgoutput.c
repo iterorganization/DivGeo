@@ -510,6 +510,11 @@ int WriteTargetsFile(App a,char* fName) {
   Group g1,g2,g3,gSZ=NULL,gGPS=NULL;
   VarSet vs;
   VarDef vd;
+  VarSetDef vsdLimEq;
+  VarDef vdRealEq;
+  VarSet vsLimEq;
+  void* realEquilVal;
+  Index ix2;
 
   /* Do initial checks */
 
@@ -536,9 +541,35 @@ int WriteTargetsFile(App a,char* fName) {
   } else f=NULL;
 
 
-  /* Output the equilibrium filename */
+  /* Output the equilibrium filename -- prefer the "Real equilibrium"
+     (internal name "lm_equ") value from a "Limiter and linear
+     configurations" (internal name "lm_cnfg") variable set, if the
+     model has one and it has been filled in; otherwise fall back to
+     the global model equilibrium as before. FindVarSetDef/FindVarDef
+     match on the internal short name (VarSetDef/VarDef ->name, the
+     first of the two lines written per definition in dgfile.c's
+     VarSetDefs101/VarDefs102 blocks), not the display label
+     (->descr, the second line) -- see dgfile.c's WriteFile(). */
 
-  if (a->equil!=NULL) zfprintf(f,FSTR_EQUILFILE,a->equil->fName);
+  vdRealEq=NULL;
+  realEquilVal=NULL;
+  vsdLimEq=FindVarSetDef(a,"lm_cnfg");
+  if (vsdLimEq!=NULL) {
+    vdRealEq=FindVarDef(vsdLimEq,"lm_equ");
+    if (vdRealEq!=NULL) {
+      vsLimEq=NULL;
+      for (vs=AppVarSet1st(a,&ix2);vs!=NULL;vs=Next(&ix2))
+        if (vs->def==vsdLimEq) { vsLimEq=vs; break; }
+      if (vsLimEq!=NULL) realEquilVal=GetVar(vsLimEq,vdRealEq,vsLimEq);
+    }
+  }
+  /* "-" is this variable's documented default/unfilled sentinel value
+     (see the "Limiter and linear configurations" help text) -- treat
+     it the same as an empty value. */
+  if (realEquilVal!=NULL && !IsEmptyValue(realEquilVal,vdRealEq) &&
+      strcmp((char*)realEquilVal,"-")!=0)
+    zfprintf(f,FSTR_EQUILFILE,(char*)realEquilVal);
+  else if (a->equil!=NULL) zfprintf(f,FSTR_EQUILFILE,a->equil->fName);
 
   /* Output the mesh filename */
 
