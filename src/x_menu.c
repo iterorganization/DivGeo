@@ -50,6 +50,7 @@ void CbFileOutput(Widget wg,XtPointer xtpw,XtPointer pcbs) {
   char oFName[DG_FNAME_LEN],sFName[DG_FNAME_LEN],tFName[DG_FNAME_LEN],
     s[DG_FNAME_LEN*6];
   int r;
+  String msgstring; 
 
   if (w->app==NULL) return;
   SetActiveView(w);
@@ -72,10 +73,24 @@ void CbFileOutput(Widget wg,XtPointer xtpw,XtPointer pcbs) {
   strcpy(tFName,w->app->fName);
   strcpy(GetFileExt(tFName),GetStr(w,FSTR_TARGETSEXT));
 
+  
+  switch(w->app->outputMode){
+    case OUTPUTMODE_CARRE:
+      printf("carre mode selected");
+      msgstring = GetResourceString(w->x->wMain,"msgOutputModeCarre",NULL,NULL); 
+      break;
+    case OUTPUTMODE_SONNET: 
+    printf("sonnet mode selected");
+      msgstring = GetResourceString(w->x->wMain,"msgOutputModeSonnet",NULL,NULL); 
+      break;
+    case OUTPUTMODE_GOAT:
+    printf("goat mode selected");
+      msgstring = GetResourceString(w->x->wMain,"msgOutputModeGoat",NULL,NULL);
+      break;
+    default: 
+  }
   sprintf(s,"%s\n%s: %s\n%s: %s\n%s: %s",
-    w->app->outputMode==OUTPUTMODE_CARRE?
-      GetResourceString(w->x->wMain,"msgOutputModeCarre",NULL,NULL) :
-      GetResourceString(w->x->wMain,"msgOutputModeSonnet",NULL,NULL),
+    msgstring, 
     GetStr(w,STR_OUTPUTFNAME),oFName,
     GetStr(w,STR_STRUCTUREFNAME),sFName,
     GetStr(w,STR_TARGETSFNAME),tFName);

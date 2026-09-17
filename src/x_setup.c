@@ -1173,7 +1173,7 @@ static void CbVarDefCreateOk(Widget wg,XtPointer xtpDlg,XtPointer pcbs) {
 
 typedef struct _OutputModeDlg {
   View w;
-  Widget wDlg,wSwSonnet,wSwCarre;
+  Widget wDlg,wSwSonnet,wSwCarre, wSwGoat;
   Widget wSwVars,wSwStructure,wSwTargets,wSwSurfaces,
       wSwGPoints/*,wSwCells*/;
 }* OutputModeDlg;
@@ -1207,6 +1207,7 @@ Widget OpenOutputModeDlg(View w) {
        "$+8#:mode",XmCreateRadioBox,XmNorientation,XmHORIZONTAL,NULL,0,1,
         "t?:sonnet",&dlg->wSwSonnet,
         "t?:carre",&dlg->wSwCarre,
+        "t?:goat",&dlg->wSwGoat, 
        "-:",
        "s-#:sep",0,2,
        "t#?:vars",1,3,&dlg->wSwVars,
@@ -1245,10 +1246,12 @@ static void ResetOutputModeDlg(OutputModeDlg dlg) {
 
   XTBSS(dlg->wSwSonnet,dlg->w->app->outputMode==OUTPUTMODE_SONNET,False);
   XTBSS(dlg->wSwCarre,dlg->w->app->outputMode==OUTPUTMODE_CARRE,False);
+  XTBSS(dlg->wSwGoat,dlg->w->app->outputMode==OUTPUTMODE_GOAT,False);
 }
 
 static void AcceptOutputModeDlg(OutputModeDlg dlg) {
   int l;
+  int outputmode;
 
   l=0;
 
@@ -1260,8 +1263,22 @@ static void AcceptOutputModeDlg(OutputModeDlg dlg) {
 /*  if (!XTBGS(dlg->wSwCells))     l|=OF_NC_CELLS; */
 
   SetOutputFlags(dlg->w->app,l);
-  SetAppOutputMode(dlg->w->app,
-      XTBGS(dlg->wSwCarre)? OUTPUTMODE_CARRE : OUTPUTMODE_SONNET);
+   outputmode = OUTPUTMODE_SONNET; // default value 
+  if (XTBGS(dlg->wSwCarre)) {
+    printf("output mode is carre");
+    outputmode = OUTPUTMODE_CARRE;  
+  } 
+  else if (XTBGS(dlg->wSwSonnet)){
+    printf("output mode is sonnet");
+    outputmode = OUTPUTMODE_SONNET; 
+  }
+  else if (XTBGS(dlg->wSwGoat)){
+    printf("output mode is goat");
+    outputmode = OUTPUTMODE_GOAT;
+     
+  }
+  SetOutputFlags(dlg->w->app,l);
+  SetAppOutputMode(dlg->w->app, outputmode);
   UndoMark(dlg->w->app);
 
   XtPopdown(XtParent(dlg->wDlg));

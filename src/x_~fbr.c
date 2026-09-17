@@ -343,6 +343,7 @@ char* dgResources[]={
   "*main.msgFileAlreadyLoaded:             The requested file is already in memory\n",
   "*main.msgOutputModeCarre:               Output mode: Carre\n",
   "*main.msgOutputModeSonnet:              Output mode: Sonnet\n",
+  "*main.msgOutputModeGoat:                Output mode: Goat\n",
   "\n",
   "*main.errEnvNoCheckObsolete:"
   "The DG_NO_OUTPUT_CHECK environment variable is obsolete.\\n"

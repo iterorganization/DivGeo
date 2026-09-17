@@ -847,6 +847,8 @@ void MarkPrevViewDone(App a) {
 void SetAppOutputMode(App a,int newMode) {
   switch (newMode) {
     case OUTPUTMODE_SONNET:
+    case OUTPUTMODE_GOAT:
+      break;
     case OUTPUTMODE_CARRE:
       break;
     default:

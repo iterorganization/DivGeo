@@ -11,6 +11,7 @@
 
 #define OUTPUTMODE_SONNET 1
 #define OUTPUTMODE_CARRE  2
+#define OUTPUTMODE_GOAT   3 
 
 #define OF_NC_VARS        0x0001
 #define OF_NC_STRUCTURE   0x0002
