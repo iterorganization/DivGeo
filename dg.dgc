@@ -4,12 +4,12 @@ This file should not be modified manually.
 
 DG version:             2.11a
 File format version:    115
-Creation time:          Tue Oct 29 14:16:58 2024
-Last Modified time:     Tue Oct 29 14:22:21 2024
+Creation time:          Mon Sep 14 09:07:02 2026
+Last Modified time:     Mon Sep 14 09:15:41 2026
 
-Original filename:      /vsc-hard-mounts/leuven-data/307/vsc30760/SOLPS/solps-iter-wg-workflow/modules/DivGeo/dg.dgc
-GIT version:            3.0.8-103-g2ff197a
-Radial cells:           1SOL 0OSR 0TPF 0OSL 0BPF 0Core
+Original filename:      /home/u0110555/Code/solps-iter-github2/runs/cmod/fromscratch/dg.dgc
+GIT version:            3.2.1a-5-gb46d998-dirty
+Radial cells:           1SOL 0OSR 0TPF 0OSL 0BPF 0Core 
 
 ------------------------------------------------------------------------
 
@@ -48,7 +48,7 @@ MarkedElems100 0
 MarkedSeparators104 0
 MarkedSources104 0
 MarkedChords110 0
-VarSetDefs101 42
+VarSetDefs101 43
 Main
 General Surface Data
 text101 0
@@ -3088,7 +3088,21 @@ Click ? for help
 Group100 0
 Group100 0
 0
-VarSets100 10
+simulationchain_opts
+simulationchain_options
+text101 0
+1 1
+VarDefs102 1
+ggname
+gridgenerator_name
+text101 1
+Name of the grid generator to be used to construct the plasma edge grid. Currently, only 'carre' and 'goat' supported
+Text -n-m-S-s-h-i 0 0
+EnumText102
+text101 0
+Vars110 1
+carre
+VarSets100 11
 0
 Vars110 21
 Press ? for help
@@ -3208,11 +3222,14 @@ Vars110 3
 Group100 0
 Group100 0
 Click ? for help
+42
+Vars110 1
+carre
 MaxElemId101 0
 CreaTime101
-Tue Oct 29 14:16:58 2024
+Mon Sep 14 09:07:02 2026
 TopoName114 *
-OutputMode109 Carre
-OutputFlags111 -V-S-T-s-g-c
+OutputMode109 Goat
+OutputFlags111 +V+S+T+s+g-c
 MeshSlidingOptions112 Surfaces 1.000000e+00 1
-ViewAttr115 -3.119200e+01 -1.267175e+01 3.119200e+01 1.267175e+01 0.000000e+00 -X+G+e-N-0-n+r-T-E-s+p-g-S-c-h+-+=+x-m+4-t-v+3
+ViewAttr115 -8.502048e+01 -4.028224e+01 8.502048e+01 4.028224e+01 0.000000e+00 -X+G+e-N-0-n+r-T-E-s+p-g-S-c-h+-+=+x-m+4-t-v+3
