@@ -65,6 +65,7 @@ static struct _NameRec varDefTypes[]={
 static struct _NameRec outputModes[]={
   {OUTPUTMODE_SONNET,"Sonnet"},
   {OUTPUTMODE_CARRE,"Carre"},
+  {OUTPUTMODE_GOAT,"Goat"},
   {0,NULL}
 };
 

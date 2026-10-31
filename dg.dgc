@@ -48,7 +48,7 @@ MarkedElems100 0
 MarkedSeparators104 0
 MarkedSources104 0
 MarkedChords110 0
-VarSetDefs101 41
+VarSetDefs101 42
 Main
 General Surface Data
 text101 0
@@ -3043,7 +3043,22 @@ Vars110 3
 Click ? for help
 Group100 0
 Group100 0
-VarSets100 9
+simulationchain_opts
+Simulation chain options
+text101 0
+1 1
+VarDefs102 1
+ggname
+Grid generator name
+text101 2
+Name of the grid generator to be used to construct the plasma edge grid.
+Currently, only 'carre' and 'goat' are supported.
+Text -n-m-S-s-h-i 0 0
+EnumText102
+text101 0
+Vars110 1
+carre
+VarSets100 11
 0
 Vars110 21
 Press ? for help
@@ -3158,6 +3173,14 @@ D2
 Click ? for help
 0
 0
+18
+Vars110 3
+Group100 0
+Group100 0
+Click ? for help
+41
+Vars110 1
+carre
 MaxElemId101 0
 CreaTime101
 Tue Oct 29 14:16:58 2024
